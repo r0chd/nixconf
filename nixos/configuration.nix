@@ -1,26 +1,28 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
-{ config, lib, pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   imports = [./hardware-configuration.nix];
 
+  nix.settings.experimental-features = ["nix-command" "flakes"];
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Enable doas 
   security.doas.enable = true;
   security.sudo.enable = false;
-
   security.doas.extraRules = [{
     users = [ "unixpariah" ];
     keepEnv = true;
     persist = true;  
   }];
 
-  programs.fish.enable = true;
+  users.users.unixpariah = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+  };
 
+  programs.fish.enable = true;
   networking.wireless.iwd.enable = true;
 
   networking.hostName = "nixos";
@@ -35,35 +37,52 @@
   nixpkgs.config.allowUnfree = true;
   hardware.enableAllFirmware  = true;
 
-  users.users.unixpariah = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    packages = with pkgs; [
-      rustup
-    ];
-  };
+  hardware.tuxedo-keyboard.enable = true;
 
   users.defaultUserShell = pkgs.fish;
 
   environment.systemPackages = with pkgs; [
-    fish
-    iwd
-    neovim
-    kitty
-    waybar
-    xdg-desktop-portal-hyprland
     qutebrowser
-    git
+
+    # Terminal and shell tools
+    fish
+    kitty
     tmux
+    neovim
+    git
     doas
     zoxide
     fzf
-    lsd
     ripgrep
+    lsd
+
+    # System Utilities
+    pamixer
+    brightnessctl
+    grim
+    slurp
+    iwd
     wget
     unzip
     wl-clipboard
+
+    # UI
+    waybar
+    xdg-desktop-portal-hyprland
+
+    # Programming and Development
     nodejs_21
+    gcc
+    pkg-config
+    gnumake
+    home-manager
+    rustc
+    cargo
+    openssl
+    libxkbcommon
+
+    # Unfree
+    discord
   ];
 
   fonts.packages = with pkgs; [
@@ -72,7 +91,13 @@
     nerdfonts
   ];
 
-  system.copySystemConfiguration = true;
+  home-manager = {
+    extraSpecialArgs = { inherit inputs; };
+    users =  {
+      "unixpariah" = import ./home.nix;
+    };
+  };
+
   system.stateVersion = "23.11";
 }
 
