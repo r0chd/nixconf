@@ -91,12 +91,14 @@
     nerdfonts
   ];
 
+/*
   home-manager = {
     extraSpecialArgs = { inherit inputs; };
     users =  {
       "unixpariah" = import ./home.nix;
     };
   };
+  */
 
   system.stateVersion = "23.11";
 }

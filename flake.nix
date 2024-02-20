@@ -1,11 +1,11 @@
 {
-  description = "A very basic flake";
+  description = "My nixconfig";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
   };
 
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, home-manager, ... }:
   let
     system = "x86_64-linux";
 
@@ -28,5 +28,11 @@
         ];
       };
     };
+
+      homeConfigurations."unixpariah" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+
+        modules = [ ./nixos/home.nix ];
+      };
   };
 }
