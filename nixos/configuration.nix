@@ -1,17 +1,19 @@
-{ inputs, config, pkgs, ... }:
-
 {
-  imports = 
-    [
-      ./hardware-configuration.nix 
-      inputs.home-manager.nixosModules.home-manager
-    ];
+  inputs,
+  config,
+  pkgs,
+  ...
+}: {
+  imports = [
+    ./hardware-configuration.nix
+    inputs.home-manager.nixosModules.home-manager
+  ];
 
   home-manager = {
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = {inherit inputs;};
     users = {
-        unixpariah = import ./home.nix;
-      };
+      unixpariah = import ./home.nix;
+    };
   };
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -19,18 +21,20 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Enable doas 
+  # Enable doas
   security.doas.enable = true;
   security.sudo.enable = false;
-  security.doas.extraRules = [{
-    users = [ "unixpariah" ];
-    keepEnv = true;
-    persist = true;
-  }];
+  security.doas.extraRules = [
+    {
+      users = ["unixpariah"];
+      keepEnv = true;
+      persist = true;
+    }
+  ];
 
   users.users.unixpariah = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = ["wheel"];
   };
 
   programs.fish.enable = true;
@@ -43,10 +47,17 @@
   programs.hyprland.enable = true;
 
   sound.enable = true;
-  nixpkgs.config.pulseaudio = true;
-  hardware.pulseaudio.enable = true;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
+  };
+
   nixpkgs.config.allowUnfree = true;
-  hardware.enableAllFirmware  = true;
+  hardware.enableAllFirmware = true;
 
   users.defaultUserShell = pkgs.fish;
 
@@ -88,6 +99,8 @@
     openssl
     libxkbcommon
     rustup
+    rustfmt
+    alejandra
 
     # Unfree
     discord
@@ -101,4 +114,3 @@
 
   system.stateVersion = "23.11";
 }
-
