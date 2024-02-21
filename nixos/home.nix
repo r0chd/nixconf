@@ -7,6 +7,7 @@
     ./configs/kitty.nix
     ./configs/git.nix
     ./configs/qutebrowser.nix
+    ./configs/fish.nix
   ];
 
   home.username = "unixpariah";
