@@ -1,7 +1,18 @@
-{ inputs, pkgs, ... }:
+{ inputs, config, pkgs, ... }:
 
 {
-  imports = [./hardware-configuration.nix];
+  imports = 
+    [
+      ./hardware-configuration.nix 
+      inputs.home-manager.nixosModules.home-manager
+    ];
+
+  home-manager = {
+    extraSpecialArgs = { inherit inputs; };
+    users = {
+        unixpariah = import ./home.nix;
+      };
+  };
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
@@ -14,7 +25,7 @@
   security.doas.extraRules = [{
     users = [ "unixpariah" ];
     keepEnv = true;
-    persist = true;  
+    persist = true;
   }];
 
   users.users.unixpariah = {
@@ -36,8 +47,6 @@
   hardware.pulseaudio.enable = true;
   nixpkgs.config.allowUnfree = true;
   hardware.enableAllFirmware  = true;
-
-  hardware.tuxedo-keyboard.enable = true;
 
   users.defaultUserShell = pkgs.fish;
 
@@ -76,10 +85,9 @@
     pkg-config
     gnumake
     home-manager
-    rustc
-    cargo
     openssl
     libxkbcommon
+    rustup
 
     # Unfree
     discord
@@ -90,15 +98,6 @@
     font-awesome
     nerdfonts
   ];
-
-/*
-  home-manager = {
-    extraSpecialArgs = { inherit inputs; };
-    users =  {
-      "unixpariah" = import ./home.nix;
-    };
-  };
-  */
 
   system.stateVersion = "23.11";
 }
