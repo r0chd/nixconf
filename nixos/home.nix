@@ -5,6 +5,8 @@
 }: {
   imports = [
     ./configs/kitty.nix
+    ./configs/git.nix
+    ./configs/qutebrowser.nix
   ];
 
   home.username = "unixpariah";
@@ -18,12 +20,6 @@
 
   home.sessionVariables = {
     EDITOR = "nvim";
-  };
-
-  programs.git = {
-    enable = true;
-    userName = "unixpariah";
-    userEmail = "oskar.rochowiak@tutanota.com";
   };
 
   programs.home-manager.enable = true;
