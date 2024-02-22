@@ -8,6 +8,7 @@
     ./configs/git.nix
     ./configs/qutebrowser.nix
     ./configs/fish.nix
+    ./configs/tmux.nix
   ];
 
   home.username = "unixpariah";

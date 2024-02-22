@@ -59,14 +59,10 @@
   nixpkgs.config.allowUnfree = true;
   hardware.enableAllFirmware = true;
 
-  users.defaultUserShell = pkgs.fish;
-
   environment.systemPackages = with pkgs; [
     qutebrowser
 
     # Terminal and shell tools
-    fish
-    kitty
     tmux
     neovim
     git

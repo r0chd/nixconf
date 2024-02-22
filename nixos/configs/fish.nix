@@ -20,12 +20,6 @@
 
       fish_add_path ~/.cargo/bin
 
-      if not set -q TMUX
-        set -g TMUX tmux new-session -d -s base
-        eval $TMUX
-        tmux attach-session -d -t base
-      end
-
       if string match -q -- 'tmux*' $TERM
           set fish_cursor_insert line
       end
@@ -91,6 +85,13 @@
       end
 
       set -g fish_greeting ""
+
+      if not set -q TMUX
+        set -g TMUX tmux new-session -d -s base
+        eval $TMUX
+        tmux attach-session -d -t base
+      end
+
     '';
   };
 }

@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   programs.kitty = {
     enable = true;
+    package = pkgs.kitty;
     font.name = "JetBrains Mono";
     keybindings = {
       "alt+v" = "paste_from_clipboard";
