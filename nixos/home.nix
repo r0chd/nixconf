@@ -4,12 +4,19 @@
   ...
 }: {
   imports = [
-    ./configs/kitty.nix
     ./configs/git.nix
     ./configs/qutebrowser.nix
     ./configs/fish.nix
     ./configs/tmux.nix
+    ./configs/waybar.nix
   ];
+
+  dconf.settings = {
+    "org/virt-manager/virt-manager/connections" = {
+      autoconnect = ["qemu:///system"];
+      uris = ["qemu:///system"];
+    };
+  };
 
   home.username = "unixpariah";
   home.homeDirectory = "/home/unixpariah";

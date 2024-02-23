@@ -21,6 +21,9 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+
   # Enable doas
   security.doas.enable = true;
   security.sudo.enable = false;
@@ -34,7 +37,7 @@
 
   users.users.unixpariah = {
     isNormalUser = true;
-    extraGroups = ["wheel"];
+    extraGroups = ["wheel" "docker" "libvirtd"];
   };
 
   programs.fish.enable = true;
@@ -59,11 +62,12 @@
   nixpkgs.config.allowUnfree = true;
   hardware.enableAllFirmware = true;
 
+  users.defaultUserShell = pkgs.fish;
+
   environment.systemPackages = with pkgs; [
     qutebrowser
 
     # Terminal and shell tools
-    tmux
     neovim
     git
     doas
@@ -71,6 +75,14 @@
     fzf
     ripgrep
     lsd
+    (st.overrideAttrs (oldAttrs: rec {
+      src = fetchFromGitHub {
+      owner = "unixpariah";
+      repo = "st";
+      rev = "67e85112ab998c750a621ec041d44bf6a3050f17";
+      sha256 = "0s4j999p2y32kh5aw8al6ch7zjn2b31k3slmkbkq3lc3l84i6s68";
+    };
+    }))
 
     # System Utilities
     pamixer
@@ -81,9 +93,10 @@
     wget
     unzip
     wl-clipboard
+    cava
+    ncspot
 
     # UI
-    waybar
     xdg-desktop-portal-hyprland
 
     # Programming and Development
