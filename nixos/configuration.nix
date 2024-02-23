@@ -76,12 +76,11 @@
     ripgrep
     lsd
     (st.overrideAttrs (oldAttrs: rec {
-      src = fetchFromGitHub {
-      owner = "unixpariah";
-      repo = "st";
-      rev = "67e85112ab998c750a621ec041d44bf6a3050f17";
-      sha256 = "0s4j999p2y32kh5aw8al6ch7zjn2b31k3slmkbkq3lc3l84i6s68";
-    };
+  src = builtins.fetchTarball {
+    url = "https://github.com/unixpariah/st/archive/master.tar.gz";
+      sha256 = "0cc9h3sqk2h2m5bcz4jdi5kqj7fx518jchj1crzr9zqdxir2c4gr";
+  };
+      buildInputs = oldAttrs.buildInputs ++ [harfbuzz];
     }))
 
     # System Utilities
