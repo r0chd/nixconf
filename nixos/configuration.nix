@@ -18,6 +18,7 @@
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
+  programs.git.enable = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -76,10 +77,10 @@
     ripgrep
     lsd
     (st.overrideAttrs (oldAttrs: rec {
-  src = builtins.fetchTarball {
-    url = "https://github.com/unixpariah/st/archive/master.tar.gz";
-      sha256 = "0cc9h3sqk2h2m5bcz4jdi5kqj7fx518jchj1crzr9zqdxir2c4gr";
-  };
+      src = builtins.fetchTarball {
+        url = "https://github.com/unixpariah/st/archive/master.tar.gz";
+        sha256 = "0cc9h3sqk2h2m5bcz4jdi5kqj7fx518jchj1crzr9zqdxir2c4gr";
+      };
       buildInputs = oldAttrs.buildInputs ++ [harfbuzz];
     }))
 

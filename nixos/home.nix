@@ -9,6 +9,7 @@
     ./configs/fish.nix
     ./configs/tmux.nix
     ./configs/waybar.nix
+    ./configs/hyprland.nix
   ];
 
   dconf.settings = {

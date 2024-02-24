@@ -37,7 +37,6 @@
       fish_vi_key_bindings;
 
       bind --mode insert \t fish_vi_on_paging
-      zoxide init --cmd cd fish | source
     '';
 
     shellAliases = {
@@ -92,6 +91,7 @@
         tmux attach-session -d -t base
       end
 
+      zoxide init --cmd cd fish | source
     '';
   };
 }
