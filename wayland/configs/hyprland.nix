@@ -4,8 +4,8 @@
     settings = {
       input = {
         monitor = [
-        "eDP-1, 1920x1080, 0x0, 1"
-        "HDMI-A-1, 1920x1080, -1920x0, 1"
+          "eDP-1, 1920x1080, 0x0, 1"
+          "HDMI-A-1, 1920x1080, -1920x0, 1"
         ];
 
         kb_layout = "us";
@@ -83,6 +83,7 @@
       windowrulev2 = "nomaximizerequest, class:.*";
 
       "$mainMod" = "ALT"; # Mod key
+      "$terminal" = "st"; # Terminal
 
       exec-once = [
         "ruin"
@@ -96,6 +97,9 @@
       ];
 
       bind = [
+        "$mainMod, x, submap, clean"
+        "$mainMod, a, submap, reset"
+
         # Screenshots
         ", Print, exec, grim -g \"$(slurp -d)\" - | wl-copy -t image/png"
 

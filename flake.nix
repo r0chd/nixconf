@@ -10,8 +10,11 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
-  let
+  outputs = {
+    self,
+    nixpkgs,
+    ...
+  } @ inputs: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -19,16 +22,20 @@
         allowUnfree = true;
       };
     };
-  in 
-  {
+  in {
     nixosConfigurations = {
-      nixconf = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs system; };
+      waylandconf = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs system;};
         modules = [
-          ./nixos/configuration.nix
+          ./wayland/configuration.nix
+        ];
+      };
+      xorgconf = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs system;};
+        modules = [
+          ./xorg/configuration.nix
         ];
       };
     };
-
   };
 }

@@ -15,7 +15,6 @@
     };
     loginShellInit = ''
       if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
-          Hyprland
       end
 
       fish_add_path ~/.cargo/bin
@@ -42,7 +41,8 @@
     shellAliases = {
       ls = "lsd ";
       doas = "doas ";
-      rebuild = "doas nixos-rebuild switch --flake ~/nixconf/#nixconf";
+      rebuild-wayland = "doas nixos-rebuild switch --flake ~/nixconf/#waylandconf";
+      rebuild-xorg = "doas nixos-rebuild switch --flake ~/nixconf/#xorgconf";
       vim = "nvim ";
     };
 

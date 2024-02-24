@@ -12,13 +12,6 @@
     ./configs/hyprland.nix
   ];
 
-  dconf.settings = {
-    "org/virt-manager/virt-manager/connections" = {
-      autoconnect = ["qemu:///system"];
-      uris = ["qemu:///system"];
-    };
-  };
-
   home.username = "unixpariah";
   home.homeDirectory = "/home/unixpariah";
 
