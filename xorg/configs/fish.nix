@@ -13,8 +13,11 @@
         ";
       };
     };
+
+    #xrandr --output eDP1 --primary --auto --output HDMI1 --left-of eDP1 --auto
     loginShellInit = ''
       if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
+          startx
       end
 
       fish_add_path ~/.cargo/bin
@@ -47,6 +50,8 @@
     };
 
     interactiveShellInit = ''
+      picom &
+
       function fish_prompt
         echo -s ' '(set_color C6D0F5 --bold)(basename (prompt_pwd)) (set_color C6D0F5 --bold) (fish_git_prompt " git:("(set_color FAB387 --bold)"%s"(set_color C6D0F5 --bold)")") (set_color FFB1D2 --bold)'  '
       end

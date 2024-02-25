@@ -15,32 +15,40 @@
   };
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
-  services.xserver = {
-    enable = true;
-    xkb.layout = "us";
-    videoDrivers = ["intel"];
 
-    desktopManager.xterm.enable = false;
-    displayManager = {
-      lightdm.enable = true;
-      setupCommands = ''
-        ${pkgs.xorg.xrandr}/bin/xrandr --output eDP1 --primary --auto --output HDMI1 --left-of eDP1 --auto
-      '';
-      autoLogin = {
-        enable = true;
-        user = "titus";
-      };
-    };
-    displayManager.defaultSession = "none+dwm";
-    windowManager.dwm.enable = true;
-
-    libinput = {
+  services = {
+    picom.enable = true;
+    pipewire = {
       enable = true;
-      mouse = {
-        accelProfile = "flat";
+      alsa = {
+        enable = true;
+        support32Bit = true;
       };
-      touchpad = {
-        accelProfile = "flat";
+      pulse.enable = true;
+      jack.enable = true;
+    };
+    xserver = {
+      enable = true;
+      xkb.layout = "us";
+      videoDrivers = ["intel"];
+      displayManager = {
+        startx.enable = true;
+        lightdm.enable = false;
+        autoLogin = {
+          enable = true;
+          user = "unixpariah";
+        };
+      };
+      displayManager.defaultSession = "none+dwm";
+      windowManager.dwm.enable = true;
+      libinput = {
+        enable = true;
+        mouse = {
+          accelProfile = "flat";
+        };
+        touchpad = {
+          accelProfile = "flat";
+        };
       };
     };
   };
@@ -56,15 +64,18 @@
   };
 
   security = {
-    doas.enable = true;
+    rtkit.enable = true;
     sudo.enable = false;
-    doas.extraRules = [
-      {
-        users = ["unixpariah"];
-        keepEnv = true;
-        persist = true;
-      }
-    ];
+    doas = {
+      enable = true;
+      extraRules = [
+        {
+          users = ["unixpariah"];
+          keepEnv = true;
+          persist = true;
+        }
+      ];
+    };
   };
 
   users.users.unixpariah = {
@@ -81,25 +92,20 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   sound.enable = true;
-  security.rtkit.enable = true;
-
-  services.pipewire = {
-    enable = true;
-    alsa = {
-      enable = true;
-      support32Bit = true;
-    };
-    pulse.enable = true;
-    jack.enable = true;
-  };
 
   nixpkgs.config.allowUnfree = true;
-  hardware.enableAllFirmware = true;
+  hardware = {
+    enableAllFirmware = true;
+    opengl = {
+      enable = true;
+      driSupport = true;
+    };
+  };
 
   users.defaultUserShell = pkgs.fish;
 
   environment.systemPackages = with pkgs; [
-    qutebrowser
+    firefox
     neovim
     git
     doas
@@ -122,8 +128,6 @@
     pkg-config
     gnumake
     home-manager
-    rustup
-    rustfmt
     stylua
     alejandra
     discord
@@ -131,13 +135,20 @@
     rustup
     rnix-lsp
     xorg.libX11
+    xorg.xorgserver
+    xorg.xf86inputevdev
+    xorg.xf86inputsynaptics
+    xorg.xf86inputlibinput
+    xorg.xf86videointel
+    xorg.xf86videoati
+    xorg.xf86videonouveau
     xorg.libX11.dev
     xorg.libxcb
     xorg.libXft
     xorg.libXinerama
     xorg.xinit
     xorg.xinput
-    #xorg.
+    xclip
     (st.overrideAttrs (oldAttrs: rec {
       src = builtins.fetchTarball {
         url = "https://github.com/unixpariah/st/archive/master.tar.gz";

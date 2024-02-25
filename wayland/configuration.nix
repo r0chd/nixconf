@@ -14,12 +14,11 @@
     users = {unixpariah = import ./home.nix;};
   };
 
-  virtualisation.libvirtd.enable = true;
-  programs.virt-manager.enable = true;
-
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
+  virtualisation.libvirtd.enable = true;
   programs = {
+    virt-manager.enable = true;
     git.enable = true;
     fish.enable = true;
     hyprland.enable = true;
@@ -31,15 +30,18 @@
   };
 
   security = {
-    doas.enable = true;
+    doas = {
+      enable = true;
+      extraRules = [
+        {
+          users = ["unixpariah"];
+          keepEnv = true;
+          persist = true;
+        }
+      ];
+    };
     sudo.enable = false;
-    doas.extraRules = [
-      {
-        users = ["unixpariah"];
-        keepEnv = true;
-        persist = true;
-      }
-    ];
+    rtkit.enable = true;
   };
 
   users.users.unixpariah = {
@@ -56,7 +58,6 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   sound.enable = true;
-  security.rtkit.enable = true;
 
   services.pipewire = {
     enable = true;
@@ -70,7 +71,6 @@
 
   nixpkgs.config.allowUnfree = true;
   hardware.enableAllFirmware = true;
-
   users.defaultUserShell = pkgs.fish;
 
   environment.systemPackages = with pkgs; [
@@ -98,15 +98,14 @@
     gnumake
     home-manager
     rustup
-    rustfmt
     stylua
     alejandra
     discord
     nodejs_21
-    rustup
     rnix-lsp
+    wl-clipboard
     gnome3.adwaita-icon-theme
-    xclip
+    clang-tools
     (st.overrideAttrs (oldAttrs: rec {
       src = builtins.fetchTarball {
         url = "https://github.com/unixpariah/st/archive/master.tar.gz";
