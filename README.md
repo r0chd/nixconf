@@ -1,4 +1,4 @@
-###My NixOs configuration for both wayland and xorg
+My NixOs configuration for both wayland and xorg
 
 If you want to build xorg run this command:
 
