@@ -27,12 +27,14 @@
       waylandconf = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs system;};
         modules = [
+          ./common/configuration.nix
           ./wayland/configuration.nix
         ];
       };
       xorgconf = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs system;};
         modules = [
+          ./common/configuration.nix
           ./xorg/configuration.nix
         ];
       };
