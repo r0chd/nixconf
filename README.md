@@ -12,8 +12,6 @@ or this:
 doas nixos-rebuild switch --flake ~/nixconf/#xorgconf
 ```
 
-and reboot your system.
-
 ------------------------------------------------------
 
 If you want to build wayland run this command:
@@ -27,3 +25,5 @@ or this:
 ```bash
 doas nixos-rebuild switch --flake ~/nixconf/#waylandconf
 ```
+
+After rebuilding you should reboot your system
