@@ -14,10 +14,11 @@
       };
     };
 
-    #xrandr --output eDP1 --primary --auto --output HDMI1 --left-of eDP1 --auto
     loginShellInit = ''
-      if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
-          startx
+      if status --is-login
+          if test -z "$DISPLAY" -a $XDG_VTNR = 1
+              exec startx
+          end
       end
 
       fish_add_path ~/.cargo/bin
@@ -27,13 +28,13 @@
       end
 
       function qutebrowser
-        tmux new-session -d -s qutebrowser qutebrowser
-        tmux attach-session -d -t qutebrowser
+          tmux new-session -d -s qutebrowser qutebrowser
+          tmux attach-session -d -t qutebrowser
       end
 
       function discord
-        tmux new-session -d -s discord discord
-        tmux attach-session -d -t discord
+          tmux new-session -d -s discord discord
+          tmux attach-session -d -t discord
       end
 
       fish_vi_key_bindings;

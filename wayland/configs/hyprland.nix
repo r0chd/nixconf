@@ -87,7 +87,7 @@
 
       exec-once = [
         "ruin"
-        "waybar"
+        "/usr/bin/ssb"
         "[workspace 1 silent] st"
       ];
 

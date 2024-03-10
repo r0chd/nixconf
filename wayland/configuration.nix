@@ -17,5 +17,6 @@
 
   environment.systemPackages = with pkgs; [
     xdg-desktop-portal-hyprland
+    wl-clipboard
   ];
 }

@@ -43,6 +43,7 @@
 
   environment.systemPackages = with pkgs; [
     firefox
+    xclip
     xorg.libX11
     xorg.xorgserver
     xorg.xf86inputevdev

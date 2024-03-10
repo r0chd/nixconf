@@ -18,6 +18,7 @@
 
   virtualisation.libvirtd.enable = true;
   programs = {
+    steam.enable = true;
     virt-manager.enable = true;
     git.enable = true;
     fish.enable = true;
@@ -27,6 +28,8 @@
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
   };
+
+  documentation.dev.enable = true;
 
   security = {
     doas = {
@@ -103,6 +106,23 @@
     rnix-lsp
     gnome3.adwaita-icon-theme
     clang-tools
+    nodePackages.pnpm
+    nodePackages_latest.typescript-language-server
+    gcc
+    omnisharp-roslyn
+    dotnet-sdk
+    csharpier
+    nodePackages_latest.vscode-html-languageserver-bin
+    man-pages
+    steam
+    man-pages-posix
+    zig
+    zls
+    prettierd
+    libreoffice
+
+    sysstat
+    wirelesstools
     (st.overrideAttrs (oldAttrs: rec {
       src = builtins.fetchTarball {
         url = "https://github.com/unixpariah/st/archive/master.tar.gz";
