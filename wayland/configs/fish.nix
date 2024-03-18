@@ -42,8 +42,8 @@
     shellAliases = {
       ls = "lsd ";
       doas = "doas ";
-      rebuild-wayland = "doas nixos-rebuild switch --flake ~/nixconf/#waylandconf";
-      rebuild-xorg = "doas nixos-rebuild switch --flake ~/nixconf/#xorgconf";
+      rebuild-wayland = "doas nixos-rebuild switch --flake ~/nixconf/#waylandconf --impure";
+      rebuild-xorg = "doas nixos-rebuild switch --flake ~/nixconf/#xorgconf --impure";
       vim = "nvim ";
     };
 
