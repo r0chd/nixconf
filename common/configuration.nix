@@ -18,6 +18,7 @@
 
   virtualisation.libvirtd.enable = true;
   programs = {
+    direnv.enable = true;
     steam.enable = true;
     virt-manager.enable = true;
     git.enable = true;
@@ -120,9 +121,11 @@
     zls
     prettierd
     libreoffice
+    fd
+    gimp
 
-    sysstat
     wirelesstools
+    sysstat
     (st.overrideAttrs (oldAttrs: rec {
       src = builtins.fetchTarball {
         url = "https://github.com/unixpariah/st/archive/master.tar.gz";
