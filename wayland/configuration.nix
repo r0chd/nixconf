@@ -14,15 +14,17 @@
   };
 
   programs.hyprland.enable = true;
+  programs.hyprland.xwayland.enable = true;
 
   environment.systemPackages = with pkgs; [
     xdg-desktop-portal-hyprland
     wl-clipboard
     wayland
+    obs-studio
     (import (fetchGit {
       url = "https://github.com/unixpariah/ssb.git";
       ref = "main";
-      rev = "09752908442fcaae69eeac3618ccc3396cb1746e";
+      rev = "a9f83a1564186516f9e5e19ef0515f422618b46d";
     }) {})
   ];
 }

@@ -7,6 +7,7 @@
     ./configs/git.nix
     ./configs/qutebrowser.nix
     ./configs/tmux.nix
+    ./configs/fish.nix
   ];
 
   home = {

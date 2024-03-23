@@ -5,7 +5,7 @@
   ...
 }: {
   imports = [
-    ./hardware-configuration.nix
+    ../hardware-configuration.nix
     inputs.home-manager.nixosModules.home-manager
   ];
 
@@ -87,7 +87,6 @@
     lsd
     pamixer
     brightnessctl
-    lua-language-server
     grim
     slurp
     iwd
@@ -96,23 +95,16 @@
     cava
     ncspot
     btop
-    pkg-config
     gnumake
     home-manager
     rustup
-    stylua
     alejandra
     discord
     nodejs_21
     rnix-lsp
     gnome3.adwaita-icon-theme
-    clang-tools
     nodePackages.pnpm
     nodePackages_latest.typescript-language-server
-    gcc
-    omnisharp-roslyn
-    dotnet-sdk
-    csharpier
     nodePackages_latest.vscode-html-languageserver-bin
     man-pages
     steam
@@ -123,9 +115,11 @@
     libreoffice
     fd
     gimp
+    firefox
+    pavucontrol
+    mpv
 
     wirelesstools
-    sysstat
     (st.overrideAttrs (oldAttrs: rec {
       src = builtins.fetchTarball {
         url = "https://github.com/unixpariah/st/archive/master.tar.gz";
