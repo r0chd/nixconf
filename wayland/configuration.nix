@@ -24,7 +24,7 @@
     (import (fetchGit {
       url = "https://github.com/unixpariah/ssb.git";
       ref = "main";
-      rev = "a9f83a1564186516f9e5e19ef0515f422618b46d";
+      rev = "47d18f3ef63770f7dce90c7158a1f22cc259dada";
     }) {})
   ];
 }
