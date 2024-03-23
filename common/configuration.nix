@@ -121,9 +121,10 @@
 
     wirelesstools
     (st.overrideAttrs (oldAttrs: rec {
-      src = builtins.fetchTarball {
-        url = "https://github.com/unixpariah/st/archive/master.tar.gz";
-        sha256 = "0cc9h3sqk2h2m5bcz4jdi5kqj7fx518jchj1crzr9zqdxir2c4gr";
+      src = builtins.fetchGit {
+        url = "https://github.com/unixpariah/st.git";
+        rev = "a02da0649d02b72b369f1d0306e752ffb7a204a3";
+        ref = "main";
       };
       buildInputs = oldAttrs.buildInputs ++ [harfbuzz];
     }))
