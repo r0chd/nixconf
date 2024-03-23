@@ -8,6 +8,7 @@
     ./configs/qutebrowser.nix
     ./configs/tmux.nix
     ./configs/fish.nix
+    ./configs/kitty.nix
   ];
 
   home = {

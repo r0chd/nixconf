@@ -83,12 +83,12 @@
       windowrulev2 = "nomaximizerequest, class:.*";
 
       "$mainMod" = "ALT"; # Mod key
-      "$terminal" = "st"; # Terminal
+      "$terminal" = "kitty"; # Terminal
 
       exec-once = [
         "ruin"
         "ssb"
-        "[workspace 1 silent] st"
+        "[workspace 1 silent] $terminal"
       ];
 
       env = [

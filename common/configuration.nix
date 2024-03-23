@@ -118,16 +118,8 @@
     firefox
     pavucontrol
     mpv
-
     wirelesstools
-    (st.overrideAttrs (oldAttrs: rec {
-      src = builtins.fetchGit {
-        url = "https://github.com/unixpariah/st.git";
-        rev = "a02da0649d02b72b369f1d0306e752ffb7a204a3";
-        ref = "main";
-      };
-      buildInputs = oldAttrs.buildInputs ++ [harfbuzz];
-    }))
+    kitty
   ];
 
   fonts.packages = with pkgs; [
