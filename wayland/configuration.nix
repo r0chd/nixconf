@@ -21,10 +21,15 @@
     wl-clipboard
     wayland
     obs-studio
-    (import (fetchGit {
-      url = "https://github.com/unixpariah/ssb.git";
-      ref = "main";
-      rev = "47d18f3ef63770f7dce90c7158a1f22cc259dada";
-    }) {})
+    (let
+      pkg = import (fetchTarball {
+        url = "https://github.com/unixpariah/ssb/archive/master.tar.gz";
+      }) {};
+    in
+      pkg.overrideAttrs (oldAttrs: {
+        buildInputs =
+          oldAttrs.buildInputs
+          ++ [libpulseaudio];
+      }))
   ];
 }

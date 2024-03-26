@@ -97,21 +97,12 @@
     btop
     gnumake
     home-manager
-    rustup
     alejandra
     discord
-    nodejs_21
-    rnix-lsp
     gnome3.adwaita-icon-theme
-    nodePackages.pnpm
-    nodePackages_latest.typescript-language-server
-    nodePackages_latest.vscode-html-languageserver-bin
     man-pages
     steam
     man-pages-posix
-    zig
-    zls
-    prettierd
     libreoffice
     fd
     gimp
@@ -120,6 +111,8 @@
     mpv
     wirelesstools
     kitty
+
+    rustup
   ];
 
   fonts.packages = with pkgs; [
@@ -133,7 +126,7 @@
       enable = true;
       flake = inputs.self.outPath;
       flags = [
-        "--update-inpit"
+        "--update-input"
         "nixpkgs"
         "-L"
       ];
