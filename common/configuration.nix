@@ -111,6 +111,7 @@
     mpv
     wirelesstools
     kitty
+    hyprcursor
 
     rustup
   ];
@@ -120,19 +121,4 @@
     font-awesome
     nerdfonts
   ];
-
-  system = {
-    autoUpgrade = {
-      enable = true;
-      flake = inputs.self.outPath;
-      flags = [
-        "--update-input"
-        "nixpkgs"
-        "-L"
-      ];
-      dates = "09:00";
-      randomizedDelaySec = "45min";
-    };
-    stateVersion = "23.11";
-  };
 }

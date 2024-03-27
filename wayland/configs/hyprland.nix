@@ -76,12 +76,6 @@
         disable_hyprland_logo = "true";
       };
 
-      "device:epic-mouse-v1" = {
-        sensitivity = "-0.5";
-      };
-
-      windowrulev2 = "nomaximizerequest, class:.*";
-
       "$mainMod" = "ALT"; # Mod key
       "$terminal" = "kitty"; # Terminal
 
