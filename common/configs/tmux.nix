@@ -1,5 +1,5 @@
 {pkgs, ...}: {
- programs.tmux = {
+  programs.tmux = {
     enable = true;
     package = pkgs.tmux;
     baseIndex = 1;
