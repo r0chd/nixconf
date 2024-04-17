@@ -4,7 +4,7 @@
     package = pkgs.fish;
     functions = {
       fish_vi_on_paging = {
-        body = " 
+        body = "
             commandline -f complete
             if commandline --paging-mode
               commandline -f repaint
@@ -20,16 +20,6 @@
           set fish_cursor_insert line
       end
 
-      function qutebrowser
-        tmux new-session -d -s qutebrowser qutebrowser
-        tmux attach-session -d -t qutebrowser
-      end
-
-      function discord
-        tmux new-session -d -s discord discord
-        tmux attach-session -d -t discord
-      end
-
       fish_vi_key_bindings;
 
       bind --mode insert \t fish_vi_on_paging
@@ -37,9 +27,10 @@
 
     shellAliases = {
       ls = "lsd ";
+      cat = "bat ";
       doas = "doas ";
-      rebuild = "doas nixos-rebuild switch --flake ~/nixconf/#waylandconf --impure";
-      rebuild-xorg = "doas nixos-rebuild switch --flake ~/nixconf/#xorgconf --impure";
+      rebuild = "doas nixos-rebuild switch --flake ~/nixconf/#wayland --impure";
+      rebuild-xorg = "doas nixos-rebuild switch --flake ~/nixconf/#xorg --impure";
       vim = "nvim ";
     };
 

@@ -5,16 +5,16 @@
   ...
 }: {
   imports = [
-    /etc/nixos/hardware-configuration.nix
+    ../hardware-configuration.nix
     inputs.home-manager.nixosModules.home-manager
   ];
+
+  nix.settings.experimental-features = "nix-command flakes";
 
   home-manager = {
     extraSpecialArgs = {inherit inputs;};
     users = {unixpariah = import ./home.nix;};
   };
-
-  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   virtualisation.libvirtd.enable = true;
   programs = {
@@ -47,9 +47,12 @@
     rtkit.enable = true;
   };
 
-  users.users.unixpariah = {
-    isNormalUser = true;
-    extraGroups = ["wheel" "libvirtd"];
+  users = {
+    defaultUserShell = pkgs.fish;
+    users.unixpariah = {
+      isNormalUser = true;
+      extraGroups = ["wheel" "libvirtd"];
+    };
   };
 
   networking = {
@@ -61,7 +64,6 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   sound.enable = true;
-
   services.pipewire = {
     enable = true;
     alsa = {
@@ -74,13 +76,14 @@
 
   nixpkgs.config.allowUnfree = true;
   hardware.enableAllFirmware = true;
-  users.defaultUserShell = pkgs.fish;
-
+  environment.sessionVariables = {
+    EDITOR = "nvim";
+    FLAKE = "/home/unixpariah/nixconf";
+  };
   environment.systemPackages = with pkgs; [
     qutebrowser
     neovim
-    git
-    doas
+    bat
     zoxide
     fzf
     ripgrep
@@ -89,11 +92,10 @@
     brightnessctl
     grim
     slurp
-    iwd
     wget
     unzip
     cava
-    ncspot
+    spotify
     btop
     gnumake
     home-manager
@@ -101,19 +103,13 @@
     discord
     gnome3.adwaita-icon-theme
     man-pages
-    steam
     man-pages-posix
     libreoffice
-    fd
     gimp
-    firefox
     pavucontrol
-    mpv
     wirelesstools
     kitty
-    hyprcursor
-
-    rustup
+    nh
   ];
 
   fonts.packages = with pkgs; [

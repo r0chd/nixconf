@@ -23,6 +23,11 @@
       bind - split-window -v -c "#{pane_current_path}"
       bind | split-window -h -c "#{pane_current_path}"
 
+      set-option -g automatic-rename off
+      set-window-option -g window-status-format "#I:#W#F"
+      set-window-option -g window-status-current-format "#[bold]#I:#W#F"
+      bind-key C-b run-shell "tmux rename-window \"\$(basename \$(pwd))\""
+
       run '~/.config/tmux/plugins/tpm/tpm'
     '';
   };

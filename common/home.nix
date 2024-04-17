@@ -9,6 +9,7 @@
     ./configs/tmux.nix
     ./configs/fish.nix
     ./configs/kitty.nix
+    ./configs/firefox.nix
   ];
 
   home = {
@@ -18,12 +19,11 @@
     packages = [];
     file = {};
     sessionVariables = {
-      EDITOR = "nvim";
+      XDG_DATA_HOME = "$HOME/.local/share";
     };
   };
 
   programs = {
-    fish.enable = true;
     home-manager.enable = true;
     direnv = {
       enable = true;
