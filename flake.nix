@@ -26,18 +26,23 @@
     };
   in {
     nixosConfigurations = {
-      wayland = nixpkgs.lib.nixosSystem {
+      unixpariah = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs system;};
         modules = [
           ./common/configuration.nix
           ./wayland/configuration.nix
-        ];
-      };
-      xorg = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs system;};
-        modules = [
-          ./common/configuration.nix
-          ./xorg/configuration.nix
+          {
+            nixpkgs.system = system;
+
+            specialisation = {
+              hyprland = {
+                configuration = {imports = [./wayland/hyprland/configuration.nix];};
+              };
+              sway = {
+                configuration = {imports = [./wayland/sway/configuration.nix];};
+              };
+            };
+          }
         ];
       };
     };

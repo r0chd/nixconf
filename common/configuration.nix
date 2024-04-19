@@ -5,11 +5,10 @@
   ...
 }: {
   imports = [
-    ../hardware-configuration.nix
-    inputs.home-manager.nixosModules.home-manager
+    ./hardware-configuration.nix
   ];
 
-  nix.settings.experimental-features = "nix-command flakes";
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   home-manager = {
     extraSpecialArgs = {inherit inputs;};
@@ -78,7 +77,6 @@
   hardware.enableAllFirmware = true;
   environment.sessionVariables = {
     EDITOR = "nvim";
-    FLAKE = "/home/unixpariah/nixconf";
   };
   environment.systemPackages = with pkgs; [
     qutebrowser
@@ -109,7 +107,7 @@
     pavucontrol
     wirelesstools
     kitty
-    nh
+    vaapi-intel-hybrid
   ];
 
   fonts.packages = with pkgs; [

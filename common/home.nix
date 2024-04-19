@@ -16,8 +16,6 @@
     username = "unixpariah";
     homeDirectory = "/home/unixpariah";
     stateVersion = "23.11";
-    packages = [];
-    file = {};
     sessionVariables = {
       XDG_DATA_HOME = "$HOME/.local/share";
     };
