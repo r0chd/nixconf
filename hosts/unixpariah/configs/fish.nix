@@ -3,6 +3,15 @@
     enable = true;
     package = pkgs.fish;
     functions = {
+      nvidia = {
+        body = ''
+          export __NV_PRIME_RENDER_OFFLOAD=1
+          export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+          export __GLX_VENDOR_LIBRARY_NAME=nvidia
+          export __VK_LAYER_NV_optimus=NVIDIA_only
+          exec $argv
+        '';
+      };
       fish_mode_prompt = {
         body = ''
           switch $fish_bind_mode
@@ -57,6 +66,9 @@
       spotify = {
         body = "command spotify $argv > /dev/null 2>&1 &";
       };
+      steam = {
+        body = "command steam $argv > /dev/null 2>&1 &";
+      };
     };
     loginShellInit = ''
       if string match -q -- 'tmux*' $TERM
@@ -72,7 +84,7 @@
       ls = "lsd ";
       cat = "bat ";
       doas = "doas ";
-      rebuild = "doas nixos-rebuild switch --flake ~/nixconf/#hyprland --impure";
+      rebuild = "doas nixos-rebuild switch --flake ~/nixconf/#unixpariah --impure";
       vim = "nvim ";
     };
 
