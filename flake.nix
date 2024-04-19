@@ -29,7 +29,7 @@
       unixpariah = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs system;};
         modules = [
-          ./common/configuration.nix
+          ./hosts/unixpariah/configuration.nix
           ./wayland/configuration.nix
           {
             nixpkgs.system = system;
