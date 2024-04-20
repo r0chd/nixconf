@@ -11,14 +11,14 @@
     hyprland = {
       configuration = {
         imports = [
-          ./hyprland/configuration.nix
+          ../nixModules/environments/hyprland/default.nix
         ];
       };
     };
     sway = {
       configuration = {
         imports = [
-          ./sway/configuration.nix
+          ../nixModules/environments/sway/default.nix
         ];
       };
     };

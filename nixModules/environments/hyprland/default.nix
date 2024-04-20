@@ -1,7 +1,6 @@
 {
-  inputs,
-  config,
   pkgs,
+  inputs,
   ...
 }: {
   imports = [
@@ -10,7 +9,7 @@
 
   home-manager = {
     extraSpecialArgs = {inherit inputs;};
-    users = {unixpariah = import ./home.nix;};
+    users = {unixpariah = import ../../../home/hyprland/home.nix;};
   };
 
   programs.hyprland = {

@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{...}: {
   imports = [
     ./configs/git.nix
     ./configs/qutebrowser.nix
