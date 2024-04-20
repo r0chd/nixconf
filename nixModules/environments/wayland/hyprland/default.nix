@@ -9,7 +9,7 @@
 
   home-manager = {
     extraSpecialArgs = {inherit inputs;};
-    users = {unixpariah = import ../../../home/hyprland/home.nix;};
+    users = {unixpariah = import ../../../../home/wayland/hyprland/home.nix;};
   };
 
   programs.hyprland = {

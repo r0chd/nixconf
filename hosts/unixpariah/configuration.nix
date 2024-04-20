@@ -14,7 +14,7 @@
     ../../nixModules/docs/default.nix
     ../../nixModules/security/default.nix
     ../../nixModules/fonts/default.nix
-    ../../wayland/configuration.nix
+    ../../nixModules/environments/wayland/default.nix
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];

@@ -11,14 +11,14 @@
     hyprland = {
       configuration = {
         imports = [
-          ../nixModules/environments/hyprland/default.nix
+          ./hyprland/default.nix
         ];
       };
     };
     sway = {
       configuration = {
         imports = [
-          ../nixModules/environments/sway/default.nix
+          ./sway/default.nix
         ];
       };
     };
@@ -26,7 +26,7 @@
 
   home-manager = {
     extraSpecialArgs = {inherit inputs;};
-    users = {unixpariah = import ./home.nix;};
+    users = {unixpariah = import ../../../home/wayland/home.nix;};
   };
 
   environment.systemPackages = with pkgs; [
@@ -36,6 +36,7 @@
     (let
       pkg = import (fetchTarball {
         url = "https://github.com/unixpariah/ssb/archive/main.tar.gz";
+        sha256 = "0livq4vkvmwjarbaiyl9wd5xwj6m6hchijdx58pb3zrj6xbrw29g";
       }) {};
     in
       pkg.overrideAttrs (oldAttrs: {
