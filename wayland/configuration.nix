@@ -1,12 +1,28 @@
 {
   inputs,
-  config,
   pkgs,
   ...
 }: {
   imports = [
     inputs.home-manager.nixosModules.home-manager
   ];
+
+  specialisation = {
+    hyprland = {
+      configuration = {
+        imports = [
+          ./hyprland/configuration.nix
+        ];
+      };
+    };
+    sway = {
+      configuration = {
+        imports = [
+          ./sway/configuration.nix
+        ];
+      };
+    };
+  };
 
   home-manager = {
     extraSpecialArgs = {inherit inputs;};

@@ -21,27 +21,14 @@
     ...
   } @ inputs: let
     system = "x86_64-linux";
-    pkgs = import nixpkgs {
-      inherit system;
-    };
   in {
     nixosConfigurations = {
       unixpariah = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs system;};
         modules = [
           ./hosts/unixpariah/configuration.nix
-          ./wayland/configuration.nix
           {
             nixpkgs.system = system;
-
-            specialisation = {
-              hyprland = {
-                configuration = {imports = [./wayland/hyprland/configuration.nix];};
-              };
-              sway = {
-                configuration = {imports = [./wayland/sway/configuration.nix];};
-              };
-            };
           }
         ];
       };
