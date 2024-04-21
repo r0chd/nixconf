@@ -1,16 +1,21 @@
 {...}: {
   wayland.windowManager.sway = {
     enable = true;
+    extraConfig = ''
+      default_border pixel 2
+      workspace 1
+      client.unfocused 1e1e2e 1e1e2e 1e1e2e 1e1e2e
+      client.focused 89b4fa 89b4fa 89b4fa 89b4fa
+    '';
     config = rec {
       bars = [];
       modifier = "Mod1";
       terminal = "kitty";
+      gaps.outer = 7;
       startup = [
         {command = "ssb";}
         {command = "ruin";}
-        {command = "workspace 1";}
       ];
-      gaps.outer = 7;
       keybindings = {
         "${modifier}+Shift+c" = "kill";
         "${modifier}+Shift+Return" = "exec ${terminal}";
@@ -43,11 +48,18 @@
         "${modifier}+Shift+n" = "move container to workspace previous; workspace previous";
         "${modifier}+Shift+m" = "move container to workspace next; workspace next";
 
+        "${modifier}+h" = "focus left";
+        "${modifier}+j" = "focus down";
+        "${modifier}+k" = "focus up";
+        "${modifier}+l" = "focus right";
+
         "XF86MonBrightnessUp" = "exec brightnessctl set +5%";
         "XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
 
         "XF86AudioRaiseVolume" = "exec pamixer -i 5";
         "XF86AudioLowerVolume" = "exec pamixer -d 5";
+
+        "Print" = "exec grim -g $(slurp -d) - | wl-copy -t image/png";
       };
     };
   };
