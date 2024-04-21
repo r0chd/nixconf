@@ -1,4 +1,8 @@
-{config, ...}: {
+{
+  config,
+  lib,
+  ...
+}: {
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement = {
@@ -25,5 +29,5 @@
     driSupport32Bit = true;
   };
 
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = lib.mkDefault ["nvidia"];
 }

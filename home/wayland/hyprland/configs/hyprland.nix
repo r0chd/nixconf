@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{...}: {
   wayland.windowManager.hyprland = {
     enable = true;
     settings = {
@@ -100,19 +100,19 @@
         ", XF86AudioLowerVolume, exec, pamixer -d 5"
 
         # Brightness
-        ", XF86MonBrightnessUp, exec, brightnessctl s +5%"
-        ", XF86MonBrightnessDown, exec, brightnessctl s 5%-"
+        ", XF86MonBrightnessUp, exec, brightnessctl set +5%"
+        ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
 
         # Manage workspace
         "$mainMod SHIFT, RETURN, exec, $terminal"
         "$mainMod SHIFT, C, killactive,"
         "$mainMod, F, togglefloating,"
-
-        # Switch workspaces with mainMod + [0-9]
         "$mainMod, H, movefocus, l"
         "$mainMod, L, movefocus, r"
         "$mainMod, K, movefocus, u"
         "$mainMod, J, movefocus, d"
+
+        # Switch workspaces with mainMod + [0-9]
         "$mainMod, 1, workspace, 1"
         "$mainMod, 2, workspace, 2"
         "$mainMod, 3, workspace, 3"

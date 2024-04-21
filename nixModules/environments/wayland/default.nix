@@ -17,6 +17,7 @@
     };
     sway = {
       configuration = {
+        services.xserver.videoDrivers = ["nouveau"];
         imports = [
           ./sway/default.nix
         ];

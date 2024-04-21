@@ -5,7 +5,6 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    ../../nixModules/hardware/nvidia/default.nix
     ../../nixModules/hardware/bootloader/default.nix
     ../../nixModules/hardware/audio/default.nix
     ../../nixModules/hardware/power/default.nix
@@ -15,6 +14,7 @@
     ../../nixModules/security/default.nix
     ../../nixModules/fonts/default.nix
     ../../nixModules/environments/wayland/default.nix
+    ../../nixModules/hardware/nvidia/default.nix
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -74,6 +74,8 @@
     kitty
     vaapi-intel-hybrid
     nil
+    rare
+    nodejs_21
   ];
 
   system.stateVersion = "23.11";
