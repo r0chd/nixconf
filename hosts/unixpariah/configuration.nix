@@ -46,6 +46,7 @@
   hardware.enableAllFirmware = true;
   environment.sessionVariables = {
     EDITOR = "nvim";
+    FLAKE = "/home/unixpariah/nixconf";
   };
 
   environment.systemPackages = with pkgs; [
@@ -76,6 +77,9 @@
     nil
     rare
     nodejs_21
+    nh
+    nix-output-monitor
+    nvd
   ];
 
   system.stateVersion = "23.11";

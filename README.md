@@ -1,9 +1,13 @@
-My NixOs configuration for both wayland and xorg
+My NixOs configuration
+
+- Rebuild and switch to change the system configuration
 
 ```bash
-rebuild
+nh os switch -H unixpariah
 ```
 
+OR
+
 ```bash
-doas nixos-rebuild switch --flake ~/nixconf/#unixpariah --impure
+doas nixos-rebuild switch --flake ~/nixconf/#unixpariah
 ```

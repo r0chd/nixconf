@@ -84,7 +84,6 @@
       ls = "lsd ";
       cat = "bat ";
       doas = "doas ";
-      rebuild = "doas nixos-rebuild switch --flake ~/nixconf/#unixpariah --impure";
       vim = "nvim ";
     };
 
