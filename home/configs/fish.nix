@@ -57,17 +57,8 @@
             end
         ";
       };
-      firefox = {
-        body = "command firefox $argv > /dev/null 2>&1 &";
-      };
-      discord = {
-        body = "command discord $argv > /dev/null 2>&1 &";
-      };
-      spotify = {
-        body = "command spotify $argv > /dev/null 2>&1 &";
-      };
-      steam = {
-        body = "command steam $argv > /dev/null 2>&1 &";
+      nb = {
+        body = "command $argv > /dev/null 2>&1 &; disown;";
       };
     };
     loginShellInit = ''
@@ -83,7 +74,6 @@
     shellAliases = {
       ls = "lsd ";
       cat = "bat ";
-      doas = "doas ";
       vim = "nvim ";
     };
 

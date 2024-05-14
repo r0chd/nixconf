@@ -1,11 +1,15 @@
-{...}: {
+{shell, ...}: {
   imports = [
     ./configs/git.nix
     ./configs/qutebrowser.nix
     ./configs/tmux.nix
-    ./configs/fish.nix
     ./configs/kitty.nix
     ./configs/firefox.nix
+    (
+      if shell == "fish"
+      then ./configs/fish.nix
+      else ./configs/zsh.nix
+    )
   ];
 
   home = {

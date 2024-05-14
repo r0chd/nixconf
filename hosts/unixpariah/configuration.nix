@@ -2,7 +2,9 @@
   inputs,
   pkgs,
   ...
-}: {
+}: let
+  shell = "fish";
+in {
   imports = [
     ./hardware-configuration.nix
     ../../nixModules/hardware/bootloader/default.nix
@@ -20,19 +22,30 @@
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   home-manager = {
-    extraSpecialArgs = {inherit inputs;};
-    users = {unixpariah = import ../../home/home.nix;};
+    extraSpecialArgs = {inherit inputs shell;};
+    users = {unixpariah = import ../../home/home.nix {inherit shell;};};
   };
 
   programs = {
+    neovim = {
+      enable = true;
+      vimAlias = true;
+    };
     direnv.enable = true;
     steam.enable = true;
     git.enable = true;
-    fish.enable = true;
+    fish.enable = shell == "fish";
+    nh = {
+      enable = true;
+      flake = "/home/unixpariah/nixconf";
+    };
   };
 
   users = {
-    defaultUserShell = pkgs.fish;
+    defaultUserShell =
+      if shell == "fish"
+      then pkgs.fish
+      else pkgs.zsh;
     users.unixpariah = {
       isNormalUser = true;
       extraGroups = ["wheel" "libvirtd"];
@@ -46,12 +59,11 @@
   hardware.enableAllFirmware = true;
   environment.sessionVariables = {
     EDITOR = "nvim";
-    FLAKE = "/home/unixpariah/nixconf";
   };
 
   environment.systemPackages = with pkgs; [
+    ani-cli
     qutebrowser
-    neovim
     bat
     zoxide
     fzf
@@ -62,8 +74,6 @@
     slurp
     wget
     unzip
-    cava
-    spotify
     btop
     gnumake
     home-manager
@@ -75,9 +85,10 @@
     kitty
     vaapi-intel-hybrid
     nil
-    rare
-    nodejs_21
-    nh
+    nodePackages_latest.nodejs
+    obsidian
+    spotify
+
     nix-output-monitor
     nvd
   ];

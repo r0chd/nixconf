@@ -22,6 +22,7 @@
         };
 
         sensitivity = "0"; # -1.0 - 1.0, 0 means no modification.
+        accel_profile = "flat";
       };
 
       decoration = {
@@ -36,7 +37,7 @@
         drop_shadow = "yes";
         shadow_range = "4";
         shadow_render_power = "3";
-        "col.shadow" = "rgba(1a1a1aee)";
+        "col.shadow" = "rgba(cba6f7ff)";
       };
 
       animations = {
@@ -81,7 +82,7 @@
 
       exec-once = [
         "ruin"
-        "ssb"
+        "waystatus"
         "[workspace 1 silent] $terminal"
       ];
 

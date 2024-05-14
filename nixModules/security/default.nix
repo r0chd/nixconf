@@ -10,7 +10,7 @@
         }
       ];
     };
-    sudo.enable = false;
+    sudo.enable = true;
     rtkit.enable = true;
   };
 }

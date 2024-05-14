@@ -3,7 +3,6 @@
     enable = true;
     extraConfig = ''
       default_border pixel 2
-      workspace 1
       client.unfocused 1e1e2e 1e1e2e 1e1e2e 1e1e2e
       client.focused 89b4fa 89b4fa 89b4fa 89b4fa
     '';
@@ -13,8 +12,9 @@
       terminal = "kitty";
       gaps.outer = 7;
       startup = [
-        {command = "ssb";}
+        {command = "waystatus";}
         {command = "ruin";}
+        {command = "sway workspace 1; kitty";}
       ];
       keybindings = {
         "${modifier}+Shift+c" = "kill";

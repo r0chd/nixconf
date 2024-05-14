@@ -23,7 +23,7 @@
     system = "x86_64-linux";
   in {
     nixosConfigurations = {
-      unixpariah = nixpkgs.lib.nixosSystem {
+      laptop = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs system;};
         modules = [
           ./hosts/unixpariah/configuration.nix

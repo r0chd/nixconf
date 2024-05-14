@@ -3,9 +3,14 @@
   pkgs,
   ...
 }: let
-  ssb = import (fetchTarball {
-    url = "https://github.com/unixpariah/ssb/archive/main.tar.gz";
-    sha256 = "0livq4vkvmwjarbaiyl9wd5xwj6m6hchijdx58pb3zrj6xbrw29g";
+  waystatus = import (pkgs.fetchgit {
+    url = "https://github.com/unixpariah/waystatus.git";
+    sha256 = "0x4y6gisbbzf86j8ab00h271iyn5s8c3ql16458i8pablxfbllpl";
+    fetchSubmodules = true;
+  }) {pkgs = pkgs;};
+  ruin = import (pkgs.fetchgit {
+    url = "https://github.com/unixpariah/ruin.git";
+    sha256 = "1l6wj88z48jppvg182y7nphh8yzknb1718xxcsl1n5dm068svygd";
   }) {pkgs = pkgs;};
 in {
   imports = [
@@ -13,19 +18,21 @@ in {
   ];
 
   specialisation = {
-    hyprland = {
+    Hyprland = {
       configuration = {
         imports = [
           ./hyprland/default.nix
         ];
+        environment.etc."specialisation".text = "Hyprland";
       };
     };
-    sway = {
+    Sway = {
       configuration = {
         services.xserver.videoDrivers = ["nouveau"];
         imports = [
           ./sway/default.nix
         ];
+        environment.etc."specialisation".text = "Sway";
       };
     };
   };
@@ -39,6 +46,8 @@ in {
     wl-clipboard
     wayland
     obs-studio
-    ssb
+    nix-prefetch-git
+    waystatus
+    ruin
   ];
 }
