@@ -1,0 +1,7 @@
+{...}: {
+  programs.bash = {
+    profileExtra = ''
+      Hyprland
+    '';
+  };
+}

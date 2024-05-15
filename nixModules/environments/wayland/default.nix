@@ -1,8 +1,10 @@
 {
   inputs,
   pkgs,
+  config,
   ...
 }: let
+  inherit (config) shell;
   waystatus = import (pkgs.fetchgit {
     url = "https://github.com/unixpariah/waystatus.git";
     sha256 = "0x4y6gisbbzf86j8ab00h271iyn5s8c3ql16458i8pablxfbllpl";
@@ -17,29 +19,9 @@ in {
     inputs.home-manager.nixosModules.home-manager
   ];
 
-  specialisation = {
-    Hyprland = {
-      configuration = {
-        imports = [
-          ./hyprland/default.nix
-        ];
-        environment.etc."specialisation".text = "Hyprland";
-      };
-    };
-    Sway = {
-      configuration = {
-        services.xserver.videoDrivers = ["nouveau"];
-        imports = [
-          ./sway/default.nix
-        ];
-        environment.etc."specialisation".text = "Sway";
-      };
-    };
-  };
-
   home-manager = {
     extraSpecialArgs = {inherit inputs;};
-    users = {unixpariah = import ../../../home/wayland/home.nix;};
+    users = {unixpariah = import ../../../home/wayland/home.nix {inherit shell;};};
   };
 
   environment.systemPackages = with pkgs; [

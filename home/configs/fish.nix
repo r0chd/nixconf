@@ -73,8 +73,6 @@
 
     shellAliases = {
       ls = "lsd ";
-      cat = "bat ";
-      vim = "nvim ";
     };
 
     interactiveShellInit = ''

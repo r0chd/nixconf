@@ -8,7 +8,9 @@
     (
       if shell == "fish"
       then ./configs/fish.nix
-      else ./configs/zsh.nix
+      else if shell == "zsh"
+      then ./configs/zsh.nix
+      else ./configs/bash.nix
     )
   ];
 
@@ -16,9 +18,6 @@
     username = "unixpariah";
     homeDirectory = "/home/unixpariah";
     stateVersion = "23.11";
-    sessionVariables = {
-      XDG_DATA_HOME = "$HOME/.local/share";
-    };
   };
 
   programs = {
