@@ -1,17 +1,19 @@
 {
-  shell,
   pkgs,
+  shell,
+  username,
   ...
 }: {
-  users.defaultUserShell =
-    if shell == "fish"
-    then pkgs.fish
-    else if shell == "zsh"
-    then pkgs.zsh
-    else pkgs.bash;
-
-  programs = {
-    fish.enable = shell == "fish";
-    zsh.enable = shell == "zsh";
-  };
+  imports = [
+    (
+      if shell == "fish"
+      then (import ./fish/default.nix {inherit username pkgs;})
+      else if shell == "zsh"
+      then (import ./zsh/default.nix {inherit username pkgs;})
+      else
+        (
+          import ./bash/default.nix {inherit username pkgs;}
+        )
+    )
+  ];
 }

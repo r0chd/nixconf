@@ -1,7 +1,7 @@
-{pkgs, ...}: {
+{username, ...}: {
   programs.git = {
     enable = true;
-    userName = "unixpariah";
+    userName = "${username}";
     userEmail = "oskar.rochowiak@tutanota.com";
   };
 }

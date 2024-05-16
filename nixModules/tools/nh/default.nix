@@ -1,7 +1,11 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  username,
+  ...
+}: {
   programs.nh = {
     enable = true;
-    flake = "/home/unixpariah/nixconf";
+    flake = "/home/${username}/nixconf";
   };
   environment.systemPackages = with pkgs; [
     nvd

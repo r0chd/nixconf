@@ -9,12 +9,12 @@
     browser = "firefox"; # Options: firefox, qutebrowser
     grub = true; # false = systemd-boot, true = grub
     zoxide = true;
-    bat = true;
     nh = true;
     docs = true;
     virtualization = true;
     audio = true;
     wireless = true;
+    power = true;
     username = "unixpariah";
     hostname = "laptop";
   };
@@ -27,7 +27,14 @@ in {
   time.timeZone = "Europe/Warsaw";
   i18n.defaultLocale = "en_US.UTF-8";
 
+  environment.shellAliases = {
+    cat = "bat";
+    ls = "lsd";
+  };
+
   environment.systemPackages = with pkgs; [
+    bat
+    lsd
     alejandra
     nil
     ani-cli

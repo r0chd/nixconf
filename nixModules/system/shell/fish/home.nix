@@ -1,5 +1,9 @@
-{pkgs, ...}: {
-  programs.fish = {
+{
+  pkgs,
+  username,
+  ...
+}: {
+  home-manager.users."${username}".programs.fish = {
     enable = true;
     package = pkgs.fish;
     functions = {
@@ -70,10 +74,6 @@
 
       bind --mode insert \t fish_vi_on_paging
     '';
-
-    shellAliases = {
-      ls = "lsd ";
-    };
 
     interactiveShellInit = ''
       bind --mode insert \t fish_vi_on_paging

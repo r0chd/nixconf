@@ -1,27 +1,26 @@
-{shell, ...}: {
+{
+  username,
+  pkgs,
+  inputs,
+  ...
+}: {
   imports = [
-    ./configs/git.nix
     ./configs/qutebrowser.nix
     ./configs/tmux.nix
     ./configs/kitty.nix
-    ./configs/firefox.nix
-    (
-      if shell == "fish"
-      then ./configs/fish.nix
-      else if shell == "zsh"
-      then ./configs/zsh.nix
-      else ./configs/bash.nix
-    )
+    (import ./configs/git.nix {inherit username;})
+    (import ./configs/firefox.nix {inherit username pkgs inputs;})
   ];
 
   home = {
-    username = "unixpariah";
-    homeDirectory = "/home/unixpariah";
+    username = "${username}";
+    homeDirectory = "/home/${username}";
     stateVersion = "23.11";
   };
 
   programs = {
     home-manager.enable = true;
+    zoxide.enableBashIntegration = true;
     direnv = {
       enable = true;
       enableBashIntegration = true;
