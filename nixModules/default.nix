@@ -4,12 +4,14 @@
   inputs,
   ...
 }: let
-  inherit (config) shell nh bat zoxide docs;
+  inherit (config) shell nh bat zoxide docs grub username;
 in {
   imports =
     [
-      (import ./shell/default.nix {inherit shell pkgs;})
+      (import ./system/shell/default.nix {inherit shell pkgs;})
       (import ./environments/wayland/default.nix {inherit inputs config pkgs;})
+      (import ./system/bootloader/default.nix {inherit grub;})
+      (import ./security/default.nix {inherit username;})
     ]
     ++ (
       if bat == true

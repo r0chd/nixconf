@@ -1,10 +1,10 @@
-{...}: {
+{username, ...}: {
   security = {
     doas = {
       enable = true;
       extraRules = [
         {
-          users = ["unixpariah"];
+          users = ["${username}"];
           keepEnv = true;
           persist = true;
         }

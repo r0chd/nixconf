@@ -7,29 +7,29 @@
   config = {
     shell = "fish"; # Options: fish, zsh, bash
     browser = "firefox"; # Options: firefox, qutebrowser
+    grub = true; # false = systemd-boot, true = grub
     zoxide = true;
     bat = true;
     nh = true;
     docs = true;
+    username = "unixpariah";
   };
 in {
   imports = [
     (import ../../nixModules/default.nix {inherit config inputs pkgs;})
     ./hardware-configuration.nix
-    ../../nixModules/hardware/bootloader/default.nix
     ../../nixModules/hardware/audio/default.nix
     ../../nixModules/hardware/power/default.nix
     ../../nixModules/hardware/nvidia/default.nix
     ../../nixModules/network/default.nix
     ../../nixModules/virtualization/default.nix
-    ../../nixModules/security/default.nix
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   home-manager = {
     extraSpecialArgs = {inherit shell;};
-    users = {unixpariah = import ../../home/home.nix {inherit shell;};};
+    users = {"${config.username}" = import ../../home/home.nix {inherit shell;};};
   };
 
   programs = {
@@ -42,7 +42,7 @@ in {
   };
 
   users = {
-    users.unixpariah = {
+    users."${config.username}" = {
       isNormalUser = true;
       extraGroups = ["wheel"];
     };
