@@ -4,7 +4,7 @@
   inputs,
   ...
 }: let
-  inherit (config) shell nh zoxide docs grub username editor virtualization audio wireless hostname power;
+  inherit (config) shell nh zoxide docs grub username editor virtualization audio wireless hostname power browser;
 in {
   imports =
     [
@@ -12,6 +12,7 @@ in {
       (import ./environments/wayland/default.nix {inherit inputs pkgs;})
       (import ./system/bootloader/default.nix {inherit inputs grub;})
       (import ./security/default.nix {inherit inputs username;})
+      (import ./gui/default.nix {inherit inputs username pkgs browser;})
       ./hardware/nvidia/default.nix
     ]
     ++ (

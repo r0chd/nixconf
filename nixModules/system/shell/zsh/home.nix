@@ -5,7 +5,7 @@
     syntaxHighlighting.enable = true;
     history = {
       size = 10000;
-      path = "~/.zsh_history";
+      path = "/home/${username}/.zsh_history";
       ignoreSpace = true;
       ignoreAllDups = true;
       ignoreDups = true;

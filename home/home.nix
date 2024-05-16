@@ -1,15 +1,8 @@
-{
-  username,
-  pkgs,
-  inputs,
-  ...
-}: {
+{username, ...}: {
   imports = [
-    ./configs/qutebrowser.nix
     ./configs/tmux.nix
     ./configs/kitty.nix
     (import ./configs/git.nix {inherit username;})
-    (import ./configs/firefox.nix {inherit username pkgs inputs;})
   ];
 
   home = {
@@ -20,7 +13,6 @@
 
   programs = {
     home-manager.enable = true;
-    zoxide.enableBashIntegration = true;
     direnv = {
       enable = true;
       enableBashIntegration = true;

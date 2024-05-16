@@ -1,5 +1,5 @@
-{pkgs, ...}: {
-  programs.qutebrowser = {
+{username, ...}: {
+  home-manager.users."${username}".programs.qutebrowser = {
     enable = true;
     searchEngines = {
       DEFAULT = "https://search.brave.com/search?q={}";
