@@ -1,7 +1,11 @@
-{pkgs, ...}: {
+{
+  hostname,
+  pkgs,
+  ...
+}: {
   networking = {
     wireless.iwd.enable = true;
-    hostName = "laptop";
+    hostName = "${hostname}";
   };
 
   environment.systemPackages = with pkgs; [

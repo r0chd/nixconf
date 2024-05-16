@@ -3,7 +3,7 @@ My NixOs configuration
 - Rebuild and switch to change the system configuration
 
 ```bash
-nh os switch -H unixpariah
+nh os switch -H laptop
 ```
 
 OR

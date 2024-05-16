@@ -1,7 +1,7 @@
 _: {
   boot = {
     loader = {
-      timeout = 10;
+      timeout = null;
       efi.canTouchEfiVariables = true;
       grub = {
         enable = true;

@@ -3,85 +3,52 @@
   pkgs,
   ...
 }: let
-  shell = "fish";
   config = {
-    shell = "fish"; # Options: fish, zsh, bash
+    editor = "nvim"; # Options: nvim
+    shell = "fish"; # Options: fish, zsh | Default: bash
     browser = "firefox"; # Options: firefox, qutebrowser
     grub = true; # false = systemd-boot, true = grub
     zoxide = true;
     bat = true;
     nh = true;
     docs = true;
+    virtualization = true;
+    audio = true;
+    wireless = true;
     username = "unixpariah";
+    hostname = "laptop";
   };
 in {
   imports = [
     (import ../../nixModules/default.nix {inherit config inputs pkgs;})
     ./hardware-configuration.nix
-    ../../nixModules/hardware/audio/default.nix
-    ../../nixModules/hardware/power/default.nix
-    ../../nixModules/hardware/nvidia/default.nix
-    ../../nixModules/network/default.nix
-    ../../nixModules/virtualization/default.nix
   ];
-
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-
-  home-manager = {
-    extraSpecialArgs = {inherit shell;};
-    users = {"${config.username}" = import ../../home/home.nix {inherit shell;};};
-  };
-
-  programs = {
-    neovim = {
-      enable = true;
-      vimAlias = true;
-    };
-    steam.enable = true;
-    git.enable = true;
-  };
-
-  users = {
-    users."${config.username}" = {
-      isNormalUser = true;
-      extraGroups = ["wheel"];
-    };
-  };
 
   time.timeZone = "Europe/Warsaw";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  nixpkgs.config.allowUnfree = true;
-  hardware.enableAllFirmware = true;
-
-  environment = {
-    sessionVariables = {
-      XDG_DATA_HOME = "$HOME/.local/share";
-      EDITOR = "nvim";
-    };
-    systemPackages = with pkgs; [
-      alejandra
-      nil
-
-      ani-cli
-      fzf
-      ripgrep
-      lsd
-      brightnessctl
-      grim
-      slurp
-      wget
-      unzip
-      btop
-      discord
-      gnome3.adwaita-icon-theme
-      libreoffice
-      gimp
-      vaapi-intel-hybrid
-      obsidian
-      spotify
-    ];
-  };
+  environment.systemPackages = with pkgs; [
+    alejandra
+    nil
+    ani-cli
+    fzf
+    ripgrep
+    lsd
+    brightnessctl
+    grim
+    slurp
+    wget
+    unzip
+    btop
+    discord
+    gnome3.adwaita-icon-theme
+    libreoffice
+    gimp
+    vaapi-intel-hybrid
+    obsidian
+    spotify
+    steam
+  ];
 
   fonts.packages = with pkgs; [
     jetbrains-mono
