@@ -4,7 +4,7 @@
   ...
 }: let
   config = {
-    terminal = "kitty"; # Options: kitty
+    term = "kitty"; # Options: kitty
     editor = "nvim"; # Options: nvim
     shell = "fish"; # Options: fish, zsh | Default: bash
     browser = "firefox"; # Options: firefox, qutebrowser

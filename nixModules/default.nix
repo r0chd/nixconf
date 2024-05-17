@@ -4,7 +4,7 @@
   inputs,
   ...
 }: let
-  inherit (config) shell username browser;
+  inherit (config) shell username browser term;
 in {
   imports = [
     (import ./environments/wayland/default.nix {inherit inputs pkgs;})
@@ -45,7 +45,7 @@ in {
     Hyprland = {
       configuration = {
         imports = [
-          (import ./environments/wayland/hyprland/default.nix {inherit shell inputs pkgs username;})
+          (import ./environments/wayland/hyprland/default.nix {inherit shell inputs pkgs username term;})
         ];
         environment.etc."specialisation".text = "Hyprland";
       };
@@ -54,7 +54,7 @@ in {
       configuration = {
         services.xserver.videoDrivers = ["nouveau"];
         imports = [
-          (import ./environments/wayland/sway/default.nix {inherit inputs shell pkgs username;})
+          (import ./environments/wayland/sway/default.nix {inherit inputs shell pkgs username term;})
         ];
         environment.etc."specialisation".text = "Sway";
       };

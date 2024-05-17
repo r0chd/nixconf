@@ -1,20 +1,27 @@
-{username, ...}: {
+{
+  username,
+  term,
+  ...
+}: {
   home-manager.users."${username}".wayland.windowManager.sway = {
     enable = true;
     extraConfig = ''
       default_border pixel 2
       client.unfocused 1e1e2e 1e1e2e 1e1e2e 1e1e2e
-      client.focused 89b4fa 89b4fa 89b4fa 89b4fa
+      client.focused c5a8eb c5a8eb c5a8eb c5a8eb
     '';
     config = rec {
       bars = [];
       modifier = "Mod1";
-      terminal = "kitty";
+      terminal = term;
       gaps.outer = 7;
+      input."9011:26214:ydotoold_virtual_device" = {
+        "accel_profile" = "flat";
+      };
       startup = [
         {command = "waystatus";}
         {command = "ruin";}
-        {command = "sway workspace 1; kitty";}
+        {command = "sway workspace 1; ${terminal}";}
       ];
       keybindings = {
         "${modifier}+Shift+c" = "kill";

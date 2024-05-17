@@ -1,4 +1,8 @@
-{username, ...}: {
+{
+  username,
+  term,
+  ...
+}: {
   home-manager.users."${username}".wayland.windowManager.hyprland = {
     enable = true;
     settings = {
@@ -25,19 +29,17 @@
         accel_profile = "flat";
       };
 
+      general = {
+        "col.active_border" = "rgba(c5a8ebff)";
+        border_size = 2;
+      };
+
       decoration = {
-        rounding = "5";
-
-        blur = {
-          enabled = "false";
-          size = "3";
-          passes = "1";
-        };
-
+        rounding = "16";
+        blur.enabled = "false";
         drop_shadow = "yes";
         shadow_range = "4";
         shadow_render_power = "3";
-        "col.shadow" = "rgba(cba6f7ff)";
       };
 
       animations = {
@@ -78,7 +80,7 @@
       };
 
       "$mainMod" = "ALT"; # Mod key
-      "$terminal" = "kitty"; # Terminal
+      "$terminal" = term; # Terminal
 
       exec-once = [
         "ruin"

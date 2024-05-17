@@ -1,4 +1,5 @@
 {
+  term,
   pkgs,
   inputs,
   username,
@@ -6,7 +7,7 @@
   ...
 }: {
   imports = [
-    (import ./configs/home.nix {inherit inputs username;})
+    (import ./configs/home.nix {inherit inputs username term;})
     (
       if shell == "fish"
       then ./configs/fish.nix

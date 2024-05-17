@@ -4,20 +4,20 @@
   inputs,
   ...
 }: let
-  inherit (config) shell nh zoxide username editor terminal tmux;
+  inherit (config) shell nh zoxide username editor term tmux;
 in {
   imports =
     [
       (import ./git/home.nix {inherit username;})
     ]
     ++ (
-      if terminal == "kitty"
+      if term == "kitty"
       then [(import ./kitty/home.nix {inherit username;})]
       else []
     )
     ++ (
       if tmux == true
-      then [(import ./tmux/home.nix {inherit username;})]
+      then [(import ./tmux/home.nix {inherit pkgs username;})]
       else []
     )
     ++ (
