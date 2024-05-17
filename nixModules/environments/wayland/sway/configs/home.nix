@@ -1,5 +1,5 @@
-{...}: {
-  wayland.windowManager.sway = {
+{username, ...}: {
+  home-manager.users."${username}".wayland.windowManager.sway = {
     enable = true;
     extraConfig = ''
       default_border pixel 2

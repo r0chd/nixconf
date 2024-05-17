@@ -1,4 +1,5 @@
 _: {
+  imports = [(import ./home.nix)];
   programs = {
     neovim = {
       enable = true;

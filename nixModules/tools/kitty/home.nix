@@ -1,7 +1,6 @@
-{pkgs, ...}: {
-  programs.kitty = {
+{username, ...}: {
+  home-manager.users."${username}".programs.kitty = {
     enable = true;
-    package = pkgs.kitty;
     font.name = "JetBrains Mono";
     font.size = 9;
     keybindings = {

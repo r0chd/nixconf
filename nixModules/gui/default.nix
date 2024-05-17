@@ -6,8 +6,7 @@
   ...
 }: {
   imports =
-    [
-    ]
+    []
     ++ (
       if browser == "firefox"
       then [(import ./firefox/home.nix {inherit username inputs pkgs;})]

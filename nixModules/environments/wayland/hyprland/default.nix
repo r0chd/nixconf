@@ -2,15 +2,19 @@
   pkgs,
   inputs,
   username,
+  shell,
   ...
 }: {
   imports = [
-    inputs.home-manager.nixosModules.home-manager
+    (import ./configs/home.nix {inherit inputs username;})
+    (
+      if shell == "fish"
+      then ./configs/fish.nix
+      else if shell == "zsh"
+      then ./configs/zsh.nix
+      else ./configs/bash.nix
+    )
   ];
-
-  home-manager = {
-    users."${username}" = import ../../../../home/wayland/hyprland/home.nix;
-  };
 
   programs.hyprland = {
     enable = true;

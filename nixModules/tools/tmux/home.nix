@@ -1,7 +1,6 @@
-{pkgs, ...}: {
-  programs.tmux = {
+{username, ...}: {
+  home-manager.users."${username}".programs.tmux = {
     enable = true;
-    package = pkgs.tmux;
     baseIndex = 1;
     clock24 = true;
     keyMode = "vi";

@@ -4,70 +4,41 @@
   inputs,
   ...
 }: let
-  inherit (config) shell nh zoxide docs grub username editor virtualization audio wireless hostname power browser;
+  inherit (config) shell username browser;
 in {
-  imports =
-    [
-      (import ./system/shell/default.nix {inherit inputs shell pkgs username;})
-      (import ./environments/wayland/default.nix {inherit inputs pkgs;})
-      (import ./system/bootloader/default.nix {inherit inputs grub;})
-      (import ./security/default.nix {inherit inputs username;})
-      (import ./gui/default.nix {inherit inputs username pkgs browser;})
-      ./hardware/nvidia/default.nix
-    ]
-    ++ (
-      if nh == true
-      then [(import ./tools/nh/default.nix {inherit username pkgs;})]
-      else []
-    )
-    ++ (
-      if zoxide == true
-      then [(import ./tools/zoxide/default.nix {inherit username shell pkgs inputs;})]
-      else []
-    )
-    ++ (
-      if docs == true
-      then [./docs/default.nix]
-      else []
-    )
-    ++ (
-      if editor == "nvim"
-      then [./tools/nvim/default.nix]
-      else []
-    )
-    ++ (
-      if virtualization == true
-      then [(import ./virtualization/default.nix {inherit username;})]
-      else []
-    )
-    ++ (
-      if audio == true
-      then [./hardware/audio/default.nix]
-      else []
-    )
-    ++ (
-      if wireless == true
-      then [(import ./network/wireless/default.nix {inherit pkgs inputs hostname;})]
-      else []
-    )
-    ++ (
-      if power == true
-      then [./hardware/power/default.nix]
-      else []
-    );
+  imports = [
+    (import ./environments/wayland/default.nix {inherit inputs pkgs;})
+    (import ./security/default.nix {inherit inputs username;})
+    (import ./gui/default.nix {inherit inputs username pkgs browser;})
+    (import ./tools/default.nix {inherit config inputs pkgs;})
+    (import ./system/default.nix {inherit pkgs config;})
+    (import ./hardware/default.nix {inherit config;})
+    (import ./network/default.nix {inherit config pkgs inputs;})
+    ./docs/default.nix
+  ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nixpkgs.config.allowUnfree = true;
-  hardware.enableAllFirmware = true;
 
   users.users."${config.username}" = {
     isNormalUser = true;
     extraGroups = ["wheel"];
   };
 
-  home-manager = {
-    extraSpecialArgs = {inherit inputs shell username;};
-    users = {"${config.username}" = import ../home/home.nix {inherit inputs shell username pkgs;};};
+  home-manager.users."${username}" = {
+    home = {
+      username = "${username}";
+      homeDirectory = "/home/${username}";
+      stateVersion = "23.11";
+    };
+    programs = {
+      home-manager.enable = true;
+      direnv = {
+        enable = true;
+        enableBashIntegration = true;
+        nix-direnv.enable = true;
+      };
+    };
   };
 
   specialisation = {

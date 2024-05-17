@@ -1,5 +1,5 @@
-{...}: {
-  wayland.windowManager.hyprland = {
+{username, ...}: {
+  home-manager.users."${username}".wayland.windowManager.hyprland = {
     enable = true;
     settings = {
       input = {

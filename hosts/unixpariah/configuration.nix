@@ -4,17 +4,18 @@
   ...
 }: let
   config = {
+    terminal = "kitty"; # Options: kitty
     editor = "nvim"; # Options: nvim
     shell = "fish"; # Options: fish, zsh | Default: bash
-    browser = "qutebrowser"; # Options: firefox, qutebrowser
+    browser = "firefox"; # Options: firefox, qutebrowser
     grub = true; # false = systemd-boot, true = grub
     zoxide = true;
     nh = true;
-    docs = true;
     virtualization = true;
     audio = true;
     wireless = true;
     power = true;
+    tmux = true;
     username = "unixpariah";
     hostname = "laptop";
   };
