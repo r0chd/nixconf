@@ -5,7 +5,8 @@
 }: let
   waystatus = import (pkgs.fetchgit {
     url = "https://github.com/unixpariah/waystatus.git";
-    sha256 = "0x4y6gisbbzf86j8ab00h271iyn5s8c3ql16458i8pablxfbllpl";
+    rev = "8e9e1ac3bed2237b19ec06ed5e45d766f310afd4";
+    sha256 = "0c1c1qiv0c7lb25vgbd3d8947zc38d06n8lf5hvrmx3zzakc62a0";
     fetchSubmodules = true;
   }) {pkgs = pkgs;};
   ruin = import (pkgs.fetchgit {

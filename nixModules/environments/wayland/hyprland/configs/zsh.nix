@@ -1,7 +1,0 @@
-{...}: {
-  programs.zsh = {
-    loginExtra = ''
-      Hyprland
-    '';
-  };
-}

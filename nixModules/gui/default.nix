@@ -5,6 +5,9 @@
   browser,
   ...
 }: {
+  environment.shellAliases = {
+    browser = "nb ${browser}";
+  };
   imports =
     []
     ++ (

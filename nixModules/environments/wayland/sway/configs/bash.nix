@@ -1,7 +1,0 @@
-{...}: {
-  programs.bash = {
-    profileExtra = ''
-      sway
-    '';
-  };
-}

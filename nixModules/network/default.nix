@@ -4,10 +4,11 @@
   inputs,
   ...
 }: let
-  inherit (config) wireless hostname;
+  inherit (config) wireless hostname username;
 in {
   imports =
     [
+      (import ./ssh/default.nix {inherit username;})
     ]
     ++ (
       if wireless == true

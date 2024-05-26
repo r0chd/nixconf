@@ -19,16 +19,14 @@
     self,
     nixpkgs,
     ...
-  } @ inputs: let
-    system = "x86_64-linux";
-  in {
+  } @ inputs: {
     nixosConfigurations = {
       laptop = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs system;};
+        specialArgs = {inherit inputs;};
         modules = [
           ./hosts/unixpariah/configuration.nix
           {
-            nixpkgs.system = system;
+            nixpkgs.system = "x86_64-linux";
           }
         ];
       };

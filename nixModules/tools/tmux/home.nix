@@ -5,17 +5,21 @@
 }: {
   home-manager.users."${username}".programs.tmux = {
     enable = true;
+    aggressiveResize = true;
     baseIndex = 1;
     clock24 = true;
     keyMode = "vi";
     prefix = "C-space";
     newSession = true;
+    secureSocket = true;
     sensibleOnTop = true;
     escapeTime = 0;
+    terminal = "screen-256color";
     plugins = with pkgs.tmuxPlugins; [
       yank
       sensible
       vim-tmux-navigator
+      catppuccin
     ];
     extraConfig = ''
       set -g @plugin 'dreamsofcode-io/catppuccin-tmux'
@@ -32,7 +36,7 @@
       set-option -g automatic-rename off
       set-window-option -g window-status-format "#I:#W#F"
       set-window-option -g window-status-current-format "#[bold]#I:#W#F"
-      bind-key C-b run-shell "tmux rename-window \"\$(basename \$(pwd))\""
+      bind-key C-b run-shell "tmux rename-window "$(basename $(pwd))""
 
       run '~/.config/tmux/plugins/tpm/tpm'
     '';

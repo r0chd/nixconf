@@ -1,7 +1,16 @@
-{username, ...}: {
+{
+  username,
+  email,
+  ...
+}: {
   home-manager.users."${username}".programs.git = {
     enable = true;
     userName = "${username}";
-    userEmail = "oskar.rochowiak@tutanota.com";
+    userEmail = "${email}";
+    extraConfig = {
+      init = {
+        defaultBranch = "main";
+      };
+    };
   };
 }

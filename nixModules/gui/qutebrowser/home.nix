@@ -17,6 +17,7 @@
       "colors.webpage.darkmode.policy.images" = "smart-simple";
       "content.javascript.clipboard" = "access-paste";
       "content.user_stylesheets" = [];
+      "scrolling.smooth" = true;
       "url.start_pages" = ["https://search.brave.com"];
     };
   };
