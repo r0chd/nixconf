@@ -6,7 +6,7 @@
   config = {
     term = "foot"; # Options: kitty, foot
     editor = "nvim"; # Options: nvim
-    shell = "fish"; # Options: fish, zsh | Default: bash
+    shell = "zsh"; # Options: fish, zsh | Default: bash
     browser = "qutebrowser"; # Options: firefox, qutebrowser
     grub = true; # false = systemd-boot, true = grub
     zoxide = true;
@@ -35,6 +35,7 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
+    lazygit
     bat
     lsd
     alejandra

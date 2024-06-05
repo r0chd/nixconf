@@ -3,11 +3,25 @@
   pkgs,
   inputs,
   username,
+  shell,
   ...
 }: {
   imports = [
     (import ./home.nix {inherit inputs username term;})
   ];
+
+  environment.loginShellInit =
+    if shell == "fish"
+    then ''
+      if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
+        Hyprland
+      end
+    ''
+    else ''
+      if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
+        Hyprland
+      fi
+    '';
 
   programs.hyprland = {
     enable = true;

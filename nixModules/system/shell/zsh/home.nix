@@ -23,34 +23,50 @@
       bindkey '^[[A' history-search-backward
       bindkey '^[[B' history-search-forward
 
+      nb() {
+        command $argv > /dev/null 2>&1 &; disown;
+      }
+
       if [ -z "$TMUX" ]; then
-          TMUX=$(tmux new-session -d -s base)
-          eval $TMUX
-          tmux attach-session -d -t base
+        TMUX=$(tmux new-session -d -s base)
+        eval $TMUX
+        tmux attach-session -d -t base
       fi
 
-      git_branch() {
-            local branch
-            branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-            if [[ -n "$branch" ]]; then
-                echo "%F{189}git:(%f%F{214}$branch%f%F{189})%f "
-            fi
-        }
+      _git_branch() {
+        local branch
+        branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+        if [[ -n "$branch" ]]; then
+            echo "%F{189}git:(%f%F{214}$branch%f%F{189})%f"
+        fi
+      }
 
-        # Define a function to update the PS1 prompt
-        update_prompt() {
-            local dir
-            dir=$(basename "$PWD")
-            if [[ "$PWD" == "$HOME" ]]; then
-                dir="~"
-            fi
-            PS1=" %F{189}"$dir"%f $(git_branch)%F{201}%f "
-        }
+      function zle-line-init zle-keymap-select () {
+        case ''${KEYMAP} in
+          (vicmd) printf "\033[2 q";;
+          (main|viins) printf "\033[6 q";;
+          (*) printf "\033[6 q";;
+        esac
 
-        # Set the prompt initially
-        update_prompt
+        case ''${KEYMAP} in
+          (vicmd)      PS1=" %F{196}[N]%f %F{189}"$(_current_dir)"%f $(_git_branch) %F{219}%f " ;;
+          (main|viins) PS1=" %F{155}[I]%f %F{189}"$(_current_dir)"%f $(_git_branch) %F{219}%f " ;;
+          (*)          PS1=" %F{155}[I]%f %F{189}"$(_current_dir)"%f $(_git_branch) %F{219}%f " ;;
+        esac
 
-        precmd_functions+=update_prompt
+        zle reset-prompt
+      }
+      zle -N zle-keymap-select
+      zle -N zle-line-init
+      bindkey -v
+
+      _current_dir() {
+        if [[ "$PWD" == "$HOME" ]]; then
+            echo "~"
+        else
+          echo $(basename "$PWD")
+        fi
+      }
     '';
     zplug = {
       enable = true;

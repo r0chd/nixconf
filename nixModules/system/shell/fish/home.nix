@@ -66,6 +66,10 @@
       };
     };
     loginShellInit = ''
+      if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
+        Hyprland
+      end
+
       if string match -q -- 'tmux*' $TERM
           set fish_cursor_insert line
       end

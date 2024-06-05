@@ -4,7 +4,7 @@
   inputs,
   ...
 }: let
-  inherit (config) shell username browser term;
+  inherit (config) username browser term shell;
 in {
   imports = [
     (import ./environments/wayland/default.nix {inherit inputs pkgs;})
@@ -14,7 +14,6 @@ in {
     (import ./system/default.nix {inherit pkgs config;})
     (import ./hardware/default.nix {inherit config;})
     (import ./network/default.nix {inherit config pkgs inputs;})
-    ./docs/default.nix
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -41,23 +40,25 @@ in {
     };
   };
 
+  documentation.dev.enable = true;
+  environment.systemPackages = with pkgs; [
+    man-pages
+    man-pages-posix
+  ];
+
   specialisation = {
-    Hyprland = {
-      configuration = {
-        imports = [
-          (import ./environments/wayland/hyprland/default.nix {inherit inputs pkgs username term;})
-        ];
-        environment.etc."specialisation".text = "Hyprland";
-      };
+    Hyprland.configuration = {
+      imports = [
+        (import ./environments/wayland/hyprland/default.nix {inherit inputs pkgs username term shell;})
+      ];
+      environment.etc."specialisation".text = "Hyprland";
     };
-    Sway = {
-      configuration = {
-        services.xserver.videoDrivers = ["nouveau"];
-        imports = [
-          (import ./environments/wayland/sway/default.nix {inherit inputs pkgs username term;})
-        ];
-        environment.etc."specialisation".text = "Sway";
-      };
+    Sway.configuration = {
+      services.xserver.videoDrivers = ["nouveau"];
+      imports = [
+        (import ./environments/wayland/sway/default.nix {inherit inputs pkgs username term shell;})
+      ];
+      environment.etc."specialisation".text = "Sway";
     };
   };
 }
