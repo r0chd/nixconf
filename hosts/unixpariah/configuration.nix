@@ -40,7 +40,6 @@ in {
     lsd
     alejandra
     nil
-    ani-cli
     fzf
     ripgrep
     lsd
@@ -52,8 +51,6 @@ in {
     btop
     discord
     gnome3.adwaita-icon-theme
-    libreoffice
-    gimp
     vaapi-intel-hybrid
     obsidian
     spotify
