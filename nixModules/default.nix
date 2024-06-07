@@ -2,6 +2,7 @@
   config,
   pkgs,
   inputs,
+  lib,
   ...
 }: let
   inherit (config) username browser term shell;
@@ -10,10 +11,11 @@ in {
     (import ./environments/wayland/default.nix {inherit inputs pkgs;})
     (import ./security/default.nix {inherit inputs username;})
     (import ./gui/default.nix {inherit inputs username pkgs browser;})
-    (import ./tools/default.nix {inherit config inputs pkgs;})
-    (import ./system/default.nix {inherit pkgs config;})
+    (import ./tools/default.nix {inherit config pkgs inputs;})
+    (import ./system/default.nix {inherit pkgs config lib inputs;})
     (import ./hardware/default.nix {inherit config;})
-    (import ./network/default.nix {inherit config pkgs inputs;})
+    (import ./network/default.nix {inherit config pkgs;})
+    (import ./home.nix {inherit config;})
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -21,29 +23,17 @@ in {
 
   users.users."${config.username}" = {
     isNormalUser = true;
+    initialPassword = "root";
     extraGroups = ["wheel"];
-  };
-
-  home-manager.users."${username}" = {
-    home = {
-      username = "${username}";
-      homeDirectory = "/home/${username}";
-      stateVersion = "23.11";
-    };
-    programs = {
-      home-manager.enable = true;
-      direnv = {
-        enable = true;
-        enableBashIntegration = true;
-        nix-direnv.enable = true;
-      };
-    };
   };
 
   documentation.dev.enable = true;
   environment.systemPackages = with pkgs; [
     man-pages
     man-pages-posix
+    gcc
+    alejandra
+    nil
   ];
 
   specialisation = {

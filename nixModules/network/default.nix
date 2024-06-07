@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  inputs,
   ...
 }: let
   inherit (config) wireless hostname username;
@@ -12,7 +11,7 @@ in {
     ]
     ++ (
       if wireless == true
-      then [(import ./wireless/default.nix {inherit pkgs inputs hostname;})]
+      then [(import ./wireless/default.nix {inherit pkgs hostname;})]
       else []
     );
 }

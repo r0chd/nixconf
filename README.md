@@ -9,5 +9,5 @@ nh os switch -H laptop
 OR
 
 ```bash
-doas nixos-rebuild switch --flake ~/nixconf/#unixpariah
+doas nixos-rebuild switch --flake ~/nixconf/#laptop
 ```

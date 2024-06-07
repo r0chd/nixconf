@@ -1,6 +1,7 @@
 {
   inputs,
   pkgs,
+  lib,
   ...
 }: let
   config = {
@@ -22,7 +23,9 @@
   };
 in {
   imports = [
-    (import ../../nixModules/default.nix {inherit config inputs pkgs;})
+    (import ../../nixModules/default.nix {inherit config inputs pkgs lib;})
+    ./disko.nix
+    ./gpu.nix
     ./hardware-configuration.nix
   ];
 
@@ -38,10 +41,7 @@ in {
     lazygit
     bat
     lsd
-    alejandra
-    nil
     fzf
-    ripgrep
     lsd
     brightnessctl
     grim

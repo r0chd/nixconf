@@ -13,18 +13,26 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nvim-conf.url = "github:unixpariah/neovim";
+
+    impermanence.url = "github:nix-community/impermanence";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    ...
-  } @ inputs: {
+  outputs = {nixpkgs, ...} @ inputs: {
     nixosConfigurations = {
       laptop = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
         modules = [
+          inputs.disko.nixosModules.default
           ./hosts/unixpariah/configuration.nix
+          inputs.home-manager.nixosModules.default
+          inputs.impermanence.nixosModules.impermanence
           {
             nixpkgs.system = "x86_64-linux";
           }

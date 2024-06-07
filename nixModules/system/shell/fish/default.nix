@@ -92,8 +92,6 @@
         eval $TMUX
         tmux attach-session -d -t base
       end
-
-      zoxide init --cmd cd fish | source
     '';
   };
 }

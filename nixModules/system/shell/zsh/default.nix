@@ -19,7 +19,6 @@
     autosuggestion.enable = true;
     initExtra = ''
       eval "$(fzf --zsh)"
-      eval "$(zoxide init --cmd cd zsh)"
 
       zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
       zstyle ':completion:*' list-colors '$\\{(s.:.)LS_COLORS}'

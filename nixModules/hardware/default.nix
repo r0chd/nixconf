@@ -3,7 +3,6 @@
 in {
   imports =
     [
-      ./nvidia/default.nix
     ]
     ++ (
       if audio == true

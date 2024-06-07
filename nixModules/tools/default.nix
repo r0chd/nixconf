@@ -1,7 +1,7 @@
 {
+  inputs,
   config,
   pkgs,
-  inputs,
   ...
 }: let
   inherit (config) shell nh zoxide username editor term tmux email;
@@ -29,12 +29,12 @@ in {
     )
     ++ (
       if zoxide == true
-      then [(import ./zoxide/default.nix {inherit username shell pkgs inputs;})]
+      then [(import ./zoxide/default.nix {inherit username shell pkgs;})]
       else []
     )
     ++ (
       if editor == "nvim"
-      then [./nvim/default.nix]
+      then [(import ./nvim/default.nix {inherit pkgs inputs;})]
       else []
     );
 }

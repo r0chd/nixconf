@@ -1,8 +1,4 @@
-{
-  inputs,
-  pkgs,
-  ...
-}: let
+{pkgs, ...}: let
   waystatus = import (pkgs.fetchgit {
     url = "https://github.com/unixpariah/waystatus.git";
     rev = "8e9e1ac3bed2237b19ec06ed5e45d766f310afd4";
@@ -18,20 +14,16 @@
   #   sha256 = "1gnl9wh01xd09v9j9hsbz2mbcq21yqiin11d6bl8vddc9x4czb55";
   # }) {pkgs = pkgs;};
 in {
-  imports = [
-    inputs.home-manager.nixosModules.home-manager
-  ];
-
   environment.shellAliases = {
     obs = "env -u WAYLAND_DISPLAY obs";
   };
 
   environment.systemPackages = with pkgs; [
+    waystatus
     wl-clipboard
     wayland
     obs-studio
     nix-prefetch-git
-    waystatus
     ruin
     #   seto
   ];
