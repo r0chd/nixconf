@@ -24,6 +24,7 @@
 in {
   imports = [
     (import ../../nixModules/default.nix {inherit config inputs pkgs lib;})
+    ./disko.nix
     ./gpu.nix
     ./hardware-configuration.nix
   ];
@@ -49,7 +50,6 @@ in {
     unzip
     btop
     discord
-    gnome3.adwaita-icon-theme
     vaapi-intel-hybrid
     obsidian
     spotify

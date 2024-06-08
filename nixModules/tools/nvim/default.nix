@@ -28,8 +28,7 @@
       }
       {
         plugin = nvim-notify;
-        config =
-          toLuaFile ./plugins/notify.lua;
+        config = toLuaFile ./plugins/notify.lua;
       }
       {
         plugin = bufferline-nvim;
@@ -76,13 +75,10 @@
         ]);
         config = toLuaFile ./plugins/tree-sitter.lua;
       }
-      telescope-fzf-native-nvim
       cmp-nvim-lsp
       vim-highlightedyank
       rustaceanvim
       zig-vim
-      cmp-vsnip
-      vim-vsnip
       cmp-path
       cmp-buffer
       nui-nvim
@@ -91,7 +87,6 @@
       nvim-treesitter-textobjects
       auto-pairs
       fidget-nvim
-      nvim-compe
       vim-tmux-navigator
     ];
     extraLuaConfig = ''

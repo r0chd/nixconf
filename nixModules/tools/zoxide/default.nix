@@ -8,10 +8,9 @@
     systemPackages = with pkgs; [
       zoxide
     ];
-  };
-
-  environment.shellAliases = {
-    cd = "z";
+    shellAliases = {
+      cd = "z";
+    };
   };
 
   home-manager.users."${username}".programs.zoxide = {
