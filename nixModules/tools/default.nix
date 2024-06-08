@@ -34,7 +34,7 @@ in {
     )
     ++ (
       if editor == "nvim"
-      then [(import ./nvim/default.nix {inherit pkgs inputs;})]
+      then [(import ./nvim/default.nix {inherit pkgs inputs username;})]
       else []
     );
 }

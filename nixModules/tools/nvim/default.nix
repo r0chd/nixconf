@@ -1,5 +1,9 @@
-{pkgs, ...}: {
-  home-manager.users."unixpariah".programs.neovim = let
+{
+  pkgs,
+  username,
+  ...
+}: {
+  home-manager.users."${username}".programs.neovim = let
     toLuaFile = file: "lua << EOF\n${builtins.readFile file}\nEOF\n";
   in {
     enable = true;
@@ -53,7 +57,7 @@
       }
       {
         plugin = nvim-lspconfig;
-        config = toLuaFile ./lsp/init.lua;
+        config = toLuaFile ./plugins/lsp.lua;
       }
       {
         plugin = conform-nvim;
@@ -150,7 +154,7 @@
     fd
     gnome3.adwaita-icon-theme
     wl-clipboard
-    luajitPackages.lua-lsp
+    lua-language-server
     alejandra
     nil
     gcc
