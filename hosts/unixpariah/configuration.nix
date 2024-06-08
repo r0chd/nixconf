@@ -24,7 +24,6 @@
 in {
   imports = [
     (import ../../nixModules/default.nix {inherit config inputs pkgs lib;})
-    ./disko.nix
     ./gpu.nix
     ./hardware-configuration.nix
   ];

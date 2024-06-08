@@ -31,9 +31,6 @@ in {
   environment.systemPackages = with pkgs; [
     man-pages
     man-pages-posix
-    gcc
-    alejandra
-    nil
   ];
 
   specialisation = {
