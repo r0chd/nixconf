@@ -5,12 +5,12 @@
   lib,
   ...
 }: let
-  inherit (config) username browser term shell;
+  inherit (config) username browser term shell colorscheme;
 in {
   imports = [
     (import ./environments/wayland/default.nix {inherit inputs pkgs;})
     (import ./security/default.nix {inherit inputs username;})
-    (import ./gui/default.nix {inherit inputs username pkgs browser;})
+    (import ./gui/default.nix {inherit inputs username pkgs browser colorscheme;})
     (import ./tools/default.nix {inherit config pkgs inputs;})
     (import ./system/default.nix {inherit pkgs config lib inputs;})
     (import ./hardware/default.nix {inherit config;})
@@ -36,7 +36,7 @@ in {
   specialisation = {
     Hyprland.configuration = {
       imports = [
-        (import ./environments/wayland/hyprland/default.nix {inherit inputs pkgs username term shell;})
+        (import ./environments/wayland/hyprland/default.nix {inherit inputs pkgs username term shell colorscheme;})
       ];
       environment.etc."specialisation".text = "Hyprland";
     };

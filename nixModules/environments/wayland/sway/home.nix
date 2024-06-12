@@ -66,7 +66,7 @@
         "XF86AudioRaiseVolume" = "exec pamixer -i 5";
         "XF86AudioLowerVolume" = "exec pamixer -d 5";
 
-        "Print" = "exec grim -g $(slurp -d) - | wl-copy -t image/png";
+        "Print" = "exec grim -g \"$(seto -r)\" - | wl-copy -t image/png";
       };
     };
   };

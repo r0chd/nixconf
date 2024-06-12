@@ -4,10 +4,11 @@
   inputs,
   username,
   shell,
+  colorscheme,
   ...
 }: {
   imports = [
-    (import ./home.nix {inherit inputs username term;})
+    (import ./home.nix {inherit inputs username term colorscheme;})
   ];
 
   environment.loginShellInit =

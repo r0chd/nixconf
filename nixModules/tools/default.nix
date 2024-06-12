@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (config) shell nh zoxide username editor term tmux email;
+  inherit (config) shell nh zoxide username editor term tmux email colorscheme;
 in {
   imports =
     [
@@ -19,7 +19,7 @@ in {
     )
     ++ (
       if tmux == true
-      then [(import ./tmux/home.nix {inherit pkgs username;})]
+      then [(import ./tmux/home.nix {inherit pkgs username shell;})]
       else []
     )
     ++ (
@@ -34,7 +34,7 @@ in {
     )
     ++ (
       if editor == "nvim"
-      then [(import ./nvim/default.nix {inherit pkgs inputs username;})]
+      then [(import ./nvim/default.nix {inherit pkgs inputs username colorscheme;})]
       else []
     );
 }

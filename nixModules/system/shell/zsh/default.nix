@@ -1,8 +1,17 @@
 {
   pkgs,
   username,
+  colorscheme,
   ...
-}: {
+}: let
+  colors =
+    if colorscheme == "lackluster"
+    then ["202" "193" "253" "153" "255"]
+    else if colorscheme == "catppuccin"
+    then ["196" "155" "189" "214" "219"]
+    else [];
+  getColor = index: "${builtins.elemAt colors index}";
+in {
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
   home-manager.users."${username}".programs.zsh = {
@@ -23,6 +32,7 @@
       zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
       zstyle ':completion:*' list-colors '$\\{(s.:.)LS_COLORS}'
       zstyle ':completion:*' menu no
+
       zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd $realpath'
 
       bindkey '^[[A' history-search-backward
@@ -46,11 +56,12 @@
         tmux attach-session -d -t base
       fi
 
+      # -------------------------------------- PS1 -------------------------------------- #
       _git_branch() {
         local branch
         branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
         if [[ -n "$branch" ]]; then
-            echo "%F{189}git:(%f%F{214}$branch%f%F{189})%f "
+            echo "%F{${getColor 2}}git:(%f%F{${getColor 3}}$branch%f%F{${getColor 2}})%f "
         fi
       }
 
@@ -69,8 +80,8 @@
         esac
 
         case ''${KEYMAP} in
-          (vicmd)      PS1=" %F{196}[N]%f %F{189}"$(_current_dir)"%f $(_git_branch)%F{219}%f " ;;
-          (*)          PS1=" %F{155}[I]%f %F{189}"$(_current_dir)"%f $(_git_branch)%F{219}%f " ;;
+          (vicmd)      PS1=" %F{${getColor 0}}[N]%f %F{${getColor 2}}"$(_current_dir)"%f $(_git_branch)%F{${getColor 4}}%f " ;;
+          (*)          PS1=" %F{${getColor 1}}[I]%f %F{${getColor 2}}"$(_current_dir)"%f $(_git_branch)%F{${getColor 4}}%f " ;;
         esac
 
         zle reset-prompt

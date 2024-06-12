@@ -1,8 +1,17 @@
 {
   username,
   term,
+  colorscheme,
   ...
-}: {
+}: let
+  colors =
+    if colorscheme == "lackluster"
+    then ["AFAFAFFF"]
+    else if colorscheme == "catppuccin"
+    then ["C5A8EBFF"]
+    else [];
+  getColor = index: "${builtins.elemAt colors index}";
+in {
   home-manager.users."${username}".wayland.windowManager.hyprland = {
     enable = true;
     settings = {
@@ -30,7 +39,7 @@
       };
 
       general = {
-        "col.active_border" = "rgba(c5a8ebff)";
+        "col.active_border" = "rgba(${getColor 0})";
         border_size = 2;
       };
 
@@ -96,7 +105,7 @@
 
       bind = [
         # Screenshots
-        ", Print, exec, grim -g \"$(slurp -d)\" - | wl-copy -t image/png"
+        ", Print, exec, grim -g \"$(seto -r)\" - | wl-copy -t image/png"
 
         # Volume
         ", XF86AudioRaiseVolume, exec, pamixer -i 5"

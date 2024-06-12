@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  inherit (config) shell grub username virtualization;
+  inherit (config) shell grub username virtualization colorscheme;
 in {
   imports =
     [
@@ -16,7 +16,7 @@ in {
         if shell == "fish"
         then (import ./shell/fish/default.nix {inherit username pkgs;})
         else if shell == "zsh"
-        then (import ./shell/zsh/default.nix {inherit username pkgs;})
+        then (import ./shell/zsh/default.nix {inherit username pkgs colorscheme;})
         else
           (
             import ./shell/bash/default.nix {inherit username pkgs;}

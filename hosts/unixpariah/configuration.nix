@@ -5,6 +5,7 @@
   ...
 }: let
   config = {
+    colorscheme = "lackluster"; # Options: lackluster, catppuccin
     term = "foot"; # Options: kitty, foot
     editor = "nvim"; # Options: nvim
     shell = "zsh"; # Options: fish, zsh | Default: bash
@@ -24,7 +25,7 @@
 in {
   imports = [
     (import ../../nixModules/default.nix {inherit config inputs pkgs lib;})
-    ./disko.nix
+    # ./disko.nix
     ./gpu.nix
     ./hardware-configuration.nix
   ];
@@ -38,22 +39,22 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
+    libreoffice
     lazygit
+    discord
     bat
     lsd
     fzf
     lsd
     brightnessctl
     grim
-    slurp
     wget
     unzip
     btop
-    discord
     vaapi-intel-hybrid
-    obsidian
     spotify
     steam
+    gimp
   ];
 
   fonts.packages = with pkgs; [

@@ -1,8 +1,23 @@
 {
   pkgs,
   username,
+  inputs,
+  colorscheme,
   ...
 }: {
+  nixpkgs.overlays = [
+    (final: prev: {
+      vimPlugins =
+        prev.vimPlugins
+        // {
+          lackluster-nvim = prev.vimUtils.buildVimPlugin {
+            name = "lackluster.nvim";
+            src = inputs.lackluster-nvim;
+          };
+        };
+    })
+  ];
+
   home-manager.users."${username}".programs.neovim = let
     toLuaFile = file: "lua << EOF\n${builtins.readFile file}\nEOF\n";
   in {
@@ -38,10 +53,19 @@
         plugin = noice-nvim;
         config = toLuaFile ./plugins/noice.lua;
       }
-      {
-        plugin = catppuccin-nvim;
-        config = toLuaFile ./themes/catppuccin.lua;
-      }
+      (
+        if colorscheme == "lackluster"
+        then {
+          plugin = lackluster-nvim;
+          config = toLuaFile ./themes/lackluster.lua;
+        }
+        else if colorscheme == "catppuccin"
+        then {
+          plugin = catppuccin-nvim;
+          config = toLuaFile ./themes/catppuccin.lua;
+        }
+        else []
+      )
       {
         plugin = which-key-nvim;
         config = toLuaFile ./plugins/which-key.lua;
@@ -88,6 +112,8 @@
       auto-pairs
       fidget-nvim
       vim-tmux-navigator
+      cmp-vsnip
+      vim-vsnip
     ];
     extraLuaConfig = ''
       vim.g.mapleader = ' '

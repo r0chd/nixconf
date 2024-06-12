@@ -18,6 +18,13 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    lackluster-nvim = {
+      url = "github:slugbyte/lackluster.nvim";
+      flake = false;
+    };
+
+    seto.url = "github:unixpariah/seto";
   };
 
   outputs = {nixpkgs, ...} @ inputs: {
