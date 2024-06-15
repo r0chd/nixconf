@@ -75,13 +75,12 @@ in {
 
       function zle-line-init zle-keymap-select () {
         case ''${KEYMAP} in
-          (vicmd) printf "\033[2 q";;
-          (*) printf "\033[6 q";;
-        esac
-
-        case ''${KEYMAP} in
-          (vicmd)      PS1=" %F{${getColor 0}}[N]%f %F{${getColor 2}}"$(_current_dir)"%f $(_git_branch)%F{${getColor 4}}%f " ;;
-          (*)          PS1=" %F{${getColor 1}}[I]%f %F{${getColor 2}}"$(_current_dir)"%f $(_git_branch)%F{${getColor 4}}%f " ;;
+          (vicmd) printf "\033[2 q"
+                  PS1=" %F{${getColor 0}}[N]%f %F{${getColor 2}}"$(_current_dir)"%f $(_git_branch)%F{${getColor 4}}%f "
+          ;;
+          (*) printf "\033[6 q"
+              PS1=" %F{${getColor 1}}[I]%f %F{${getColor 2}}"$(_current_dir)"%f $(_git_branch)%F{${getColor 4}}%f "
+          ;;
         esac
 
         zle reset-prompt

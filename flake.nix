@@ -25,6 +25,8 @@
     };
 
     seto.url = "github:unixpariah/seto";
+    waystatus.url = "git+https://github.com/unixpariah/waystatus?submodules=1";
+    ruin.url = "git+https://github.com/unixpariah/ruin?submodules=1";
   };
 
   outputs = {nixpkgs, ...} @ inputs: {

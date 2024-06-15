@@ -4,22 +4,23 @@
   pkgs,
   ...
 }: let
-  inherit (config) shell nh zoxide username editor term tmux email colorscheme;
+  inherit (config) shell nh zoxide username editor terminal tmux email colorscheme font;
 in {
   imports =
     [
       (import ./git/home.nix {inherit username email;})
+      (import ./seto/default.nix {inherit colorscheme username font;})
     ]
     ++ (
-      if term == "kitty"
-      then [(import ./kitty/home.nix {inherit username;})]
-      else if term == "foot"
-      then [(import ./foot/home.nix {inherit username;})]
+      if terminal == "kitty"
+      then [(import ./kitty/home.nix {inherit username font;})]
+      else if terminal == "foot"
+      then [(import ./foot/home.nix {inherit username font;})]
       else []
     )
     ++ (
       if tmux == true
-      then [(import ./tmux/home.nix {inherit pkgs username shell;})]
+      then [(import ./tmux/home.nix {inherit pkgs username shell colorscheme;})]
       else []
     )
     ++ (

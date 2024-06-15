@@ -5,18 +5,33 @@
   lib,
   ...
 }: let
-  inherit (config) username browser term shell colorscheme;
+  inherit (config) username;
 in {
   imports = [
     (import ./environments/wayland/default.nix {inherit inputs pkgs;})
-    (import ./security/default.nix {inherit inputs username;})
-    (import ./gui/default.nix {inherit inputs username pkgs browser colorscheme;})
-    (import ./tools/default.nix {inherit config pkgs inputs;})
+    (import ./security/default.nix {inherit inputs config;})
+    (import ./gui/default.nix {inherit config inputs pkgs;})
+    (import ./tools/default.nix {inherit pkgs inputs config;})
     (import ./system/default.nix {inherit pkgs config lib inputs;})
     (import ./hardware/default.nix {inherit config;})
     (import ./network/default.nix {inherit config pkgs;})
-    (import ./home.nix {inherit config;})
   ];
+
+  home-manager.users."${username}" = {
+    home = {
+      homeDirectory = "/home/${username}";
+      username = "${username}";
+      stateVersion = "23.11";
+    };
+    programs = {
+      home-manager.enable = true;
+      direnv = {
+        enable = true;
+        enableBashIntegration = true;
+        nix-direnv.enable = true;
+      };
+    };
+  };
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nixpkgs.config.allowUnfree = true;
@@ -36,14 +51,14 @@ in {
   specialisation = {
     Hyprland.configuration = {
       imports = [
-        (import ./environments/wayland/hyprland/default.nix {inherit inputs pkgs username term shell colorscheme;})
+        (import ./environments/wayland/hyprland/default.nix {inherit inputs pkgs config;})
       ];
       environment.etc."specialisation".text = "Hyprland";
     };
     Sway.configuration = {
       services.xserver.videoDrivers = ["nouveau"];
       imports = [
-        (import ./environments/wayland/sway/default.nix {inherit inputs pkgs username term shell;})
+        (import ./environments/wayland/sway/default.nix {inherit inputs pkgs config;})
       ];
       environment.etc."specialisation".text = "Sway";
     };

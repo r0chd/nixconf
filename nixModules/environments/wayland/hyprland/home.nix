@@ -1,16 +1,16 @@
 {
   username,
-  term,
+  terminal,
   colorscheme,
+  browser,
   ...
 }: let
-  colors =
+  color =
     if colorscheme == "lackluster"
-    then ["AFAFAFFF"]
+    then "AFAFAFFF"
     else if colorscheme == "catppuccin"
-    then ["C5A8EBFF"]
+    then "C5A8EBFF"
     else [];
-  getColor = index: "${builtins.elemAt colors index}";
 in {
   home-manager.users."${username}".wayland.windowManager.hyprland = {
     enable = true;
@@ -39,7 +39,7 @@ in {
       };
 
       general = {
-        "col.active_border" = "rgba(${getColor 0})";
+        "col.active_border" = "rgba(${color})";
         border_size = 2;
       };
 
@@ -89,12 +89,11 @@ in {
       };
 
       "$mainMod" = "ALT"; # Mod key
-      "$terminal" = term; # Terminal
 
       exec-once = [
-        "ruin"
+        "ruin nix"
         "waystatus"
-        "[workspace 1 silent] $terminal"
+        "[workspace 1 silent] ${terminal}"
       ];
 
       env = [
@@ -116,7 +115,8 @@ in {
         ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
 
         # Manage workspace
-        "$mainMod SHIFT, RETURN, exec, $terminal"
+        "$mainMod SHIFT, RETURN, exec, ${terminal}"
+        "$mainMod SHIFT, B, exec, ${browser}"
         "$mainMod SHIFT, C, killactive,"
         "$mainMod, F, togglefloating,"
         "$mainMod, H, movefocus, l"

@@ -1,7 +1,11 @@
-{username, ...}: {
+{
+  username,
+  font,
+  ...
+}: {
   home-manager.users."${username}".programs.kitty = {
     enable = true;
-    font.name = "JetBrains Mono";
+    font.name = "${font}";
     font.size = 9;
     keybindings = {
       "alt+v" = "paste_from_clipboard";

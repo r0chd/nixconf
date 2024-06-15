@@ -1,31 +1,40 @@
 {
   username,
-  term,
+  terminal,
+  colorscheme,
+  browser,
   ...
-}: {
+}: let
+  color =
+    if colorscheme == "catppuccin"
+    then "C5A8EB"
+    else if colorscheme == "lackluster"
+    then "AFAFAF"
+    else [];
+in {
   home-manager.users."${username}".wayland.windowManager.sway = {
     enable = true;
     extraConfig = ''
       default_border pixel 2
-      client.unfocused 1e1e2e 1e1e2e 1e1e2e 1e1e2e
-      client.focused c5a8eb c5a8eb c5a8eb c5a8eb
+      client.unfocused "1E1E2E" "1E1E2E" "1E1E2E" "1E1E2E"
+      client.focused ${color} ${color} ${color} ${color}
     '';
     config = rec {
       bars = [];
       modifier = "Mod1";
-      terminal = term;
       gaps.outer = 7;
       input."9011:26214:ydotoold_virtual_device" = {
         "accel_profile" = "flat";
       };
       startup = [
         {command = "waystatus";}
-        {command = "ruin";}
+        {command = "ruin nix";}
         {command = "sway workspace 1; ${terminal}";}
       ];
       keybindings = {
         "${modifier}+Shift+c" = "kill";
         "${modifier}+Shift+Return" = "exec ${terminal}";
+        "${modifier}+Shift+b" = "exec ${browser}";
 
         "${modifier}+1" = "workspace 1";
         "${modifier}+2" = "workspace 2";

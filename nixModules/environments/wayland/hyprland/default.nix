@@ -1,14 +1,13 @@
 {
-  term,
   pkgs,
   inputs,
-  username,
-  shell,
-  colorscheme,
+  config,
   ...
-}: {
+}: let
+  inherit (config) username terminal colorscheme shell browser;
+in {
   imports = [
-    (import ./home.nix {inherit inputs username term colorscheme;})
+    (import ./home.nix {inherit inputs username terminal colorscheme browser;})
   ];
 
   environment.loginShellInit =

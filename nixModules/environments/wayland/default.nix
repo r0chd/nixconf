@@ -9,10 +9,6 @@
     sha256 = "0c1c1qiv0c7lb25vgbd3d8947zc38d06n8lf5hvrmx3zzakc62a0";
     fetchSubmodules = true;
   }) {pkgs = pkgs;};
-  ruin = import (pkgs.fetchgit {
-    url = "https://github.com/unixpariah/ruin.git";
-    sha256 = "1l6wj88z48jppvg182y7nphh8yzknb1718xxcsl1n5dm068svygd";
-  }) {pkgs = pkgs;};
 in {
   environment.shellAliases = {
     obs = "env -u WAYLAND_DISPLAY obs";
@@ -24,7 +20,8 @@ in {
     wayland
     obs-studio
     nix-prefetch-git
-    ruin
     inputs.seto.packages.${system}.default
+    inputs.ruin.packages.${system}.default
+    inputs.waystatus.packages.${system}.default
   ];
 }

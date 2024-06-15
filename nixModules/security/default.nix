@@ -1,4 +1,6 @@
-{username, ...}: {
+{config, ...}: let
+  inherit (config) username;
+in {
   security = {
     doas = {
       enable = true;

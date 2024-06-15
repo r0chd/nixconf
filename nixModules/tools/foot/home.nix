@@ -1,10 +1,14 @@
-{username, ...}: {
+{
+  username,
+  font,
+  ...
+}: {
   home-manager.users."${username}".programs.foot = {
     enable = true;
     settings = {
       main = {
         term = "xterm-256color";
-        font = "JetBrainsMono Nerd Font:size=9";
+        font = "${font}:size=9";
       };
       colors = {
         alpha = 0;

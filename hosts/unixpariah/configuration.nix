@@ -5,8 +5,9 @@
   ...
 }: let
   config = {
-    colorscheme = "lackluster"; # Options: lackluster, catppuccin
-    term = "foot"; # Options: kitty, foot
+    colorscheme = "catppuccin"; # Options: lackluster, catppuccin
+    font = "JetBrainsMono Nerd Font";
+    terminal = "foot"; # Options: kitty, foot
     editor = "nvim"; # Options: nvim
     shell = "zsh"; # Options: fish, zsh | Default: bash
     browser = "qutebrowser"; # Options: firefox, qutebrowser
@@ -55,6 +56,7 @@ in {
     spotify
     steam
     gimp
+    imagemagick
   ];
 
   fonts.packages = with pkgs; [

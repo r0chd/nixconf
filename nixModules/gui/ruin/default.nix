@@ -2,26 +2,22 @@
   username,
   colorscheme,
   ...
-}: {
+}: let
+  colors =
+    if colorscheme == "lackluster"
+    then ["[119, 136, 170]" "[175, 175, 175]" "[202, 128, 128]" "[0, 0, 0]"]
+    else if colorscheme == "catppuccin"
+    then ["[166, 227, 161]" "[201, 203, 255]" "[202, 128, 128]" "[23, 14, 31]"]
+    else [];
+  getColor = index: "${builtins.elemAt colors index}";
+in {
   home-manager.users."${username}".home.file.".config/ruin/colorschemes.yaml" = {
-    text = (
-      if colorscheme == "lackluster"
-      then ''
-        nixos:
-          charging: [99, 68, 37]
-          default: [175, 175, 175]
-          low_battery: [202, 128, 128]
-          background: [0, 0, 0]
-      ''
-      else if colorscheme == "catppuccin"
-      then ''
-        nixos:
-          charging: [166, 227, 161]
-          default: [201, 203, 255]
-          low_battery: [202, 128, 128]
-          background: [23, 14, 31]
-      ''
-      else ''''
-    );
+    text = ''
+      nix:
+        charging: ${getColor 0}
+        default: ${getColor 1}
+        low_battery: ${getColor 2}
+        background: ${getColor 3}
+    '';
   };
 }
