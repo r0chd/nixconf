@@ -12,13 +12,13 @@ in {
   environment.loginShellInit =
     if shell == "fish"
     then ''
-      if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
-        exec sway
+      if test -z "$WAYLAND_DISPLAY" -a "$XDG_VTNR" = 1
+        exec sway --unsupported-gpu
       end
     ''
     else ''
-      if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-        exec sway
+      if [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
+        exec sway --unsupported-gpu
       fi
     '';
 

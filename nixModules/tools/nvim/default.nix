@@ -64,6 +64,11 @@
           plugin = catppuccin-nvim;
           config = toLuaFile ./themes/catppuccin.lua;
         }
+        else if colorscheme == "gruvbox"
+        then {
+          plugin = gruvbox;
+          config = toLuaFile ./themes/gruvbox.lua;
+        }
         else []
       )
       {
@@ -96,6 +101,7 @@
           p.tree-sitter-json
           p.tree-sitter-rust
           p.tree-sitter-zig
+          p.tree-sitter-glsl
         ]);
         config = toLuaFile ./plugins/tree-sitter.lua;
       }

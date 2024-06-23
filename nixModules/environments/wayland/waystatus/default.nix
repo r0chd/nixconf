@@ -2,13 +2,14 @@
   username,
   colorscheme,
   font,
-  ...
 }: let
   colors =
     if colorscheme == "lackluster"
     then ["#000000" "175, 175, 175, 175"]
     else if colorscheme == "catppuccin"
     then ["#ffffff" "20, 15, 33, 1"]
+    else if colorscheme == "gruvbox"
+    then ["#EBDBB2" "124, 111, 100"]
     else [];
   getColor = index: "${builtins.elemAt colors index}";
 in {
@@ -63,6 +64,7 @@ in {
       text = ''
         unkown = "N/A"
         background = [${getColor 1}]
+        layer = "bottom"
         topbar = true
         height = 40
 

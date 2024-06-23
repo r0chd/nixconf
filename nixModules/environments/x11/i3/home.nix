@@ -3,6 +3,7 @@
   terminal,
   colorscheme,
   browser,
+  pkgs,
   ...
 }: let
   color =
@@ -14,7 +15,8 @@
     then "C5A8EBFF"
     else [];
 in {
-  home-manager.users."${username}".wayland.windowManager.sway = {
+  home-manager.users."${username}".xsession.windowManager.i3 = {
+    package = pkgs.i3-gaps;
     enable = true;
     extraConfig = ''
       default_border pixel 2
@@ -25,13 +27,8 @@ in {
       bars = [];
       modifier = "Mod1";
       gaps.outer = 7;
-      input."9011:26214:ydotoold_virtual_device" = {
-        "accel_profile" = "flat";
-      };
       startup = [
-        {command = "waystatus";}
         {command = "ruin nix";}
-        {command = "sway workspace 1; ${terminal}";}
       ];
       keybindings = {
         "${modifier}+Shift+c" = "kill";

@@ -1,98 +1,76 @@
 local lspconfig = require("lspconfig")
-local on_attach = function(client, bufnr) end
+local on_attach = function(_, _) end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-lspconfig.zls.setup({
-	on_attach = on_attach,
-	cmd = { "zls" },
-	filetypes = { "zig" },
-	single_file_support = true,
-	capabilities = capabilities,
-})
-
-lspconfig.clangd.setup({
-	cmd = { "clangd" },
-	filetypes = { "c" },
-})
-
-lspconfig.rnix.setup({
-	cmd = { "nil" },
-	filetypes = { "nix" },
-})
-
-lspconfig.omnisharp.setup({
-	on_attach = on_attach,
-	cmd = { "OmniSharp" },
-})
-
-lspconfig.sumneko_lua.setup({
-	cmd = { "lua-language-server" },
-	on_attach = on_attach,
-	settings = {
-		Lua = {
-			runtime = {
-				version = "LuaJIT",
-				path = vim.split(package.path, ";"),
-			},
-			diagnostics = {
-				enable = true,
-				globals = { "vim" },
-			},
-			workspace = {
-				library = {
-					[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-					[vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
-				},
-			},
-		},
+local servers = {
+	zls = {
+		cmd = { "zls" },
+		filetypes = { "zig" },
+		single_file_support = true,
 	},
-})
-
-lspconfig.html.setup({
-	cmd = { "html-languageserver", "--stdio" },
-	on_attach = on_attach,
-})
-
-lspconfig.asm_lsp.setup({
-	cmd = { "asm-lsp" },
-	filetypes = { "asm" },
-})
-
-lspconfig.tsserver.setup({
-	cmd = { "typescript-language-server", "--stdio" },
-	filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
-	root_dir = function(fname)
-		return require("lspconfig").util.root_pattern("tsconfig.json")(fname)
-			or require("lspconfig").util.root_pattern("package.json", "jsconfig.json", ".git")(fname)
-	end,
-})
-
-local opts = {
-	tools = {
-		runnables = {
-			use_telescope = true,
-		},
-		inlay_hints = {
-			auto = true,
-			show_parameter_hints = true,
-			parameter_hints_prefix = "",
-			other_hints_prefix = "",
-		},
+	clangd = {
+		cmd = { "clangd" },
+		filetypes = { "c" },
 	},
-
-	server = {
-		on_attach = on_attach,
+	rnix = {
+		cmd = { "nil" },
+		filetypes = { "nix" },
+	},
+	asm_lsp = {
+		cmd = { "asm-lsp" },
+		filetypes = { "asm" },
+	},
+	html = {
+		cmd = { "html-languageserver", "--stdio" },
+		filetypes = { "html" },
+	},
+	cssls = {
+		cmd = { "css-languageserver", "--stdio" },
+		filetypes = { "css", "scss", "less" },
+	},
+	sumneko_lua = {
+		cmd = { "lua-language-server" },
+		filetypes = { "lua" },
 		settings = {
-			["rust-analyzer"] = {
-				cargo = {
-					features = { "all" },
+			Lua = {
+				runtime = {
+					version = "LuaJIT",
+					path = vim.split(package.path, ";"),
 				},
-				checkOnSave = {
-					command = "clippy",
+				diagnostics = {
+					enable = true,
+					globals = { "vim" },
+				},
+				workspace = {
+					library = {
+						[vim.fn.expand("$VIMRUNTIME/lua")] = true,
+						[vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
+					},
 				},
 			},
 		},
+	},
+	tsserver = {
+		cmd = { "typescript-language-server", "--stdio" },
+		filetypes = {
+			"javascript",
+			"javascriptreact",
+			"javascript.jsx",
+			"typescript",
+			"typescriptreact",
+			"typescript.tsx",
+		},
+		root_dir = function(fname)
+			return require("lspconfig").util.root_pattern("tsconfig.json")(fname)
+				or require("lspconfig").util.root_pattern("package.json", "jsconfig.json", ".git")(fname)
+		end,
 	},
 }
+
+for server, config in pairs(servers) do
+	config.on_attach = on_attach
+	config.capabilities = capabilities
+	lspconfig[server].setup(config)
+end

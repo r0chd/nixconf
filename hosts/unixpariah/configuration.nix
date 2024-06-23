@@ -5,12 +5,12 @@
   ...
 }: let
   config = {
-    colorscheme = "catppuccin"; # Options: lackluster, catppuccin
+    colorscheme = "catppuccin"; # Options: lackluster, catppuccin, gruvbox
     font = "JetBrainsMono Nerd Font";
     terminal = "foot"; # Options: kitty, foot
     editor = "nvim"; # Options: nvim
     shell = "zsh"; # Options: fish, zsh | Default: bash
-    browser = "qutebrowser"; # Options: firefox, qutebrowser
+    browser = "firefox"; # Options: firefox, qutebrowser, chromium
     grub = true; # false = systemd-boot, true = grub
     zoxide = true;
     nh = true;
@@ -21,7 +21,6 @@
     tmux = true;
     username = "unixpariah";
     hostname = "laptop";
-    email = "oskar.rochowiak@tutanota.com";
   };
 in {
   imports = [
@@ -40,6 +39,8 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
+    ydotool
+    zathura
     libreoffice
     lazygit
     discord
@@ -57,6 +58,7 @@ in {
     steam
     gimp
     imagemagick
+    nix-prefetch-git
   ];
 
   fonts.packages = with pkgs; [

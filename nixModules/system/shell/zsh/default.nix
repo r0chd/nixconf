@@ -9,6 +9,8 @@
     then ["202" "193" "253" "153" "255"]
     else if colorscheme == "catppuccin"
     then ["196" "155" "189" "214" "219"]
+    else if colorscheme == "gruvbox"
+    then ["202" "193" "253" "153" "255"]
     else [];
   getColor = index: "${builtins.elemAt colors index}";
 in {
@@ -33,7 +35,7 @@ in {
       zstyle ':completion:*' list-colors '$\\{(s.:.)LS_COLORS}'
       zstyle ':completion:*' menu no
 
-      zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd $realpath'
+      zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls $realpath'
 
       bindkey '^[[A' history-search-backward
       bindkey '^[[B' history-search-forward
@@ -57,6 +59,7 @@ in {
       fi
 
       # -------------------------------------- PS1 -------------------------------------- #
+
       _git_branch() {
         local branch
         branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
@@ -85,15 +88,16 @@ in {
 
         zle reset-prompt
       }
+
       zle -N zle-keymap-select
       zle -N zle-line-init
+
       bindkey -v
     '';
     zplug = {
       enable = true;
       plugins = [
         {name = "zsh-users/zsh-completions";}
-        {name = "zsh-users/zsh-autosuggestions";}
         {name = "Aloxaf/fzf-tab";}
       ];
     };

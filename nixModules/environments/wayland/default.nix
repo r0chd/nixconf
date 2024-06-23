@@ -1,27 +1,31 @@
 {
   pkgs,
   inputs,
-  ...
+  wm,
+  config,
 }: let
-  waystatus = import (pkgs.fetchgit {
-    url = "https://github.com/unixpariah/waystatus.git";
-    rev = "8e9e1ac3bed2237b19ec06ed5e45d766f310afd4";
-    sha256 = "0c1c1qiv0c7lb25vgbd3d8947zc38d06n8lf5hvrmx3zzakc62a0";
-    fetchSubmodules = true;
-  }) {pkgs = pkgs;};
+  inherit (config) username colorscheme font;
 in {
+  imports = [
+    (
+      if wm == "Hyprland"
+      then (import ./hyprland/default.nix {inherit inputs pkgs config;})
+      else if wm == "Sway"
+      then (import ./sway/default.nix {inherit inputs pkgs config wm;})
+      else []
+    )
+    (import ./waystatus/default.nix {inherit username colorscheme font;})
+  ];
+
   environment.shellAliases = {
     obs = "env -u WAYLAND_DISPLAY obs";
   };
 
   environment.systemPackages = with pkgs; [
-    waystatus
     wl-clipboard
     wayland
     obs-studio
-    nix-prefetch-git
     inputs.seto.packages.${system}.default
-    inputs.ruin.packages.${system}.default
     inputs.waystatus.packages.${system}.default
   ];
 }

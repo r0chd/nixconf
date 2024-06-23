@@ -9,6 +9,8 @@
     then ["#7A7A7A66" "#AFAFAF" "#7788AA" "#AFAFAF" "#789978"]
     else if colorscheme == "catppuccin"
     then ["#7287FD66" "#FFFFFF" "#DD7878" "#C5A8EB" "#40A02B"]
+    else if colorscheme == "gruvbox"
+    then ["#7A7A7A66" "#AFAFAF" "#7788AA" "#AFAFAF" "#789978"]
     else [];
   getColor = index: "${builtins.elemAt colors index}";
 in {
