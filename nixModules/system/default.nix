@@ -28,4 +28,11 @@ in {
       then [(import ./virtualization/default.nix {inherit username;})]
       else []
     );
+
+  environment.systemPackages = with pkgs; [
+    (writeShellScriptBin "nb" ''
+      command "$@" > /dev/null 2>&1 &
+      disown
+    '')
+  ];
 }

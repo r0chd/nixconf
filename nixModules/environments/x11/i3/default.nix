@@ -6,15 +6,16 @@
   inherit (config) username terminal colorscheme browser;
 in {
   imports = [
-    #(import ./home.nix {inherit username terminal colorscheme browser pkgs;})
+    (import ./home.nix {inherit username terminal colorscheme browser pkgs;})
   ];
 
+  environment.pathsToLink = ["/libexec"];
+
   services.xserver = {
-    displayManager = {
+    enable = true;
+    windowManager.i3.enable = true;
+    services.displayManager = {
       defaultSession = "none+i3";
-    };
-    windowManager.i3 = {
-      enable = true;
     };
   };
 }

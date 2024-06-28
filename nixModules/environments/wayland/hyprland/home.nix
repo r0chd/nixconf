@@ -6,11 +6,7 @@
   ...
 }: let
   color =
-    if colorscheme == "lackluster"
-    then "AFAFAFFF"
-    else if colorscheme == "catppuccin"
-    then "C5A8EBFF"
-    else if colorscheme == "gruvbox"
+    if colorscheme == "catppuccin"
     then "C5A8EBFF"
     else [];
 in {
@@ -42,6 +38,7 @@ in {
 
       general = {
         "col.active_border" = "rgba(${color})";
+
         border_size = 2;
       };
 
@@ -88,6 +85,7 @@ in {
       misc = {
         force_default_wallpaper = "0";
         disable_hyprland_logo = "true";
+        vfr = "true";
       };
 
       "$mainMod" = "ALT"; # Mod key

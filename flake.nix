@@ -19,11 +19,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    lackluster-nvim = {
-      url = "github:slugbyte/lackluster.nvim";
-      flake = false;
-    };
-
     seto.url = "github:unixpariah/seto";
     waystatus.url = "git+https://github.com/unixpariah/waystatus?submodules=1";
     ruin.url = "git+https://github.com/unixpariah/ruin?submodules=1";

@@ -4,12 +4,8 @@
   font,
 }: let
   colors =
-    if colorscheme == "lackluster"
-    then ["#000000" "175, 175, 175, 175"]
-    else if colorscheme == "catppuccin"
-    then ["#ffffff" "20, 15, 33, 1"]
-    else if colorscheme == "gruvbox"
-    then ["#EBDBB2" "124, 111, 100"]
+    if colorscheme == "catppuccin"
+    then ["#ffffff" "30, 30, 46, 1"]
     else [];
   getColor = index: "${builtins.elemAt colors index}";
 in {
@@ -52,6 +48,10 @@ in {
 
         title {
             margin-right: 25px;
+        }
+
+        date {
+            color: #C5AAEC;
         }
 
         persistant_workspaces {

@@ -5,15 +5,13 @@
   ...
 }: let
   colors =
-    if colorscheme == "lackluster"
-    then ["202" "193" "253" "153" "255"]
-    else if colorscheme == "catppuccin"
+    if colorscheme == "catppuccin"
     then ["196" "155" "189" "214" "219"]
-    else if colorscheme == "gruvbox"
-    then ["202" "193" "253" "153" "255"]
     else [];
   getColor = index: "${builtins.elemAt colors index}";
 in {
+  environment.systemPackages = with pkgs; [fzf];
+
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
   home-manager.users."${username}".programs.zsh = {
@@ -39,18 +37,6 @@ in {
 
       bindkey '^[[A' history-search-backward
       bindkey '^[[B' history-search-forward
-
-      nvidia() {
-        export __NV_PRIME_RENDER_OFFLOAD=1
-        export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
-        export __GLX_VENDOR_LIBRARY_NAME=nvidia
-        export __VK_LAYER_NV_optimus=NVIDIA_only
-        exec $argv
-      }
-
-      nb() {
-        command $argv > /dev/null 2>&1 &; disown;
-      }
 
       if [ -z "$TMUX" ]; then
         TMUX=$(tmux new-session -d -s base)

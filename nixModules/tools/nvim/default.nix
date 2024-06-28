@@ -1,23 +1,8 @@
 {
   pkgs,
   username,
-  inputs,
   colorscheme,
-  ...
 }: {
-  nixpkgs.overlays = [
-    (final: prev: {
-      vimPlugins =
-        prev.vimPlugins
-        // {
-          lackluster-nvim = prev.vimUtils.buildVimPlugin {
-            name = "lackluster.nvim";
-            src = inputs.lackluster-nvim;
-          };
-        };
-    })
-  ];
-
   home-manager.users."${username}".programs.neovim = let
     toLuaFile = file: "lua << EOF\n${builtins.readFile file}\nEOF\n";
   in {
@@ -54,20 +39,10 @@
         config = toLuaFile ./plugins/noice.lua;
       }
       (
-        if colorscheme == "lackluster"
-        then {
-          plugin = lackluster-nvim;
-          config = toLuaFile ./themes/lackluster.lua;
-        }
-        else if colorscheme == "catppuccin"
+        if colorscheme == "catppuccin"
         then {
           plugin = catppuccin-nvim;
           config = toLuaFile ./themes/catppuccin.lua;
-        }
-        else if colorscheme == "gruvbox"
-        then {
-          plugin = gruvbox;
-          config = toLuaFile ./themes/gruvbox.lua;
         }
         else []
       )
@@ -90,6 +65,10 @@
       {
         plugin = conform-nvim;
         config = toLuaFile ./plugins/conform.lua;
+      }
+      {
+        plugin = otter-nvim;
+        config = toLuaFile ./plugins/otter.lua;
       }
       {
         plugin = nvim-treesitter.withPlugins (p: [

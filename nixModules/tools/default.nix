@@ -1,5 +1,4 @@
 {
-  inputs,
   config,
   pkgs,
   ...
@@ -35,7 +34,7 @@ in {
     )
     ++ (
       if editor == "nvim"
-      then [(import ./nvim/default.nix {inherit pkgs inputs username colorscheme;})]
+      then [(import ./nvim/default.nix {inherit pkgs username colorscheme;})]
       else []
     );
 }

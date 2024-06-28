@@ -10,7 +10,7 @@ in {
     (
       if wm == "Hyprland"
       then (import ./hyprland/default.nix {inherit inputs pkgs config;})
-      else if wm == "Sway"
+      else if wm == "sway"
       then (import ./sway/default.nix {inherit inputs pkgs config wm;})
       else []
     )
@@ -27,5 +27,16 @@ in {
     obs-studio
     inputs.seto.packages.${system}.default
     inputs.waystatus.packages.${system}.default
+    (writeShellScriptBin "run_wm" ''
+      if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
+      ${(
+        if wm == "sway"
+        then "exec sway --unsupported-gpu"
+        else wm
+      )}
+      fi
+    '')
   ];
+
+  environment.loginShellInit = ''run_wm'';
 }

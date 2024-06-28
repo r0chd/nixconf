@@ -8,10 +8,6 @@
   color =
     if colorscheme == "catppuccin"
     then "C5A8EB"
-    else if colorscheme == "lackluster"
-    then "AFAFAF"
-    else if colorscheme == "gruvbox"
-    then "C5A8EBFF"
     else [];
 in {
   home-manager.users."${username}".wayland.windowManager.sway = {

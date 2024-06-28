@@ -9,15 +9,11 @@
   color =
     if colorscheme == "catppuccin"
     then "C5A8EB"
-    else if colorscheme == "lackluster"
-    then "AFAFAF"
-    else if colorscheme == "gruvbox"
-    then "C5A8EBFF"
     else [];
 in {
   home-manager.users."${username}".xsession.windowManager.i3 = {
-    package = pkgs.i3-gaps;
     enable = true;
+    package = pkgs.i3-gaps;
     extraConfig = ''
       default_border pixel 2
       client.unfocused "1E1E2E" "1E1E2E" "1E1E2E" "1E1E2E"

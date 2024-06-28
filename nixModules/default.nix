@@ -4,12 +4,12 @@
   inputs,
   lib,
 }: let
-  inherit (config) username;
+  inherit (config) username password;
 in {
   imports = [
     (import ./security/default.nix {inherit inputs config;})
     (import ./gui/default.nix {inherit config inputs pkgs;})
-    (import ./tools/default.nix {inherit pkgs inputs config;})
+    (import ./tools/default.nix {inherit pkgs config;})
     (import ./system/default.nix {inherit pkgs config lib inputs;})
     (import ./hardware/default.nix {inherit config;})
     (import ./network/default.nix {inherit config pkgs;})
@@ -36,7 +36,7 @@ in {
 
   users.users."${config.username}" = {
     isNormalUser = true;
-    initialPassword = "root";
+    hashedPassword = "${password}";
     extraGroups = ["wheel"];
   };
 
@@ -57,12 +57,12 @@ in {
       environment.etc."specialisation".text = "Hyprland";
     };
     Sway.configuration = let
-      wm = "Sway";
+      wm = "sway";
     in {
       imports = [
         (import ./environments/wayland/default.nix {inherit inputs pkgs wm config;})
       ];
-      environment.etc."specialisation".text = "Sway";
+      environment.etc."specialisation".text = "sway";
     };
     i3.configuration = let
       wm = "i3";
