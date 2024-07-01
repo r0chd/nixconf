@@ -3,7 +3,8 @@
   terminal,
   colorscheme,
   browser,
-  ...
+  inputs,
+  pkgs,
 }: let
   color =
     if colorscheme == "catppuccin"

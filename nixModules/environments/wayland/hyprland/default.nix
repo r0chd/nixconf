@@ -2,12 +2,11 @@
   pkgs,
   inputs,
   config,
-  ...
 }: let
   inherit (config) username terminal colorscheme browser;
 in {
   imports = [
-    (import ./home.nix {inherit inputs username terminal colorscheme browser;})
+    (import ./home.nix {inherit inputs username terminal colorscheme browser pkgs;})
   ];
 
   programs.hyprland = {
@@ -17,6 +16,5 @@ in {
 
   environment.systemPackages = with pkgs; [
     xdg-desktop-portal-hyprland
-    hyprcursor
   ];
 }

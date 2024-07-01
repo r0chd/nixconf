@@ -3,7 +3,8 @@
   terminal,
   colorscheme,
   browser,
-  ...
+  pkgs,
+  inputs,
 }: let
   color =
     if colorscheme == "catppuccin"
@@ -12,6 +13,7 @@
 in {
   home-manager.users."${username}".wayland.windowManager.hyprland = {
     enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     settings = {
       input = {
         monitor = [
@@ -72,10 +74,6 @@ in {
       dwindle = {
         pseudotile = "yes";
         preserve_split = "yes";
-      };
-
-      master = {
-        new_is_master = "true";
       };
 
       gestures = {

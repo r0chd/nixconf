@@ -19,24 +19,41 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+
     seto.url = "github:unixpariah/seto";
     waystatus.url = "git+https://github.com/unixpariah/waystatus?submodules=1";
     ruin.url = "git+https://github.com/unixpariah/ruin?submodules=1";
   };
 
-  outputs = {nixpkgs, ...} @ inputs: {
+  outputs = {
+    nixpkgs,
+    disko,
+    home-manager,
+    ...
+  } @ inputs: let
+    forAllSystems = nixpkgs.lib.genAttrs ["x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin"];
+    nixpkgsFor = forAllSystems (system: import nixpkgs {inherit system;});
+  in {
     nixosConfigurations = {
       laptop = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
         modules = [
-          inputs.disko.nixosModules.default
           ./hosts/unixpariah/configuration.nix
-          inputs.home-manager.nixosModules.default
+          disko.nixosModules.default
+          home-manager.nixosModules.default
           {
             nixpkgs.system = "x86_64-linux";
           }
         ];
       };
     };
+    devShells = forAllSystems (system: let
+      pkgs = nixpkgsFor.${system};
+    in {
+      default = pkgs.mkShell {
+        buildInputs = with pkgs; git;
+      };
+    });
   };
 }

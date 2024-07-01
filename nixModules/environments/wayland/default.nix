@@ -11,7 +11,7 @@ in {
       if wm == "Hyprland"
       then (import ./hyprland/default.nix {inherit inputs pkgs config;})
       else if wm == "sway"
-      then (import ./sway/default.nix {inherit inputs pkgs config wm;})
+      then (import ./sway/default.nix {inherit inputs pkgs config;})
       else []
     )
     (import ./waystatus/default.nix {inherit username colorscheme font;})

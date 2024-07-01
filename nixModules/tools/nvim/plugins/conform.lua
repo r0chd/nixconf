@@ -4,6 +4,8 @@ require("conform").setup({
 		lua = { "stylua" },
 		nix = { "alejandra" },
 		c = { "clang_format" },
+		cpp = { "clang_format" },
+		glsl = { "clang_format" },
 		csharp = { "dotnet-csharpier" },
 		javascript = { "prettierd" },
 		javascriptreact = { "prettierd" },

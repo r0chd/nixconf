@@ -22,11 +22,7 @@ in {
             	highlight_color = "${getColor 2}",
             	size = 16,
             	family = "${font}",
-            	style = "Normal",
             	weight = 1000,
-            	variant = "Normal",
-            	gravity = "Auto",
-            	stretch = "Normal",
             	offset = { 5, 5 },
             },
         	grid = {

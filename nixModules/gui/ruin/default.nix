@@ -5,7 +5,7 @@
 }: let
   colors =
     if colorscheme == "catppuccin"
-    then ["[166, 227, 161]" "[250, 180, 135]" "[202, 128, 128]" "[17, 18, 27]"]
+    then ["[166, 227, 161]" "[201, 203, 255]" "[202, 128, 128]" "[23, 14, 31]"]
     else [];
   getColor = index: "${builtins.elemAt colors index}";
 in {

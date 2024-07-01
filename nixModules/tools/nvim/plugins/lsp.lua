@@ -12,7 +12,7 @@ local servers = {
 	},
 	clangd = {
 		cmd = { "clangd" },
-		filetypes = { "c" },
+		filetypes = { "c", "cpp" },
 	},
 	rnix = {
 		cmd = { "nil" },
