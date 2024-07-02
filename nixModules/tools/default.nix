@@ -1,9 +1,9 @@
 {
-  config,
+  userConfig,
   pkgs,
   ...
 }: let
-  inherit (config) shell nh zoxide username editor terminal tmux email colorscheme font;
+  inherit (userConfig) shell nh zoxide username editor terminal tmux email colorscheme font;
 in {
   imports =
     [

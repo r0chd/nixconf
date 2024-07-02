@@ -2,16 +2,16 @@
   pkgs,
   inputs,
   wm,
-  config,
+  userConfig,
 }: let
-  inherit (config) username colorscheme font;
+  inherit (userConfig) username colorscheme font;
 in {
   imports = [
     (
       if wm == "Hyprland"
-      then (import ./hyprland/default.nix {inherit inputs pkgs config;})
+      then (import ./hyprland/default.nix {inherit inputs pkgs userConfig;})
       else if wm == "sway"
-      then (import ./sway/default.nix {inherit inputs pkgs config;})
+      then (import ./sway/default.nix {inherit inputs pkgs userConfig;})
       else []
     )
     (import ./waystatus/default.nix {inherit username colorscheme font;})

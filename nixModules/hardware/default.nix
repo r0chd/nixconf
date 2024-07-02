@@ -1,5 +1,5 @@
-{config, ...}: let
-  inherit (config) audio power;
+{userConfig, ...}: let
+  inherit (userConfig) audio power;
 in {
   imports =
     [

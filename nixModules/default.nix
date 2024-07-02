@@ -1,18 +1,19 @@
 {
-  config,
+  userConfig,
   pkgs,
   inputs,
   lib,
+  config,
 }: let
-  inherit (config) username password;
+  inherit (userConfig) username;
 in {
   imports = [
-    (import ./security/default.nix {inherit inputs config;})
-    (import ./gui/default.nix {inherit config inputs pkgs;})
-    (import ./tools/default.nix {inherit pkgs config;})
-    (import ./system/default.nix {inherit pkgs config lib inputs;})
-    (import ./hardware/default.nix {inherit config;})
-    (import ./network/default.nix {inherit config pkgs;})
+    (import ./security/default.nix {inherit inputs userConfig pkgs;})
+    (import ./gui/default.nix {inherit userConfig inputs pkgs;})
+    (import ./tools/default.nix {inherit pkgs userConfig;})
+    (import ./system/default.nix {inherit pkgs userConfig lib inputs;})
+    (import ./hardware/default.nix {inherit userConfig;})
+    (import ./network/default.nix {inherit userConfig pkgs;})
   ];
 
   home-manager.users."${username}" = {
@@ -34,10 +35,15 @@ in {
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nixpkgs.config.allowUnfree = true;
 
-  users.users."${config.username}" = {
-    isNormalUser = true;
-    hashedPassword = "${password}";
-    extraGroups = ["wheel"];
+  sops.secrets.password.neededForUsers = true;
+
+  users = {
+    mutableUsers = false;
+    users."${userConfig.username}" = {
+      isNormalUser = true;
+      hashedPasswordFile = config.sops.secrets.password.path;
+      extraGroups = ["wheel"];
+    };
   };
 
   documentation.dev.enable = true;
@@ -52,7 +58,7 @@ in {
       wm = "Hyprland";
     in {
       imports = [
-        (import ./environments/wayland/default.nix {inherit inputs pkgs wm config;})
+        (import ./environments/wayland/default.nix {inherit inputs pkgs wm userConfig;})
       ];
       environment.etc."specialisation".text = "Hyprland";
     };
@@ -60,7 +66,7 @@ in {
       wm = "sway";
     in {
       imports = [
-        (import ./environments/wayland/default.nix {inherit inputs pkgs wm config;})
+        (import ./environments/wayland/default.nix {inherit inputs pkgs wm userConfig;})
       ];
       environment.etc."specialisation".text = "sway";
     };
@@ -68,7 +74,7 @@ in {
       wm = "i3";
     in {
       imports = [
-        (import ./environments/x11/default.nix {inherit inputs pkgs wm config;})
+        (import ./environments/x11/default.nix {inherit inputs pkgs wm userConfig;})
       ];
       environment.etc."specialisation".text = "i3";
     };

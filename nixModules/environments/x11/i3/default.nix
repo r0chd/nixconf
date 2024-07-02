@@ -1,9 +1,9 @@
 {
   inputs,
   pkgs,
-  config,
+  userConfig,
 }: let
-  inherit (config) username terminal colorscheme browser;
+  inherit (userConfig) username terminal colorscheme browser;
 in {
   imports = [
     (import ./home.nix {inherit username terminal colorscheme browser pkgs;})

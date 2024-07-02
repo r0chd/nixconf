@@ -1,9 +1,9 @@
 {
-  config,
+  userConfig,
   pkgs,
   ...
 }: let
-  inherit (config) shell grub username virtualization colorscheme;
+  inherit (userConfig) shell grub username virtualization colorscheme;
 in {
   imports =
     [

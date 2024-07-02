@@ -2,9 +2,10 @@
   inputs,
   pkgs,
   lib,
+  config,
   ...
 }: let
-  config = {
+  userConfig = {
     colorscheme = "catppuccin"; # Options: catppuccin
     font = "JetBrainsMono Nerd Font";
     terminal = "foot"; # Options: kitty, foot
@@ -21,15 +22,19 @@
     tmux = true;
     username = "unixpariah";
     hostname = "laptop";
-    password = "$6$Kj8QuIvw.6mcNf4W$3XWGupFAdvZ/upIFcwR4ZWwdyLt5dfAT4PREIVJ8kZ42Mh/BLLxPSzhMSfQdN2mfPhGfZg69nS4atiG1vEsuS1";
   };
 in {
   imports = [
-    (import ../../nixModules/default.nix {inherit config inputs pkgs lib;})
+    (import ../../nixModules/default.nix {inherit userConfig inputs pkgs lib config;})
     # ./disko.nix
     ./gpu.nix
     ./hardware-configuration.nix
   ];
+
+  sops.secrets = {
+    password = {};
+    ssh-pk = {};
+  };
 
   time.timeZone = "Europe/Warsaw";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -40,8 +45,6 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
-    ydotool
-    zathura
     libreoffice
     lazygit
     discord
@@ -55,7 +58,6 @@ in {
     spotify
     steam
     gimp
-    nix-prefetch-git
   ];
 
   fonts.packages = with pkgs; [

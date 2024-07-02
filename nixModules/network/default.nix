@@ -1,9 +1,9 @@
 {
-  config,
+  userConfig,
   pkgs,
   ...
 }: let
-  inherit (config) wireless hostname username;
+  inherit (userConfig) wireless hostname username;
 in {
   imports =
     [

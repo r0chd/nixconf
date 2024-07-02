@@ -1,6 +1,12 @@
-{config, ...}: let
-  inherit (config) username;
+{
+  userConfig,
+  inputs,
+  pkgs,
+}: let
+  inherit (userConfig) username;
 in {
+  imports = [(import ./sops/default.nix {inherit username inputs pkgs;})];
+
   security = {
     doas = {
       enable = true;

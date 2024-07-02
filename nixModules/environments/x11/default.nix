@@ -1,10 +1,10 @@
 {
-  config,
+  userConfig,
   pkgs,
   inputs,
   wm,
 }: let
-  inherit (config) browser colorscheme terminal username;
+  inherit (userConfig) browser colorscheme terminal username;
 in {
   imports = [
     (

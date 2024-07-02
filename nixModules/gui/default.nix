@@ -1,9 +1,9 @@
 {
   pkgs,
   inputs,
-  config,
+  userConfig,
 }: let
-  inherit (config) colorscheme username browser;
+  inherit (userConfig) colorscheme username browser;
 in {
   environment.shellAliases = {
     browser = "nb ${browser}";
