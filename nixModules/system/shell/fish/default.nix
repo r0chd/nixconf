@@ -1,9 +1,7 @@
 {
   pkgs,
   username,
-  ...
 }: {
-  imports = [(import ./home.nix {inherit username pkgs;})];
   users.defaultUserShell = pkgs.fish;
   programs.fish.enable = true;
   home-manager.users."${username}".programs.fish = {

@@ -2,22 +2,27 @@
   pkgs,
   inputs,
   userConfig,
+  lib,
+  helpers,
 }: let
-  inherit (userConfig) colorscheme username browser;
+  inherit (userConfig) colorscheme username;
 in {
   environment.shellAliases = {
-    browser = "nb ${browser}";
+    browser =
+      if lib.hasAttr "browser" userConfig
+      then "nb ${userConfig.browser}"
+      else "echo 'Browser not set'";
   };
   imports =
     [
-      (import ./ruin/default.nix {inherit colorscheme username;})
+      (import ./ruin/default.nix {inherit colorscheme username pkgs inputs;})
     ]
     ++ (
-      if browser == "firefox"
+      if helpers.checkAttribute "browser" "firefox"
       then [(import ./firefox/home.nix {inherit username inputs pkgs;})]
-      else if browser == "qutebrowser"
+      else if helpers.checkAttribute "browser" "qutebrowser"
       then [(import ./qutebrowser/home.nix {inherit username;})]
-      else if browser == "chromium"
+      else if helpers.checkAttribute "browser" "chromium"
       then [(import ./chromium/home.nix {inherit username pkgs;})]
       else []
     );

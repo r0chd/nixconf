@@ -9,13 +9,12 @@
     username = "unixpariah";
     hostname = "laptop";
     email = "oskar.rochowiak@tutanota.com";
-    colorscheme = "catppuccin"; # Options: catppuccin
+    colorscheme = "catppuccin";
     font = "JetBrainsMono Nerd Font";
-    terminal = "foot"; # Options: kitty, foot
-    editor = "nvim"; # Options: nvim
-    shell = "zsh"; # Options: fish, zsh | Default: bash
-    browser = "qutebrowser"; # Options: firefox, qutebrowser, chromium
-    bootloader = "grub"; # Options: systemd-boot, grub
+    terminal = "foot";
+    editor = "nvim";
+    shell = "zsh";
+    browser = "firefox";
     power = true;
   };
 in {
@@ -29,6 +28,7 @@ in {
   sops.secrets = {
     password = {};
     ssh-pk = {};
+    github = {};
   };
 
   time.timeZone = "Europe/Warsaw";

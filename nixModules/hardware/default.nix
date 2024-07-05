@@ -1,19 +1,17 @@
 {
   userConfig,
   lib,
-}: let
-  isDisabled = attribute: lib.hasAttr attribute userConfig && userConfig.tmux != false;
-in {
+  helpers,
+}: {
   imports =
-    [
-    ]
+    []
     ++ (
-      if isDisabled "audio"
+      if helpers.isDisabled "audio"
       then []
       else [./audio/default.nix]
     )
     ++ (
-      if lib.hasAttr "power" userConfig && lib.isBool userConfig.power && userConfig.power == true
+      if helpers.isEnabled "power"
       then [./power/default.nix]
       else []
     );

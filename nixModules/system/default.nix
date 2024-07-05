@@ -2,32 +2,27 @@
   userConfig,
   pkgs,
   lib,
+  helpers,
 }: let
-  inherit (userConfig) shell bootloader username colorscheme;
-  isDisabled = attribute: lib.hasAttr attribute userConfig && userConfig.tmux == false;
+  inherit (userConfig) username colorscheme;
 in {
   imports =
     [
       (
-        if bootloader == "grub"
-        then ./bootloader/grub/default.nix
-        else if bootloader == "systemd-boot"
+        if helpers.checkAttribute "bootloader" "systemd-boot"
         then ./bootloader/systemd-boot/default.nix
-        else []
+        else ./bootloader/grub/default.nix
       )
       (
-        if shell == "fish"
+        if helpers.checkAttribute "shell" "fish"
         then (import ./shell/fish/default.nix {inherit username pkgs;})
-        else if shell == "zsh"
+        else if helpers.checkAttribute "shell" "zsh"
         then (import ./shell/zsh/default.nix {inherit username pkgs colorscheme;})
-        else
-          (
-            import ./shell/bash/default.nix {inherit username pkgs;}
-          )
+        else (import ./shell/bash/default.nix {inherit username pkgs;})
       )
     ]
     ++ (
-      if isDisabled "virtualization"
+      if helpers.isDisabled "virtualization"
       then []
       else [(import ./virtualization/default.nix {inherit username;})]
     );
