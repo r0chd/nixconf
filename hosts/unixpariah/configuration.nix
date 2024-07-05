@@ -6,22 +6,17 @@
   ...
 }: let
   userConfig = {
+    username = "unixpariah";
+    hostname = "laptop";
+    email = "oskar.rochowiak@tutanota.com";
     colorscheme = "catppuccin"; # Options: catppuccin
     font = "JetBrainsMono Nerd Font";
     terminal = "foot"; # Options: kitty, foot
     editor = "nvim"; # Options: nvim
     shell = "zsh"; # Options: fish, zsh | Default: bash
     browser = "qutebrowser"; # Options: firefox, qutebrowser, chromium
-    grub = true; # false = systemd-boot, true = grub
-    zoxide = true;
-    nh = true;
-    virtualization = true;
-    audio = true;
-    wireless = true;
+    bootloader = "grub"; # Options: systemd-boot, grub
     power = true;
-    tmux = true;
-    username = "unixpariah";
-    hostname = "laptop";
   };
 in {
   imports = [

@@ -10,10 +10,10 @@ in {
   imports = [
     (import ./security/default.nix {inherit inputs userConfig pkgs;})
     (import ./gui/default.nix {inherit userConfig inputs pkgs;})
-    (import ./tools/default.nix {inherit pkgs userConfig;})
-    (import ./system/default.nix {inherit pkgs userConfig lib inputs;})
-    (import ./hardware/default.nix {inherit userConfig;})
-    (import ./network/default.nix {inherit userConfig pkgs;})
+    (import ./tools/default.nix {inherit pkgs userConfig lib config;})
+    (import ./system/default.nix {inherit pkgs userConfig lib;})
+    (import ./hardware/default.nix {inherit userConfig lib;})
+    (import ./network/default.nix {inherit userConfig pkgs lib;})
   ];
 
   home-manager.users."${username}" = {
