@@ -34,17 +34,10 @@ in {
   time.timeZone = "Europe/Warsaw";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  environment.shellAliases = {
-    cat = "bat";
-    ls = "lsd";
-  };
-
   environment.systemPackages = with pkgs; [
     libreoffice
     lazygit
     discord
-    bat
-    lsd
     brightnessctl
     grim
     unzip

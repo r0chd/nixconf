@@ -2,12 +2,14 @@
   inputs,
   username,
   pkgs,
+  hostname,
 }: {
   imports = [
     inputs.sops-nix.nixosModules.sops
   ];
 
-  sops.defaultSopsFile = ../../../hosts/${username}/secrets/secrets.yaml;
+  sops.secrets.password.neededForUsers = true;
+  sops.defaultSopsFile = ../../../hosts/${hostname}/secrets/secrets.yaml;
   sops.defaultSopsFormat = "yaml";
 
   sops.age = {
@@ -16,5 +18,10 @@
     generateKey = true;
   };
 
-  environment.systemPackages = with pkgs; [sops];
+  environment.systemPackages = with pkgs; [
+    (writeShellScriptBin "opensops" ''
+      sops "$FLAKE/hosts/${hostname}/secrets/secrets.yaml"
+    '')
+    sops
+  ];
 }

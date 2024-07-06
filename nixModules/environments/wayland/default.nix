@@ -3,19 +3,25 @@
   inputs,
   wm,
   userConfig,
+  helpers,
 }: let
   inherit (userConfig) username colorscheme font;
 in {
-  imports = [
-    (
-      if wm == "Hyprland"
-      then (import ./hyprland/default.nix {inherit inputs pkgs userConfig;})
-      else if wm == "sway"
-      then (import ./sway/default.nix {inherit inputs pkgs userConfig;})
-      else []
-    )
-    (import ./waystatus/default.nix {inherit username colorscheme font;})
-  ];
+  imports =
+    [
+      (
+        if wm == "Hyprland"
+        then (import ./hyprland/default.nix {inherit inputs pkgs userConfig;})
+        else if wm == "sway"
+        then (import ./sway/default.nix {inherit inputs pkgs userConfig;})
+        else []
+      )
+    ]
+    ++ (
+      if helpers.isDisabled "waystatus"
+      then []
+      else [(import ./waystatus/default.nix {inherit username colorscheme font pkgs inputs;})]
+    );
 
   environment.shellAliases = {
     obs = "env -u WAYLAND_DISPLAY obs";
@@ -25,8 +31,6 @@ in {
     wl-clipboard
     wayland
     obs-studio
-    inputs.seto.packages.${system}.default
-    inputs.waystatus.packages.${system}.default
     (writeShellScriptBin "run_wm" ''
       if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
       ${(

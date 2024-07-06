@@ -4,6 +4,7 @@
   lib,
   config,
   helpers,
+  inputs,
 }: let
   inherit (userConfig) username email colorscheme font;
   shell = lib.mkDefault (
@@ -15,7 +16,6 @@ in {
   imports =
     [
       (import ./git/home.nix {inherit username;})
-      (import ./seto/default.nix {inherit colorscheme username font;})
       (import ./msmtp/default.nix {inherit config username email lib;})
     ]
     ++ (
@@ -36,6 +36,11 @@ in {
       else [(import ./tmux/home.nix {inherit pkgs username shell colorscheme;})]
     )
     ++ (
+      if helpers.isDisabled "seto"
+      then []
+      else [(import ./seto/home.nix {inherit colorscheme username font pkgs inputs;})]
+    )
+    ++ (
       if helpers.isDisabled "nh"
       then []
       else [(import ./nh/default.nix {inherit username pkgs;})]
@@ -44,6 +49,21 @@ in {
       if helpers.isDisabled "zoxide"
       then []
       else [(import ./zoxide/default.nix {inherit username shell pkgs;})]
+    )
+    ++ (
+      if helpers.isDisabled "man"
+      then []
+      else [(import ./man/default.nix {inherit pkgs;})]
+    )
+    ++ (
+      if helpers.isDisabled "lsd"
+      then []
+      else [(import ./lsd/default.nix {inherit username;})]
+    )
+    ++ (
+      if helpers.isDisabled "bat"
+      then []
+      else [(import ./bat/default.nix {inherit username;})]
     )
     ++ (
       if helpers.isDisabled "direnv"

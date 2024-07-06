@@ -1,18 +1,53 @@
-My NixOs configuration
+# NixOS configuration
 
-- Rebuild and switch to change the system configuration
+Configuration trying to be as modular and as pure as possible
+
+## Installation
+
+1. Clone the repository
+
+```bash
+git clone git@github.com:unixpariah/nixconf.git ~/nixconf
+```
+
+2. Create config at `~/nixconf/hosts/{hostname}/configuration.nix`
+
+3. Update flake.nix
+
+```diff
+  outputs = {
+    nixpkgs,
+    disko,
+    home-manager,
+    ...
+  } @ inputs: {
+    nixosConfigurations = {
++     {hostname} = nixpkgs.lib.nixosSystem {
++       specialArgs = {inherit inputs;};
++       modules = [
++         ./hosts/{hostname}/configuration.nix
++         disko.nixosModules.default
++         home-manager.nixosModules.default
++         {
++           nixpkgs.system = "x86_64-linux";
++         }
++       ];
++     };
+    };
+  };
+```
+
+3. Rebuild your system
+
+```bash
+doas nixos-rebuild switch --flake ~/nixconf#laptop
+```
 
 ```bash
 nh os switch -H laptop
 ```
 
-OR
-
-```bash
-doas nixos-rebuild switch --flake ~/nixconf/#laptop
-```
-
-## Options
+## Config
 
 ```
   userConfig = {
@@ -34,3 +69,17 @@ doas nixos-rebuild switch --flake ~/nixconf/#laptop
     tmux = true;
   };
 ```
+
+## Additional information
+
+Config assumes that it's placed in `~/nixconf`, and a bunch of modularity features depend on it
+
+## TODO
+
+- [x] Flakes
+- [x] Home manager
+- [x] Sops
+- [ ] Disko (with full luks encryption)
+- [ ] Impermamence
+- [ ] NixOS anywhere
+- [ ] Setup script (maybe even with gui)

@@ -33,15 +33,12 @@
     disko,
     home-manager,
     ...
-  } @ inputs: let
-    forAllSystems = nixpkgs.lib.genAttrs ["x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin"];
-    nixpkgsFor = forAllSystems (system: import nixpkgs {inherit system;});
-  in {
+  } @ inputs: {
     nixosConfigurations = {
       laptop = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
         modules = [
-          ./hosts/unixpariah/configuration.nix
+          ./hosts/laptop/configuration.nix
           disko.nixosModules.default
           home-manager.nixosModules.default
           {
@@ -50,12 +47,5 @@
         ];
       };
     };
-    devShells = forAllSystems (system: let
-      pkgs = nixpkgsFor.${system};
-    in {
-      default = pkgs.mkShell {
-        buildInputs = with pkgs; git;
-      };
-    });
   };
 }

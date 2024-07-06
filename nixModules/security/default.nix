@@ -3,9 +3,9 @@
   inputs,
   pkgs,
 }: let
-  inherit (userConfig) username;
+  inherit (userConfig) username hostname;
 in {
-  imports = [(import ./sops/default.nix {inherit username inputs pkgs;})];
+  imports = [(import ./sops/default.nix {inherit username inputs pkgs hostname;})];
 
   security = {
     doas = {

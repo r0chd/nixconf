@@ -2,6 +2,8 @@
   username,
   colorscheme,
   font,
+  pkgs,
+  inputs,
 }: let
   colors =
     if colorscheme == "catppuccin"
@@ -9,6 +11,7 @@
     else [];
   getColor = index: "${builtins.elemAt colors index}";
 in {
+  environment.systemPackages = with pkgs; [inputs.waystatus.packages.${system}.default];
   home-manager.users."${username}".home.file = {
     ".config/waystatus/style.css" = {
       text = ''

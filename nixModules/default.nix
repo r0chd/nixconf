@@ -7,34 +7,42 @@
 }: let
   inherit (userConfig) username;
   helpers = {
-    checkAttribute = attribute: opt: !helpers.disableAll && lib.hasAttr attribute userConfig && userConfig.${attribute} == "${opt}";
     disableAll = lib.hasAttr "disableAll" userConfig && userConfig.disableAll == true;
-    isDisabled = attribute: helpers.disableAll || (lib.hasAttr attribute userConfig && userConfig.${attribute} == false);
-    isEnabled = attribute: !helpers.disableAll && lib.hasAttr attribute userConfig && userConfig.${attribute} == true;
+
+    checkAttribute = attribute: opt:
+      !helpers.disableAll && lib.hasAttr attribute userConfig && userConfig.${attribute} == "${opt}";
+
+    isEnabled = attribute:
+      lib.hasAttr attribute userConfig && userConfig.${attribute} == true;
+
+    isDisabled = attribute:
+      helpers.disableAll
+      || (lib.hasAttr attribute userConfig && userConfig.${attribute} == false)
+      && !helpers.isEnabled attribute;
   };
 in {
   imports = [
     (import ./security/default.nix {inherit inputs userConfig pkgs;})
     (import ./gui/default.nix {inherit userConfig inputs pkgs lib helpers;})
-    (import ./tools/default.nix {inherit pkgs userConfig lib config helpers;})
+    (import ./tools/default.nix {inherit pkgs userConfig lib config helpers inputs;})
     (import ./system/default.nix {inherit pkgs userConfig lib helpers;})
     (import ./hardware/default.nix {inherit userConfig lib helpers;})
     (import ./network/default.nix {inherit userConfig pkgs lib helpers;})
   ];
 
-  home-manager.users."${username}" = {
-    programs.home-manager.enable = true;
-    home = {
-      homeDirectory = "/home/${username}";
-      username = "${username}";
-      stateVersion = "23.11";
+  home-manager.users = {
+    "${username}" = {
+      programs.home-manager.enable = true;
+      home = {
+        homeDirectory = "/home/${username}";
+        username = "${username}";
+        stateVersion = "23.11";
+      };
     };
   };
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nixpkgs.config.allowUnfree = true;
-
-  sops.secrets.password.neededForUsers = true;
 
   users = {
     mutableUsers = false;
@@ -45,21 +53,12 @@ in {
     };
   };
 
-  documentation.dev.enable = true;
-  environment.systemPackages = with pkgs; [
-    (writeShellScriptBin "opensops" ''
-      sops "$FLAKE/hosts/${username}/secrets/secrets.yaml"
-    '')
-    man-pages
-    man-pages-posix
-  ];
-
   specialisation = {
     Hyprland.configuration = let
       wm = "Hyprland";
     in {
       imports = [
-        (import ./environments/wayland/default.nix {inherit inputs pkgs wm userConfig;})
+        (import ./environments/wayland/default.nix {inherit inputs pkgs wm userConfig helpers;})
       ];
       environment.etc."specialisation".text = "Hyprland";
     };
@@ -67,7 +66,7 @@ in {
       wm = "sway";
     in {
       imports = [
-        (import ./environments/wayland/default.nix {inherit inputs pkgs wm userConfig;})
+        (import ./environments/wayland/default.nix {inherit inputs pkgs wm userConfig helpers;})
       ];
       environment.etc."specialisation".text = "sway";
     };
