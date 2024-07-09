@@ -10,7 +10,7 @@
 in {
   imports =
     [
-      (import ./ssh/default.nix {inherit username lib;})
+      (import ./ssh/default.nix {inherit username lib hostname;})
     ]
     ++ optional (!isDisabled "wireless") (import ./wireless/default.nix {inherit pkgs hostname;});
 }
