@@ -55,22 +55,30 @@ in {
       }
 
       _current_dir() {
+        local dir
         if [[ "$PWD" == "$HOME" ]]; then
-            echo "~"
+            dir="~"
         else
-          echo $(basename "$PWD")
+          dir=$(basename $PWD)
         fi
+        echo "%F{${getColor 2}}''${dir}%f"
+      }
+
+      _vi_mode() {
+        case ''${KEYMAP} in
+            (vicmd)
+                printf "\033[2 q"
+                echo "%F{${getColor 0}}[N]%f"
+            ;;
+            (*)
+                printf "\033[6 q"
+                echo "%F{${getColor 1}}[I]%f"
+            ;;
+        esac
       }
 
       function zle-line-init zle-keymap-select () {
-        case ''${KEYMAP} in
-          (vicmd) printf "\033[2 q"
-                  PS1=" %F{${getColor 0}}[N]%f %F{${getColor 2}}"$(_current_dir)"%f $(_git_branch)%F{${getColor 4}}%f "
-          ;;
-          (*) printf "\033[6 q"
-              PS1=" %F{${getColor 1}}[I]%f %F{${getColor 2}}"$(_current_dir)"%f $(_git_branch)%F{${getColor 4}}%f "
-          ;;
-        esac
+        PS1=" $(_vi_mode) $(_current_dir) $(_git_branch)%F{${getColor 4}}%f "
 
         zle reset-prompt
       }
