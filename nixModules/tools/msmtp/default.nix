@@ -22,7 +22,7 @@ in {
       user = email;
       tls = true;
       tls_starttls = true;
-      passwordeval = "cat ${config.sops.secrets.email.path}";
+      passwordeval = "cat ${config.sops.secrets.msmtp.path}";
     };
   };
 }

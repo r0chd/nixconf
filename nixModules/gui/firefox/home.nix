@@ -2,13 +2,11 @@
   pkgs,
   inputs,
   username,
-  ...
 }: {
   home-manager.users."${username}".programs.firefox = {
     enable = true;
     profiles."${username}" = {
-      extensions = with inputs.firefox-addons.packages."x86_64-linux"; [
-        bitwarden
+      extensions = with inputs.firefox-addons.packages.${pkgs.system}; [
         ublock-origin
         sponsorblock
         darkreader

@@ -14,11 +14,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     sops-nix.url = "github:Mic92/sops-nix";
 
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
@@ -30,22 +25,23 @@
 
   outputs = {
     nixpkgs,
-    disko,
     home-manager,
     ...
-  } @ inputs: {
-    nixosConfigurations = {
-      laptop = nixpkgs.lib.nixosSystem {
+  } @ inputs: let
+    config = hostname: arch:
+      nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
         modules = [
-          ./hosts/laptop/configuration.nix
-          disko.nixosModules.default
+          ./hosts/${hostname}/configuration.nix
           home-manager.nixosModules.default
           {
-            nixpkgs.system = "x86_64-linux";
+            nixpkgs.system = arch;
           }
         ];
       };
+  in {
+    nixosConfigurations = {
+      laptop = config "laptop" "x86_64-linux";
     };
   };
 }

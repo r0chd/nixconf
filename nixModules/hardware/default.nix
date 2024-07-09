@@ -6,9 +6,9 @@
   imports =
     []
     ++ (
-      if helpers.isDisabled "audio"
-      then []
-      else [./audio/default.nix]
+      if !helpers.isDisabled "audio"
+      then [./audio/default.nix]
+      else []
     )
     ++ (
       if helpers.isEnabled "power"

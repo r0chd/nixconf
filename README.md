@@ -10,41 +10,40 @@ Configuration trying to be as modular and as pure as possible
 git clone git@github.com:unixpariah/nixconf.git ~/nixconf
 ```
 
-2. Create config at `~/nixconf/hosts/{hostname}/configuration.nix`
+2. Create config at `~/nixconf/hosts/{hostname}/configuration.nix` [Config details](https://github.com/unixpariah/nixconf?tab=readme-ov-file#config)
 
 3. Update flake.nix
 
 ```diff
-  outputs = {
-    nixpkgs,
-    disko,
-    home-manager,
-    ...
-  } @ inputs: {
+  outputs = {nixpkgs, ...} @ inputs: let
+    config = hostname: arch:
+      nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs;};
+        modules = [
+          ./hosts/${hostname}/configuration.nix
+          inputs.home-manager.nixosModules.default
+          {
+            nixpkgs.system = arch;
+          }
+        ];
+      };
+  in {
     nixosConfigurations = {
-+     {hostname} = nixpkgs.lib.nixosSystem {
-+       specialArgs = {inherit inputs;};
-+       modules = [
-+         ./hosts/{hostname}/configuration.nix
-+         disko.nixosModules.default
-+         home-manager.nixosModules.default
-+         {
-+           nixpkgs.system = "x86_64-linux";
-+         }
-+       ];
-+     };
++       {hostname} = config "{hostname}" "{cpu architecture}";
     };
   };
 ```
 
-3. Rebuild your system
+4. Rebuild your system
 
 ```bash
-doas nixos-rebuild switch --flake ~/nixconf#laptop
+doas nixos-rebuild switch --flake ~/nixconf#{hostname}
 ```
 
+After rebuilding for the first time you can use this command to rebuild your system:
+
 ```bash
-nh os switch -H laptop
+nh os switch
 ```
 
 ## Config

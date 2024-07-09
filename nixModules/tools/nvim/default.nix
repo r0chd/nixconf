@@ -2,11 +2,26 @@
   pkgs,
   username,
   colorscheme,
+  inputs,
 }: {
+  environment.systemPackages = with pkgs; [
+    ripgrep
+    nodejs_22
+    tree-sitter
+    fd
+    gnome3.adwaita-icon-theme
+    lua-language-server
+    alejandra
+    nil
+    gcc
+    stylua
+  ];
+
   home-manager.users."${username}".programs.neovim = let
     toLuaFile = file: "lua << EOF\n${builtins.readFile file}\nEOF\n";
   in {
     enable = true;
+    viAlias = true;
     vimAlias = true;
     defaultEditor = true;
     plugins = with pkgs.vimPlugins; [
@@ -153,20 +168,4 @@
       })
     '';
   };
-
-  environment.systemPackages = with pkgs; [
-    ripgrep
-    nodejs_22
-    tree-sitter
-    fd
-    gnome3.adwaita-icon-theme
-    wl-clipboard
-    lua-language-server
-    alejandra
-    nil
-    gcc
-    stylua
-  ];
-
-  environment.sessionVariables.EDITOR = "nvim";
 }

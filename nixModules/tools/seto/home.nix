@@ -21,7 +21,7 @@ in {
       */
       ''
         return {
-        	background_color = "${getColor 0}",
+        	background_color = "${getColor 0} #FF0000",
             font = {
             	color = "${getColor 1}",
             	highlight_color = "${getColor 2}",

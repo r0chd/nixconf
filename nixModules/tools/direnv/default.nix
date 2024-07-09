@@ -7,9 +7,9 @@
       direnv = {
         enable = true;
         nix-direnv.enable = true;
-        enableZshIntegration = shell == "zsh";
-        #enableFishIntegration = shell == "fish";
-        enableBashIntegration = shell != "zsh" && shell != "fish";
+        enableZshIntegration = true;
+        enableFishIntegration = shell == "fish";
+        enableBashIntegration = true;
       };
     };
   };

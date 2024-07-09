@@ -41,7 +41,10 @@ in {
     };
   };
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix = {
+    settings.experimental-features = ["nix-command" "flakes"];
+    settings.auto-optimise-store = true;
+  };
   nixpkgs.config.allowUnfree = true;
 
   users = {
@@ -58,7 +61,7 @@ in {
       wm = "Hyprland";
     in {
       imports = [
-        (import ./environments/wayland/default.nix {inherit inputs pkgs wm userConfig helpers;})
+        (import ./environments/default.nix {inherit inputs pkgs wm userConfig;})
       ];
       environment.etc."specialisation".text = "Hyprland";
     };
@@ -66,17 +69,9 @@ in {
       wm = "sway";
     in {
       imports = [
-        (import ./environments/wayland/default.nix {inherit inputs pkgs wm userConfig helpers;})
+        (import ./environments/default.nix {inherit inputs pkgs wm userConfig;})
       ];
       environment.etc."specialisation".text = "sway";
-    };
-    i3.configuration = let
-      wm = "i3";
-    in {
-      imports = [
-        (import ./environments/x11/default.nix {inherit inputs pkgs wm userConfig;})
-      ];
-      environment.etc."specialisation".text = "i3";
     };
   };
 }
