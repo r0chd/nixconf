@@ -1,12 +1,13 @@
-{username}: let
+{
+  username,
+  lib,
+}: let
   keysDir = ../../../hosts/${username}/keys;
   keysList =
-    if builtins.pathExists keysDir
-    then
-      builtins.attrValues (builtins.mapAttrs (fileName: fileType:
-        builtins.trace "Processing file: ${fileName}" (builtins.readFile "${keysDir}/${fileName}"))
-      (builtins.readDir keysDir))
-    else [];
+    lib.optional (builtins.pathExists keysDir)
+    (builtins.attrValues (builtins.mapAttrs (fileName: fileType:
+      builtins.trace "Processing file: ${fileName}" (builtins.readFile "${keysDir}/${fileName}"))
+    (builtins.readDir keysDir)));
 in {
   users.users."${username}".openssh.authorizedKeys.keys = keysList;
 

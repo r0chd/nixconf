@@ -30,6 +30,8 @@ in {
     (import ./network/default.nix {inherit userConfig pkgs lib helpers;})
   ];
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   home-manager.users = {
     "${username}" = {
       programs.home-manager.enable = true;

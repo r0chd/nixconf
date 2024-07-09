@@ -2,19 +2,13 @@
   userConfig,
   lib,
   helpers,
-}: {
+}: let
+  inherit (lib) optional;
+in {
   imports =
     []
-    ++ (
-      if !helpers.isDisabled "audio"
-      then [./audio/default.nix]
-      else []
-    )
-    ++ (
-      if helpers.isEnabled "power"
-      then [./power/default.nix]
-      else []
-    );
+    ++ optional (!helpers.isDisabled "audio") ./audio/default.nix
+    ++ optional (helpers.isEnabled "power") ./power/default.nix;
 
   hardware.enableAllFirmware = true;
 }

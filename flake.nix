@@ -15,6 +15,7 @@
     };
 
     sops-nix.url = "github:Mic92/sops-nix";
+    disko.url = "github:nix-community/disko";
 
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
@@ -28,7 +29,7 @@
     home-manager,
     ...
   } @ inputs: let
-    config = hostname: arch:
+    newConfig = hostname: arch:
       nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
         modules = [
@@ -41,7 +42,7 @@
       };
   in {
     nixosConfigurations = {
-      laptop = config "laptop" "x86_64-linux";
+      laptop = newConfig "laptop" "x86_64-linux";
     };
   };
 }

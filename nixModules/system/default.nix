@@ -5,6 +5,7 @@
   helpers,
 }: let
   inherit (userConfig) username colorscheme;
+  inherit (lib) optional;
 in {
   imports =
     [
@@ -21,11 +22,7 @@ in {
         else (import ./shell/bash/default.nix {inherit username pkgs;})
       )
     ]
-    ++ (
-      if helpers.isDisabled "virtualization"
-      then []
-      else [(import ./virtualization/default.nix {inherit username;})]
-    );
+    ++ optional (!helpers.isDisabled "virtualization") (import ./virtualization/default.nix {inherit username;});
 
   environment.systemPackages = with pkgs; [
     (writeShellScriptBin "nb" ''

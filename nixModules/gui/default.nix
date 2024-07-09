@@ -6,6 +6,8 @@
   helpers,
 }: let
   inherit (userConfig) colorscheme username font;
+  inherit (lib) optional;
+  inherit (helpers) isDisabled;
 in {
   environment.shellAliases = {
     browser =
@@ -24,14 +26,6 @@ in {
       then [(import ./chromium/home.nix {inherit username pkgs;})]
       else []
     )
-    ++ (
-      if !helpers.isDisabled "ruin"
-      then [(import ./ruin/default.nix {inherit colorscheme username pkgs inputs;})]
-      else []
-    )
-    ++ (
-      if !helpers.isDisabled "waystatus"
-      then [(import ./waystatus/default.nix {inherit username colorscheme font pkgs inputs;})]
-      else []
-    );
+    ++ optional (!isDisabled "ruin") (import ./ruin/default.nix {inherit colorscheme username pkgs inputs;})
+    ++ optional (!isDisabled "waystatus") (import ./waystatus/default.nix {inherit username colorscheme font pkgs inputs;});
 }
