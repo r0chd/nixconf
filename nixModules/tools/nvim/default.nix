@@ -82,8 +82,8 @@
         config = toLuaFile ./plugins/conform.lua;
       }
       {
-        plugin = otter-nvim;
-        config = toLuaFile ./plugins/otter.lua;
+        plugin = vim-highlightedyank;
+        config = toLuaFile ./plugins/highlighted-yank.lua;
       }
       {
         plugin = nvim-treesitter.withPlugins (p: [
@@ -101,7 +101,6 @@
         config = toLuaFile ./plugins/tree-sitter.lua;
       }
       cmp-nvim-lsp
-      vim-highlightedyank
       rustaceanvim
       zig-vim
       cmp-path
@@ -162,7 +161,6 @@
       vim.o.termguicolors = true
       vim.o.scrolloff = 3
       vim.o.completeopt = 'menuone,noinsert'
-      vim.g.highlightedyank_highlight_duration = 150
       vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
         pattern = { '*' },
         command = [[%s/\s\+$//e]],

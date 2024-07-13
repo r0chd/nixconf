@@ -8,6 +8,7 @@ in {
   imports =
     []
     ++ optional (!helpers.isDisabled "audio") ./audio/default.nix
+    ++ optional (!helpers.isDisabled "bluetooth") (import ./bluetooth/default.nix {})
     ++ optional (helpers.isEnabled "power") ./power/default.nix;
 
   hardware.enableAllFirmware = true;

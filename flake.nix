@@ -31,7 +31,7 @@
   } @ inputs: let
     newConfig = hostname: arch:
       nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
+        specialArgs = {inherit inputs hostname;};
         modules = [
           ./hosts/${hostname}/configuration.nix
           home-manager.nixosModules.default
@@ -43,6 +43,8 @@
   in {
     nixosConfigurations = {
       laptop = newConfig "laptop" "x86_64-linux";
+      server1 = newConfig "server1" "x86_64-linux";
+      server2 = newConfig "server2" "x86_64-linux";
     };
   };
 }

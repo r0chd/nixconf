@@ -39,5 +39,6 @@ in {
     ++ optional (!isDisabled "man") (import ./man/default.nix {inherit pkgs;})
     ++ optional (!isDisabled "lsd") (import ./lsd/default.nix {inherit username;})
     ++ optional (!isDisabled "bat") (import ./bat/default.nix {inherit username;})
-    ++ optional (!isDisabled "direnv") (import ./direnv/default.nix {inherit username shell;});
+    ++ optional (!isDisabled "direnv") (import ./direnv/default.nix {inherit username shell;})
+    ++ optional (!isDisabled "nix-index") (import ./nix-index/default.nix {inherit username;});
 }

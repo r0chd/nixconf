@@ -1,7 +1,6 @@
 {
   hostname,
   pkgs,
-  ...
 }: {
   networking = {
     wireless.iwd = {

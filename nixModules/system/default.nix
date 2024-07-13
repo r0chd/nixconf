@@ -22,7 +22,8 @@ in {
         else (import ./shell/bash/default.nix {inherit username pkgs;})
       )
     ]
-    ++ optional (!helpers.isDisabled "virtualization") (import ./virtualization/default.nix {inherit username;});
+    ++ optional (!helpers.isDisabled "virtualization") (import ./virtualization/default.nix {inherit username;})
+    ++ optional (!helpers.isDisabled "zram") (import ./zram/default.nix {});
 
   environment.systemPackages = with pkgs; [
     (writeShellScriptBin "nb" ''

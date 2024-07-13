@@ -2,7 +2,6 @@
   pkgs,
   username,
   colorscheme,
-  ...
 }: let
   colors =
     if colorscheme == "catppuccin"
