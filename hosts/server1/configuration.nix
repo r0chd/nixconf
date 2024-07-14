@@ -9,13 +9,12 @@
   userConfig = {
     username = "unixpariah";
     hostname = hostname;
-    terminal = "foot";
-    browser = "firefox";
     colorscheme = "catppuccin";
     editor = "nvim";
     wireless = true;
     disableAll = true;
     power = true;
+    bootloader = "systemd-boot";
   };
 in {
   imports = [
