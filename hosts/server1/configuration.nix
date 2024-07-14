@@ -9,6 +9,8 @@
   userConfig = {
     username = "unixpariah";
     hostname = hostname;
+    terminal = "foot";
+    browser = "firefox";
     colorscheme = "catppuccin";
     editor = "nvim";
     wireless = true;

@@ -69,7 +69,7 @@ in {
       wm = "Hyprland";
     in {
       imports = [
-        (import ./environments/default.nix {inherit inputs pkgs wm userConfig;})
+        (import ./environments/default.nix {inherit inputs pkgs wm userConfig lib helpers;})
       ];
       environment.etc."specialisation".text = "Hyprland";
     };
@@ -77,7 +77,7 @@ in {
       wm = "sway";
     in {
       imports = [
-        (import ./environments/default.nix {inherit inputs pkgs wm userConfig;})
+        (import ./environments/default.nix {inherit inputs pkgs wm userConfig lib helpers;})
       ];
       environment.etc."specialisation".text = "sway";
     };

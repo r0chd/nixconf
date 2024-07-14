@@ -3,13 +3,15 @@
   inputs,
   wm,
   userConfig,
+  lib,
+  helpers,
 }: {
   imports = [
     (
       if wm == "Hyprland"
-      then (import ./hyprland/default.nix {inherit inputs pkgs userConfig;})
+      then (import ./hyprland/default.nix {inherit inputs pkgs userConfig lib helpers;})
       else if wm == "sway"
-      then (import ./sway/default.nix {inherit inputs pkgs userConfig;})
+      then (import ./sway/default.nix {inherit inputs pkgs userConfig lib helpers;})
       else []
     )
   ];
