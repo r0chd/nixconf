@@ -1,11 +1,11 @@
 {
   inputs,
-  userConfig,
+  conf,
   pkgs,
   lib,
   helpers,
 }: let
-  inherit (userConfig) username terminal colorscheme;
+  inherit (conf) username terminal colorscheme seto;
   color =
     if colorscheme == "catppuccin"
     then "C5A8EB"
@@ -20,20 +20,19 @@ in {
       client.focused ${color} ${color} ${color} ${color}
     '';
     config = rec {
-      bars = [];
+      bars =
+        []
+        ++ (lib.optional (lib.hasAttr "statusBar" conf) {command = "${conf.statusBar}";});
       modifier = "Mod1";
       gaps.outer = 7;
       input."9011:26214:ydotoold_virtual_device" = {
         "accel_profile" = "flat";
       };
       startup =
-        [
-          {command = "waystatus";}
-          {command = "ruin nix";}
-        ]
-        ++ lib.optional (!helpers.isDisabled "waystatus") {command = "waystatus";}
-        ++ lib.optional (!helpers.isDisabled "ruin") {command = "ruin nix";}
-        ++ (lib.optional (lib.hasAttr "terminal" userConfig) {command = "sway workspace 1; ${terminal}";});
+        []
+        ++ lib.optional (lib.hasAttr "terminal" conf) {command = "sway workspace 1; ${terminal}";}
+        ++ lib.optional conf.ruin {command = "ruin nix";};
+
       keybindings =
         {
           "${modifier}+Shift+c" = "kill";
@@ -76,14 +75,15 @@ in {
 
           "XF86AudioRaiseVolume" = "exec pamixer -i 5";
           "XF86AudioLowerVolume" = "exec pamixer -d 5";
-
+        }
+        // lib.optionalAttrs (lib.hasAttr "browser" conf) {
+          "${modifier}+Shift+b" = "exec ${conf.browser}";
+        }
+        // lib.optionalAttrs seto {
           "Print" = "exec grim -g \"$(seto -r)\" - | wl-copy -t image/png";
         }
-        // lib.optionalAttrs (lib.hasAttr "browser" userConfig) {
-          "${modifier}+Shift+b" = "exec ${userConfig.browser}";
-        }
-        // lib.optionalAttrs (lib.hasAttr "terminal" userConfig) {
-          "${modifier}+Shift+Return" = "exec ${userConfig.terminal}";
+        // lib.optionalAttrs (lib.hasAttr "terminal" conf) {
+          "${modifier}+Shift+Return" = "exec ${conf.terminal}";
         };
     };
   };

@@ -9,6 +9,7 @@
   userConfig = {
     username = "unixpariah";
     hostname = hostname;
+    statusBar = "waystatus";
     colorscheme = "catppuccin";
     font = "JetBrainsMono Nerd Font";
     terminal = "foot";

@@ -14,7 +14,10 @@
     wireless = true;
     disableAll = true;
     power = true;
-    bootloader = "systemd-boot";
+    boot = {
+      loader = "systemd-boot";
+      legacy = true;
+    };
   };
 in {
   imports = [

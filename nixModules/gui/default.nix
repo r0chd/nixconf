@@ -1,31 +1,34 @@
 {
+  conf,
   pkgs,
   inputs,
-  userConfig,
   lib,
   helpers,
 }: let
-  inherit (userConfig) colorscheme username font;
+  inherit (conf) colorscheme username font ruin statusBar browser;
   inherit (lib) optional;
-  inherit (helpers) isDisabled;
 in {
   environment.shellAliases = {
     browser =
-      if lib.hasAttr "browser" userConfig
-      then "nb ${userConfig.browser}"
+      if lib.hasAttr "browser" conf
+      then "nb ${conf.browser}"
       else "echo 'Browser not set'";
   };
   imports =
     []
     ++ (
-      if helpers.checkAttribute "browser" "firefox"
+      if browser == "firefox"
       then [(import ./firefox/home.nix {inherit username inputs pkgs;})]
-      else if helpers.checkAttribute "browser" "qutebrowser"
+      else if browser == "qutebrowser"
       then [(import ./qutebrowser/home.nix {inherit username;})]
-      else if helpers.checkAttribute "browser" "chromium"
+      else if browser == "chromium"
       then [(import ./chromium/home.nix {inherit username pkgs;})]
       else []
     )
-    ++ optional (!isDisabled "ruin") (import ./ruin/default.nix {inherit colorscheme username pkgs inputs;})
-    ++ optional (!isDisabled "waystatus") (import ./waystatus/default.nix {inherit username colorscheme font pkgs inputs;});
+    ++ (
+      if statusBar == "waystatus"
+      then [(import ./waystatus/default.nix {inherit username colorscheme font pkgs inputs;})]
+      else []
+    )
+    ++ optional ruin (import ./ruin/default.nix {inherit colorscheme username pkgs inputs;});
 }

@@ -1,10 +1,11 @@
 {
   pkgs,
   username,
+  helpers,
 }: {
   programs.nh = {
     enable = true;
-    flake = "/home/${username}/nixconf";
+    flake = "${helpers.home}/nixconf";
   };
   environment.systemPackages = with pkgs; [
     nvd

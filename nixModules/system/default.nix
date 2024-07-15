@@ -1,29 +1,29 @@
 {
-  userConfig,
+  conf,
   pkgs,
   lib,
   helpers,
 }: let
-  inherit (userConfig) username colorscheme;
+  inherit (conf) username colorscheme virtualization zram;
   inherit (lib) optional;
 in {
   imports =
     [
       (
-        if helpers.checkAttribute "bootloader" "systemd-boot"
-        then ./bootloader/systemd-boot/default.nix
-        else ./bootloader/grub/default.nix
+        if conf.boot.loader == "systemd-boot"
+        then (import ./bootloader/systemd-boot/default.nix)
+        else (import ./bootloader/grub/default.nix)
       )
       (
-        if helpers.checkAttribute "shell" "fish"
+        if conf.shell == "fish"
         then (import ./shell/fish/default.nix {inherit username pkgs;})
-        else if helpers.checkAttribute "shell" "zsh"
+        else if conf.shell == "zsh"
         then (import ./shell/zsh/default.nix {inherit username pkgs colorscheme;})
         else (import ./shell/bash/default.nix {inherit username pkgs;})
       )
     ]
-    ++ optional (!helpers.isDisabled "virtualization") (import ./virtualization/default.nix {inherit username;})
-    ++ optional (!helpers.isDisabled "zram") (import ./zram/default.nix {});
+    ++ optional virtualization (import ./virtualization/default.nix {inherit username;})
+    ++ optional zram ./zram/default.nix;
 
   environment.systemPackages = with pkgs; [
     (writeShellScriptBin "nb" ''

@@ -1,11 +1,11 @@
 {
   pkgs,
   inputs,
-  userConfig,
+  conf,
   helpers,
   lib,
 }: let
-  inherit (userConfig) colorscheme username;
+  inherit (conf) colorscheme username ruin audio;
   color =
     if colorscheme == "catppuccin"
     then "C5A8EBFF"
@@ -103,9 +103,10 @@ in {
       exec-once =
         [
           "ruin nix"
-          "waystatus"
         ]
-        ++ (lib.optional (lib.hasAttr "terminal" userConfig) "[workspace 1 silent] ${userConfig.terminal}");
+        ++ (lib.optional (lib.hasAttr "statusBar" conf) "${conf.statusBar}")
+        ++ (lib.optional (lib.hasAttr "terminal" conf) "${conf.terminal}")
+        ++ (lib.optional ruin "ruin nix");
 
       env = [
         "HYPRCURSOR_SIZE,24"
@@ -118,16 +119,11 @@ in {
           # Screenshots
           ", Print, exec, grim -g \"$(seto -r)\" - | wl-copy -t image/png"
 
-          # Volume
-          ", XF86AudioRaiseVolume, exec, pamixer -i 5"
-          ", XF86AudioLowerVolume, exec, pamixer -d 5"
-
           # Brightness
           ", XF86MonBrightnessUp, exec, brightnessctl set +5%"
           ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
 
           # Manage workspace
-
           "$mainMod SHIFT, C, killactive,"
           "$mainMod, F, togglefloating,"
           "$mainMod, H, movefocus, l"
@@ -167,8 +163,10 @@ in {
           "$mainMod SHIFT, 9, movetoworkspace, 9"
           "$mainMod SHIFT, 0, movetoworkspace, 10"
         ]
-        ++ (lib.optional (lib.hasAttr "terminal" userConfig) "$mainMod SHIFT, RETURN, exec, ${userConfig.terminal}")
-        ++ (lib.optional (lib.hasAttr "browser" userConfig) "$mainMod SHIFT, B, exec, ${userConfig.browser}");
+        ++ (lib.optional audio ", XF86AudioRaiseVolume, exec, pamixer -i 5")
+        ++ (lib.optional audio ", XF86AudioLowerVolume, exec, pamixer -d 5")
+        ++ (lib.optional (lib.hasAttr "terminal" conf) "$mainMod SHIFT, RETURN, exec, ${conf.terminal}")
+        ++ (lib.optional (lib.hasAttr "browser" conf) "$mainMod SHIFT, B, exec, ${conf.browser}");
 
       bindm = [
         # Move/resize windows with mainMod + LMB/RMB and dragging

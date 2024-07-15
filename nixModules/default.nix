@@ -7,40 +7,30 @@
   ...
 }: let
   inherit (userConfig) username;
+  defaultConfig = import ./default_config.nix;
   helpers = {
-    disableAll = lib.hasAttr "disableAll" userConfig && userConfig.disableAll == true;
-
-    checkAttribute = attribute: opt:
-      !helpers.disableAll && lib.hasAttr attribute userConfig && userConfig.${attribute} == "${opt}";
-
-    isEnabled = attribute:
-      lib.hasAttr attribute userConfig && userConfig.${attribute} == true;
-
-    isDisabled = attribute:
-      helpers.disableAll
-      || (lib.hasAttr attribute userConfig && userConfig.${attribute} == false)
-      && !helpers.isEnabled attribute;
+    home = "/home/${username}";
   };
+  conf = lib.recursiveUpdate defaultConfig userConfig;
 in {
   imports = [
-    (import ./security/default.nix {inherit inputs userConfig pkgs;})
-    (import ./gui/default.nix {inherit userConfig inputs pkgs lib helpers;})
-    (import ./tools/default.nix {inherit pkgs userConfig lib config helpers inputs;})
-    (import ./system/default.nix {inherit pkgs userConfig lib helpers;})
-    (import ./hardware/default.nix {inherit userConfig lib helpers;})
-    (import ./network/default.nix {inherit userConfig pkgs lib helpers;})
+    (import ./security/default.nix {inherit conf inputs pkgs helpers;})
+    (import ./gui/default.nix {inherit conf inputs pkgs lib helpers;})
+    (import ./tools/default.nix {inherit conf pkgs lib config helpers inputs;})
+    (import ./system/default.nix {inherit conf pkgs lib helpers;})
+    (import ./hardware/default.nix {inherit conf lib helpers;})
+    (import ./network/default.nix {inherit conf pkgs lib helpers;})
   ];
 
+  nixpkgs.config.allowUnfree = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  home-manager.users = {
-    "${username}" = {
-      programs.home-manager.enable = true;
-      home = {
-        homeDirectory = "/home/${username}";
-        username = "${username}";
-        stateVersion = "24.05";
-      };
+  home-manager.users."${username}" = {
+    programs.home-manager.enable = true;
+    home = {
+      homeDirectory = helpers.home;
+      username = "${username}";
+      stateVersion = "24.05";
     };
   };
 
@@ -53,7 +43,6 @@ in {
       options = "--delete-older-than 30d";
     };
   };
-  nixpkgs.config.allowUnfree = true;
 
   users = {
     mutableUsers = false;
@@ -69,7 +58,7 @@ in {
       wm = "Hyprland";
     in {
       imports = [
-        (import ./environments/default.nix {inherit inputs pkgs wm userConfig lib helpers;})
+        (import ./environments/default.nix {inherit conf inputs pkgs wm lib helpers;})
       ];
       environment.etc."specialisation".text = "Hyprland";
     };
@@ -77,7 +66,7 @@ in {
       wm = "sway";
     in {
       imports = [
-        (import ./environments/default.nix {inherit inputs pkgs wm userConfig lib helpers;})
+        (import ./environments/default.nix {inherit conf inputs pkgs wm lib helpers;})
       ];
       environment.etc."specialisation".text = "sway";
     };
