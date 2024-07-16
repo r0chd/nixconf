@@ -1,7 +1,7 @@
 {
   conf,
   lib,
-  helpers,
+  std,
 }: let
   inherit (conf) audio bluetooth power;
   inherit (lib) optional;

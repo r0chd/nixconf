@@ -2,7 +2,7 @@
   conf,
   pkgs,
   lib,
-  helpers,
+  std,
 }: let
   inherit (conf) username colorscheme virtualization zram;
   inherit (lib) optional;
@@ -15,9 +15,9 @@ in {
         else (import ./bootloader/grub/default.nix)
       )
       (
-        if conf.shell == "fish"
+        if conf ? shell && conf.shell == "fish"
         then (import ./shell/fish/default.nix {inherit username pkgs;})
-        else if conf.shell == "zsh"
+        else if conf ? shell && conf.shell == "zsh"
         then (import ./shell/zsh/default.nix {inherit username pkgs colorscheme;})
         else (import ./shell/bash/default.nix {inherit username pkgs;})
       )

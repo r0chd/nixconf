@@ -2,7 +2,6 @@
   pkgs,
   inputs,
   conf,
-  helpers,
   lib,
 }: let
   inherit (conf) colorscheme username ruin audio;
@@ -104,8 +103,8 @@ in {
         [
           "ruin nix"
         ]
-        ++ (lib.optional (lib.hasAttr "statusBar" conf) "${conf.statusBar}")
-        ++ (lib.optional (lib.hasAttr "terminal" conf) "${conf.terminal}")
+        ++ (lib.optional (conf ? statusBar) "${conf.statusBar}")
+        ++ (lib.optional (conf ? terminal) "${conf.terminal}")
         ++ (lib.optional ruin "ruin nix");
 
       env = [
@@ -165,8 +164,8 @@ in {
         ]
         ++ (lib.optional audio ", XF86AudioRaiseVolume, exec, pamixer -i 5")
         ++ (lib.optional audio ", XF86AudioLowerVolume, exec, pamixer -d 5")
-        ++ (lib.optional (lib.hasAttr "terminal" conf) "$mainMod SHIFT, RETURN, exec, ${conf.terminal}")
-        ++ (lib.optional (lib.hasAttr "browser" conf) "$mainMod SHIFT, B, exec, ${conf.browser}");
+        ++ (lib.optional (conf ? terminal) "$mainMod SHIFT, RETURN, exec, ${conf.terminal}")
+        ++ (lib.optional (conf ? browser) "$mainMod SHIFT, B, exec, ${conf.browser}");
 
       bindm = [
         # Move/resize windows with mainMod + LMB/RMB and dragging

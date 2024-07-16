@@ -3,7 +3,6 @@
   conf,
   pkgs,
   lib,
-  helpers,
 }: let
   inherit (conf) username terminal colorscheme seto;
   color =
@@ -22,7 +21,7 @@ in {
     config = rec {
       bars =
         []
-        ++ (lib.optional (lib.hasAttr "statusBar" conf) {command = "${conf.statusBar}";});
+        ++ (lib.optional (conf ? statusBar) {command = "${conf.statusBar}";});
       modifier = "Mod1";
       gaps.outer = 7;
       input."9011:26214:ydotoold_virtual_device" = {
@@ -30,7 +29,7 @@ in {
       };
       startup =
         []
-        ++ lib.optional (lib.hasAttr "terminal" conf) {command = "sway workspace 1; ${terminal}";}
+        ++ lib.optional (conf ? terminal) {command = "sway workspace 1; ${terminal}";}
         ++ lib.optional conf.ruin {command = "ruin nix";};
 
       keybindings =
@@ -76,13 +75,13 @@ in {
           "XF86AudioRaiseVolume" = "exec pamixer -i 5";
           "XF86AudioLowerVolume" = "exec pamixer -d 5";
         }
-        // lib.optionalAttrs (lib.hasAttr "browser" conf) {
+        // lib.optionalAttrs (conf ? browser) {
           "${modifier}+Shift+b" = "exec ${conf.browser}";
         }
         // lib.optionalAttrs seto {
           "Print" = "exec grim -g \"$(seto -r)\" - | wl-copy -t image/png";
         }
-        // lib.optionalAttrs (lib.hasAttr "terminal" conf) {
+        // lib.optionalAttrs (conf ? terminal) {
           "${modifier}+Shift+Return" = "exec ${conf.terminal}";
         };
     };

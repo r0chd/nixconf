@@ -1,9 +1,9 @@
 {
   username,
   config,
-  helpers,
+  std,
 }: let
-  publicKey = "${helpers.home}/.ssh/id_ed25519";
+  publicKey = "${std.home}/.ssh/id_ed25519";
 in {
   home-manager.users."${username}".programs.git = {
     enable = true;

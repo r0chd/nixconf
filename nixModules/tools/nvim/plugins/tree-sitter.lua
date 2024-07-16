@@ -1,3 +1,8 @@
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = { "*.vert", "*.frag" },
+	command = "set filetype=glsl",
+})
+
 vim.defer_fn(function()
 	require("nvim-treesitter.configs").setup({
 		highlight = {

@@ -2,11 +2,11 @@
   conf,
   inputs,
   pkgs,
-  helpers,
+  std,
 }: let
   inherit (conf) username hostname;
 in {
-  imports = [(import ./sops/default.nix {inherit username inputs pkgs hostname helpers;})];
+  imports = [(import ./sops/default.nix {inherit username inputs pkgs hostname std;})];
 
   security = {
     doas = {

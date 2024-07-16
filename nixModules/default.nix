@@ -4,22 +4,25 @@
   inputs,
   lib,
   config,
+  hostname,
   ...
 }: let
   inherit (userConfig) username;
-  defaultConfig = import ./default_config.nix;
-  helpers = {
-    home = "/home/${username}";
-  };
-  conf = lib.recursiveUpdate defaultConfig userConfig;
+  std = import ./std/default.nix {inherit username;};
+  conf =
+    lib.recursiveUpdate (import ./default_config.nix {
+      inherit hostname;
+      disableAll = userConfig ? disableAll && userConfig.disableAll == true;
+    })
+    userConfig;
 in {
   imports = [
-    (import ./security/default.nix {inherit conf inputs pkgs helpers;})
-    (import ./gui/default.nix {inherit conf inputs pkgs lib helpers;})
-    (import ./tools/default.nix {inherit conf pkgs lib config helpers inputs;})
-    (import ./system/default.nix {inherit conf pkgs lib helpers;})
-    (import ./hardware/default.nix {inherit conf lib helpers;})
-    (import ./network/default.nix {inherit conf pkgs lib helpers;})
+    (import ./security/default.nix {inherit conf inputs pkgs std;})
+    (import ./gui/default.nix {inherit conf inputs pkgs lib;})
+    (import ./tools/default.nix {inherit conf pkgs lib config std inputs;})
+    (import ./system/default.nix {inherit conf pkgs lib std;})
+    (import ./hardware/default.nix {inherit conf lib std;})
+    (import ./network/default.nix {inherit conf pkgs lib std;})
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -28,7 +31,7 @@ in {
   home-manager.users."${username}" = {
     programs.home-manager.enable = true;
     home = {
-      homeDirectory = helpers.home;
+      homeDirectory = std.home;
       username = "${username}";
       stateVersion = "24.05";
     };
@@ -58,7 +61,7 @@ in {
       wm = "Hyprland";
     in {
       imports = [
-        (import ./environments/default.nix {inherit conf inputs pkgs wm lib helpers;})
+        (import ./environments/default.nix {inherit conf inputs pkgs wm lib std;})
       ];
       environment.etc."specialisation".text = "Hyprland";
     };
@@ -66,7 +69,7 @@ in {
       wm = "sway";
     in {
       imports = [
-        (import ./environments/default.nix {inherit conf inputs pkgs wm lib helpers;})
+        (import ./environments/default.nix {inherit conf inputs pkgs wm lib std;})
       ];
       environment.etc."specialisation".text = "sway";
     };

@@ -8,7 +8,6 @@
 }: let
   userConfig = {
     username = "unixpariah";
-    hostname = hostname;
     statusBar = "waystatus";
     colorscheme = "catppuccin";
     font = "JetBrainsMono Nerd Font";
@@ -20,7 +19,8 @@
   };
 in {
   imports = [
-    (import ../../nixModules/default.nix {inherit userConfig inputs pkgs lib config;})
+    (import ../../nixModules/default.nix {inherit userConfig inputs pkgs lib config hostname;})
+    #./disko.nix
     ./gpu.nix
     ./hardware-configuration.nix
   ];

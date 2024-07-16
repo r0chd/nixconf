@@ -3,10 +3,8 @@
   username,
   pkgs,
   hostname,
-  helpers,
-}: let
-  inherit (helpers) home;
-in {
+  std,
+}: {
   imports = [
     inputs.sops-nix.nixosModules.sops
   ];
@@ -16,8 +14,8 @@ in {
   sops.defaultSopsFormat = "yaml";
 
   sops.age = {
-    sshKeyPaths = ["${home}/.ssh/id_ed25519"];
-    keyFile = "${home}/.config/sops/age/keys.txt";
+    sshKeyPaths = ["${std.home}/.ssh/id_ed25519"];
+    keyFile = "${std.home}/.config/sops/age/keys.txt";
     generateKey = true;
   };
 

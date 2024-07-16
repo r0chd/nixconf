@@ -124,7 +124,7 @@
 
       vim.api.nvim_set_keymap('n', 'L', '<cmd>BufferLineCycleNext<CR>', { noremap = true, silent = true })
       vim.api.nvim_set_keymap('n', 'H', '<cmd>BufferLineCyclePrev<CR>', { noremap = true, silent = true })
-      vim.api.nvim_set_keymap('n', '<leader>bd', '<cmd>bd<CR>', { noremap = true, silent = true, desc = 'Close current buffer' })
+      vim.api.nvim_set_keymap('n', '<leader>bd!', '<cmd>bd<CR>', { noremap = true, silent = true, desc = 'Close current buffer' })
 
       vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true })
       vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', { noremap = true, silent = true, desc = 'Go to declaration' })

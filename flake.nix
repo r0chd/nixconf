@@ -27,6 +27,7 @@
   outputs = {
     nixpkgs,
     home-manager,
+    disko,
     ...
   } @ inputs: let
     newConfig = hostname: arch:
@@ -35,6 +36,7 @@
         modules = [
           ./hosts/${hostname}/configuration.nix
           home-manager.nixosModules.default
+          disko.nixosModules.default
           {
             nixpkgs.system = arch;
           }

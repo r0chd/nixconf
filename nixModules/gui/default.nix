@@ -3,17 +3,13 @@
   pkgs,
   inputs,
   lib,
-  helpers,
 }: let
   inherit (conf) colorscheme username font ruin statusBar browser;
   inherit (lib) optional;
 in {
-  environment.shellAliases = {
-    browser =
-      if lib.hasAttr "browser" conf
-      then "nb ${conf.browser}"
-      else "echo 'Browser not set'";
-  };
+  environment.shellAliases =
+    {}
+    // lib.optionalAttrs (conf ? browser) {browser = "nb ${conf.browser}";};
   imports =
     []
     ++ (

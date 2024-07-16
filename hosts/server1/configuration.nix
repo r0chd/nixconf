@@ -8,20 +8,13 @@
 }: let
   userConfig = {
     username = "unixpariah";
-    hostname = hostname;
     colorscheme = "catppuccin";
     editor = "nvim";
-    wireless = true;
     disableAll = true;
-    power = true;
-    boot = {
-      loader = "systemd-boot";
-      legacy = true;
-    };
   };
 in {
   imports = [
-    (import ../../nixModules/default.nix {inherit userConfig inputs pkgs lib config;})
+    (import ../../nixModules/default.nix {inherit userConfig inputs pkgs lib config hostname;})
     ./hardware-configuration.nix
   ];
 
