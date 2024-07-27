@@ -4,19 +4,17 @@
   pkgs,
   lib,
 }: let
-  inherit (conf) username terminal colorscheme seto;
-  color =
-    if colorscheme == "catppuccin"
-    then "C5A8EB"
-    else [];
+  inherit (conf) username terminal seto colorscheme;
 in {
   security.polkit.enable = true;
   home-manager.users."${username}".wayland.windowManager.sway = {
     enable = true;
-    extraConfig = ''
+    extraConfig = let
+      inherit (colorscheme) accent inactive;
+    in ''
       default_border pixel 2
-      client.unfocused "1E1E2E" "1E1E2E" "1E1E2E" "1E1E2E"
-      client.focused ${color} ${color} ${color} ${color}
+      client.unfocused ${inactive} ${inactive} ${inactive} ${inactive}
+      client.focused ${accent} ${accent} ${accent} ${accent}
     '';
     config = rec {
       bars =
@@ -47,7 +45,7 @@ in {
           "${modifier}+9" = "workspace 9";
           "${modifier}+0" = "workspace 10";
 
-          "${modifier}+n" = "workspace previous";
+          "${modifier}+n" = "workspace prev";
           "${modifier}+m" = "workspace next";
 
           "${modifier}+Shift+1" = "move container to workspace number 1; workspace 1";
@@ -61,7 +59,7 @@ in {
           "${modifier}+Shift+9" = "move container to workspace number 9; workspace 9";
           "${modifier}+Shift+0" = "move container to workspace number 10; workspace 10";
 
-          "${modifier}+Shift+n" = "move container to workspace previous; workspace previous";
+          "${modifier}+Shift+n" = "move container to workspace prev; workspace prev";
           "${modifier}+Shift+m" = "move container to workspace next; workspace next";
 
           "${modifier}+h" = "focus left";

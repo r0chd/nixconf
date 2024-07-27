@@ -14,7 +14,7 @@
   };
 in {
   imports = [
-    (import ../../nixModules/default.nix {inherit userConfig inputs pkgs lib config hostname;})
+    (import ../../nixModules {inherit userConfig inputs pkgs lib config hostname;})
     ./hardware-configuration.nix
   ];
 

@@ -14,7 +14,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     disko.url = "github:nix-community/disko";
 
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";

@@ -1,25 +1,23 @@
 {
-  username,
-  colorscheme,
-  font,
+  conf,
   pkgs,
   inputs,
+  std,
 }: let
-  colors =
-    if colorscheme == "catppuccin"
-    then ["#ffffff" "30, 30, 46, 1"]
-    else [];
-  getColor = index: "${builtins.elemAt colors index}";
+  inherit (conf) username colorscheme;
 in {
   environment.systemPackages = with pkgs; [inputs.waystatus.packages.${system}.default];
   home-manager.users."${username}".home.file = {
     ".config/waystatus/style.css" = {
-      text = ''
+      text = let
+        inherit (conf) font;
+        inherit (colorscheme) text;
+      in ''
         * {
             font-family: "${font}";
             font-size: 16px;
             font-weight: bold;
-            color: ${getColor 0};
+            color: #${text};
             background-color: rgba(0, 0, 0, 0);
             margin-bottom: 10px;
         }
@@ -64,9 +62,12 @@ in {
       '';
     };
     ".config/waystatus/config.toml" = {
-      text = ''
+      text = let
+        inherit (colorscheme) background2;
+        inherit (std) conversions;
+      in ''
         unkown = "N/A"
-        background = [${getColor 1}]
+        background = ${conversions.hexToRGBString "," background2};
         layer = "bottom"
         topbar = true
         height = 40

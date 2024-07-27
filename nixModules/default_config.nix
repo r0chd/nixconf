@@ -16,6 +16,7 @@
     editor = "nvim";
     shell = "zsh";
     browser = "firefox";
+    notifications = "mako";
     tmux = true;
     seto = true;
     nh = true;

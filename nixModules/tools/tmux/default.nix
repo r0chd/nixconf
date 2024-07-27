@@ -1,14 +1,8 @@
 {
-  username,
   pkgs,
-  colorscheme,
-  ...
+  conf,
 }: let
-  colors =
-    if colorscheme == "catppuccin"
-    then ["#242424" "#C5A8EB" "#140F21" "#FFFFFF"]
-    else [];
-  getColor = index: "${builtins.elemAt colors index}";
+  inherit (conf) username colorscheme;
 in {
   home-manager.users."${username}".programs.tmux = {
     enable = true;
@@ -27,7 +21,9 @@ in {
       sensible
       vim-tmux-navigator
     ];
-    extraConfig = ''
+    extraConfig = let
+      inherit (colorscheme) accent inactive text background2;
+    in ''
       set -as terminal-features ",xterm-256color:RGB"
 
       bind-key -T copy-mode-vi v send-keys -X begin-selection
@@ -44,16 +40,13 @@ in {
       set-window-option -g window-status-current-format "#[bold]#I:#W#F"
       bind-key C-b run-shell "tmux rename-window "$(basename $(pwd))""
 
-      set -g pane-border-style fg="${getColor 0}"
-      set -g pane-active-border-style fg="${getColor 1}"
+      set -g pane-border-style fg="#${inactive}"
+      set -g pane-active-border-style fg="#${accent}"
 
-      set -g status-bg "${getColor 2}"
-      set -g status-fg "${getColor 3}"
+      set -g status-bg "#${background2}"
+      set -g status-fg "#${text}"
 
       set status-left ""
-
-      #setw window-status-format "#[fg=${getColor 0},bg=${getColor 0}] #I #[fg=${getColor 0},bg=${getColor 0}] #W "
-      #setw window-status-current-format "#[fg=${getColor 0},bg=${getColor 0}] #I #[fg=${getColor 0},bg=${getColor 0}] #W "
 
       run '~/.config/tmux/plugins/tpm/tpm'
     '';

@@ -7,7 +7,7 @@
         finegrained = true;
       };
 
-      open = false;
+      open = true;
       nvidiaSettings = true;
       prime = {
         offload = {
@@ -19,9 +19,9 @@
       };
     };
 
-    opengl = {
+    graphics = {
       enable = true;
-      driSupport32Bit = true;
+      enable32Bit = true;
     };
   };
 

@@ -9,7 +9,7 @@
 in {
   imports =
     [
-      (import ./ssh/default.nix {inherit username lib hostname;})
+      (import ./ssh {inherit username lib hostname std;})
     ]
-    ++ optional (conf.wireless) (import ./wireless/default.nix {inherit pkgs hostname;});
+    ++ optional (conf.wireless) (import ./wireless {inherit pkgs hostname;});
 }

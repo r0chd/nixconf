@@ -6,7 +6,7 @@
 }: let
   inherit (conf) username hostname;
 in {
-  imports = [(import ./sops/default.nix {inherit username inputs pkgs hostname std;})];
+  imports = [(import ./sops {inherit username inputs pkgs hostname std;})];
 
   security = {
     doas = {

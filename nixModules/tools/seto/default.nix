@@ -1,45 +1,42 @@
 {
-  username,
-  colorscheme,
-  font,
   pkgs,
   inputs,
+  conf,
 }: let
-  colors =
-    if colorscheme == "catppuccin"
-    then ["#7287FD66" "#FFFFFF" "#DD7878" "#C5A8EB" "#40A02B"]
-    else [];
-  getColor = index: "${builtins.elemAt colors index}";
+  inherit (conf) username colorscheme;
 in {
   environment.systemPackages = with pkgs; [
     inputs.seto.packages.${system}.default
+    grim
   ];
   home-manager.users."${username}".home.file.".config/seto/config.lua" = {
-    text =
+    text = let
+      inherit (colorscheme) text accent special warn;
+      inherit (conf) font;
+    in
       /*
       lua
       */
       ''
         return {
-        	background_color = "${getColor 0} #FF000066",
+        	background_color = "#7287FD66",
+            blur = {
+                enable = true,
+                size = 8,
+                passes = 1,
+            },
             font = {
-            	color = "${getColor 1}",
-            	highlight_color = "${getColor 2}",
-            	size = 16,
+            	color = "${text}",
+            	highlight_color = "${warn}",
             	family = "${font}",
-            	weight = 1000,
-            	offset = { 5, 5 },
+                weight = 50,
             },
         	grid = {
-        		color = "${getColor 3}",
-        		line_width = 2,
+        		color = "${accent}",
         		size = { 80, 83 },
-        		offset = { 0, 0 },
-        		selected_color = "${getColor 4}",
-        		selected_line_width = 2,
+        		selected_color = "${special}",
         	},
         	keys = {
-        		search = "asdfghjkl",
         		bindings = {
         			z = { move = { -5, 0 } },
         			x = { move = { 0, -5 } },

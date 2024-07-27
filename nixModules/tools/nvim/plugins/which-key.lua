@@ -1,4 +1,8 @@
 require("which-key").register({
-	["<leader>f"] = { name = "[F]ind", _ = "which_key_ignore" },
-	["<leader>b"] = { name = "[B]uffer", _ = "which_key_ignore" },
+	{
+		{ "", group = "[B]uffer" },
+		{ "", group = "[F]ind" },
+		{ "", group = "[G]o" },
+		{ "", desc = "", hidden = true, mode = { "n", "n" } },
+	},
 })

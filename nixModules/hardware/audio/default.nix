@@ -1,5 +1,4 @@
 {pkgs, ...}: {
-  #sound.enable = true;
   services.pipewire = {
     enable = true;
     alsa = {

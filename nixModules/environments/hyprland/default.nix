@@ -4,16 +4,9 @@
   conf,
   lib,
 }: let
-  inherit (conf) colorscheme username ruin audio;
-  color =
-    if colorscheme == "catppuccin"
-    then "C5A8EBFF"
-    else [];
+  inherit (conf) username ruin audio colorscheme seto;
 in {
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
+  programs.hyprland.xwayland.enable = true;
 
   nix.settings = {
     substituters = ["https://hyprland.cachix.org"];
@@ -49,15 +42,17 @@ in {
         accel_profile = "flat";
       };
 
-      general = {
-        "col.active_border" = "rgba(${color})";
+      general = let
+        inherit (colorscheme) accent inactive;
+      in {
+        "col.active_border" = "rgb(${accent})";
+        "col.inactive_border" = "rgb(${inactive})";
 
         border_size = 2;
       };
 
       decoration = {
         rounding = "16";
-        blur.enabled = "false";
         drop_shadow = "yes";
         shadow_range = "4";
         shadow_render_power = "3";
@@ -100,9 +95,7 @@ in {
       "$mainMod" = "ALT"; # Mod key
 
       exec-once =
-        [
-          "ruin nix"
-        ]
+        []
         ++ (lib.optional (conf ? statusBar) "${conf.statusBar}")
         ++ (lib.optional (conf ? terminal) "${conf.terminal}")
         ++ (lib.optional ruin "ruin nix");
@@ -115,9 +108,6 @@ in {
 
       bind =
         [
-          # Screenshots
-          ", Print, exec, grim -g \"$(seto -r)\" - | wl-copy -t image/png"
-
           # Brightness
           ", XF86MonBrightnessUp, exec, brightnessctl set +5%"
           ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
@@ -165,7 +155,8 @@ in {
         ++ (lib.optional audio ", XF86AudioRaiseVolume, exec, pamixer -i 5")
         ++ (lib.optional audio ", XF86AudioLowerVolume, exec, pamixer -d 5")
         ++ (lib.optional (conf ? terminal) "$mainMod SHIFT, RETURN, exec, ${conf.terminal}")
-        ++ (lib.optional (conf ? browser) "$mainMod SHIFT, B, exec, ${conf.browser}");
+        ++ (lib.optional (conf ? browser) "$mainMod SHIFT, B, exec, ${conf.browser}")
+        ++ (lib.optional seto ", Print, exec, grim -g \"$(seto -r)\" - | wl-copy -t image/png");
 
       bindm = [
         # Move/resize windows with mainMod + LMB/RMB and dragging

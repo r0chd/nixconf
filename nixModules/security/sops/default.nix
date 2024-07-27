@@ -14,8 +14,8 @@
   sops.defaultSopsFormat = "yaml";
 
   sops.age = {
-    sshKeyPaths = ["${std.home}/.ssh/id_ed25519"];
-    keyFile = "${std.home}/.config/sops/age/keys.txt";
+    sshKeyPaths = ["${std.dirs.home}/.ssh/id_ed25519"];
+    keyFile = "${std.dirs.home}/.config/sops/age/keys.txt";
     generateKey = true;
   };
 

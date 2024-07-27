@@ -3,8 +3,9 @@
   pkgs,
   inputs,
   lib,
+  std,
 }: let
-  inherit (conf) colorscheme username font ruin statusBar browser;
+  inherit (conf) username ruin statusBar browser notifications;
   inherit (lib) optional;
 in {
   environment.shellAliases =
@@ -14,17 +15,24 @@ in {
     []
     ++ (
       if browser == "firefox"
-      then [(import ./firefox/home.nix {inherit username inputs pkgs;})]
+      then [(import ./firefox {inherit username inputs pkgs;})]
       else if browser == "qutebrowser"
-      then [(import ./qutebrowser/home.nix {inherit username;})]
+      then [(import ./qutebrowser {inherit username;})]
       else if browser == "chromium"
-      then [(import ./chromium/home.nix {inherit username pkgs;})]
+      then [(import ./chromium {inherit username pkgs;})]
+      else if browser == "ladybird"
+      then [./ladybird]
       else []
     )
     ++ (
       if statusBar == "waystatus"
-      then [(import ./waystatus/default.nix {inherit username colorscheme font pkgs inputs;})]
+      then [(import ./waystatus {inherit conf std pkgs inputs;})]
       else []
     )
-    ++ optional ruin (import ./ruin/default.nix {inherit colorscheme username pkgs inputs;});
+    ++ (
+      if notifications == "mako"
+      then [(import ./mako {inherit username;})]
+      else []
+    )
+    ++ optional ruin (import ./ruin {inherit conf pkgs inputs std;});
 }

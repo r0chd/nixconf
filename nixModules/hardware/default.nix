@@ -8,9 +8,9 @@
 in {
   imports =
     []
-    ++ optional audio ./audio/default.nix
-    ++ optional bluetooth ./bluetooth/default.nix
-    ++ optional power ./power/default.nix;
+    ++ optional audio ./audio
+    ++ optional bluetooth ./bluetooth
+    ++ optional power ./power;
 
   hardware.enableAllFirmware = true;
 }

@@ -1,10 +1,13 @@
 {
   pkgs,
-  username,
-  colorscheme,
+  conf,
+  std,
 }: let
-  colors =
-    if colorscheme == "catppuccin"
+  inherit (conf) username;
+  colors = let
+    inherit (conf) colorscheme;
+  in
+    if colorscheme.name == "catppuccin"
     then ["196" "155" "189" "214" "219"]
     else [];
   getColor = index: "${builtins.elemAt colors index}";

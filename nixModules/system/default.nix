@@ -4,26 +4,26 @@
   lib,
   std,
 }: let
-  inherit (conf) username colorscheme virtualization zram;
+  inherit (conf) username virtualization zram;
   inherit (lib) optional;
 in {
   imports =
     [
       (
         if conf.boot.loader == "systemd-boot"
-        then (import ./bootloader/systemd-boot/default.nix)
-        else (import ./bootloader/grub/default.nix)
+        then (import ./bootloader/systemd-boot)
+        else (import ./bootloader/grub)
       )
       (
         if conf ? shell && conf.shell == "fish"
-        then (import ./shell/fish/default.nix {inherit username pkgs;})
+        then (import ./shell/fish {inherit conf pkgs;})
         else if conf ? shell && conf.shell == "zsh"
-        then (import ./shell/zsh/default.nix {inherit username pkgs colorscheme;})
-        else (import ./shell/bash/default.nix {inherit username pkgs;})
+        then (import ./shell/zsh {inherit conf pkgs std;})
+        else (import ./shell/bash {inherit username pkgs;})
       )
     ]
-    ++ optional virtualization (import ./virtualization/default.nix {inherit username;})
-    ++ optional zram ./zram/default.nix;
+    ++ optional virtualization (import ./virtualization {inherit username pkgs;})
+    ++ optional zram ./zram;
 
   environment.systemPackages = with pkgs; [
     (writeShellScriptBin "nb" ''

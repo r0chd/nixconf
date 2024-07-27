@@ -5,7 +5,7 @@
 }: {
   programs.nh = {
     enable = true;
-    flake = "${std.home}/nixconf";
+    flake = "${std.dirs.home}/nixconf";
   };
   environment.systemPackages = with pkgs; [
     nvd

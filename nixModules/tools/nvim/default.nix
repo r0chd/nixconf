@@ -6,10 +6,9 @@
 }: {
   environment.systemPackages = with pkgs; [
     ripgrep
-    nodejs_22
     tree-sitter
     fd
-    gnome3.adwaita-icon-theme
+    adwaita-icon-theme
     lua-language-server
     alejandra
     nil
@@ -54,7 +53,7 @@
         config = toLuaFile ./plugins/noice.lua;
       }
       (
-        if colorscheme == "catppuccin"
+        if colorscheme.name == "catppuccin"
         then {
           plugin = catppuccin-nvim;
           config = toLuaFile ./themes/catppuccin.lua;
@@ -124,7 +123,7 @@
 
       vim.api.nvim_set_keymap('n', 'L', '<cmd>BufferLineCycleNext<CR>', { noremap = true, silent = true })
       vim.api.nvim_set_keymap('n', 'H', '<cmd>BufferLineCyclePrev<CR>', { noremap = true, silent = true })
-      vim.api.nvim_set_keymap('n', '<leader>bd!', '<cmd>bd<CR>', { noremap = true, silent = true, desc = 'Close current buffer' })
+      vim.api.nvim_set_keymap('n', '<leader>bd', '<cmd>bd!<CR>', { noremap = true, silent = true, desc = 'Close current buffer' })
 
       vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true })
       vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', { noremap = true, silent = true, desc = 'Go to declaration' })
@@ -148,6 +147,7 @@
 
       vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
 
+      vim.g.zig_fmt_parse_errors = 0
       vim.o.clipboard = 'unnamedplus'
       vim.o.hlsearch = false
       vim.o.breakindent = true

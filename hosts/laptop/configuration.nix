@@ -14,12 +14,12 @@
     terminal = "foot";
     editor = "nvim";
     shell = "zsh";
-    browser = "firefox";
+    browser = "qutebrowser";
     power = true;
   };
 in {
   imports = [
-    (import ../../nixModules/default.nix {inherit userConfig inputs pkgs lib config hostname;})
+    (import ../../nixModules {inherit userConfig inputs pkgs lib config hostname;})
     #./disko.nix
     ./gpu.nix
     ./hardware-configuration.nix
@@ -29,18 +29,21 @@ in {
   i18n.defaultLocale = "en_US.UTF-8";
 
   environment.systemPackages = with pkgs; [
-    slurp
+    prismlauncher
+    mpv
+    ani-cli
     libreoffice
     lazygit
     discord
     brightnessctl
-    grim
     unzip
     btop
     vaapi-intel-hybrid
     steam
     gimp
     spotify
+    imagemagick
+    ydotool
   ];
 
   fonts.packages = with pkgs; [

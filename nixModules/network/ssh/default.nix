@@ -2,8 +2,9 @@
   hostname,
   username,
   lib,
+  std,
 }: let
-  keysDir = ../../../hosts/${hostname}/keys;
+  keysDir = "${std.dirs.host}/keys";
   keysList =
     if (builtins.pathExists keysDir)
     then

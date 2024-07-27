@@ -3,7 +3,7 @@
   config,
   std,
 }: let
-  publicKey = "${std.home}/.ssh/id_ed25519";
+  publicKey = "${std.dirs.home}/.ssh/id_ed25519";
 in {
   home-manager.users."${username}".programs.git = {
     enable = true;

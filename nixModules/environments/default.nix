@@ -9,9 +9,9 @@
   imports = [
     (
       if wm == "Hyprland"
-      then (import ./hyprland/default.nix {inherit inputs pkgs conf lib;})
+      then (import ./hyprland {inherit inputs pkgs conf lib;})
       else if wm == "sway"
-      then (import ./sway/default.nix {inherit inputs pkgs conf lib;})
+      then (import ./sway {inherit inputs pkgs conf lib;})
       else []
     )
   ];

@@ -7,22 +7,23 @@
   hostname,
   ...
 }: let
-  inherit (userConfig) username;
-  std = import ./std/default.nix {inherit username;};
+  inherit (userConfig) username colorscheme;
+  std = import ./std {inherit username lib hostname;};
   conf =
     lib.recursiveUpdate (import ./default_config.nix {
       inherit hostname;
       disableAll = userConfig ? disableAll && userConfig.disableAll == true;
     })
-    userConfig;
+    userConfig
+    // {colorscheme = import ./colorschemes.nix {inherit colorscheme;};};
 in {
   imports = [
-    (import ./security/default.nix {inherit conf inputs pkgs std;})
-    (import ./gui/default.nix {inherit conf inputs pkgs lib;})
-    (import ./tools/default.nix {inherit conf pkgs lib config std inputs;})
-    (import ./system/default.nix {inherit conf pkgs lib std;})
-    (import ./hardware/default.nix {inherit conf lib std;})
-    (import ./network/default.nix {inherit conf pkgs lib std;})
+    (import ./security {inherit conf inputs pkgs std;})
+    (import ./gui {inherit conf inputs pkgs lib std;})
+    (import ./tools {inherit conf pkgs lib config std inputs;})
+    (import ./system {inherit conf pkgs lib std;})
+    (import ./hardware {inherit conf lib std;})
+    (import ./network {inherit conf pkgs lib std;})
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -31,19 +32,23 @@ in {
   home-manager.users."${username}" = {
     programs.home-manager.enable = true;
     home = {
-      homeDirectory = std.home;
+      homeDirectory = std.dirs.home;
       username = "${username}";
       stateVersion = "24.05";
     };
   };
 
   nix = {
-    settings.experimental-features = ["nix-command" "flakes"];
-    settings.auto-optimise-store = true;
+    settings = {
+      experimental-features = ["nix-command" "flakes"];
+      auto-optimise-store = true;
+      substituters = ["https://nix-community.cachix.org"];
+      trusted-public-keys = ["nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="];
+    };
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 30d";
+      options = "--delete-older-than 7d";
     };
   };
 
@@ -61,7 +66,7 @@ in {
       wm = "Hyprland";
     in {
       imports = [
-        (import ./environments/default.nix {inherit conf inputs pkgs wm lib std;})
+        (import ./environments {inherit conf inputs pkgs wm lib std;})
       ];
       environment.etc."specialisation".text = "Hyprland";
     };
@@ -69,7 +74,7 @@ in {
       wm = "sway";
     in {
       imports = [
-        (import ./environments/default.nix {inherit conf inputs pkgs wm lib std;})
+        (import ./environments {inherit conf inputs pkgs wm lib std;})
       ];
       environment.etc."specialisation".text = "sway";
     };

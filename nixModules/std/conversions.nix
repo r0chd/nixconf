@@ -1,7 +1,40 @@
 {
-  nixpkgs-lib,
-  math ? import ./math.nix {inherit nixpkgs-lib;},
+  lib,
+  math ? import ./math.nix {inherit lib;},
 }: let
+  basicAnsi = {
+    "[0 0 0]" = 0;
+    "[205 0 0]" = 1;
+    "[0 205 0]" = 2;
+    "[205 205 0]" = 3;
+    "[0 0 238]" = 4;
+    "[205 0 205]" = 5;
+    "[0 205 205]" = 6;
+    "[229 229 229]" = 7;
+    "[127 127 127]" = 8;
+    "[255 0 0]" = 9;
+    "[0 255 0]" = 10;
+    "[255 255 0]" = 11;
+    "[92 92 255]" = 12;
+    "[255 0 255]" = 13;
+    "[0 255 255]" = 14;
+    "[255 255 255]" = 15;
+  };
+
+  extendedColors = builtins.map (i: let
+    r = (builtins.mod i 6) * 51;
+    g = (builtins.mod (i / 6) 6) * 51;
+    b = (i / 36) * 51;
+  in {
+    "[${r} ${g} ${b}]" = 16 + i;
+  }) (builtins.range 0 215);
+
+  greyscale = builtins.map (i: let
+    g = i * 10 + 8;
+  in {
+    "[${g} ${g} ${g}]" = 232 + i;
+  }) (builtins.range 0 23);
+
   hexToDecMap = {
     "0" = 0;
     "1" = 1;
@@ -61,7 +94,7 @@
     => 10
   */
   hexCharToDec = hex: let
-    inherit (nixpkgs-lib) toLower;
+    inherit (lib) toLower;
     lowerHex = toLower hex;
   in
     if builtins.stringLength hex != 1
@@ -87,7 +120,7 @@ in rec {
     => 11259375
   */
   hexToDec = hex: let
-    inherit (nixpkgs-lib) stringToCharacters reverseList imap0 foldl;
+    inherit (lib) stringToCharacters reverseList imap0 foldl;
     decimals = builtins.map hexCharToDec (stringToCharacters hex);
     decimalsAscending = reverseList decimals;
     decimalsPowered = imap0 base16To10 decimalsAscending;
@@ -135,9 +168,23 @@ in rec {
   */
   hexToRGBString = sep: hex: let
     inherit (builtins) map toString;
-    inherit (nixpkgs-lib) concatStringsSep;
+    inherit (lib) concatStringsSep;
     hexInRGB = hexToRGB hex;
     hexInRGBString = map toString hexInRGB;
   in
     concatStringsSep sep hexInRGBString;
+
+  /*
+  Converts RGB string to ANSI code.
+
+  Type rgbToAnsi :: string -> int
+
+  Args:
+    rgb: List containing RGB values.
+  */
+  rgbToAnsi = rgb: let
+    inherit (builtins) foldl';
+    rgbToAnsi = foldl' (acc: elem: acc // elem) basicAnsi (extendedColors ++ greyscale);
+  in
+    rgbToAnsi."${rgb}";
 }

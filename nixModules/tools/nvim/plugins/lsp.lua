@@ -5,11 +5,8 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 lspconfig.clangd.setup({
-	on_attach = function(client, bufnr)
-		client.server_capabilities.signatureHelpProvider = false
-		on_attach(client, bufnr)
-	end,
 	capabilities = capabilities,
+	on_attach = on_attach,
 	filetypes = { "cpp", "c" },
 })
 
@@ -86,7 +83,7 @@ lspconfig.cssls.setup({
 	filetypes = { "css", "scss", "less" },
 })
 
-lspconfig.sumneko_lua.setup({
+lspconfig.lua_ls.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 	cmd = { "lua-language-server" },
