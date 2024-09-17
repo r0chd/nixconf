@@ -1,5 +1,9 @@
 local lspconfig = require("lspconfig")
-local on_attach = function(_, _) end
+local on_attach = function(client, _)
+	--if client.server_capabilities.inlayHintProvider then
+	--	vim.lsp.inlay_hint.enable(true)
+	--end
+end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -107,3 +111,21 @@ lspconfig.lua_ls.setup({
 		},
 	},
 })
+
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
+
+vim.api.nvim_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap(
+	"n",
+	"gD",
+	"<cmd>lua vim.lsp.buf.declaration()<CR>",
+	{ noremap = true, silent = true, desc = "Go to declaration" }
+)
+vim.api.nvim_set_keymap(
+	"n",
+	"gd",
+	"<cmd>lua vim.lsp.buf.definition()<CR>",
+	{ noremap = true, silent = true, desc = "Go to definition" }
+)

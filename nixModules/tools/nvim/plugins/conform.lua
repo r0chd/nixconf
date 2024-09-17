@@ -31,3 +31,5 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 		require("conform").format({ bufnr = args.buf })
 	end,
 })
+
+vim.g.zig_fmt_parse_errors = 0

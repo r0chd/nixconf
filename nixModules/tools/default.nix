@@ -6,7 +6,7 @@
   std,
   inputs,
 }: let
-  inherit (conf) username colorscheme font tmux seto nh zoxide man lsd bat direnv nix-index;
+  inherit (conf) username colorscheme tmux seto nh zoxide man lsd bat direnv nix-index cachix ydotool;
   inherit (lib) optional;
   shell =
     if conf ? shell
@@ -17,18 +17,6 @@ in {
     [
       (import ./git {inherit username config std;})
     ]
-    ++ optional (conf ? email)
-    (import ./msmtp {
-      inherit config username lib;
-      email = conf.email;
-    })
-    ++ (
-      if conf ? terminal && conf.terminal == "kitty"
-      then [(import ./kitty {inherit username font;})]
-      else if conf ? terminal && conf.terminal == "foot"
-      then [(import ./foot {inherit username font;})]
-      else []
-    )
     ++ optional (conf ? editor && conf.editor == "nvim") (import ./nvim {inherit pkgs username colorscheme inputs;})
     ++ optional tmux (import ./tmux {inherit pkgs conf;})
     ++ optional seto (import ./seto {inherit conf pkgs inputs;})
@@ -38,5 +26,7 @@ in {
     ++ optional lsd (import ./lsd {inherit username;})
     ++ optional bat (import ./bat {inherit username;})
     ++ optional direnv (import ./direnv {inherit username shell;})
-    ++ optional nix-index (import ./nix-index {inherit username;});
+    ++ optional cachix (import ./cachix {inherit pkgs config username;})
+    ++ optional nix-index (import ./nix-index {inherit username;})
+    ++ optional ydotool (import ./ydotool {inherit username;});
 }

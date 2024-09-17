@@ -32,6 +32,8 @@
     audio = true;
     virtualization = true;
     zram = true;
+    cachix = false;
+    ydotool = true;
   };
   minimalConfig = {
     tmux = false;
@@ -49,6 +51,8 @@
     audio = false;
     virtualization = false;
     zram = false;
+    cachix = false;
+    ydotool = false;
   };
 in
   if disableAll

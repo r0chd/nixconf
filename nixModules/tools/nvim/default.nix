@@ -114,26 +114,13 @@
       cmp-vsnip
       vim-vsnip
       presence-nvim
+      vim-wakatime
     ];
     extraLuaConfig = ''
       vim.g.mapleader = ' '
-      vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-      vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
-      vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 
-      vim.api.nvim_set_keymap('n', 'L', '<cmd>BufferLineCycleNext<CR>', { noremap = true, silent = true })
-      vim.api.nvim_set_keymap('n', 'H', '<cmd>BufferLineCyclePrev<CR>', { noremap = true, silent = true })
-      vim.api.nvim_set_keymap('n', '<leader>bd', '<cmd>bd!<CR>', { noremap = true, silent = true, desc = 'Close current buffer' })
-
-      vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true })
-      vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', { noremap = true, silent = true, desc = 'Go to declaration' })
-      vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true, desc = 'Go to definition' })
-
-      local builtin = require 'telescope.builtin'
-      vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Live grep' })
-      vim.keymap.set('n', '<leader>ff', function()
-        builtin.find_files { hidden = true }
-      end, { desc = 'Find files' })
+      vim.api.nvim_set_keymap('n', 'j', 'v:count ? "j" : "gj"', { noremap = true, expr = true, silent = true })
+      vim.api.nvim_set_keymap('n', 'k', 'v:count ? "k" : "gk"', { noremap = true, expr = true, silent = true })
 
       vim.wo.relativenumber = true
       vim.wo.number = true
@@ -145,9 +132,6 @@
       vim.cmd 'autocmd BufEnter * set formatoptions-=cro'
       vim.cmd 'autocmd BufEnter * setlocal formatoptions-=cro'
 
-      vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
-
-      vim.g.zig_fmt_parse_errors = 0
       vim.o.clipboard = 'unnamedplus'
       vim.o.hlsearch = false
       vim.o.breakindent = true
@@ -158,17 +142,11 @@
       vim.o.updatetime = 250
       vim.o.timeoutlen = 300
       vim.o.completeopt = 'menuone,noselect'
-      vim.o.termguicolors = true
       vim.o.scrolloff = 3
       vim.o.completeopt = 'menuone,noinsert'
       vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
         pattern = { '*' },
         command = [[%s/\s\+$//e]],
-      })
-
-      vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
-        pattern = {"*.vert", "*.frag"},
-        command = "set filetype=glsl"
       })
     '';
   };

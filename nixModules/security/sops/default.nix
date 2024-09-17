@@ -9,14 +9,16 @@
     inputs.sops-nix.nixosModules.sops
   ];
 
-  sops.secrets.password.neededForUsers = true;
-  sops.defaultSopsFile = ../../../hosts/${hostname}/secrets/secrets.yaml;
-  sops.defaultSopsFormat = "yaml";
-
-  sops.age = {
-    sshKeyPaths = ["${std.dirs.home}/.ssh/id_ed25519"];
-    keyFile = "${std.dirs.home}/.config/sops/age/keys.txt";
-    generateKey = true;
+  sops = {
+    secrets.cachix = {};
+    secrets.password.neededForUsers = true;
+    defaultSopsFile = ../../../hosts/${hostname}/secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    age = {
+      sshKeyPaths = ["${std.dirs.home}/.ssh/id_ed25519"];
+      keyFile = "${std.dirs.home}/.config/sops/age/keys.txt";
+      generateKey = true;
+    };
   };
 
   environment.systemPackages = with pkgs; [

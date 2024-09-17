@@ -21,19 +21,19 @@
     "[255 255 255]" = 15;
   };
 
-  extendedColors = builtins.map (i: let
-    r = (builtins.mod i 6) * 51;
-    g = (builtins.mod (i / 6) 6) * 51;
-    b = (i / 36) * 51;
-  in {
-    "[${r} ${g} ${b}]" = 16 + i;
-  }) (builtins.range 0 215);
+  #extendedColors = builtins.map (i: let
+  #  r = (builtins.mod i 6) * 51;
+  #  g = (builtins.mod (i / 6) 6) * 51;
+  #  b = (i / 36) * 51;
+  #in {
+  #  "[${r} ${g} ${b}]" = 16 + i;
+  #}) (builtins.range 0 215);
 
-  greyscale = builtins.map (i: let
-    g = i * 10 + 8;
-  in {
-    "[${g} ${g} ${g}]" = 232 + i;
-  }) (builtins.range 0 23);
+  #greyscale = builtins.map (i: let
+  #  g = i * 10 + 8;
+  #in {
+  #  "[${g} ${g} ${g}]" = 232 + i;
+  #}) (builtins.range 0 23);
 
   hexToDecMap = {
     "0" = 0;
@@ -173,18 +173,4 @@ in rec {
     hexInRGBString = map toString hexInRGB;
   in
     concatStringsSep sep hexInRGBString;
-
-  /*
-  Converts RGB string to ANSI code.
-
-  Type rgbToAnsi :: string -> int
-
-  Args:
-    rgb: List containing RGB values.
-  */
-  rgbToAnsi = rgb: let
-    inherit (builtins) foldl';
-    rgbToAnsi = foldl' (acc: elem: acc // elem) basicAnsi (extendedColors ++ greyscale);
-  in
-    rgbToAnsi."${rgb}";
 }

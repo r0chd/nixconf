@@ -3,6 +3,6 @@
   hostname,
 }: rec {
   home = "/home/${username}";
-  config = builtins.getEnv "FLAKE";
+  config = ../..;
   host = "${config}/hosts/${hostname}";
 }

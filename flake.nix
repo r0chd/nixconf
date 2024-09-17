@@ -9,6 +9,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,9 +21,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    disko.url = "github:nix-community/disko";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    ghostty = {
+      url = "git+ssh://git@github.com/ghostty-org/ghostty";
+      inputs.nixpkgs-stable.follows = "nixpkgs";
+      inputs.nixpkgs-unstable.follows = "nixpkgs";
+    };
+    niqspkgs.url = "github:diniamo/niqspkgs";
 
     seto.url = "github:unixpariah/seto";
     waystatus.url = "git+https://github.com/unixpariah/waystatus?submodules=1";
@@ -50,7 +61,6 @@
     nixosConfigurations = {
       laptop = newConfig "laptop" "x86_64-linux";
       server1 = newConfig "server1" "x86_64-linux";
-      server2 = newConfig "server2" "x86_64-linux";
     };
   };
 }

@@ -24,11 +24,4 @@ in {
     ]
     ++ optional virtualization (import ./virtualization {inherit username pkgs;})
     ++ optional zram ./zram;
-
-  environment.systemPackages = with pkgs; [
-    (writeShellScriptBin "nb" ''
-      command "$@" > /dev/null 2>&1 &
-      disown
-    '')
-  ];
 }

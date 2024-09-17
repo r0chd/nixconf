@@ -13,9 +13,10 @@
     font = "JetBrainsMono Nerd Font";
     terminal = "foot";
     editor = "nvim";
-    shell = "zsh";
+    shell = "fish";
     browser = "qutebrowser";
     power = true;
+    cachix = true;
   };
 in {
   imports = [
@@ -29,6 +30,7 @@ in {
   i18n.defaultLocale = "en_US.UTF-8";
 
   environment.systemPackages = with pkgs; [
+    renderdoc
     prismlauncher
     mpv
     ani-cli

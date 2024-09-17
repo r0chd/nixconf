@@ -4,7 +4,7 @@
   pkgs,
   lib,
 }: let
-  inherit (conf) username terminal seto colorscheme;
+  inherit (conf) username terminal seto colorscheme ydotool audio;
 in {
   security.polkit.enable = true;
   home-manager.users."${username}".wayland.windowManager.sway = {
@@ -69,7 +69,8 @@ in {
 
           "XF86MonBrightnessUp" = "exec brightnessctl set +5%";
           "XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
-
+        }
+        // lib.optionalAttrs audio {
           "XF86AudioRaiseVolume" = "exec pamixer -i 5";
           "XF86AudioLowerVolume" = "exec pamixer -d 5";
         }
@@ -78,6 +79,9 @@ in {
         }
         // lib.optionalAttrs seto {
           "Print" = "exec grim -g \"$(seto -r)\" - | wl-copy -t image/png";
+        }
+        // lib.optionalAttrs (seto && ydotool) {
+          "${modifier}+g" = "exec ydotool mousemove -a $(seto -f $'%x %y\\n') && ydotool click 0xC0";
         }
         // lib.optionalAttrs (conf ? terminal) {
           "${modifier}+Shift+Return" = "exec ${conf.terminal}";

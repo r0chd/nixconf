@@ -29,12 +29,15 @@ in {
   nixpkgs.config.allowUnfree = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  home-manager.users."${username}" = {
-    programs.home-manager.enable = true;
-    home = {
-      homeDirectory = std.dirs.home;
-      username = "${username}";
-      stateVersion = "24.05";
+  home-manager = {
+    backupFileExtension = "backup";
+    users."${username}" = {
+      programs.home-manager.enable = true;
+      home = {
+        homeDirectory = std.dirs.home;
+        username = "${username}";
+        stateVersion = "24.05";
+      };
     };
   };
 
@@ -44,6 +47,7 @@ in {
       auto-optimise-store = true;
       substituters = ["https://nix-community.cachix.org"];
       trusted-public-keys = ["nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="];
+      trusted-users = ["root" "${username}"];
     };
     gc = {
       automatic = true;
@@ -57,9 +61,20 @@ in {
     users."${userConfig.username}" = {
       isNormalUser = true;
       hashedPasswordFile = config.sops.secrets.password.path;
-      extraGroups = ["wheel"];
+      extraGroups = ["wheel" "ydotool"];
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    (writeShellScriptBin "devshell" ''
+      nix develop "$FLAKE/shells#$@" -c ${userConfig.shell}
+    '')
+
+    (writeShellScriptBin "nb" ''
+      command "$@" > /dev/null 2>&1 &
+      disown
+    '')
+  ];
 
   specialisation = {
     Hyprland.configuration = let

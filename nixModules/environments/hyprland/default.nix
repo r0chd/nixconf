@@ -4,16 +4,21 @@
   conf,
   lib,
 }: let
-  inherit (conf) username ruin audio colorscheme seto;
+  inherit (conf) username ruin audio colorscheme seto ydotool;
 in {
-  programs.hyprland.xwayland.enable = true;
+  environment.systemPackages = [
+    inputs.niqspkgs.packages.${pkgs.system}.bibata-hyprcursor
+  ];
+
+  programs.hyprland = {
+    portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
+    xwayland.enable = true;
+  };
 
   nix.settings = {
     substituters = ["https://hyprland.cachix.org"];
     trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
   };
-
-  environment.systemPackages = with pkgs; [xdg-desktop-portal-hyprland];
 
   home-manager.users."${username}".wayland.windowManager.hyprland = {
     enable = true;
@@ -56,7 +61,11 @@ in {
         drop_shadow = "yes";
         shadow_range = "4";
         shadow_render_power = "3";
+
+        blur.enabled = false;
       };
+
+      debug.disable_logs = false;
 
       animations = {
         enabled = "true";
@@ -102,8 +111,6 @@ in {
 
       env = [
         "HYPRCURSOR_SIZE,24"
-        "HYPRCURSOR_THEME,HyprBibataModernClassicSVG"
-        "WLR_DRM_DEVICES,/dev/dri/card1:/dev/dri/card0"
       ];
 
       bind =
@@ -156,13 +163,8 @@ in {
         ++ (lib.optional audio ", XF86AudioLowerVolume, exec, pamixer -d 5")
         ++ (lib.optional (conf ? terminal) "$mainMod SHIFT, RETURN, exec, ${conf.terminal}")
         ++ (lib.optional (conf ? browser) "$mainMod SHIFT, B, exec, ${conf.browser}")
-        ++ (lib.optional seto ", Print, exec, grim -g \"$(seto -r)\" - | wl-copy -t image/png");
-
-      bindm = [
-        # Move/resize windows with mainMod + LMB/RMB and dragging
-        "$mainMod, mouse:272, movewindow"
-        "$mainMod, mouse:273, resizewindow"
-      ];
+        ++ (lib.optional seto ", Print, exec, grim -g \"$(seto -r)\" - | wl-copy -t image/png")
+        ++ (lib.optional (seto && ydotool) "$mainMod, G, exec, bash -c \"ydotool mousemove -a $(seto -f $'%x %y\\n' --grid-size 70,70) && ydotool click 0xC0\"");
     };
   };
 }
