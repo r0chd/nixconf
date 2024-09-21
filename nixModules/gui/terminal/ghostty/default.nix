@@ -16,6 +16,9 @@
 
     window-decoration = false
 
+    background-opacity = 0.0
+    background = #000000
+
     confirm-close-surface = false
   '';
 }

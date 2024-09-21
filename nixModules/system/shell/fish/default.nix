@@ -58,12 +58,6 @@ in {
       bind --mode insert \t fish_vi_on_paging
 
       set -g fish_greeting ""
-
-      if not set -q TMUX
-        set -g TMUX tmux new-session -d -s base
-        eval $TMUX
-        tmux attach-session -d -t base
-      end
     '';
   };
 }

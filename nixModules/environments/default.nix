@@ -18,12 +18,11 @@
 
   environment = {
     shellAliases.obs = "env -u WAYLAND_DISPLAY obs";
-    loginShellInit = ''run_wm'';
-    systemPackages = with pkgs; [
-      wl-clipboard
-      wayland
-      obs-studio
-      (writeShellScriptBin "run_wm" ''
+    loginShellInit =
+      /*
+      bash
+      */
+      ''
         if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
         ${(
           if wm == "sway"
@@ -31,7 +30,11 @@
           else wm
         )}
         fi
-      '')
+      '';
+    systemPackages = with pkgs; [
+      wl-clipboard
+      wayland
+      obs-studio
     ];
   };
 }

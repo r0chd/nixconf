@@ -40,12 +40,6 @@ in {
       bindkey '^[[A' history-search-backward
       bindkey '^[[B' history-search-forward
 
-      if [ -z "$TMUX" ]; then
-        TMUX=$(tmux new-session -d -s base)
-        eval $TMUX
-        tmux attach-session -d -t base
-      fi
-
       # -------------------------------------- PS1 -------------------------------------- #
 
       _git_branch() {

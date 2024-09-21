@@ -4,6 +4,34 @@
 }: let
   inherit (conf) username colorscheme;
 in {
+  environment = {
+    interactiveShellInit =
+      /*
+      bash
+      */
+      ''
+        if [ -z "$TMUX" ]; then
+          i=0
+          while true; do
+              session_name="base-$i"
+              if tmux has-session -t "$session_name" 2>/dev/null; then
+                  clients_count=$(tmux list-clients | grep $session_name | wc -l)
+                  if [ $clients_count -eq 0 ]; then
+                      tmux attach-session -t $session_name
+                      break
+                  fi
+                  ((i++))
+              else
+                  tmux new-session -d -s $session_name
+                  tmux attach-session -d -t $session_name
+                  break
+              fi
+          done
+        fi
+
+      '';
+  };
+
   home-manager.users."${username}".programs.tmux = {
     enable = true;
     aggressiveResize = true;

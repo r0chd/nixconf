@@ -81,7 +81,7 @@ in {
           "Print" = "exec grim -g \"$(seto -r)\" - | wl-copy -t image/png";
         }
         // lib.optionalAttrs (seto && ydotool) {
-          "${modifier}+g" = "exec ydotool mousemove -a $(seto -f $'%x %y\\n') && ydotool click 0xC0";
+          "${modifier}+g" = "exec bash -c \"ydotool mousemove -a $(seto -f $'%x %y\\n' --grid-size 70,70) && ydotool click 0xC0\"";
         }
         // lib.optionalAttrs (conf ? terminal) {
           "${modifier}+Shift+Return" = "exec ${conf.terminal}";

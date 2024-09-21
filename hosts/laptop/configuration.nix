@@ -4,6 +4,7 @@
   lib,
   config,
   hostname,
+  arch,
   ...
 }: let
   userConfig = {
@@ -11,16 +12,16 @@
     statusBar = "waystatus";
     colorscheme = "catppuccin";
     font = "JetBrainsMono Nerd Font";
-    terminal = "foot";
+    terminal = "ghostty";
     editor = "nvim";
     shell = "fish";
-    browser = "qutebrowser";
+    browser = "firefox";
+    cursor = "bibata_hyprcursor";
     power = true;
-    cachix = true;
   };
 in {
   imports = [
-    (import ../../nixModules {inherit userConfig inputs pkgs lib config hostname;})
+    (import ../../nixModules {inherit userConfig inputs pkgs lib config hostname arch;})
     #./disko.nix
     ./gpu.nix
     ./hardware-configuration.nix

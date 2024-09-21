@@ -6,14 +6,7 @@
 }: let
   inherit (conf) username ruin audio colorscheme seto ydotool;
 in {
-  environment.systemPackages = [
-    inputs.niqspkgs.packages.${pkgs.system}.bibata-hyprcursor
-  ];
-
-  programs.hyprland = {
-    portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
-    xwayland.enable = true;
-  };
+  programs.hyprland.portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
 
   nix.settings = {
     substituters = ["https://hyprland.cachix.org"];

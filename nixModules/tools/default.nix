@@ -6,7 +6,7 @@
   std,
   inputs,
 }: let
-  inherit (conf) username colorscheme tmux seto nh zoxide man lsd bat direnv nix-index cachix ydotool;
+  inherit (conf) username colorscheme tmux seto nh zoxide man lsd bat direnv nix-index ydotool;
   inherit (lib) optional;
   shell =
     if conf ? shell
@@ -26,7 +26,6 @@ in {
     ++ optional lsd (import ./lsd {inherit username;})
     ++ optional bat (import ./bat {inherit username;})
     ++ optional direnv (import ./direnv {inherit username shell;})
-    ++ optional cachix (import ./cachix {inherit pkgs config username;})
     ++ optional nix-index (import ./nix-index {inherit username;})
     ++ optional ydotool (import ./ydotool {inherit username;});
 }

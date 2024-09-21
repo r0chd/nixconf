@@ -5,13 +5,14 @@
   lib,
   config,
   hostname,
+  arch,
   ...
 }: let
   inherit (userConfig) username colorscheme;
   std = import ./std {inherit username lib hostname;};
   conf =
     lib.recursiveUpdate (import ./default_config.nix {
-      inherit hostname;
+      inherit hostname arch;
       disableAll = userConfig ? disableAll && userConfig.disableAll == true;
     })
     userConfig
@@ -66,8 +67,8 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
-    (writeShellScriptBin "devshell" ''
-      nix develop "$FLAKE/shells#$@" -c ${userConfig.shell}
+    (writeShellScriptBin "shell" ''
+      nix develop "${std.dirs.config}#devShells.$@.${arch}" -c ${userConfig.shell}
     '')
 
     (writeShellScriptBin "nb" ''

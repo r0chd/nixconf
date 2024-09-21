@@ -1,8 +1,10 @@
 {
   hostname,
+  arch,
   disableAll,
 }: let
   commonConfig = {
+    arch = arch;
     hostname = hostname;
     colorscheme = "catppuccin";
     font = "JetBrainsMono Nerd Font";
@@ -32,7 +34,6 @@
     audio = true;
     virtualization = true;
     zram = true;
-    cachix = false;
     ydotool = true;
   };
   minimalConfig = {
@@ -51,7 +52,6 @@
     audio = false;
     virtualization = false;
     zram = false;
-    cachix = false;
     ydotool = false;
   };
 in

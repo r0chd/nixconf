@@ -5,7 +5,7 @@
   lib,
   std,
 }: let
-  inherit (conf) username ruin;
+  inherit (conf) ruin;
   inherit (lib) optional;
 in {
   environment.shellAliases =
@@ -15,16 +15,9 @@ in {
     [
       (import ./browser {inherit conf inputs pkgs;})
       (import ./terminal {inherit conf inputs pkgs;})
+      (import ./cursors {inherit conf pkgs;})
+      (import ./status {inherit conf std pkgs inputs;})
+      (import ./notifications {inherit conf;})
     ]
-    ++ (
-      if conf ? statusBar && conf.statusBar == "waystatus"
-      then [(import ./waystatus {inherit conf std pkgs inputs;})]
-      else []
-    )
-    ++ (
-      if conf ? notifications && conf.notifications == "mako"
-      then [(import ./mako {inherit username;})]
-      else []
-    )
     ++ optional ruin (import ./ruin {inherit conf pkgs inputs std;});
 }

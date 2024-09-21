@@ -10,7 +10,6 @@
   ];
 
   sops = {
-    secrets.cachix = {};
     secrets.password.neededForUsers = true;
     defaultSopsFile = ../../../hosts/${hostname}/secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
