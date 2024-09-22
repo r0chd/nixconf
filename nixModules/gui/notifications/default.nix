@@ -1,11 +1,9 @@
 {conf}: {
-  imports = let
-    inherit (conf) username;
-  in
+  imports =
     []
     ++ (
       if conf ? notifications && conf.notifications == "mako"
-      then [(import ./mako {inherit username;})]
+      then [(import ./mako {inherit conf;})]
       else []
     );
 }

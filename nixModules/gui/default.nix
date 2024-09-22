@@ -11,7 +11,8 @@
     (import ./cursors {inherit conf pkgs lib;})
     (import ./status {inherit conf std pkgs inputs;})
     (import ./notifications {inherit conf;})
-    (import ./lockscreen {inherit conf;})
+    (import ./lockscreen {inherit conf pkgs;})
     (import ./wallpaper {inherit conf std pkgs inputs;})
+    (import ./launcher {inherit conf;})
   ];
 }

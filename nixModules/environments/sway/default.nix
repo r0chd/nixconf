@@ -88,6 +88,9 @@ in {
         }
         // lib.optionalAttrs (conf ? terminal) {
           "${modifier}+Shift+Return" = "exec ${conf.terminal}";
+        }
+        // lib.optionalAttrs (conf ? launcher) {
+          "${modifier}+S" = "exec ${conf.launcher}";
         };
     };
   };

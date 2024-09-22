@@ -160,7 +160,8 @@ in {
         ++ (lib.optional (conf ? terminal) "$mainMod SHIFT, RETURN, exec, ${conf.terminal}")
         ++ (lib.optional (conf ? browser) "$mainMod SHIFT, B, exec, ${conf.browser}")
         ++ (lib.optional seto ", Print, exec, grim -g \"$(seto -r)\" - | wl-copy -t image/png")
-        ++ (lib.optional (seto && ydotool) "$mainMod, G, exec, bash -c \"ydotool mousemove -a $(seto -f $'%x %y\\n' --grid-size 70,70) && ydotool click 0xC0\"");
+        ++ (lib.optional (seto && ydotool) "$mainMod, G, exec, bash -c \"ydotool mousemove -a $(seto -f $'%x %y\\n' --grid-size 70,70) && ydotool click 0xC0\"")
+        ++ (lib.optional (conf ? launcher) "$mainMod, S, exec, ${conf.launcher}");
     };
   };
 }

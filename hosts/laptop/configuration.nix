@@ -19,6 +19,7 @@
     cursor = "bibata";
     notifications = "mako";
     lockscreen = "hyprlock";
+    launcher = "fuzzel";
     wallpaper = {
       program = "ruin";
       path = "nix";
