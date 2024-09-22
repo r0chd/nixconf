@@ -15,7 +15,7 @@ in {
     grim
   ];
   home-manager.users."${username}".home.file.".config/seto/config.lua".text = let
-    inherit (colorscheme) text accent special warn;
+    inherit (colorscheme) text accent1 special warn;
     inherit (conf) font;
   in
     /*
@@ -31,7 +31,7 @@ in {
               weight = 50,
           },
       	grid = {
-      		color = "${accent}",
+      		color = "${accent1}",
       		size = { 60, 60 },
       		selected_color = "${special}",
       	},

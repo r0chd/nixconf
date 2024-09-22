@@ -14,9 +14,16 @@
     font = "JetBrainsMono Nerd Font";
     terminal = "ghostty";
     editor = "nvim";
-    shell = "fish";
+    shell = "zsh";
     browser = "firefox";
-    cursor = "bibata_hyprcursor";
+    cursor = "bibata";
+    notifications = "mako";
+    lockscreen = "hyprlock";
+    wallpaper = {
+      program = "ruin";
+      path = "nix";
+    };
+    ruin = true;
     power = true;
   };
 in {

@@ -10,11 +10,11 @@ in {
   home-manager.users."${username}".wayland.windowManager.sway = {
     enable = true;
     extraConfig = let
-      inherit (colorscheme) accent inactive;
+      inherit (colorscheme) accent1 inactive;
     in ''
       default_border pixel 2
       client.unfocused ${inactive} ${inactive} ${inactive} ${inactive}
-      client.focused ${accent} ${accent} ${accent} ${accent}
+      client.focused ${accent1} ${accent1} ${accent1} ${accent1}
     '';
     config = rec {
       bars =
@@ -28,7 +28,10 @@ in {
       startup =
         []
         ++ lib.optional (conf ? terminal) {command = "sway workspace 1; ${terminal}";}
-        ++ lib.optional conf.ruin {command = "ruin nix";};
+        ++ lib.optional (conf
+          ? wallpaper
+          && conf.wallpaper ? program
+          && conf.wallpaper ? path) {command = "${conf.wallpaper.program} ${conf.wallpaper.path}";};
 
       keybindings =
         {

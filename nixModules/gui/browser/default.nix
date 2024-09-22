@@ -2,7 +2,11 @@
   conf,
   inputs,
   pkgs,
+  lib,
 }: {
+  environment.shellAliases =
+    {}
+    // lib.optionalAttrs (conf ? browser) {browser = "nb ${conf.browser}";};
   imports = let
     inherit (conf) username;
   in

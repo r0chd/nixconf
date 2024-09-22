@@ -4,7 +4,7 @@
   conf,
   lib,
 }: let
-  inherit (conf) username ruin audio colorscheme seto ydotool;
+  inherit (conf) username audio colorscheme seto ydotool;
 in {
   programs.hyprland.portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
 
@@ -41,9 +41,9 @@ in {
       };
 
       general = let
-        inherit (colorscheme) accent inactive;
+        inherit (colorscheme) accent1 inactive;
       in {
-        "col.active_border" = "rgb(${accent})";
+        "col.active_border" = "rgb(${accent1})";
         "col.inactive_border" = "rgb(${inactive})";
 
         border_size = 2;
@@ -100,7 +100,10 @@ in {
         []
         ++ (lib.optional (conf ? statusBar) "${conf.statusBar}")
         ++ (lib.optional (conf ? terminal) "${conf.terminal}")
-        ++ (lib.optional ruin "ruin nix");
+        ++ lib.optional (conf
+          ? wallpaper
+          && conf.wallpaper ? program
+          && conf.wallpaper ? path) "${conf.wallpaper.program} ${conf.wallpaper.path}";
 
       env = [
         "HYPRCURSOR_SIZE,24"

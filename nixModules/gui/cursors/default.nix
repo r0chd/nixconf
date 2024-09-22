@@ -1,13 +1,9 @@
 {
   conf,
   pkgs,
+  lib,
 }: {
-  environment.systemPackages = [
-    (pkgs.callPackage ./bibata_hyprcursor {})
-    #    (
-    #      if conf ? cursor && conf.cursor == "bibata_hyprcursor"
-    #      then [(import ./bibata_hyprcursor)]
-    #      else []
-    #    )
-  ];
+  environment.systemPackages =
+    []
+    ++ (lib.optional (conf ? cursor && conf.cursor == "bibata") (pkgs.callPackage ./bibata {}));
 }

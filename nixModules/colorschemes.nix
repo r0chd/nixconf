@@ -3,7 +3,7 @@
     catppuccin = {
       name = "catppuccin";
       text = "FFFFFF";
-      accent = "C5A8EB";
+      accent1 = "C5A8EB";
       accent2 = "C9CBFF";
       background1 = "170E1F";
       background2 = "140F21";

@@ -13,12 +13,8 @@
     power = false;
   };
   defaultConfig = {
-    terminal = "foot";
-    statusBar = "waystatus";
     editor = "nvim";
     shell = "zsh";
-    browser = "firefox";
-    notifications = "mako";
     tmux = true;
     seto = true;
     nh = true;
@@ -28,7 +24,6 @@
     bat = true;
     direnv = true;
     nix-index = true;
-    ruin = true;
     wireless = true;
     bluetooth = true;
     audio = true;
@@ -46,7 +41,6 @@
     bat = false;
     direnv = false;
     nix-index = false;
-    ruin = false;
     wireless = false;
     bluetooth = false;
     audio = false;

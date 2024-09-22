@@ -29,9 +29,9 @@ in {
       };
       fish_prompt = {
         body = let
-          inherit (colorscheme) accent accent2;
+          inherit (colorscheme) accent1 accent2;
         in ''
-          echo -s ' '(set_color ${accent2} --bold)(basename (prompt_pwd)) (set_color ${accent2} --bold) (fish_git_prompt " git:("(set_color FAB387 --bold)"%s"(set_color ${accent2} --bold)")") (set_color ${accent} --bold)'  '
+          echo -s ' '(set_color ${accent2} --bold)(basename (prompt_pwd)) (set_color ${accent2} --bold) (fish_git_prompt " git:("(set_color FAB387 --bold)"%s"(set_color ${accent2} --bold)")") (set_color ${accent1} --bold)'  '
         '';
       };
       fish_vi_on_paging = {

@@ -4,13 +4,6 @@
   std,
 }: let
   inherit (conf) username;
-  colors = let
-    inherit (conf) colorscheme;
-  in
-    if colorscheme.name == "catppuccin"
-    then ["196" "155" "189" "214" "219"]
-    else [];
-  getColor = index: "${builtins.elemAt colors index}";
 in {
   environment.systemPackages = with pkgs; [fzf];
 
@@ -28,7 +21,10 @@ in {
       ignoreDups = true;
     };
     autosuggestion.enable = true;
-    initExtra = ''
+    initExtra = let
+      inherit (conf) colorscheme;
+      inherit (colorscheme) accent1 accent2 error special warn;
+    in ''
       eval "$(fzf --zsh)"
 
       zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
@@ -46,7 +42,7 @@ in {
         local branch
         branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
         if [[ -n "$branch" ]]; then
-            echo "%F{${getColor 2}}git:(%f%F{${getColor 3}}$branch%f%F{${getColor 2}})%f "
+            echo "%F{#${accent2}}git:(%f%F{#${warn}}$branch%f%F{#${accent2}})%f "
         fi
       }
 
@@ -57,24 +53,24 @@ in {
         else
           dir=$(basename $PWD)
         fi
-        echo "%F{${getColor 2}}''${dir}%f"
+        echo "%F{#${accent2}}''${dir}%f"
       }
 
       _vi_mode() {
         case ''${KEYMAP} in
             (vicmd)
                 printf "\033[2 q"
-                echo "%F{${getColor 0}}[N]%f"
+                echo "%F{#${error}}[N]%f"
             ;;
             (*)
                 printf "\033[6 q"
-                echo "%F{${getColor 1}}[I]%f"
+                echo "%F{#${special}}[I]%f"
             ;;
         esac
       }
 
       function zle-line-init zle-keymap-select () {
-        PS1=" $(_vi_mode) $(_current_dir) $(_git_branch)%F{${getColor 4}}%f "
+        PS1=" $(_vi_mode) $(_current_dir) $(_git_branch)%F{#${accent1}}%f "
 
         zle reset-prompt
       }

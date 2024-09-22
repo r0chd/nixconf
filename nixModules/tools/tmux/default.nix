@@ -50,7 +50,7 @@ in {
       vim-tmux-navigator
     ];
     extraConfig = let
-      inherit (colorscheme) accent inactive text background2;
+      inherit (colorscheme) accent1 inactive text background2;
     in ''
       set -as terminal-features ",xterm-256color:RGB"
 
@@ -69,7 +69,7 @@ in {
       bind-key C-b run-shell "tmux rename-window "$(basename $(pwd))""
 
       set -g pane-border-style fg="#${inactive}"
-      set -g pane-active-border-style fg="#${accent}"
+      set -g pane-active-border-style fg="#${accent1}"
 
       set -g status-bg "#${background2}"
       set -g status-fg "#${text}"
