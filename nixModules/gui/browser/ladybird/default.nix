@@ -1,6 +1,4 @@
-{pkgs, ...}: {
-  environment = {
-    systemPackages = with pkgs; [ladybird];
-    shellAliases.ladybird = "Ladybird";
-  };
+_: {
+  programs.ladybird.enable = true;
+  environment.shellAliases.ladybird = "Ladybird";
 }

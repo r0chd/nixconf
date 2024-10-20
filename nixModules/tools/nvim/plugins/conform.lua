@@ -22,6 +22,7 @@ require("conform").setup({
 		asm = { "asmfmt" },
 		zig = { "zig fmt" },
 		sh = { "shfmt" },
+		cs = { "csharpier" },
 	},
 })
 

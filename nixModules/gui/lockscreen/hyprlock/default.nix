@@ -1,11 +1,14 @@
 {
   conf,
   pkgs,
+  std,
 }: let
-  inherit (conf) username;
+  inherit (conf) username colorscheme;
 in {
   security.pam.services.hyprlock = {};
-  home-manager.users."${username}" = {
+  home-manager.users."${username}" = let
+    inherit (colorscheme) text background1;
+  in {
     programs.hyprlock = {
       enable = true;
       settings = {
@@ -18,7 +21,7 @@ in {
         background = [
           {
             monitor = "";
-            color = "rgba(25, 20, 20, 1.0)";
+            color = "rgb(${std.conversions.hexToRGBString "," background1})";
             blur_passes = 1;
             blur_size = 0;
             brightness = 0.2;
@@ -32,9 +35,9 @@ in {
             dots_size = 0.2;
             dots_spacing = 0.2;
             dots_center = true;
-            outer_color = "rgba(0, 0, 0, 0)";
+            outer_color = "rgb(0, 0, 0, 0)";
             inner_color = "rgba(0, 0, 0, 0.5)";
-            font_color = "rgb(200, 200, 200)";
+            font_color = "rgb(${text})";
             fade_on_empty = false;
             placeholder_text = ''<i><span foreground="##cdd6f4">Input Password...</span></i>'';
             hide_input = false;
@@ -63,7 +66,7 @@ in {
           before_sleep_cmd = "loginctl lock-session";
           after_sleep_cmd = "hyprctl dispatch dpms on";
           ignore_dbus_inhibit = true;
-          lock_cmd = "pidof hyprlock || hyprlock";
+          lock_cmd = "hyprlock";
         };
         listener = let
           lockScript = pkgs.writeShellScript "lock-script" ''

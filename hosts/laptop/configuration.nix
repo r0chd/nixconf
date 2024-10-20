@@ -1,20 +1,13 @@
-{
-  inputs,
-  pkgs,
-  lib,
-  config,
-  hostname,
-  arch,
-  ...
-}: let
+{ inputs, pkgs, lib, config, hostname, arch, ... }:
+let
   userConfig = {
     username = "unixpariah";
     statusBar = "waystatus";
     colorscheme = "catppuccin";
     font = "JetBrainsMono Nerd Font";
-    terminal = "ghostty";
+    terminal = "foot";
     editor = "nvim";
-    shell = "zsh";
+    shell = "fish";
     browser = "firefox";
     cursor = "bibata";
     notifications = "mako";
@@ -24,12 +17,13 @@
       program = "ruin";
       path = "nix";
     };
-    ruin = true;
-    power = true;
+    power = false;
   };
 in {
   imports = [
-    (import ../../nixModules {inherit userConfig inputs pkgs lib config hostname arch;})
+    (import ../../nixModules {
+      inherit userConfig inputs pkgs lib config hostname arch;
+    })
     #./disko.nix
     ./gpu.nix
     ./hardware-configuration.nix
@@ -54,14 +48,9 @@ in {
     gimp
     spotify
     imagemagick
-    ydotool
   ];
 
-  fonts.packages = with pkgs; [
-    jetbrains-mono
-    font-awesome
-    nerdfonts
-  ];
+  fonts.packages = with pkgs; [ jetbrains-mono font-awesome nerdfonts ];
 
   system.stateVersion = "24.05";
 }

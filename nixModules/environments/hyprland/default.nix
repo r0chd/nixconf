@@ -1,16 +1,24 @@
-{
-  pkgs,
-  inputs,
-  conf,
-  lib,
-}: let
-  inherit (conf) username audio colorscheme seto ydotool;
+{ pkgs, inputs, conf, lib, }:
+let inherit (conf) username audio colorscheme seto ydotool;
 in {
-  programs.hyprland.portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
+  environment.systemPackages = with pkgs;
+    [
+      (writeShellScriptBin "click" ''
+        cursorpos=$(hyprctl cursorpos)
+        x=$(echo $cursorpos | cut -d "," -f 1)
+        y=$(echo $cursorpos | cut -d "," -f 2)
+        initial_cursorpos="$x $y"
+
+        ydotool mousemove -a $(seto -f $'%x %y\\n') && ydotool click 0xC0 && ydotool mousemove -a $initial_cursorpos
+      '')
+    ];
+  programs.hyprland.portalPackage =
+    inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
 
   nix.settings = {
-    substituters = ["https://hyprland.cachix.org"];
-    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+    substituters = [ "https://hyprland.cachix.org" ];
+    trusted-public-keys =
+      [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
   };
 
   home-manager.users."${username}".wayland.windowManager.hyprland = {
@@ -18,10 +26,8 @@ in {
     package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     settings = {
       input = {
-        monitor = [
-          "eDP-1, 1920x1080, 0x0, 1"
-          "HDMI-A-1, 1920x1080, 1920x0, 1"
-        ];
+        monitor =
+          [ "eDP-1, 1920x1080, 0x0, 1" "HDMI-A-1, 1920x1080, 1920x0, 1" ];
 
         kb_layout = "us";
         kb_variant = "";
@@ -40,8 +46,7 @@ in {
         accel_profile = "flat";
       };
 
-      general = let
-        inherit (colorscheme) accent1 inactive;
+      general = let inherit (colorscheme) accent1 inactive;
       in {
         "col.active_border" = "rgb(${accent1})";
         "col.inactive_border" = "rgb(${inactive})";
@@ -84,9 +89,7 @@ in {
         preserve_split = "yes";
       };
 
-      gestures = {
-        workspace_swipe = "off";
-      };
+      gestures = { workspace_swipe = "off"; };
 
       misc = {
         force_default_wallpaper = "0";
@@ -96,72 +99,72 @@ in {
 
       "$mainMod" = "ALT"; # Mod key
 
-      exec-once =
-        []
-        ++ (lib.optional (conf ? statusBar) "${conf.statusBar}")
-        ++ (lib.optional (conf ? terminal) "${conf.terminal}")
-        ++ lib.optional (conf
-          ? wallpaper
-          && conf.wallpaper ? program
-          && conf.wallpaper ? path) "${conf.wallpaper.program} ${conf.wallpaper.path}";
+      exec-once = [ ] ++ (lib.optional (conf ? statusBar) "${conf.statusBar}")
+        ++ (lib.optional (conf ? terminal) "${conf.terminal}") ++ lib.optional
+        (conf ? wallpaper && conf.wallpaper ? program && conf.wallpaper ? path)
+        "${conf.wallpaper.program} ${conf.wallpaper.path}";
 
-      env = [
-        "HYPRCURSOR_SIZE,24"
-      ];
+      env = [ "HYPRCURSOR_SIZE,24" ];
 
-      bind =
-        [
-          # Brightness
-          ", XF86MonBrightnessUp, exec, brightnessctl set +5%"
-          ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
+      bind = [
+        # Brightness
+        ", XF86MonBrightnessUp, exec, brightnessctl set +5%"
+        ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
 
-          # Manage workspace
-          "$mainMod SHIFT, C, killactive,"
-          "$mainMod, F, togglefloating,"
-          "$mainMod, H, movefocus, l"
-          "$mainMod, L, movefocus, r"
-          "$mainMod, K, movefocus, u"
-          "$mainMod, J, movefocus, d"
+        # Manage workspace
+        "$mainMod SHIFT, C, killactive,"
+        "$mainMod, F, togglefloating,"
+        "$mainMod, H, movefocus, l"
+        "$mainMod, L, movefocus, r"
+        "$mainMod, K, movefocus, u"
+        "$mainMod, J, movefocus, d"
 
-          # Switch workspaces with mainMod + [0-9]
-          "$mainMod, 1, workspace, 1"
-          "$mainMod, 2, workspace, 2"
-          "$mainMod, 3, workspace, 3"
-          "$mainMod, 4, workspace, 4"
-          "$mainMod, 5, workspace, 5"
-          "$mainMod, 6, workspace, 6"
-          "$mainMod, 7, workspace, 7"
-          "$mainMod, 8, workspace, 8"
-          "$mainMod, 9, workspace, 9"
-          "$mainMod, 0, workspace, 10"
+        # Switch workspaces with mainMod + [0-9]
+        "$mainMod, 1, workspace, 1"
+        "$mainMod, 2, workspace, 2"
+        "$mainMod, 3, workspace, 3"
+        "$mainMod, 4, workspace, 4"
+        "$mainMod, 5, workspace, 5"
+        "$mainMod, 6, workspace, 6"
+        "$mainMod, 7, workspace, 7"
+        "$mainMod, 8, workspace, 8"
+        "$mainMod, 9, workspace, 9"
+        "$mainMod, 0, workspace, 10"
 
-          # Move to next workspace with mainMod + [M/N]
-          "$mainMod, N, workspace, e-1"
-          "$mainMod, M, workspace, e+1"
+        # Move to next workspace with mainMod + [M/N]
+        "$mainMod, N, workspace, e-1"
+        "$mainMod, M, workspace, e+1"
 
-          # Move active window to next workspace with mainMod + [M/N]
-          "$mainMod SHIFT, N, movetoworkspace, -1"
-          "$mainMod SHIFT, M, movetoworkspace, +1"
+        # Move active window to next workspace with mainMod + [M/N]
+        "$mainMod SHIFT, N, movetoworkspace, -1"
+        "$mainMod SHIFT, M, movetoworkspace, +1"
 
-          # Move active window to a workspace with mainMod + SHIFT + [0-9]
-          "$mainMod SHIFT, 1, movetoworkspace, 1"
-          "$mainMod SHIFT, 2, movetoworkspace, 2"
-          "$mainMod SHIFT, 3, movetoworkspace, 3"
-          "$mainMod SHIFT, 4, movetoworkspace, 4"
-          "$mainMod SHIFT, 5, movetoworkspace, 5"
-          "$mainMod SHIFT, 6, movetoworkspace, 6"
-          "$mainMod SHIFT, 7, movetoworkspace, 7"
-          "$mainMod SHIFT, 8, movetoworkspace, 8"
-          "$mainMod SHIFT, 9, movetoworkspace, 9"
-          "$mainMod SHIFT, 0, movetoworkspace, 10"
-        ]
-        ++ (lib.optional audio ", XF86AudioRaiseVolume, exec, pamixer -i 5")
+        # Move active window to a workspace with mainMod + SHIFT + [0-9]
+        "$mainMod SHIFT, 1, movetoworkspace, 1"
+        "$mainMod SHIFT, 2, movetoworkspace, 2"
+        "$mainMod SHIFT, 3, movetoworkspace, 3"
+        "$mainMod SHIFT, 4, movetoworkspace, 4"
+        "$mainMod SHIFT, 5, movetoworkspace, 5"
+        "$mainMod SHIFT, 6, movetoworkspace, 6"
+        "$mainMod SHIFT, 7, movetoworkspace, 7"
+        "$mainMod SHIFT, 8, movetoworkspace, 8"
+        "$mainMod SHIFT, 9, movetoworkspace, 9"
+        "$mainMod SHIFT, 0, movetoworkspace, 10"
+      ] ++ (lib.optional audio ", XF86AudioRaiseVolume, exec, pamixer -i 5")
         ++ (lib.optional audio ", XF86AudioLowerVolume, exec, pamixer -d 5")
-        ++ (lib.optional (conf ? terminal) "$mainMod SHIFT, RETURN, exec, ${conf.terminal}")
-        ++ (lib.optional (conf ? browser) "$mainMod SHIFT, B, exec, ${conf.browser}")
-        ++ (lib.optional seto ", Print, exec, grim -g \"$(seto -r)\" - | wl-copy -t image/png")
-        ++ (lib.optional (seto && ydotool) "$mainMod, G, exec, bash -c \"ydotool mousemove -a $(seto -f $'%x %y\\n' --grid-size 70,70) && ydotool click 0xC0\"")
-        ++ (lib.optional (conf ? launcher) "$mainMod, S, exec, ${conf.launcher}");
+        ++ (lib.optional (conf ? terminal)
+          "$mainMod SHIFT, RETURN, exec, ${conf.terminal}")
+        ++ (lib.optional seto
+          '', Print, exec, grim -g "$(seto -r)" - | wl-copy -t image/png'')
+        ++ (lib.optional (seto && ydotool) "$mainMod, G, exec, click")
+        ++ (lib.optional (conf ? launcher)
+          "$mainMod, S, exec, ${conf.launcher}");
+
+      bindm = [
+        # Move/resize windows with mainMod + LMB/RMB and dragging
+        "$mainMod, mouse:272, movewindow"
+        "$mainMod, mouse:273, resizewindow"
+      ];
     };
   };
 }

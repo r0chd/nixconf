@@ -1,30 +1,21 @@
-{
-  userConfig,
-  pkgs,
-  inputs,
-  lib,
-  config,
-  hostname,
-  arch,
-  ...
-}: let
+{ userConfig, pkgs, inputs, lib, config, hostname, arch, ... }:
+let
   inherit (userConfig) username colorscheme;
-  std = import ./std {inherit username lib hostname;};
-  conf =
-    lib.recursiveUpdate (import ./default_config.nix {
-      inherit hostname arch;
-      disableAll = userConfig ? disableAll && userConfig.disableAll == true;
-    })
-    userConfig
-    // {colorscheme = import ./colorschemes.nix {inherit colorscheme;};};
+  std = import ./std { inherit username lib hostname; };
+  conf = lib.recursiveUpdate (import ./default_config.nix {
+    inherit hostname arch;
+    disableAll = userConfig ? disableAll && userConfig.disableAll == true;
+  }) userConfig // {
+    colorscheme = import ./colorschemes.nix { inherit colorscheme; };
+  };
 in {
   imports = [
-    (import ./security {inherit conf inputs pkgs std;})
-    (import ./gui {inherit conf inputs pkgs lib std;})
-    (import ./tools {inherit conf pkgs lib config std inputs;})
-    (import ./system {inherit conf pkgs lib std;})
-    (import ./hardware {inherit conf lib std;})
-    (import ./network {inherit conf pkgs lib std;})
+    (import ./security { inherit conf inputs pkgs std; })
+    (import ./gui { inherit conf inputs pkgs lib std; })
+    (import ./tools { inherit conf pkgs lib config std inputs; })
+    (import ./system { inherit conf pkgs lib std; })
+    (import ./hardware { inherit conf lib std; })
+    (import ./network { inherit conf pkgs lib std; })
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -44,11 +35,13 @@ in {
 
   nix = {
     settings = {
-      experimental-features = ["nix-command" "flakes"];
+      experimental-features = [ "nix-command" "flakes" ];
       auto-optimise-store = true;
-      substituters = ["https://nix-community.cachix.org"];
-      trusted-public-keys = ["nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="];
-      trusted-users = ["root" "${username}"];
+      substituters = [ "https://nix-community.cachix.org" ];
+      trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
+      trusted-users = [ "root" "${username}" ];
     };
     gc = {
       automatic = true;
@@ -62,7 +55,7 @@ in {
     users."${userConfig.username}" = {
       isNormalUser = true;
       hashedPasswordFile = config.sops.secrets.password.path;
-      extraGroups = ["wheel" "ydotool"];
+      extraGroups = [ "wheel" "ydotool" ];
     };
   };
 
@@ -78,21 +71,23 @@ in {
   ];
 
   specialisation = {
-    Hyprland.configuration = let
-      wm = "Hyprland";
+    Hyprland.configuration = let wm = "Hyprland";
     in {
-      imports = [
-        (import ./environments {inherit conf inputs pkgs wm lib std;})
-      ];
+      imports =
+        [ (import ./environments { inherit conf inputs pkgs wm lib; }) ];
       environment.etc."specialisation".text = "Hyprland";
     };
-    Sway.configuration = let
-      wm = "sway";
+    Sway.configuration = let wm = "sway";
     in {
-      imports = [
-        (import ./environments {inherit conf inputs pkgs wm lib std;})
-      ];
-      environment.etc."specialisation".text = "sway";
+      imports =
+        [ (import ./environments { inherit conf inputs pkgs wm lib; }) ];
+      environment.etc."specialisation".text = "Sway";
+    };
+    niri.configuration = let wm = "niri";
+    in {
+      imports =
+        [ (import ./environments { inherit conf inputs pkgs wm lib; }) ];
+      environment.etc."specialisation".text = "niri";
     };
   };
 }

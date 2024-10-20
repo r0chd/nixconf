@@ -3,7 +3,11 @@
   pkgs,
   lib,
 }: {
-  environment.systemPackages =
+  imports =
     []
-    ++ (lib.optional (conf ? cursor && conf.cursor == "bibata") (pkgs.callPackage ./bibata {}));
+    ++ (
+      if conf ? cursor && conf.cursor == "bibata"
+      then [(import ./bibata {inherit pkgs;})]
+      else []
+    );
 }
