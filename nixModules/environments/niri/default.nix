@@ -14,7 +14,6 @@ in {
           (plain "keyboard" [
             (leaf "repeat-delay" 600)
             (leaf "repeat-rate" 25)
-
           ])
 
           (plain "touchpad" [ (flag "tap") (leaf "accel-profile" "flat") ])
@@ -51,11 +50,7 @@ in {
             (leaf "inactive-color" "#${inactive}")
           ])
 
-          # You can customize the widths that "switch-preset-column-width" (Mod+R) toggles between.
           (plain "preset-column-widths" [
-            # Proportion sets the width as a fraction of the output width, taking gaps into account.
-            # For example, you can perfectly fit four windows sized "proportion 0.25" on an output.
-            # The default preset widths are 1/3, 1/2 and 2/3 of the output.
             (leaf "proportion" 0.25)
             (leaf "proportion" 0.5)
             (leaf "proportion" 1.0)
@@ -78,26 +73,10 @@ in {
           && conf.wallpaper ? path) (leaf "spawn-at-startup"
             [ "${conf.wallpaper.program} ${conf.wallpaper.path}" ]))
 
-        # You can override environment variables for processes spawned by niri.
-        (plain "environment" [
-          # Set a variable like this:
-          # (leaf "QT_QPA_PLATFORM" "wayland")
-
-          # Remove a variable by using null as the value:
-          # (leaf "DISPLAY" null)
-        ])
-
         (plain "cursor" [
-          # Change the theme and size of the cursor as well as set the
-          # `XCURSOR_THEME` and `XCURSOR_SIZE` env variables.
           # (leaf "xcursor-theme" "default")
           # (leaf "xcursor-size" 24)
         ])
-
-        # You can also set this to null to disable saving screenshots to disk.
-        # (leaf "screenshot-path" null)
-
-        # Settings for the "Important Hotkeys" overlay.
 
         # Animation settings.
         (plain "animations" [
@@ -177,6 +156,11 @@ in {
           ])
         ])
 
+        (plain "window-rule" [
+          (leaf "geometry-corner-radius" 12)
+          (leaf "clip-to-geometry" true)
+        ])
+
         (plain "binds" [
           # You can also use a shell:
           (plain "Print" [
@@ -191,7 +175,7 @@ in {
             (leaf "spawn" [
               "bash"
               "-c"
-              "ydotool mousemove -a $(seto -f $'%x %y\\\\n') && ydotool click 0xC0"
+              "ydotool mousemove -a $(seto -f $'%x %y') && ydotool click 0xC0"
             ])
           ])
 
@@ -228,14 +212,6 @@ in {
           (plain "Alt+Shift+0" [ (leaf "move-column-to-workspace" 10) ])
           (plain "Alt+Shift+1" [ (leaf "move-column-to-workspace" 1) ])
           (plain "Alt+Shift+2" [ (leaf "move-column-to-workspace" 2) ])
-          # Add lines like this to spawn processes at startup.
-          # Add lines like this to spawn processes at startup.
-          # Note that running niri as a session supports xdg-desktop-autostart,
-          # which may be more convenient to use.
-          # (leaf "spawn-at-startup" [ "alacritty" "-e" "fish" ])
-          # Note that running niri as a session supports xdg-desktop-autostart,
-          # which may be more convenient to use.
-          # (leaf "spawn-at-startup" [ "alacritty" "-e" "fish" ])
           (plain "Alt+Shift+3" [ (leaf "move-column-to-workspace" 3) ])
           (plain "Alt+Shift+4" [ (leaf "move-column-to-workspace" 4) ])
           (plain "Alt+Shift+5" [ (leaf "move-column-to-workspace" 5) ])
@@ -248,20 +224,11 @@ in {
           (plain "Alt+F" [ (flag "maximize-column") ])
           (plain "Alt+C" [ (flag "center-column") ])
 
-          # Finer width adjustments.
-          # This command can also:
-          # * set width in pixels: "1000"
-          # * adjust width in pixels: "-5" or "+5"
-          # * set width as a percentage of screen width: "25%"
-          # * adjust width as a percentage of screen width: "-10%" or "+10%"
-          # Pixel sizes use logical, or scaled, pixels. I.e. on an output with scale 2.0,
-          # (leaf "set-column-width" "100") will make the column occupy 200 physical screen pixels.
-          (plain "Mod+Minus" [ (leaf "set-column-width" "-10%") ])
-          (plain "Mod+Equal" [ (leaf "set-column-width" "+10%") ])
+          (plain "Alt+N" [ (leaf "set-column-width" "-10%") ])
+          (plain "Alt+M" [ (leaf "set-column-width" "+10%") ])
 
-          # Finer height adjustments when in column with other windows.
-          (plain "Mod+Shift+Minus" [ (leaf "set-window-height" "-10%") ])
-          (plain "Mod+Shift+Equal" [ (leaf "set-window-height" "+10%") ])
+          (plain "Alt+Shift+N" [ (leaf "set-window-height" "-10%") ])
+          (plain "Alt+Shift+M" [ (leaf "set-window-height" "+10%") ])
 
           (lib.optional (conf ? terminal) (plain "Alt+Shift+Return"
             [ (leaf "spawn" [ "${conf.terminal}" ]) ]))
