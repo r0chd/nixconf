@@ -1,12 +1,8 @@
 _: {
-  boot.loader = {
-      timeout = null;
-      efi.canTouchEfiVariables = false;
-      grub = {
+  boot.loader.grub = {
         enable = true;
         device = "nodev";
-        efiSupport = false;
+        efiSupport = true;
         useOSProber = true;
       };
-  };
 }

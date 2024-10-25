@@ -1,27 +1,17 @@
-{
-  pkgs,
-  inputs,
-  conf,
-}: let
-  inherit (conf) username colorscheme;
+{ pkgs, inputs, conf, lib, }:
+let inherit (conf) username colorscheme;
 in {
-  nix.settings = {
-    substituters = ["https://hyprland.cachix.org"];
-    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
-  };
-
   environment.systemPackages = with pkgs; [
     inputs.seto.packages.${system}.default
     grim
   ];
-  home-manager.users."${username}".home.file.".config/seto/config.lua".text = let
-    inherit (colorscheme) text accent1 special warn;
-    inherit (conf) font;
-  in
-    /*
-    lua
-    */
-    ''
+
+  home-manager.users."${username}".home.file.".config/seto/config.lua".text =
+    let
+      inherit (colorscheme) text accent1 special warn;
+      inherit (conf) font;
+      # lua
+    in ''
       return {
           background_color = "#7287FD66";
           font = {
@@ -56,4 +46,5 @@ in {
           },
       }
     '';
+
 }

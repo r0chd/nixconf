@@ -29,7 +29,9 @@
     zls.url = "github:zigtools/zls";
     zig.url = "github:mitchellh/zig-overlay";
 
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    impermanence.url = "github:nix-community/impermanence";
+
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1/main";
     niri.url = "github:sodiboo/niri-flake";
 
     # Created by me, myself and I
@@ -39,13 +41,15 @@
     ruin.url = "git+https://github.com/unixpariah/ruin?submodules=1";
   };
 
-  outputs = { nixpkgs, home-manager, disko, flake-utils, zls, zig, ... }@inputs:
+  outputs = { nixpkgs, home-manager, disko, flake-utils, zls, zig, impermanence
+    , ... }@inputs:
     let
       newConfig = hostname: arch:
         nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs hostname arch; };
           modules = [
             ./hosts/${hostname}/configuration.nix
+            impermanence.nixosModules.impermanence
             home-manager.nixosModules.default
             disko.nixosModules.default
 

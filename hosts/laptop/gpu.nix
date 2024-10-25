@@ -2,21 +2,21 @@
   hardware = {
     nvidia = {
       #modesetting.enable = true;
-      # powerManagement = {
-      #   enable = true;
-      #   finegrained = true;
-      # };
+      powerManagement = {
+        enable = true;
+        finegrained = true;
+      };
 
-      open = false;
-      # nvidiaSettings = true;
-      # prime = {
-      #   offload = {
-      #     enable = true;
-      #     enableOffloadCmd = true;
-      #   };
-      #   intelBusId = "PCI:0:2:0";
-      #   nvidiaBusId = "PCI:0:1:0";
-      # };
+      open = true;
+      nvidiaSettings = true;
+      prime = {
+        offload = {
+          enable = true;
+          enableOffloadCmd = true;
+        };
+        intelBusId = "PCI:0:2:0";
+        nvidiaBusId = "PCI:0:1:0";
+      };
     };
 
     graphics = {

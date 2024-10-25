@@ -9,11 +9,7 @@
 in {
   imports =
     [
-      (
-        if conf.boot.loader == "systemd-boot"
-        then (import ./bootloader/systemd-boot)
-        else (import ./bootloader/grub)
-      )
+	    (import ./bootloader {inherit conf;})
       (
         if conf ? shell && conf.shell == "fish"
         then (import ./shell/fish {inherit conf pkgs;})

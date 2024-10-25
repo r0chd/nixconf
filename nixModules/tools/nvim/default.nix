@@ -1,4 +1,4 @@
-{ pkgs, inputs, }: {
+{ pkgs, inputs, username }: {
   environment = {
     systemPackages = with pkgs; [
       inputs.nixvim.packages.${system}.default
@@ -12,11 +12,10 @@
       gcc
       stylua
     ];
-
     shellAliases = {
       vi = "nvim";
       vim = "nvim";
     };
+    variables.EDITOR = "nvim";
   };
-
 }

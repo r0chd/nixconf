@@ -1,6 +1,7 @@
 { inputs, pkgs, lib, config, hostname, arch, ... }:
 let
   userConfig = {
+    email = "oskar.rochowiak@tutanota.com";
     username = "unixpariah";
     statusBar = "waystatus";
     colorscheme = "catppuccin";
@@ -8,8 +9,9 @@ let
     terminal = "foot";
     editor = "nvim";
     shell = "fish";
-    browser = "firefox";
+    browser = "qutebrowser";
     cursor = "bibata";
+    bootloader = "grub";
     notifications = "mako";
     lockscreen = "hyprlock";
     launcher = "fuzzel";
@@ -17,14 +19,14 @@ let
       program = "ruin";
       path = "nix";
     };
-    power = false;
+    power = true;
   };
 in {
   imports = [
     (import ../../nixModules {
       inherit userConfig inputs pkgs lib config hostname arch;
     })
-    #./disko.nix
+    ./disko.nix
     ./gpu.nix
     ./hardware-configuration.nix
   ];
@@ -33,6 +35,7 @@ in {
   i18n.defaultLocale = "en_US.UTF-8";
 
   environment.systemPackages = with pkgs; [
+    zathura
     renderdoc
     prismlauncher
     mpv

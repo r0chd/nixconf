@@ -1,24 +1,28 @@
-{ pkgs, inputs, wm, conf, lib, }: {
+{ config, pkgs, inputs, conf, lib, }: {
+  options.window-manager = {
+    enable = lib.mkEnableOption "Enable";
+    name = lib.mkOption { type = lib.types.enum [ "Hyprland" "sway" "niri" ]; };
+  };
   imports = [
-    (if wm == "Hyprland" then
-      (import ./hyprland { inherit inputs pkgs conf lib; })
-    else if wm == "sway" then
-      (import ./sway { inherit inputs pkgs conf lib; })
-    else if wm == "niri" then
-      (import ./niri { inherit inputs pkgs conf lib; })
-    else
-      [ ])
+    (import ./hyprland { inherit inputs pkgs conf lib config; })
+    (import ./sway { inherit conf lib config; })
+    (import ./niri { inherit inputs conf lib config; })
   ];
 
-  environment = {
-    shellAliases.obs = "env -u WAYLAND_DISPLAY obs";
-    loginShellInit =
-      # bash
-      ''
-        if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-        ${(if wm == "sway" then "exec sway --unsupported-gpu" else wm)}
-        fi
-      '';
-    systemPackages = with pkgs; [ wl-clipboard wayland obs-studio ];
+  config = lib.mkIf config.window-manager.enable {
+    environment = {
+      shellAliases.obs = "env -u WAYLAND_DISPLAY obs";
+      loginShellInit =
+        # bash
+        ''
+          if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
+          ${(if config.window-manager.name == "sway" then
+            "exec sway --unsupported-gpu"
+          else
+            config.window-manager.name)}
+          fi
+        '';
+      systemPackages = with pkgs; [ wl-clipboard wayland obs-studio ];
+    };
   };
 }

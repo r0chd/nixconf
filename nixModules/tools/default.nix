@@ -7,11 +7,11 @@ let
 in {
   imports = [ (import ./git { inherit username config std; }) ]
     ++ optional (conf ? editor && conf.editor == "nvim")
-    (import ./nvim { inherit pkgs inputs; })
+    (import ./nvim { inherit pkgs inputs username; })
     ++ optional tmux (import ./tmux { inherit pkgs conf; })
-    ++ optional seto (import ./seto { inherit conf pkgs inputs; })
+    ++ optional seto (import ./seto { inherit conf pkgs inputs lib; })
     ++ optional nh (import ./nh { inherit username pkgs std; })
-    ++ optional zoxide (import ./zoxide { inherit username shell; })
+    ++ optional zoxide (import ./zoxide { inherit username; })
     ++ optional man (import ./man { inherit pkgs; })
     ++ optional lsd (import ./lsd { inherit username; })
     ++ optional bat (import ./bat { inherit username; })

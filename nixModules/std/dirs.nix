@@ -1,8 +1,5 @@
-{
-  username,
-  hostname,
-}: rec {
-  home = "/home/${username}";
+{ username, hostname, }: rec {
+  home = "/persist/home/${username}";
   config = ../..;
   host = "${config}/hosts/${hostname}";
 }
