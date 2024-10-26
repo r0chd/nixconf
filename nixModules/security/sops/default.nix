@@ -1,4 +1,6 @@
-{ inputs, pkgs, hostname, std, }: {
+{ inputs, pkgs, conf, std, }:
+let inherit (conf) hostname;
+in {
   imports = [ inputs.sops-nix.nixosModules.sops ];
 
   sops = {

@@ -1,6 +1,8 @@
 { inputs, pkgs, lib, config, hostname, arch, ... }:
 let
   userConfig = {
+    arch = arch;
+    hostname = hostname;
     email = "oskar.rochowiak@tutanota.com";
     username = "unixpariah";
     statusBar = "waystatus";
@@ -15,11 +17,55 @@ let
     notifications = "mako";
     lockscreen = "hyprlock";
     launcher = "fuzzel";
+    power.enable = true;
+    boot.loader = "grub";
+    boot.legacy = false;
+    tmux.enable = true;
+    nh.enable = true;
+    zoxide.enable = true;
+    lsd.enable = true;
+    man.enable = true;
+    bat.enable = true;
+    direnv.enable = true;
+    nix-index.enable = true;
+    ydotool.enable = true;
+    seto.enable = true;
+    wireless.enable = true;
+    bluetooth.enable = true;
+    audio.enable = true;
+    virtualisation.enable = true;
+    zram.enable = true;
     wallpaper = {
       program = "ruin";
       path = "nix";
     };
-    power = true;
+    impermanence = {
+      enable = true;
+      persist = {
+        directories = [
+          "/var/log"
+          "/var/lib/bluetooth"
+          "/var/lib/nixos"
+          "/var/lib/systemd/coredump"
+          "/var/lib/iwd"
+        ];
+        files = [ ];
+      };
+      persist-home = {
+        directories = [
+          "nixconf"
+          ".ssh"
+          ".local/share/direnv"
+          "workspace"
+          "Images"
+          "Videos"
+          ".cache/nix-index"
+          ".config/ruin/images"
+          ".cache/zoxide"
+        ];
+        files = [ ];
+      };
+    };
   };
 in {
   imports = [

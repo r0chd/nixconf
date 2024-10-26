@@ -1,16 +1,13 @@
-{
-  hostname,
-  username,
-  lib,
-  std,
-}: let
+{ conf, std, }:
+let
+  inherit (conf) username;
   keysDir = "${std.dirs.host}/keys";
-  keysList =
-    if (builtins.pathExists keysDir)
-    then
-      (builtins.attrValues (builtins.mapAttrs (fileName: fileType: (builtins.readFile "${keysDir}/${fileName}"))
-          (builtins.readDir keysDir)))
-    else [];
+  keysList = if (builtins.pathExists keysDir) then
+    (builtins.attrValues (builtins.mapAttrs
+      (fileName: fileType: (builtins.readFile "${keysDir}/${fileName}"))
+      (builtins.readDir keysDir)))
+  else
+    [ ];
 in {
   users.users."${username}".openssh.authorizedKeys.keys = keysList;
 

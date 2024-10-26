@@ -1,5 +1,6 @@
 { username, hostname, }: rec {
-  home = "/persist/home/${username}";
+  home-persist = "/persist/home/${username}";
+  home = "/home/${username}";
   config = ../..;
-  host = "${config}/hosts/${hostname}";
+  host = "${home}/nixconf/hosts/${hostname}";
 }

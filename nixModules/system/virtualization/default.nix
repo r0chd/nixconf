@@ -1,13 +1,16 @@
-{
-  username,
-  pkgs,
-}: {
-  virtualisation.libvirtd = {
-    enable = true;
-    onBoot = "ignore";
-    onShutdown = "shutdown";
-  };
+{ conf, lib }:
+let inherit (conf) username;
+in {
+  options.virtualisation.enable = lib.mkEnableOption "Enable virtualisation";
 
-  programs.virt-manager.enable = true;
-  users.users."${username}".extraGroups = ["libvirtd"];
+  config = lib.mkIf conf.virtualisation.enable {
+    virtualisation.libvirtd = {
+      enable = true;
+      onBoot = "ignore";
+      onShutdown = "shutdown";
+    };
+
+    programs.virt-manager.enable = true;
+    users.users."${username}".extraGroups = [ "libvirtd" ];
+  };
 }

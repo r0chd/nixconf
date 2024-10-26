@@ -155,15 +155,17 @@ in {
             "$mainMod SHIFT, 8, movetoworkspace, 8"
             "$mainMod SHIFT, 9, movetoworkspace, 9"
             "$mainMod SHIFT, 0, movetoworkspace, 10"
-          ] ++ (lib.optional audio ", XF86AudioRaiseVolume, exec, pamixer -i 5")
-            ++ (lib.optional audio ", XF86AudioLowerVolume, exec, pamixer -d 5")
+          ] ++ (lib.optional audio.enable
+            ", XF86AudioRaiseVolume, exec, pamixer -i 5")
+            ++ (lib.optional audio.enable
+              ", XF86AudioLowerVolume, exec, pamixer -d 5")
             ++ (lib.optional (conf ? terminal)
               "$mainMod SHIFT, RETURN, exec, ${conf.terminal}")
-            ++ (lib.optional seto
+            ++ (lib.optional seto.enable
               '', Print, exec, grim -g "$(seto -r)" - | wl-copy -t image/png'')
-            ++ (lib.optional (seto && ydotool) "$mainMod, G, exec, click")
-            ++ (lib.optional (conf ? launcher)
-              "$mainMod, S, exec, ${conf.launcher}");
+            ++ (lib.optional (seto.enable && ydotool.enable)
+              "$mainMod, G, exec, click") ++ (lib.optional (conf ? launcher)
+                "$mainMod, S, exec, ${conf.launcher}");
 
           bindm = [
             # Move/resize windows with mainMod + LMB/RMB and dragging

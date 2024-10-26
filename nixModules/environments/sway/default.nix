@@ -78,12 +78,12 @@ in {
 
             "XF86MonBrightnessUp" = "exec brightnessctl set +5%";
             "XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
-          } // lib.optionalAttrs audio {
+          } // lib.optionalAttrs audio.enable {
             "XF86AudioRaiseVolume" = "exec pamixer -i 5";
             "XF86AudioLowerVolume" = "exec pamixer -d 5";
-          } // lib.optionalAttrs seto {
+          } // lib.optionalAttrs seto.enable {
             "Print" = ''exec grim -g "$(seto -r)" - | wl-copy -t image/png'';
-          } // lib.optionalAttrs (seto && ydotool) {
+          } // lib.optionalAttrs (seto.enable && ydotool.enable) {
             "${modifier}+g" = ''
               exec "ydotool mousemove -a $(seto -f "%x %y") && ydotool click 0xC0"'';
           } // lib.optionalAttrs (conf ? terminal) {

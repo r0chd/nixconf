@@ -1,10 +1,12 @@
-{ username, config, std, }:
-let publicKey = "${std.dirs.home}/.ssh/id_ed25519";
+{ conf, std, }:
+let
+  publicKey = "${std.dirs.home}/.ssh/id_ed25519";
+  inherit (conf) username email;
 in {
   home-manager.users."${username}".programs.git = {
     enable = true;
     userName = "${username}";
-    userEmail = "oskar.rochowiak@tutanota.com";
+    userEmail = email;
     extraConfig = {
       init.defaultBranch = "main";
       url = {
