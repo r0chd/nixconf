@@ -65,11 +65,11 @@ in {
               (leaf "center-focused-column" "never")
             ])
 
-            (lib.optional (conf ? statusBar)
-              (leaf "spawn-at-startup" [ "${conf.statusBar}" ]))
+            (lib.optional (conf.statusBar.enable)
+              (leaf "spawn-at-startup" [ "${conf.statusBar.program}" ]))
 
-            (lib.optional (conf ? terminal)
-              (leaf "spawn-at-startup" [ "${conf.terminal}" ]))
+            (lib.optional (conf.terminal.enable)
+              (leaf "spawn-at-startup" [ "${conf.terminal.program}" ]))
 
             (lib.optional (conf ? wallpaper && conf.wallpaper ? program
               && conf.wallpaper ? path) (leaf "spawn-at-startup"
@@ -233,11 +233,11 @@ in {
               (plain "Alt+Shift+N" [ (leaf "set-window-height" "-10%") ])
               (plain "Alt+Shift+M" [ (leaf "set-window-height" "+10%") ])
 
-              (lib.optional (conf ? terminal) (plain "Alt+Shift+Return"
-                [ (leaf "spawn" [ "${conf.terminal}" ]) ]))
+              (lib.optional (conf.terminal.enable) (plain "Alt+Shift+Return"
+                [ (leaf "spawn" [ "${conf.terminal.program}" ]) ]))
 
-              (lib.optional (conf ? launcher)
-                (plain "Alt+S" [ (leaf "spawn" [ "${conf.launcher}" ]) ]))
+              (lib.optional (conf.launcher.enable) (plain "Alt+S"
+                [ (leaf "spawn" [ "${conf.launcher.program}" ]) ]))
             ])
           ];
         };

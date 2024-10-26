@@ -1,7 +1,7 @@
 { conf, pkgs, lib, std, inputs, }: {
   imports = [
     (import ./git { inherit conf std; })
-    (import ./nvim { inherit pkgs inputs conf lib; })
+    (import ./editor { inherit pkgs inputs conf lib; })
     (import ./tmux { inherit pkgs conf lib; })
     (import ./nh { inherit conf lib pkgs std; })
     (import ./zoxide { inherit conf lib; })

@@ -13,20 +13,19 @@ in {
           client.focused ${accent1} ${accent1} ${accent1} ${accent1}
         '';
         config = rec {
-          bars = [ ] ++ (lib.optional (conf ? statusBar) {
-            command = "${conf.statusBar}";
+          bars = [ ] ++ (lib.optional (conf.statusBar.enable) {
+            command = "${conf.statusBar.program}";
           });
           modifier = "Mod1";
           gaps.outer = 7;
           input."9011:26214:ydotoold_virtual_device" = {
             "accel_profile" = "flat";
           };
-          startup = [ ] ++ lib.optional (conf ? terminal) {
-            command = "sway workspace 1; ${terminal}";
-          } ++ lib.optional (conf ? wallpaper && conf.wallpaper ? program
-            && conf.wallpaper ? path) {
-              command = "${conf.wallpaper.program} ${conf.wallpaper.path}";
-            };
+          startup = [ ] ++ lib.optional (conf.terminal.enable) {
+            command = "sway workspace 1; ${terminal.program}";
+          } ++ lib.optional (conf.wallpaper.enable) {
+            command = "${conf.wallpaper.program} ${conf.wallpaper.path}";
+          };
 
           keybindings = {
             "${modifier}+Shift+c" = "kill";
@@ -86,10 +85,10 @@ in {
           } // lib.optionalAttrs (seto.enable && ydotool.enable) {
             "${modifier}+g" = ''
               exec "ydotool mousemove -a $(seto -f "%x %y") && ydotool click 0xC0"'';
-          } // lib.optionalAttrs (conf ? terminal) {
-            "${modifier}+Shift+Return" = "exec ${conf.terminal}";
-          } // lib.optionalAttrs (conf ? launcher) {
-            "${modifier}+S" = "exec ${conf.launcher}";
+          } // lib.optionalAttrs (conf.terminal.enable) {
+            "${modifier}+Shift+Return" = "exec ${conf.terminal.program}";
+          } // lib.optionalAttrs (conf.launcher.enable) {
+            "${modifier}+S" = "exec ${conf.launcher.program}";
           };
         };
       };

@@ -5,21 +5,45 @@ let
     hostname = hostname;
     email = "oskar.rochowiak@tutanota.com";
     username = "unixpariah";
-    statusBar = "waystatus";
     colorscheme = "catppuccin";
     font = "JetBrainsMono Nerd Font";
-    terminal = "foot";
     editor = "nvim";
     shell = "fish";
-    browser = "qutebrowser";
-    cursor = "bibata";
-    bootloader = "grub";
-    notifications = "mako";
-    lockscreen = "hyprlock";
-    launcher = "fuzzel";
+    cursor = {
+      enable = true;
+      name = "bibata";
+      themeName = "Bibata-Modern-Ice";
+      size = 24;
+    };
+    statusBar = {
+      enable = true;
+      program = "waystatus";
+    };
+    notifications = {
+      enable = true;
+      program = "mako";
+    };
+    lockscreen = {
+      enable = true;
+      program = "hyprlock";
+    };
+    launcher = {
+      enable = true;
+      program = "fuzzel";
+    };
     power.enable = true;
-    boot.loader = "grub";
-    boot.legacy = false;
+    terminal = {
+      enable = true;
+      program = "foot";
+    };
+    browser = {
+      enable = true;
+      program = "qutebrowser";
+    };
+    boot = {
+      program = "grub";
+      legacy = false;
+    };
     tmux.enable = true;
     nh.enable = true;
     zoxide.enable = true;
@@ -36,6 +60,7 @@ let
     virtualisation.enable = true;
     zram.enable = true;
     wallpaper = {
+      enable = true;
       program = "ruin";
       path = "nix";
     };

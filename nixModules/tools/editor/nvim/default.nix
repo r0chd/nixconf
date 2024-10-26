@@ -1,6 +1,4 @@
 { pkgs, inputs, conf, lib }: {
-  options.editor = lib.mkOption { type = lib.types.enum [ "nvim" ]; };
-
   config = lib.mkIf (conf.editor == "nvim") {
     environment = {
       systemPackages = with pkgs; [
@@ -19,7 +17,6 @@
         vi = "nvim";
         vim = "nvim";
       };
-      variables.EDITOR = "nvim";
     };
   };
 }

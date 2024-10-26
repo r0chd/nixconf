@@ -1,12 +1,8 @@
-{
-  pkgs,
-  system,
-  zig,
-  zls,
-}:
+{ pkgs, zig, zls, }:
 pkgs.mkShell {
-  packages = [
+  packages = with pkgs; [
     zls.packages.${system}.default
     zig.packages.${system}."0.13.0"
+    zigfmt
   ];
 }

@@ -1,6 +1,8 @@
 { lib, conf, std, inputs }:
 let inherit (conf) username impermanence;
 in {
+  imports = [ inputs.impermanence.nixosModules.impermanence ];
+
   options.impermanence = {
     enable = lib.mkEnableOption "Enable impermanence";
     persist = {

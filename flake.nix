@@ -41,17 +41,17 @@
     ruin.url = "git+https://github.com/unixpariah/ruin?submodules=1";
   };
 
-  outputs = { nixpkgs, home-manager, disko, flake-utils, zls, zig, impermanence
-    , ... }@inputs:
+  outputs = { nixpkgs, home-manager, flake-utils, zls, zig, ... }@inputs:
     let
       newConfig = hostname: arch:
         nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs hostname arch; };
+          specialArgs = {
+            inherit inputs hostname arch;
+            std = ./nixModules/std;
+          };
           modules = [
             ./hosts/${hostname}/configuration.nix
-            impermanence.nixosModules.impermanence
             home-manager.nixosModules.default
-            disko.nixosModules.default
 
             { nixpkgs.system = arch; }
           ];
