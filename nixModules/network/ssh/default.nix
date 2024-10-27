@@ -1,4 +1,4 @@
-{ conf, std, }:
+{ conf, std, lib }:
 let
   inherit (conf) username;
   keysDir = "${std.dirs.host}/keys";
@@ -16,4 +16,7 @@ in {
     settings.PasswordAuthentication = false;
     settings.KbdInteractiveAuthentication = false;
   };
+
+  home-manager.users.${username}.home.persistence.${std.dirs.home-persist}.directories =
+    lib.mkIf conf.impermanence.enable [ ".ssh" ];
 }

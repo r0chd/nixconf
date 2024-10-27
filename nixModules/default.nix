@@ -1,21 +1,18 @@
-{ userConfig, pkgs, inputs, lib, config, hostname, arch, ... }:
+{ userConfig, pkgs, inputs, lib, config, std, arch, ... }:
 let
   inherit (userConfig) username colorscheme;
-  std = import ./std { inherit username lib hostname; };
   conf = userConfig // {
     colorscheme = import ./colorschemes.nix { inherit colorscheme; };
   };
 in {
   imports = [
-    (import ./security { inherit conf inputs std pkgs; })
+    (import ./security { inherit conf inputs std pkgs lib config; })
     (import ./gui { inherit conf inputs pkgs lib std; })
     (import ./tools { inherit conf pkgs lib std inputs; })
     (import ./system { inherit conf pkgs lib std inputs; })
     (import ./hardware { inherit conf lib pkgs; })
     (import ./network { inherit conf pkgs lib std; })
   ];
-
-  nixpkgs.config.allowUnfree = true;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 

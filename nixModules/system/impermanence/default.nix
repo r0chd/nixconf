@@ -69,7 +69,7 @@ in {
           let inherit (impermanence) persist-home;
           in {
             directories = let inherit (persist-home) directories;
-            in directories;
+            in directories ++ [ "nixconf" ];
             files = let inherit (persist-home) files; in files;
             allowOther = true;
           };

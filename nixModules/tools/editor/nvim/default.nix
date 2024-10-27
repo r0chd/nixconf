@@ -1,4 +1,6 @@
-{ pkgs, inputs, conf, lib }: {
+{ pkgs, inputs, conf, lib, std }:
+let inherit (conf) username;
+in {
   config = lib.mkIf (conf.editor == "nvim") {
     environment = {
       systemPackages = with pkgs; [
@@ -18,5 +20,12 @@
         vim = "nvim";
       };
     };
+
+    home-manager.users.${username}.home.persistence.${std.dirs.home-persist}.directories =
+      lib.mkIf conf.impermanence.enable [
+        ".cache/nvim"
+        ".local/share/nvim"
+        ".local/state/nvim"
+      ];
   };
 }

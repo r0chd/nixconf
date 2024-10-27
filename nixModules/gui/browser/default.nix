@@ -1,4 +1,4 @@
-{ conf, inputs, pkgs, lib, }: {
+{ conf, inputs, pkgs, lib, std }: {
   options.browser = {
     enable = lib.mkEnableOption "Enable browser";
     program = lib.mkOption {
@@ -7,8 +7,8 @@
   };
 
   imports = [
-    (import ./firefox { inherit conf inputs pkgs lib; })
-    (import ./qutebrowser { inherit conf lib; })
+    (import ./firefox { inherit conf inputs pkgs lib std; })
+    (import ./qutebrowser { inherit conf lib std; })
     (import ./chromium { inherit conf lib pkgs; })
     (import ./ladybird { inherit conf lib; })
   ];

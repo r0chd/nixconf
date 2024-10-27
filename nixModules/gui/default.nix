@@ -1,6 +1,6 @@
 { conf, pkgs, inputs, lib, std, }: {
   imports = [
-    (import ./browser { inherit conf inputs pkgs lib; })
+    (import ./browser { inherit conf inputs pkgs lib std; })
     (import ./terminal { inherit conf inputs pkgs lib; })
     (import ./cursors { inherit conf pkgs lib; })
     (import ./status { inherit conf std pkgs inputs lib; })

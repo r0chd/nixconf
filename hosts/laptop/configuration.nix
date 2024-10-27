@@ -1,5 +1,9 @@
 { inputs, pkgs, lib, config, hostname, arch, ... }:
 let
+  std = import ../../std {
+    inherit lib hostname;
+    username = userConfig.username;
+  };
   userConfig = {
     arch = arch;
     hostname = hostname;
@@ -67,26 +71,17 @@ let
     impermanence = {
       enable = true;
       persist = {
-        directories = [
-          "/var/log"
-          "/var/lib/bluetooth"
-          "/var/lib/nixos"
-          "/var/lib/systemd/coredump"
-          "/var/lib/iwd"
-        ];
+        directories =
+          [ "/var/log" "/var/lib/nixos" "/var/lib/systemd/coredump" ];
         files = [ ];
       };
       persist-home = {
         directories = [
-          "nixconf"
-          ".ssh"
-          ".local/share/direnv"
           "workspace"
           "Images"
           "Videos"
-          ".cache/nix-index"
-          ".config/ruin/images"
-          ".cache/zoxide"
+          ".config/discord"
+          ".local/share/PrismLauncher"
         ];
         files = [ ];
       };
@@ -95,7 +90,7 @@ let
 in {
   imports = [
     (import ../../nixModules {
-      inherit userConfig inputs pkgs lib config hostname arch;
+      inherit userConfig inputs pkgs lib config std arch;
     })
     ./disko.nix
     ./gpu.nix
@@ -117,8 +112,6 @@ in {
     brightnessctl
     unzip
     btop
-    vaapi-intel-hybrid
-    steam
     gimp
     spotify
     imagemagick

@@ -1,4 +1,4 @@
-{ pkgs, inputs, conf, lib }: {
+{ pkgs, inputs, conf, lib, std }: {
   options.editor = lib.mkOption { type = lib.types.enum [ "nvim" "nano" ]; };
 
   config = {
@@ -7,7 +7,7 @@
   };
 
   imports = [
-    (import ./nvim { inherit pkgs inputs conf lib; })
+    (import ./nvim { inherit pkgs inputs conf lib std; })
     (import ./nano { inherit conf lib; })
   ];
 }

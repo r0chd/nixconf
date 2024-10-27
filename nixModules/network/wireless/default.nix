@@ -11,6 +11,9 @@ in {
       nameservers = [ "1.1.1.1" "1.0.0.1" ];
     };
 
+    environment.persistence."/persist/system".directories =
+      lib.mkIf conf.impermanence.enable [ "/var/lib/iwd" ];
+
     environment.systemPackages = with pkgs; [
       wirelesstools
       traceroute

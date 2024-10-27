@@ -1,7 +1,7 @@
-{ conf, inputs, std, pkgs }:
+{ conf, inputs, std, pkgs, lib, config }:
 let inherit (conf) username;
 in {
-  imports = [ (import ./sops { inherit inputs conf std pkgs; }) ];
+  imports = [ (import ./sops { inherit inputs conf std pkgs lib config; }) ];
 
   security = {
     doas = {
