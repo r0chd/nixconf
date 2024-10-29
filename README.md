@@ -78,7 +78,9 @@ Config assumes that it's placed in `~/nixconf`, and a bunch of modularity featur
 - [x] Flakes
 - [x] Home manager
 - [x] Sops
-- [ ] Disko (with full luks encryption)
+- [x] Disko
+    - [ ] With full encryption
 - [x] Impermamence
-- [ ] NixOS anywhere
+- [ ] Yubii key authentication
+- [ ] Secure boot
 - [ ] Setup script 
