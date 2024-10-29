@@ -1,13 +1,8 @@
-{
-  conf,
-  pkgs,
-  std,
-}: {
-  imports =
-    []
-    ++ (
-      if conf ? lockscreen && conf.lockscreen == "hyprlock"
-      then [(import ./hyprlock {inherit conf pkgs std;})]
-      else []
-    );
+{ conf, std, lib }: {
+  options.lockscreen = {
+    enable = lib.mkEnableOption "Enable lockscreen";
+    program = lib.mkOption { type = lib.types.enum [ "hyprlock" ]; };
+  };
+
+  imports = [ (import ./hyprlock { inherit conf std lib; }) ];
 }

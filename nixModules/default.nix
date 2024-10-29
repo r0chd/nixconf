@@ -1,24 +1,19 @@
-{ userConfig, pkgs, inputs, lib, config, hostname, arch, ... }:
+{ userConfig, pkgs, inputs, lib, config, std, arch, ... }:
 let
   inherit (userConfig) username colorscheme;
-  std = import ./std { inherit username lib hostname; };
-  conf = lib.recursiveUpdate (import ./default_config.nix {
-    inherit hostname arch;
-    disableAll = userConfig ? disableAll && userConfig.disableAll == true;
-  }) userConfig // {
+  conf = userConfig // {
     colorscheme = import ./colorschemes.nix { inherit colorscheme; };
   };
 in {
   imports = [
-    (import ./security { inherit conf inputs pkgs std; })
+    (import ./security { inherit conf inputs std pkgs lib config; })
     (import ./gui { inherit conf inputs pkgs lib std; })
-    (import ./tools { inherit conf pkgs lib config std inputs; })
-    (import ./system { inherit conf pkgs lib std; })
-    (import ./hardware { inherit conf lib std; })
+    (import ./tools { inherit conf pkgs lib std inputs; })
+    (import ./system { inherit conf pkgs lib std inputs; })
+    (import ./hardware { inherit conf lib pkgs; })
     (import ./network { inherit conf pkgs lib std; })
   ];
 
-  nixpkgs.config.allowUnfree = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   home-manager = {
@@ -26,7 +21,6 @@ in {
     users."${username}" = {
       programs.home-manager.enable = true;
       home = {
-        homeDirectory = std.dirs.home;
         username = "${username}";
         stateVersion = "24.05";
       };
@@ -55,7 +49,7 @@ in {
     users."${userConfig.username}" = {
       isNormalUser = true;
       hashedPasswordFile = config.sops.secrets.password.path;
-      extraGroups = [ "wheel" "ydotool" ];
+      extraGroups = [ "wheel" ];
     };
   };
 
@@ -71,22 +65,34 @@ in {
   ];
 
   specialisation = {
-    Hyprland.configuration = let wm = "Hyprland";
+    Hyprland.configuration = let
+      config.window-manager = {
+        enable = true;
+        name = "Hyprland";
+      };
     in {
       imports =
-        [ (import ./environments { inherit conf inputs pkgs wm lib; }) ];
+        [ (import ./environments { inherit config conf inputs pkgs lib; }) ];
       environment.etc."specialisation".text = "Hyprland";
     };
-    Sway.configuration = let wm = "sway";
+    Sway.configuration = let
+      config.window-manager = {
+        enable = true;
+        name = "sway";
+      };
     in {
       imports =
-        [ (import ./environments { inherit conf inputs pkgs wm lib; }) ];
-      environment.etc."specialisation".text = "Sway";
+        [ (import ./environments { inherit config conf inputs pkgs lib; }) ];
+      environment.etc."specialisation".text = "sway";
     };
-    niri.configuration = let wm = "niri";
+    niri.configuration = let
+      config.window-manager = {
+        enable = true;
+        name = "niri";
+      };
     in {
       imports =
-        [ (import ./environments { inherit conf inputs pkgs wm lib; }) ];
+        [ (import ./environments { inherit config conf inputs pkgs lib; }) ];
       environment.etc."specialisation".text = "niri";
     };
   };

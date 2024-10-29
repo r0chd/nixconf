@@ -1,25 +1,15 @@
-{
-  conf,
-  inputs,
-  pkgs,
-  lib,
-}: {
-  environment.shellAliases =
-    {}
-    // lib.optionalAttrs (conf ? browser) {browser = "nb ${conf.browser}";};
-  imports = let
-    inherit (conf) username;
-  in
-    []
-    ++ (
-      if conf ? browser && conf.browser == "firefox"
-      then [(import ./firefox {inherit username inputs pkgs;})]
-      else if conf ? browser && conf.browser == "qutebrowser"
-      then [(import ./qutebrowser {inherit username;})]
-      else if conf ? browser && conf.browser == "chromium"
-      then [(import ./chromium {inherit username pkgs;})]
-      else if conf ? browser && conf.browser == "ladybird"
-      then [./ladybird]
-      else []
-    );
+{ conf, inputs, pkgs, lib, std }: {
+  options.browser = {
+    enable = lib.mkEnableOption "Enable browser";
+    program = lib.mkOption {
+      type = lib.types.enum [ "ladybird" "firefox" "chromium" "qutebrowser" ];
+    };
+  };
+
+  imports = [
+    (import ./firefox { inherit conf inputs pkgs lib std; })
+    (import ./qutebrowser { inherit conf lib std; })
+    (import ./chromium { inherit conf lib pkgs; })
+    (import ./ladybird { inherit conf lib; })
+  ];
 }

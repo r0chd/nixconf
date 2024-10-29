@@ -1,7 +1,5 @@
-_: {
-  boot.loader = {
-    timeout = null;
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
+{ conf, lib }: {
+  config = lib.mkIf (conf.boot.program == "systemd-boot") {
+    boot.loader.systemd-boot.enable = true;
   };
 }

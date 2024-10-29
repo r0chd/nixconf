@@ -29,6 +29,8 @@
     zls.url = "github:zigtools/zls";
     zig.url = "github:mitchellh/zig-overlay";
 
+    impermanence.url = "github:nix-community/impermanence";
+
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     niri.url = "github:sodiboo/niri-flake";
 
@@ -39,17 +41,22 @@
     ruin.url = "git+https://github.com/unixpariah/ruin?submodules=1";
   };
 
-  outputs = { nixpkgs, home-manager, disko, flake-utils, zls, zig, ... }@inputs:
+  outputs = { nixpkgs, home-manager, disko, flake-utils, ... }@inputs:
     let
       newConfig = hostname: arch:
-        nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs hostname arch; };
+        nixpkgs.lib.nixosSystem rec {
+          pkgs = import nixpkgs {
+            system = arch;
+            config.allowUnfree = true;
+          };
+          specialArgs = {
+            inherit inputs hostname arch pkgs;
+            std = import ./std;
+          };
           modules = [
             ./hosts/${hostname}/configuration.nix
             home-manager.nixosModules.default
             disko.nixosModules.default
-
-            { nixpkgs.system = arch; }
           ];
         };
     in {
@@ -58,7 +65,7 @@
       devShells = flake-utils.lib.eachDefaultSystem (system:
         let pkgs = import nixpkgs { inherit system; };
         in {
-          zig = import ./shells/zig.nix { inherit pkgs system zls zig; };
+          zig = import ./shells/zig.nix { inherit pkgs inputs; };
           c = import ./shells/c.nix { inherit pkgs; };
           rust = import ./shells/rust.nix { inherit pkgs; };
         });

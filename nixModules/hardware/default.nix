@@ -1,16 +1,9 @@
-{
-  conf,
-  lib,
-  std,
-}: let
-  inherit (conf) audio bluetooth power;
-  inherit (lib) optional;
-in {
-  imports =
-    []
-    ++ optional audio ./audio
-    ++ optional bluetooth ./bluetooth
-    ++ optional power ./power;
+{ conf, lib, pkgs }: {
+  imports = [
+    (import ./audio { inherit conf lib pkgs; })
+    (import ./bluetooth { inherit conf lib; })
+    (import ./power { inherit conf lib; })
+  ];
 
   hardware.enableAllFirmware = true;
 }

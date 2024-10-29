@@ -79,6 +79,6 @@ Config assumes that it's placed in `~/nixconf`, and a bunch of modularity featur
 - [x] Home manager
 - [x] Sops
 - [ ] Disko (with full luks encryption)
-- [ ] Impermamence
+- [x] Impermamence
 - [ ] NixOS anywhere
-- [ ] Setup script (maybe even with gui)
+- [ ] Setup script 
