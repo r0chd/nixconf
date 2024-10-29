@@ -41,7 +41,7 @@
     ruin.url = "git+https://github.com/unixpariah/ruin?submodules=1";
   };
 
-  outputs = { nixpkgs, home-manager, flake-utils, ... }@inputs:
+  outputs = { nixpkgs, home-manager, disko, flake-utils, ... }@inputs:
     let
       newConfig = hostname: arch:
         nixpkgs.lib.nixosSystem rec {
@@ -56,6 +56,7 @@
           modules = [
             ./hosts/${hostname}/configuration.nix
             home-manager.nixosModules.default
+            disko.nixosModules.default
           ];
         };
     in {
