@@ -43,24 +43,31 @@
 
   outputs = { nixpkgs, home-manager, disko, flake-utils, ... }@inputs:
     let
-      newConfig = hostname: arch:
-        nixpkgs.lib.nixosSystem rec {
+      newConfig = username: hostname: arch:
+        let
           pkgs = import nixpkgs {
             system = arch;
             config.allowUnfree = true;
           };
-          specialArgs = {
-            inherit inputs hostname arch pkgs;
-            std = import ./std;
+        in nixpkgs.lib.nixosSystem {
+          specialArgs = rec {
+            inherit inputs hostname arch pkgs username;
+            std = import ./std {
+              inherit hostname username;
+              lib = pkgs.lib;
+            };
           };
           modules = [
             ./hosts/${hostname}/configuration.nix
             home-manager.nixosModules.default
             disko.nixosModules.default
+            ./nixModules
           ];
         };
     in {
-      nixosConfigurations = { laptop = newConfig "laptop" "x86_64-linux"; };
+      nixosConfigurations = {
+        laptop = newConfig "unixpariah" "laptop" "x86_64-linux";
+      };
 
       devShells = flake-utils.lib.eachDefaultSystem (system:
         let pkgs = import nixpkgs { inherit system; };

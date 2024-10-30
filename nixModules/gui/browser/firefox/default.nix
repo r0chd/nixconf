@@ -1,6 +1,4 @@
-{ pkgs, inputs, conf, lib, std }:
-let inherit (conf) username;
-in {
+{ pkgs, inputs, conf, lib, std, username }: {
   config = lib.mkIf (conf.browser.enable && conf.browser.program == "firefox") {
     home-manager.users."${username}" = {
       programs.firefox = {

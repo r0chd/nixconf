@@ -1,6 +1,4 @@
-{ pkgs, conf, lib }:
-let inherit (conf) username;
-in {
+{ pkgs, conf, lib, username }: {
   config = lib.mkIf (conf.shell == "zsh") {
     environment.systemPackages = with pkgs; [ fzf ];
 

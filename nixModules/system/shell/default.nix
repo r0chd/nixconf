@@ -1,10 +1,19 @@
-{ conf, pkgs, lib, std }: {
+{ config, pkgs, lib, std, username, ... }: {
   options.shell =
     lib.mkOption { type = lib.types.enum [ "fish" "zsh" "bash" ]; };
 
   imports = [
-    (import ./fish { inherit conf pkgs lib std; })
-    (import ./zsh { inherit conf pkgs lib; })
-    (import ./bash { inherit conf pkgs lib; })
+    (import ./fish {
+      inherit pkgs lib std username;
+      conf = config;
+    })
+    (import ./zsh {
+      inherit pkgs lib username;
+      conf = config;
+    })
+    (import ./bash {
+      inherit pkgs lib username;
+      conf = config;
+    })
   ];
 }

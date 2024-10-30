@@ -1,6 +1,4 @@
-{ conf, lib, std }:
-let inherit (conf) username;
-in {
+{ conf, lib, std, username }: {
   config =
     lib.mkIf (conf.browser.enable && conf.browser.program == "qutebrowser") {
       home-manager.users."${username}" = {

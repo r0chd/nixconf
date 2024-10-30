@@ -1,5 +1,5 @@
-{ pkgs, inputs, conf, std, lib }:
-let inherit (conf) username colorscheme;
+{ pkgs, inputs, conf, std, lib, username }:
+let inherit (conf) colorscheme;
 in {
   config =
     lib.mkIf (conf.wallpaper.enable && conf.wallpaper.program == "ruin") {

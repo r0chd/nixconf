@@ -1,7 +1,7 @@
-{ pkgs, conf, lib }: {
+{ pkgs, config, lib, ... }: {
   options.audio.enable = lib.mkEnableOption "Enable audio";
 
-  config = lib.mkIf conf.audio.enable {
+  config = lib.mkIf config.audio.enable {
     services.pipewire = {
       enable = true;
       alsa = {

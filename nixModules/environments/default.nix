@@ -6,7 +6,7 @@
   imports = [
     (import ./hyprland { inherit inputs pkgs conf lib config; })
     (import ./sway { inherit conf lib config; })
-    #(import ./niri { inherit inputs conf lib config; })
+    (import ./niri { inherit inputs conf lib config; })
   ];
 
   config = lib.mkIf config.window-manager.enable {

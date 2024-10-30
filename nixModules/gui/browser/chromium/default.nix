@@ -1,6 +1,4 @@
-{ lib, conf, pkgs, }:
-let inherit (conf) username;
-in {
+{ lib, conf, pkgs, username }: {
   config =
     lib.mkIf (conf.browser.enable && conf.browser.program == "ladybird") {
       home-manager.users."${username}".programs.chromium = {

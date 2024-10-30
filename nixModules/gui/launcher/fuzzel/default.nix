@@ -1,6 +1,6 @@
-{ conf, lib }:
+{ conf, lib, username }:
 let
-  inherit (conf) username colorscheme;
+  inherit (conf) colorscheme;
   inherit (colorscheme) special inactive text background1 accent1 accent2;
 in {
   config =

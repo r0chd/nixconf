@@ -1,9 +1,7 @@
-{ conf, lib }:
-let inherit (conf) username;
-in {
+{ config, lib, username, ... }: {
   options.virtualisation.enable = lib.mkEnableOption "Enable virtualisation";
 
-  config = lib.mkIf conf.virtualisation.enable {
+  config = lib.mkIf config.virtualisation.enable {
     virtualisation.libvirtd = {
       enable = true;
       onBoot = "ignore";

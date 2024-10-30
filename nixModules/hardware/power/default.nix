@@ -1,7 +1,7 @@
-{ conf, lib }: {
+{ config, lib, ... }: {
   options.power.enable = lib.mkEnableOption "Enable power management";
 
-  config = lib.mkIf conf.power.enable {
+  config = lib.mkIf config.power.enable {
     services = {
       tlp = {
         enable = true;

@@ -1,5 +1,5 @@
-{ lib, conf, std, inputs }:
-let inherit (conf) username impermanence;
+{ lib, conf, std, inputs, username }:
+let inherit (conf) impermanence;
 in {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
 
@@ -7,21 +7,21 @@ in {
     enable = lib.mkEnableOption "Enable impermanence";
     persist = {
       directories = lib.mkOption {
-        type = lib.types.listOf lib.types.string;
+        type = lib.types.listOf lib.types.str;
         default = [ ];
       };
       files = lib.mkOption {
-        type = lib.types.listOf lib.types.string;
+        type = lib.types.listOf lib.types.str;
         default = [ ];
       };
     };
     persist-home = {
       directories = lib.mkOption {
-        type = lib.types.listOf lib.types.string;
+        type = lib.types.listOf lib.types.str;
         default = [ ];
       };
       files = lib.mkOption {
-        type = lib.types.listOf lib.types.string;
+        type = lib.types.listOf lib.types.str;
         default = [ ];
       };
     };
@@ -55,7 +55,7 @@ in {
 
     systemd.tmpfiles.rules = [
       "d /persist/home 0777 root root -"
-      "d ${std.dirs.home-persist} 0700 ${conf.username} users -"
+      "d ${std.dirs.home-persist} 0700 ${username} users -"
     ];
 
     fileSystems."/persist".neededForBoot = true;

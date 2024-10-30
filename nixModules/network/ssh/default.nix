@@ -1,6 +1,5 @@
-{ conf, std, lib }:
+{ config, std, lib, username, ... }:
 let
-  inherit (conf) username;
   keysDir = "${std.dirs.host}/keys";
   keysList = if (builtins.pathExists keysDir) then
     (builtins.attrValues (builtins.mapAttrs
@@ -18,5 +17,5 @@ in {
   };
 
   home-manager.users.${username}.home.persistence.${std.dirs.home-persist}.directories =
-    lib.mkIf conf.impermanence.enable [ ".ssh" ];
+    lib.mkIf config.impermanence.enable [ ".ssh" ];
 }

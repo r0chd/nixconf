@@ -1,7 +1,12 @@
-{ lib, conf }: {
+{ lib, config, username, ... }: {
   options.notifications = {
     enable = lib.mkEnableOption "Enable notification daemon";
     program = lib.mkOption { type = lib.types.enum [ "mako" ]; };
   };
-  imports = [ (import ./mako { inherit lib conf; }) ];
+  imports = [
+    (import ./mako {
+      inherit lib username;
+      conf = config;
+    })
+  ];
 }

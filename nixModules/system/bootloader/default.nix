@@ -1,18 +1,15 @@
-{ conf, lib }: {
+{ lib, ... }: {
   options.boot = {
     program = lib.mkOption { type = lib.types.enum [ "grub" "systemd-boot" ]; };
     legacy = lib.mkEnableOption "Enable legacy boot";
   };
 
-  imports = [
-    (import ./systemd-boot { inherit conf lib; })
-    (import ./grub { inherit conf lib; })
-  ];
+  imports = [ ./systemd-boot ./grub ];
 
   # TODO: do the legacy boot thing
   config.boot = {
-    program.systemd-boot.enable = lib.mkDefault false;
-    supportedFilesystems = [ "ntfs" "btrfs" ];
+    loader.systemd-boot.enable = lib.mkDefault false;
+    supportedFilesystems = [ "btrfs" ];
     kernelModules = [ "v4l2loopback" ];
     kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
     loader = {

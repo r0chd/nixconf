@@ -1,5 +1,5 @@
 { inputs, pkgs, conf, std, config, lib }:
-let inherit (conf) hostname username;
+let inherit (conf) username;
 in {
   imports = [ inputs.sops-nix.nixosModules.sops ];
 
@@ -9,7 +9,7 @@ in {
       path = "${std.dirs.home}/.config/nix/nix.conf";
     };
     secrets.password.neededForUsers = true;
-    defaultSopsFile = ../../../hosts/${hostname}/secrets/secrets.yaml;
+    defaultSopsFile = "${std.dirs.host}/secrets/secrets.yaml";
     defaultSopsFormat = "yaml";
     age = {
       sshKeyPaths = [ "${std.dirs.home-persist}/.ssh/id_ed25519" ];
@@ -18,7 +18,7 @@ in {
   };
 
   environment = {
-    shellAliases.opensops = "sops ${std.dirs.host}/secrets/secrets.yaml";
+    shellAliases.opensops = "sops $FLAKE/hosts/$hostname/secrets/secrets.yaml";
     systemPackages = with pkgs; [ sops ];
   };
 

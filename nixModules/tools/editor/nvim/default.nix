@@ -1,6 +1,4 @@
-{ pkgs, inputs, conf, lib, std }:
-let inherit (conf) username;
-in {
+{ pkgs, inputs, conf, lib, std, username }: {
   config = lib.mkIf (conf.editor == "nvim") {
     environment = {
       systemPackages = with pkgs; [

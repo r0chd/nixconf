@@ -1,9 +1,12 @@
-{ conf, pkgs, lib, std, inputs }: {
+{ config, lib, std, inputs, username, ... }: {
   imports = [
-    (import ./bootloader { inherit conf lib; })
-    (import ./shell { inherit conf pkgs lib std; })
-    (import ./virtualization { inherit conf lib; })
-    (import ./zram { inherit conf lib; })
-    (import ./impermanence { inherit conf lib std inputs; })
+    ./bootloader
+    ./shell
+    ./virtualization
+    ./zram
+    (import ./impermanence {
+      inherit lib std inputs username;
+      conf = config;
+    })
   ];
 }

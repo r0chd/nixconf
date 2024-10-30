@@ -1,10 +1,8 @@
-{ conf, pkgs, lib }:
-let inherit (conf) hostname;
-in {
+{ config, pkgs, lib, hostname, ... }: {
   options.wireless.enable =
     lib.mkEnableOption "Enable wireless wifi connection";
 
-  config = lib.mkIf conf.wireless.enable {
+  config = lib.mkIf config.wireless.enable {
     networking = {
       wireless.iwd = { enable = true; };
       hostName = "${hostname}";
@@ -12,7 +10,7 @@ in {
     };
 
     environment.persistence."/persist/system".directories =
-      lib.mkIf conf.impermanence.enable [ "/var/lib/iwd" ];
+      lib.mkIf config.impermanence.enable [ "/var/lib/iwd" ];
 
     environment.systemPackages = with pkgs; [
       wirelesstools

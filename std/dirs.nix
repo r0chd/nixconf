@@ -2,5 +2,5 @@
   home-persist = "/persist/home/${username}";
   home = "/home/${username}";
   config = "${home}/nixconf";
-  host = "${home}/nixconf/hosts/${hostname}";
+  host = ../hosts/${hostname};
 }

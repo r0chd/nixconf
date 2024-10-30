@@ -1,10 +1,10 @@
-{ conf, lib }: {
+{ config, lib, ... }: {
   options.bluetooth.enable = lib.mkEnableOption "Enable bluetooth";
 
-  config = lib.mkIf conf.bluetooth.enable {
+  config = lib.mkIf config.bluetooth.enable {
     hardware.bluetooth.enable = true;
 
     environment.persistence."/persist/system".directories =
-      lib.mkIf conf.impermanence.enable [ "/var/lib/bluetooth" ];
+      lib.mkIf config.impermanence.enable [ "/var/lib/bluetooth" ];
   };
 }

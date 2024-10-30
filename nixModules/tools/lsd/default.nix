@@ -1,9 +1,7 @@
-{ conf, lib }:
-let inherit (conf) username;
-in {
+{ config, lib, username, ... }: {
   options.lsd.enable = lib.mkEnableOption "Enable lsd";
 
-  config = lib.mkIf conf.lsd.enable {
+  config = lib.mkIf config.lsd.enable {
     home-manager.users."${username}".programs.lsd = {
       enable = true;
       enableAliases = true;

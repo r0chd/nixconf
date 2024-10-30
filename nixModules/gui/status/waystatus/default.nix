@@ -1,5 +1,5 @@
-{ conf, pkgs, inputs, std, lib }:
-let inherit (conf) username colorscheme;
+{ conf, pkgs, inputs, std, lib, username }:
+let inherit (conf) colorscheme;
 in {
   config =
     lib.mkIf (conf.statusBar.enable && conf.statusBar.program == "waystatus") {

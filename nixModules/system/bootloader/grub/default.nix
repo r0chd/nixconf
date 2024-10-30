@@ -1,5 +1,5 @@
-{ conf, lib }: {
-  config = lib.mkIf (conf.boot.program == "grub") {
+{ config, lib, ... }: {
+  config = lib.mkIf (config.boot.program == "grub") {
     boot.loader.grub = {
       enable = true;
       device = "nodev";

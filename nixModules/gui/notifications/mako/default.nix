@@ -1,5 +1,5 @@
-{ conf, lib }:
-let inherit (conf) username colorscheme;
+{ conf, lib, username }:
+let inherit (conf) colorscheme;
 in {
   config = lib.mkIf
     (conf.notifications.enable && conf.notifications.program == "mako") {

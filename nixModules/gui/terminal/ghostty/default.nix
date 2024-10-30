@@ -1,15 +1,13 @@
-{ pkgs, inputs, conf, lib }:
-let inherit (conf) username font;
-in {
+{ pkgs, inputs, config, lib, ... }: {
   config =
-    lib.mkIf (conf.terminal.enable && conf.terminal.program == "ghostty") {
+    lib.mkIf (config.terminal.enable && config.terminal.program == "ghostty") {
       environment.systemPackages = with pkgs;
         [ inputs.ghostty.packages.${system}.default ];
 
-      home-manager.users."${username}".home.file.".config/ghostty/config".text =
+      home-manager.users."${config.username}".home.file.".config/ghostty/config".text =
         ''
           font-size = 10
-          font-family = "${font}"
+          font-family = "${config.font}"
 
           window-decoration = false
 

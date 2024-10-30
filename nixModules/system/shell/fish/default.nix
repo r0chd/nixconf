@@ -1,5 +1,5 @@
-{ pkgs, conf, lib, std }:
-let inherit (conf) username colorscheme;
+{ pkgs, conf, lib, std, username }:
+let inherit (conf) colorscheme;
 in {
   config = lib.mkIf (conf.shell == "fish") {
     users.defaultUserShell = pkgs.fish;

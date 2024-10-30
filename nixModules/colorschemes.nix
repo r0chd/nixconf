@@ -1,7 +1,7 @@
-{colorscheme}: let
+{ colorscheme }:
+let
   colorschemes = {
     catppuccin = {
-      name = "catppuccin";
       text = "FFFFFF";
       accent1 = "C5A8EB";
       accent2 = "C9CBFF";
@@ -13,5 +13,4 @@
       warn = "DD7878";
     };
   };
-in
-  colorschemes."${colorscheme}"
+in colorschemes."${colorscheme}"
