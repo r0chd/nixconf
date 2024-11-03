@@ -1,8 +1,8 @@
-{ pkgs, inputs, conf, std, lib, username }:
-let inherit (conf) colorscheme;
+{ pkgs, inputs, config, std, lib, username, ... }:
+let inherit (config) colorscheme;
 in {
   config =
-    lib.mkIf (conf.wallpaper.enable && conf.wallpaper.program == "ruin") {
+    lib.mkIf (config.wallpaper.enable && config.wallpaper.program == "ruin") {
       environment.systemPackages = with pkgs;
         [ inputs.ruin.packages.${system}.default ];
       home-manager.users."${username}".home = {
@@ -20,7 +20,7 @@ in {
         };
 
         persistence.${std.dirs.home-persist}.directories =
-          lib.mkIf conf.impermanence.enable [ ".config/ruin/images" ];
+          lib.mkIf config.impermanence.enable [ ".config/ruin/images" ];
       };
     };
 }

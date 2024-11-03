@@ -1,20 +1,31 @@
 { pkgs, inputs, lib, config, arch, username, std, ... }:
 let
-  conf = config // {
-    colorscheme = import ./colorschemes.nix { colorscheme = "catppuccin"; };
-    username = username;
+  monitor = {
+    name = lib.mkOption { type = lib.types.str; };
+    position = {
+      x = lib.mkOption { type = lib.types.int; };
+      y = lib.mkOption { type = lib.types.int; };
+    };
+    dimensions = {
+      width = lib.mkOption { type = lib.types.int; };
+      height = lib.mkOption { type = lib.types.int; };
+    };
+    scale = lib.mkOption {
+      type = lib.types.int;
+      default = 1;
+    };
   };
 in {
-  imports = [
-    (import ./security { inherit conf inputs std pkgs lib config; })
-    (import ./gui { inherit conf inputs pkgs lib std; })
-    (import ./tools { inherit conf pkgs lib std inputs; })
-    ./system
-    ./hardware
-    (import ./network { inherit conf lib std; })
-  ];
+  imports = [ ./security ./gui ./tools ./system ./hardware ./network ./gaming ];
 
   options = {
+    monitors = lib.mkOption { # TODO: move this later
+      type = lib.types.listOf monitor;
+      default = [ ];
+    };
+
+    email = lib.mkOption { type = lib.types.str; };
+    theme = lib.mkOption { type = lib.types.enum [ "catppuccin" ]; };
     colorscheme = {
       name = lib.mkOption { type = lib.types.enum [ "catppuccin" ]; };
       text = lib.mkOption { type = lib.types.str; };
@@ -33,17 +44,7 @@ in {
   };
 
   config = {
-    colorscheme = {
-      text = "FFFFFF";
-      accent1 = "C5A8EB";
-      accent2 = "C9CBFF";
-      background1 = "170E1F";
-      background2 = "140F21";
-      error = "CA8080";
-      special = "A6E3A1";
-      inactive = "1E1E2E";
-      warn = "DD7878";
-    };
+    colorscheme = (import ./colorschemes.nix)."${config.theme}";
 
     boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -97,34 +98,46 @@ in {
 
     specialisation = {
       Hyprland.configuration = let
-        config.window-manager = {
+        window-manager = {
           enable = true;
           name = "Hyprland";
+          backend = "Wayland";
         };
       in {
-        imports =
-          [ (import ./environments { inherit config conf inputs pkgs lib; }) ];
         environment.etc."specialisation".text = "Hyprland";
+        imports = [
+          (import ./environments {
+            inherit config inputs pkgs lib username window-manager;
+          })
+        ];
       };
       Sway.configuration = let
-        config.window-manager = {
+        window-manager = {
           enable = true;
           name = "sway";
+          backend = "Wayland";
         };
       in {
-        imports =
-          [ (import ./environments { inherit config conf inputs pkgs lib; }) ];
         environment.etc."specialisation".text = "sway";
+        imports = [
+          (import ./environments {
+            inherit config inputs pkgs lib username window-manager;
+          })
+        ];
       };
       niri.configuration = let
-        config.window-manager = {
+        window-manager = {
           enable = true;
           name = "niri";
+          backend = "Wayland";
         };
       in {
-        imports =
-          [ (import ./environments { inherit config conf inputs pkgs lib; }) ];
         environment.etc."specialisation".text = "niri";
+        imports = [
+          (import ./environments {
+            inherit config inputs pkgs lib username window-manager;
+          })
+        ];
       };
     };
   };

@@ -1,8 +1,8 @@
-{ pkgs, inputs, conf, lib, config }:
-let inherit (conf) username audio colorscheme seto ydotool;
+{ pkgs, inputs, lib, config, username, window-manager, ... }:
+let inherit (config) audio colorscheme seto ydotool;
 in {
-  config = lib.mkIf
-    (config.window-manager.enable && config.window-manager.name == "Hyprland") {
+  config =
+    lib.mkIf (window-manager.enable && window-manager.name == "Hyprland") {
       environment = {
         systemPackages = with pkgs;
           [
@@ -48,7 +48,7 @@ in {
                 natural_scroll = "no";
               };
 
-              sensitivity = "0"; # -1.0 - 1.0, 0 means no modification.
+              sensitivity = "0";
               accel_profile = "flat";
             };
 
@@ -105,15 +105,15 @@ in {
 
             "$mainMod" = "ALT"; # Mod key
 
-            exec-once = [ ] ++ (lib.optional (conf.statusBar.enable)
-              "${conf.statusBar.program}")
-              ++ (lib.optional (conf.terminal.enable)
-                "${conf.terminal.program}")
-              ++ lib.optional (conf.wallpaper.enable)
-              "${conf.wallpaper.program} ${conf.wallpaper.path}";
+            exec-once = [ ] ++ (lib.optional (config.statusBar.enable)
+              "${config.statusBar.program}")
+              ++ (lib.optional (config.terminal.enable)
+                "${config.terminal.program}")
+              ++ lib.optional (config.wallpaper.enable)
+              "${config.wallpaper.program} ${config.wallpaper.path}";
 
-            env = [ ] ++ (lib.optional (conf.cursor.enable)
-              "HYPRCURSOR_SIZE,${toString conf.cursor.size}");
+            env = [ ] ++ (lib.optional (config.cursor.enable)
+              "HYPRCURSOR_SIZE,${toString config.cursor.size}");
 
             bind = [
               # Brightness
@@ -163,14 +163,14 @@ in {
               ", XF86AudioRaiseVolume, exec, pamixer -i 5")
               ++ (lib.optional audio.enable
                 ", XF86AudioLowerVolume, exec, pamixer -d 5")
-              ++ (lib.optional (conf.terminal.enable)
-                "$mainMod SHIFT, RETURN, exec, ${conf.terminal.program}")
+              ++ (lib.optional (config.terminal.enable)
+                "$mainMod SHIFT, RETURN, exec, ${config.terminal.program}")
               ++ (lib.optional seto.enable ''
                 , Print, exec, grim -g "$(seto -r)" - | wl-copy -t image/png'')
               ++ (lib.optional (seto.enable && ydotool.enable)
                 "$mainMod, G, exec, click")
-              ++ (lib.optional (conf.launcher.enable)
-                "$mainMod, S, exec, ${conf.launcher.program}");
+              ++ (lib.optional (config.launcher.enable)
+                "$mainMod, S, exec, ${config.launcher.program}");
 
             bindm = [
               # Move/resize windows with mainMod + LMB/RMB and dragging
@@ -180,14 +180,14 @@ in {
           };
         };
 
-        services.hypridle = lib.mkIf conf.lockscreen.enable {
+        services.hypridle = lib.mkIf config.lockscreen.enable {
           enable = true;
           settings = {
             general = {
               before_sleep_cmd = "loginctl lock-session";
               after_sleep_cmd = "hyprctl dispatch dpms on";
               ignore_dbus_inhibit = true;
-              lock_cmd = "${conf.lockscreen.program}";
+              lock_cmd = "${config.lockscreen.program}";
             };
             listener = let
               lockScript = pkgs.writeShellScript "lock-script" ''
@@ -195,7 +195,7 @@ in {
                 pw-cli i all | rg running
                 if [ $? == 1 ]; then
                   if [ "$action" == "lock" ]; then
-                    "${conf.lockscreen.program}"
+                    "${config.lockscreen.program}"
                   elif [ "$action" == "suspend" ]; then
                     systemctl suspend
                   fi

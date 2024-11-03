@@ -1,5 +1,5 @@
-{ lib, conf, std, inputs, username }:
-let inherit (conf) impermanence;
+{ lib, config, std, inputs, username, ... }:
+let inherit (config) impermanence;
 in {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
 
@@ -17,7 +17,26 @@ in {
     };
     persist-home = {
       directories = lib.mkOption {
-        type = lib.types.listOf lib.types.str;
+        type = with lib.types;
+          listOf (either str (submodule {
+            options = {
+              directory = lib.mkOption {
+                type = str;
+                default = null;
+                description = "The directory path to be linked.";
+              };
+              method = lib.mkOption {
+                type = types.enum [ "bindfs" "symlink" ];
+                default = "bindfs";
+                description = ''
+                  The linking method that should be used for this
+                  directory. bindfs is the default and works for most use
+                  cases, however some programs may behave better with
+                  symlinks.
+                '';
+              };
+            };
+          }));
         default = [ ];
       };
       files = lib.mkOption {
@@ -27,7 +46,7 @@ in {
     };
   };
 
-  config = lib.mkIf conf.impermanence.enable {
+  config = lib.mkIf config.impermanence.enable {
     boot.initrd.postDeviceCommands = lib.mkAfter ''
       mkdir /btrfs_tmp
       mount /dev/root_vg/root /btrfs_tmp
@@ -63,17 +82,15 @@ in {
     programs.fuse.userAllowOther = true;
 
     home-manager.users."${username}" = {
-      imports = [ inputs.impermanence.nixosModules.home-manager.impermanence ];
-      home = {
-        persistence."${std.dirs.home-persist}" =
-          let inherit (impermanence) persist-home;
-          in {
-            directories = let inherit (persist-home) directories;
-            in directories ++ [ "nixconf" ];
-            files = let inherit (persist-home) files; in files;
-            allowOther = true;
-          };
-      };
+      imports = [ inputs.impermanence.homeManagerModules.default ];
+      home.persistence."${std.dirs.home-persist}" =
+        let inherit (impermanence) persist-home;
+        in {
+          directories = let inherit (persist-home) directories;
+          in directories ++ [ "nixconf" ];
+          files = let inherit (persist-home) files; in files;
+          allowOther = true;
+        };
     };
 
     environment.persistence."/persist/system" =

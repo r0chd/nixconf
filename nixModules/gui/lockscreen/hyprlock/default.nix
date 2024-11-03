@@ -1,10 +1,10 @@
-{ conf, std, lib, username }:
+{ config, std, lib, username, ... }:
 let
-  inherit (conf) colorscheme;
+  inherit (config) colorscheme;
   inherit (colorscheme) text background1;
 in {
-  config =
-    lib.mkIf (conf.lockscreen.enable && conf.lockscreen.program == "hyprlock") {
+  config = lib.mkIf
+    (config.lockscreen.enable && config.lockscreen.program == "hyprlock") {
       security.pam.services.hyprlock = { };
       home-manager.users."${username}" = {
         programs.hyprlock = {

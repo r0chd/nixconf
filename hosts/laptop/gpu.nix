@@ -1,7 +1,7 @@
 { pkgs, ... }: {
   hardware = {
     nvidia = {
-      #modesetting.enable = true;
+      modesetting.enable = true;
       powerManagement = {
         enable = true;
         finegrained = true;

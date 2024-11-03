@@ -1,6 +1,6 @@
-{ conf, lib, std, username }: {
-  config =
-    lib.mkIf (conf.browser.enable && conf.browser.program == "qutebrowser") {
+{ config, lib, std, username, ... }: {
+  config = lib.mkIf
+    (config.browser.enable && config.browser.program == "qutebrowser") {
       home-manager.users."${username}" = {
         programs.qutebrowser = {
           enable = true;
@@ -26,7 +26,7 @@
         };
 
         home.persistence.${std.dirs.home-persist}.directories =
-          lib.mkIf conf.impermanence.enable [
+          lib.mkIf config.impermanence.enable [
             ".cache/qutebrowser"
             ".local/share/qutebrowser"
           ];

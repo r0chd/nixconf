@@ -1,8 +1,8 @@
-{ lib, pkgs, conf, std }: {
+{ lib, pkgs, config, username, std, ... }: {
   options.nh.enable = lib.mkEnableOption "Enable nh";
 
-  config = lib.mkIf conf.nh.enable {
-    home-manager.users."${conf.username}" = {
+  config = lib.mkIf config.nh.enable {
+    home-manager.users."${username}" = {
       programs.nh = {
         enable = true;
         package =
@@ -11,7 +11,7 @@
       };
 
       home.persistence.${std.dirs.home-persist}.directories =
-        lib.mkIf conf.impermanence.enable [ ".cache/nix-output-monitor" ];
+        lib.mkIf config.impermanence.enable [ ".cache/nix-output-monitor" ];
     };
   };
 }

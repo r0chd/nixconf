@@ -1,16 +1,14 @@
-{ conf, lib, std }:
-let inherit (conf) username;
-in {
+{ config, lib, std, username, ... }: {
   options.direnv.enable = lib.mkEnableOption "Enable direnv";
 
-  config = lib.mkIf conf.direnv.enable {
+  config = lib.mkIf config.direnv.enable {
     home-manager.users."${username}" = {
       programs.direnv = {
         enable = true;
         nix-direnv.enable = true;
       };
       home.persistence.${std.dirs.home-persist}.directories =
-        lib.mkIf conf.impermanence.enable [
+        lib.mkIf config.impermanence.enable [
           ".local/share/direnv"
           ".cache/nix"
         ];

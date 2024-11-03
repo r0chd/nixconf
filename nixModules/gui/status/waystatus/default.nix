@@ -1,14 +1,14 @@
-{ conf, pkgs, inputs, std, lib, username }:
-let inherit (conf) colorscheme;
+{ config, pkgs, inputs, std, lib, username, ... }:
+let inherit (config) colorscheme;
 in {
-  config =
-    lib.mkIf (conf.statusBar.enable && conf.statusBar.program == "waystatus") {
+  config = lib.mkIf
+    (config.statusBar.enable && config.statusBar.program == "waystatus") {
       environment.systemPackages = with pkgs;
         [ inputs.waystatus.packages.${system}.default ];
       home-manager.users."${username}".home.file = {
         ".config/waystatus/style.css" = {
           text = let
-            inherit (conf) font;
+            inherit (config) font;
             inherit (colorscheme) text;
           in ''
             * {

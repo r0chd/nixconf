@@ -1,10 +1,10 @@
-{ conf, lib, username }:
+{ config, lib, username, ... }:
 let
-  inherit (conf) colorscheme;
+  inherit (config) colorscheme;
   inherit (colorscheme) special inactive text background1 accent1 accent2;
 in {
   config =
-    lib.mkIf (conf.launcher.enable && conf.launcher.program == "fuzzel") {
+    lib.mkIf (config.launcher.enable && config.launcher.program == "fuzzel") {
       home-manager.users."${username}" = {
         programs.fuzzel = {
           enable = true;

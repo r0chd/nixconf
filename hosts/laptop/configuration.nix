@@ -1,15 +1,40 @@
 { pkgs, ... }: {
   imports = [ ./disko.nix ./gpu.nix ./hardware-configuration.nix ];
 
-  colorscheme.name = "catppuccin";
+  monitors = [
+    {
+      name = "eDP-1";
+      position = {
+        x = 0;
+        y = 0;
+      };
+      dimensions = {
+        width = 1920;
+        height = 1920;
+      };
+    }
+    {
+      name = "HDMI-A-1";
+      position = {
+        x = 1920;
+        y = 0;
+      };
+      dimensions = {
+        width = 1920;
+        height = 1920;
+      };
+    }
+  ];
+  theme = "catppuccin";
   font = "JetBrainsMono Nerd Font";
+  email = "oskar.rochowiak@tutanota.com";
   editor = "nvim";
   shell = "fish";
   cursor = {
     enable = true;
-    name = "bibata";
-    themeName = "Bibata-Modern-Ice";
-    size = 24;
+    name = "banana";
+    themeName = "Banana";
+    size = 40;
   };
   statusBar = {
     enable = true;
@@ -55,6 +80,11 @@
   audio.enable = true;
   virtualisation.enable = true;
   zram.enable = true;
+  gaming = {
+    heroic.enable = true;
+    steam.enable = true;
+    lutris.enable = true;
+  };
   wallpaper = {
     enable = true;
     program = "ruin";

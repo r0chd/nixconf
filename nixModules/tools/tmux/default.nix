@@ -1,9 +1,9 @@
-{ pkgs, conf, lib }:
-let inherit (conf) username colorscheme;
+{ pkgs, config, lib, username, ... }:
+let inherit (config) colorscheme;
 in {
   options.tmux.enable = lib.mkEnableOption "Enable tmux";
 
-  config = lib.mkIf conf.tmux.enable {
+  config = lib.mkIf config.tmux.enable {
     environment = {
       interactiveShellInit =
         # bash

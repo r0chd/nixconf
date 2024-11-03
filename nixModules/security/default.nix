@@ -1,7 +1,5 @@
-{ conf, inputs, std, pkgs, lib, config }:
-let inherit (conf) username;
-in {
-  imports = [ (import ./sops { inherit inputs conf std pkgs lib config; }) ];
+{ username, ... }: {
+  imports = [ ./sops ];
 
   security = {
     doas = {

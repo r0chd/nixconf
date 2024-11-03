@@ -1,4 +1,4 @@
-{ config, std, pkgs, inputs, lib, username, ... }: {
+{ lib, ... }: {
   options.wallpaper = {
     enable = lib.mkEnableOption "Enable wallpaper";
     program = lib.mkOption { type = lib.types.enum [ "ruin" ]; };
@@ -7,10 +7,5 @@
     }; # TODO: make it into path once I rewrite ruin
   };
 
-  imports = [
-    (import ./ruin {
-      inherit pkgs inputs std lib username;
-      conf = config;
-    })
-  ];
+  imports = [ ./ruin ];
 }

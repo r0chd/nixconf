@@ -1,11 +1,9 @@
-{ inputs, pkgs, conf, std, config, lib }:
-let inherit (conf) username;
-in {
+{ inputs, pkgs, std, config, lib, username, ... }: {
   imports = [ inputs.sops-nix.nixosModules.sops ];
 
   sops = {
     secrets.nixos-access-token-github = {
-      owner = "${conf.username}";
+      owner = "${username}";
       path = "${std.dirs.home}/.config/nix/nix.conf";
     };
     secrets.password.neededForUsers = true;
@@ -23,7 +21,7 @@ in {
   };
 
   home-manager.users.${username}.home.persistence.${std.dirs.home-persist}.directories =
-    lib.mkIf conf.impermanence.enable [ ".config/sops/age" ];
+    lib.mkIf config.impermanence.enable [ ".config/sops/age" ];
 
   system.activationScripts.sopsGenerateKey = let
     escapedKeyFile = lib.escapeShellArg config.sops.age.keyFile;
@@ -31,8 +29,8 @@ in {
   in ''
     mkdir -p $(dirname ${escapedKeyFile})
     ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
-    chown -R ${conf.username} ${std.dirs.home-persist}/.config
+    chown -R ${username} ${std.dirs.home-persist}/.config
     chmod 600 ${escapedKeyFile}
-    chown -R ${conf.username} ${std.dirs.home}/.config
+    chown -R ${username} ${std.dirs.home}/.config
   '';
 }
