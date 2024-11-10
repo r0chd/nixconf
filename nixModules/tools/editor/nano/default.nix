@@ -1,3 +1,3 @@
-{ conf, lib }: {
-  config = lib.mkIf (conf.editor == "nano") { programs.nano.enable = true; };
+{ config, lib, ... }: {
+  config = lib.mkIf (config.editor == "nano") { programs.nano.enable = true; };
 }

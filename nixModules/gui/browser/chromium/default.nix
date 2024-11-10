@@ -1,6 +1,6 @@
 { lib, config, pkgs, username, ... }: {
   config =
-    lib.mkIf (config.browser.enable && config.browser.program == "ladybird") {
+    lib.mkIf (config.browser.enable && config.browser.program == "chromium") {
       home-manager.users."${username}".programs.chromium = {
         enable = true;
         package = pkgs.ungoogled-chromium;

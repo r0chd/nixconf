@@ -20,7 +20,7 @@
     systemPackages = with pkgs; [ sops ];
   };
 
-  home-manager.users.${username}.home.persistence.${std.dirs.home-persist}.directories =
+  impermanence.persist-home.directories =
     lib.mkIf config.impermanence.enable [ ".config/sops/age" ];
 
   system.activationScripts.sopsGenerateKey = let

@@ -1,5 +1,5 @@
-{ pkgs, inputs, conf, lib, std, username }: {
-  config = lib.mkIf (conf.editor == "nvim") {
+{ pkgs, inputs, config, lib, ... }: {
+  config = lib.mkIf (config.editor == "nvim") {
     environment = {
       systemPackages = with pkgs; [
         inputs.nixvim.packages.${system}.default
@@ -19,8 +19,8 @@
       };
     };
 
-    home-manager.users.${username}.home.persistence.${std.dirs.home-persist}.directories =
-      lib.mkIf conf.impermanence.enable [
+    impermanence.persist-home.directories =
+      lib.mkIf config.impermanence.enable [
         ".cache/nvim"
         ".local/share/nvim"
         ".local/state/nvim"

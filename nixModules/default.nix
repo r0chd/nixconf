@@ -16,7 +16,7 @@ let
     };
   };
 in {
-  imports = [ ./security ./gui ./tools ./system ./hardware ./network ./gaming ];
+  imports = [ ./gui ./tools ./hardware ./network ./gaming ./security ./system ];
 
   options = {
     monitors = lib.mkOption { # TODO: move this later
@@ -37,7 +37,6 @@ in {
       special = lib.mkOption { type = lib.types.str; };
       inactive = lib.mkOption { type = lib.types.str; };
       warn = lib.mkOption { type = lib.types.str; };
-
     };
     font = lib.mkOption { type = lib.types.str; };
     hostname = lib.mkOption { type = lib.types.str; };

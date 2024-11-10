@@ -1,4 +1,4 @@
-{ config, lib, std, username, ... }: {
+{ config, lib, username, ... }: {
   config = lib.mkIf
     (config.browser.enable && config.browser.program == "qutebrowser") {
       home-manager.users."${username}" = {
@@ -24,12 +24,12 @@
             "url.start_pages" = [ "https://search.brave.com" ];
           };
         };
-
-        home.persistence.${std.dirs.home-persist}.directories =
-          lib.mkIf config.impermanence.enable [
-            ".cache/qutebrowser"
-            ".local/share/qutebrowser"
-          ];
       };
+
+      impermanence.persist-home.directories =
+        lib.mkIf config.impermanence.enable [
+          ".cache/qutebrowser"
+          ".local/share/qutebrowser"
+        ];
     };
 }

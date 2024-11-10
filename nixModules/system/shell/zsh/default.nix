@@ -1,5 +1,5 @@
-{ pkgs, conf, lib, username }: {
-  config = lib.mkIf (conf.shell == "zsh") {
+{ pkgs, config, lib, username }: {
+  config = lib.mkIf (config.shell == "zsh") {
     environment.systemPackages = with pkgs; [ fzf ];
 
     users.defaultUserShell = pkgs.zsh;
@@ -17,7 +17,7 @@
       };
       autosuggestion.enable = true;
       initExtra = let
-        inherit (conf) colorscheme;
+        inherit (config) colorscheme;
         inherit (colorscheme) accent1 accent2 error special warn;
       in ''
         eval "$(fzf --zsh)"

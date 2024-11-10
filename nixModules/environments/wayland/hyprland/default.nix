@@ -16,8 +16,8 @@ in {
             '')
           ];
       };
-      programs.hyprland.portalPackage =
-        inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
+      #programs.hyprland.portalPackage =
+      #  inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
 
       nix.settings = {
         substituters = [ "https://hyprland.cachix.org" ];
@@ -29,7 +29,7 @@ in {
       home-manager.users."${username}" = {
         wayland.windowManager.hyprland = {
           enable = true;
-          package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+          #package = inputs.hyprland.packages.${pkgs.system}.hyprland;
           settings = {
             input = {
               monitor =
@@ -139,6 +139,7 @@ in {
               "$mainMod, 8, workspace, 8"
               "$mainMod, 9, workspace, 9"
               "$mainMod, 0, workspace, 10"
+              "ALT, less, pass, ^discord$"
 
               # Move to next workspace with mainMod + [M/N]
               "$mainMod, N, workspace, e-1"

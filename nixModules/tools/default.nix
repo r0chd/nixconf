@@ -12,5 +12,7 @@
     ./nix-index
     ./ydotool
     ./seto
+    ./btop
+    ./obs
   ];
 }

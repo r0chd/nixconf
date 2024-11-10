@@ -1,7 +1,7 @@
-{ pkgs, conf, lib, std, username }:
-let inherit (conf) colorscheme;
+{ pkgs, config, lib, std, username, ... }:
+let inherit (config) colorscheme;
 in {
-  config = lib.mkIf (conf.shell == "fish") {
+  config = lib.mkIf (config.shell == "fish") {
     users.defaultUserShell = pkgs.fish;
     programs.fish.enable = true;
 
@@ -60,7 +60,7 @@ in {
       };
 
       home.persistence.${std.dirs.home-persist}.directories =
-        lib.mkIf conf.impermanence.enable [ ".local/share/fish" ];
+        lib.mkIf config.impermanence.enable [ ".local/share/fish" ];
     };
   };
 }

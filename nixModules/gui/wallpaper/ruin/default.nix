@@ -18,9 +18,9 @@ in {
               background: [${hexToRGBString ", " background1}]
           '';
         };
-
-        persistence.${std.dirs.home-persist}.directories =
-          lib.mkIf config.impermanence.enable [ ".config/ruin/images" ];
       };
+
+      impermanence.persist-home.directories =
+        lib.mkIf config.impermanence.enable [ ".config/ruin/images" ];
     };
 }

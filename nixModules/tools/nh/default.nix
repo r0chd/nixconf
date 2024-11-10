@@ -9,9 +9,9 @@
           pkgs.nh.override { nix-output-monitor = pkgs.nix-output-monitor; };
         flake = "${std.dirs.home}/nixconf";
       };
-
-      home.persistence.${std.dirs.home-persist}.directories =
-        lib.mkIf config.impermanence.enable [ ".cache/nix-output-monitor" ];
     };
+
+    impermanence.persist-home.directories =
+      lib.mkIf config.impermanence.enable [ ".cache/nix-output-monitor" ];
   };
 }

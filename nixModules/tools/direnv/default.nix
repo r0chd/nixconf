@@ -1,4 +1,4 @@
-{ config, lib, std, username, ... }: {
+{ config, lib, username, ... }: {
   options.direnv.enable = lib.mkEnableOption "Enable direnv";
 
   config = lib.mkIf config.direnv.enable {
@@ -7,11 +7,12 @@
         enable = true;
         nix-direnv.enable = true;
       };
-      home.persistence.${std.dirs.home-persist}.directories =
-        lib.mkIf config.impermanence.enable [
-          ".local/share/direnv"
-          ".cache/nix"
-        ];
     };
+
+    impermanence.persist-home.directories =
+      lib.mkIf config.impermanence.enable [
+        ".local/share/direnv"
+        ".cache/nix"
+      ];
   };
 }

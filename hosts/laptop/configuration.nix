@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, pkgs-stable, inputs, ... }: {
   imports = [ ./disko.nix ./gpu.nix ./hardware-configuration.nix ];
 
   monitors = [
@@ -59,7 +59,7 @@
   };
   browser = {
     enable = true;
-    program = "qutebrowser";
+    program = "zen";
   };
   boot = {
     program = "grub";
@@ -80,10 +80,13 @@
   audio.enable = true;
   virtualisation.enable = true;
   zram.enable = true;
+  btop.enable = true;
+  obs.enable = true;
   gaming = {
     heroic.enable = true;
     steam.enable = true;
     lutris.enable = true;
+    minecraft.enable = true;
   };
   wallpaper = {
     enable = true;
@@ -97,13 +100,8 @@
       files = [ ];
     };
     persist-home = {
-      directories = [
-        "workspace"
-        "Images"
-        "Videos"
-        ".config/discord"
-        ".local/share/PrismLauncher"
-      ];
+      directories =
+        [ "workspace" "Images" "Videos" ".config/discord" "Documents" ];
       files = [ ];
     };
   };
@@ -114,7 +112,6 @@
   environment.systemPackages = with pkgs; [
     zathura
     renderdoc
-    prismlauncher
     mpv
     ani-cli
     libreoffice
@@ -122,10 +119,10 @@
     discord
     brightnessctl
     unzip
-    btop
     gimp
     spotify
     imagemagick
+    pkgs-stable.wf-recorder
   ];
 
   fonts.packages = with pkgs; [ jetbrains-mono font-awesome nerdfonts ];

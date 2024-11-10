@@ -1,10 +1,10 @@
-{ config, lib, std, username, ... }:
+{ config, lib, ... }:
 let cfg = config.gaming;
 in {
   config = lib.mkIf cfg.steam.enable {
     programs.steam.enable = true;
 
-    home-manager.users.${username}.home.persistence.${std.dirs.home-persist}.directories =
+    impermanence.persist-home.directories =
       lib.mkIf config.impermanence.enable [
         {
           directory = ".steam";

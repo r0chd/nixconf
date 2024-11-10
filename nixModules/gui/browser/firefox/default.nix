@@ -1,4 +1,4 @@
-{ pkgs, inputs, config, lib, std, username, ... }: {
+{ pkgs, inputs, config, lib, username, ... }: {
   config =
     lib.mkIf (config.browser.enable && config.browser.program == "firefox") {
       home-manager.users."${username}" = {
@@ -66,9 +66,6 @@
             };
           };
         };
-
-        home.persistence.${std.dirs.home-persist}.directories =
-          lib.mkIf config.impermanence.enable [ ".cache/nix-output-monitor" ];
       };
     };
 }
