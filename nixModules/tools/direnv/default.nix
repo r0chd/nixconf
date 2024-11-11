@@ -10,9 +10,6 @@
     };
 
     impermanence.persist-home.directories =
-      lib.mkIf config.impermanence.enable [
-        ".local/share/direnv"
-        ".cache/nix"
-      ];
+      [ ".local/share/direnv" ".cache/nix" ];
   };
 }

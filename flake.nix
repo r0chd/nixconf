@@ -32,11 +32,10 @@
     zls.url = "github:zigtools/zls";
     zig.url = "github:mitchellh/zig-overlay";
 
-    hyprland = { url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; };
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     niri.url = "github:sodiboo/niri-flake";
 
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
-    firefox-nightly.url = "github:nix-community/flake-firefox-nightly";
 
     # Created by me, myself and I
     seto.url = "github:unixpariah/seto";

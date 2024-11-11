@@ -9,13 +9,12 @@
       nameservers = [ "1.1.1.1" "1.0.0.1" ];
     };
 
-    impermanence.persist.directories =
-      lib.mkIf config.impermanence.enable [ "/var/lib/iwd" ];
-
     environment.systemPackages = with pkgs; [
       wirelesstools
       traceroute
       inetutils
     ];
+
+    impermanence.persist.directories = [ "/var/lib/iwd" ];
   };
 }

@@ -1,9 +1,8 @@
-{ pkgs, pkgs-stable, inputs, ... }: {
+{ pkgs, pkgs-stable, ... }: {
   imports = [ ./disko.nix ./gpu.nix ./hardware-configuration.nix ];
 
-  monitors = [
-    {
-      name = "eDP-1";
+  outputs = {
+    "eDP-1" = {
       position = {
         x = 0;
         y = 0;
@@ -12,9 +11,8 @@
         width = 1920;
         height = 1920;
       };
-    }
-    {
-      name = "HDMI-A-1";
+    };
+    "HDMI-A-1" = {
       position = {
         x = 1920;
         y = 0;
@@ -23,8 +21,9 @@
         width = 1920;
         height = 1920;
       };
-    }
-  ];
+    };
+  };
+
   theme = "catppuccin";
   font = "JetBrainsMono Nerd Font";
   email = "oskar.rochowiak@tutanota.com";

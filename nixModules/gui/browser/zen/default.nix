@@ -3,7 +3,6 @@
     environment.systemPackages = with pkgs;
       [ inputs.zen-browser.packages.${system}.default ];
 
-    impermanence.persist-home.directories =
-      lib.mkIf config.impermanence.enable [ ".cache/zen" ".zen" ];
+    impermanence.persist-home.directories = [ ".cache/zen" ".zen" ];
   };
 }

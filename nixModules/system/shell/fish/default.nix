@@ -1,4 +1,4 @@
-{ pkgs, config, lib, std, username, ... }:
+{ pkgs, config, lib, username, ... }:
 let inherit (config) colorscheme;
 in {
   config = lib.mkIf (config.shell == "fish") {
@@ -58,9 +58,8 @@ in {
           set -g fish_greeting ""
         '';
       };
-
-      home.persistence.${std.dirs.home-persist}.directories =
-        lib.mkIf config.impermanence.enable [ ".local/share/fish" ];
     };
+
+    impermanence.persist-home.directories = [ ".local/share/fish" ];
   };
 }

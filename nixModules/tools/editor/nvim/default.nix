@@ -20,10 +20,6 @@
     };
 
     impermanence.persist-home.directories =
-      lib.mkIf config.impermanence.enable [
-        ".cache/nvim"
-        ".local/share/nvim"
-        ".local/state/nvim"
-      ];
+      [ ".cache/nvim" ".local/share/nvim" ".local/state/nvim" ];
   };
 }

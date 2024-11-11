@@ -10,9 +10,6 @@
     };
 
     impermanence.persist-home.directories =
-      lib.mkIf config.impermanence.enable [
-        ".cache/zoxide"
-        ".local/share/zoxide"
-      ];
+      [ ".cache/zoxide" ".local/share/zoxide" ];
   };
 }

@@ -16,8 +16,9 @@ in {
             '')
           ];
       };
-      #programs.hyprland.portalPackage =
-      #  inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
+
+      programs.hyprland.portalPackage =
+        inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
 
       nix.settings = {
         substituters = [ "https://hyprland.cachix.org" ];
@@ -29,11 +30,15 @@ in {
       home-manager.users."${username}" = {
         wayland.windowManager.hyprland = {
           enable = true;
-          #package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+          package = inputs.hyprland.packages.${pkgs.system}.hyprland;
           settings = {
             input = {
-              monitor =
-                [ "eDP-1, 1920x1080, 0x0, 1" "HDMI-A-1, 1920x1080, 1920x0, 1" ];
+              monitor = lib.mapAttrsToList (name: value:
+                "${name}, ${toString value.dimensions.width}x${
+                  toString value.dimensions.height
+                }, ${toString value.position.x}x${toString value.position.y}, ${
+                  toString value.scale
+                }") config.outputs;
 
               kb_layout = "us";
               kb_variant = "";

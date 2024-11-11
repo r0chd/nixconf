@@ -4,7 +4,6 @@
   config = lib.mkIf config.nix-index.enable {
     home-manager.users.${username}.programs.nix-index.enable = true;
 
-    impermanence.persist-home.directories =
-      lib.mkIf config.impermanence.enable [ ".cache/nix-index" ];
+    impermanence.persist-home.directories = [ ".cache/nix-index" ];
   };
 }

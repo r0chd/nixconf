@@ -1,27 +1,27 @@
 { pkgs, inputs, lib, config, arch, username, std, ... }:
 let
-  monitor = {
-    name = lib.mkOption { type = lib.types.str; };
-    position = {
-      x = lib.mkOption { type = lib.types.int; };
-      y = lib.mkOption { type = lib.types.int; };
-    };
-    dimensions = {
-      width = lib.mkOption { type = lib.types.int; };
-      height = lib.mkOption { type = lib.types.int; };
-    };
-    scale = lib.mkOption {
-      type = lib.types.int;
-      default = 1;
-    };
-  };
 in {
   imports = [ ./gui ./tools ./hardware ./network ./gaming ./security ./system ];
 
   options = {
-    monitors = lib.mkOption { # TODO: move this later
-      type = lib.types.listOf monitor;
-      default = [ ];
+    outputs = lib.mkOption {
+      type = lib.types.attrsOf (lib.types.submodule {
+        options = {
+          position = {
+            x = lib.mkOption { type = lib.types.int; };
+            y = lib.mkOption { type = lib.types.int; };
+          };
+          dimensions = {
+            width = lib.mkOption { type = lib.types.int; };
+            height = lib.mkOption { type = lib.types.int; };
+          };
+          scale = lib.mkOption {
+            type = lib.types.int;
+            default = 1;
+          };
+        };
+      });
+      default = { };
     };
 
     email = lib.mkOption { type = lib.types.str; };

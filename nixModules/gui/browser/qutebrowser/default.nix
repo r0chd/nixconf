@@ -27,9 +27,6 @@
       };
 
       impermanence.persist-home.directories =
-        lib.mkIf config.impermanence.enable [
-          ".cache/qutebrowser"
-          ".local/share/qutebrowser"
-        ];
+        [ ".cache/qutebrowser" ".local/share/qutebrowser" ];
     };
 }

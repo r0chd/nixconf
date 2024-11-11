@@ -11,7 +11,6 @@
       };
     };
 
-    impermanence.persist-home.directories =
-      lib.mkIf config.impermanence.enable [ ".cache/nix-output-monitor" ];
+    impermanence.persist-home.directories = [ ".cache/nix-output-monitor" ];
   };
 }

@@ -20,8 +20,7 @@
     systemPackages = with pkgs; [ sops ];
   };
 
-  impermanence.persist-home.directories =
-    lib.mkIf config.impermanence.enable [ ".config/sops/age" ];
+  impermanence.persist-home.directories = [ ".config/sops/age" ];
 
   system.activationScripts.sopsGenerateKey = let
     escapedKeyFile = lib.escapeShellArg config.sops.age.keyFile;

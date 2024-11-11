@@ -1,5 +1,7 @@
-{ pkgs, config, lib, username }: {
+{ pkgs, config, lib, username, ... }: {
   config = lib.mkIf (config.shell == "zsh") {
+    impermanence.persist-home.files = [ ".zsh_history" ];
+
     environment.systemPackages = with pkgs; [ fzf ];
 
     users.defaultUserShell = pkgs.zsh;

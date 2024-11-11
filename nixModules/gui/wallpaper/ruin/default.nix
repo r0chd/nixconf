@@ -20,7 +20,6 @@ in {
         };
       };
 
-      impermanence.persist-home.directories =
-        lib.mkIf config.impermanence.enable [ ".config/ruin/images" ];
+      impermanence.persist-home.directories = [ ".config/ruin/images" ];
     };
 }
