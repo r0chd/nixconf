@@ -59,7 +59,7 @@
           };
         in nixpkgs.lib.nixosSystem {
           specialArgs = rec {
-            inherit inputs hostname arch pkgs pkgs-stable username;
+            inherit inputs hostname pkgs pkgs-stable username;
             std = import ./std {
               inherit hostname username;
               lib = pkgs.lib;

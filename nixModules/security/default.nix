@@ -1,16 +1,1 @@
-{ username, ... }: {
-  imports = [ ./sops ];
-
-  security = {
-    doas = {
-      enable = true;
-      extraRules = [{
-        users = [ "${username}" ];
-        keepEnv = true;
-        persist = true;
-      }];
-    };
-    sudo.enable = true;
-    rtkit.enable = true;
-  };
-}
+{ ... }: { imports = [ ./sops ./root ./idle ./yubikey ]; }

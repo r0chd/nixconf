@@ -104,19 +104,6 @@ in {
         };
       };
 
-      services.swayidle = {
-        enable = true;
-        events = [
-          {
-            event = "before-sleep";
-            command = "loginctl lock-session";
-          }
-          {
-            event = "lock";
-            command = "${config.lockscreen.program}";
-          }
-        ];
-      };
     };
   };
 }

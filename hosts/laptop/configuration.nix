@@ -1,4 +1,4 @@
-{ pkgs, pkgs-stable, ... }: {
+{ pkgs, pkgs-stable, username, std, ... }: {
   imports = [ ./disko.nix ./gpu.nix ./hardware-configuration.nix ];
 
   outputs = {
@@ -24,7 +24,16 @@
     };
   };
 
-  theme = "catppuccin";
+  sops.secrets.nixos-access-token-github = {
+    owner = "${username}";
+    path = "${std.dirs.home}/.config/nix/nix.conf";
+  };
+
+  sops = {
+    enable = true;
+    managePassword = true;
+  };
+  colorscheme.name = "catppuccin";
   font = "JetBrainsMono Nerd Font";
   email = "oskar.rochowiak@tutanota.com";
   editor = "nvim";
@@ -43,10 +52,23 @@
     enable = true;
     program = "mako";
   };
-  lockscreen = {
-    enable = true;
-    program = "hyprlock";
+
+  # This is a TODO
+  screenIdle = {
+    idle = {
+      enable = true;
+      program = "hypridle";
+      timeout = {
+        lock = 300;
+        suspend = 1800;
+      };
+    };
+    lockscreen = {
+      enable = true;
+      program = "hyprlock";
+    };
   };
+
   launcher = {
     enable = true;
     program = "fuzzel";

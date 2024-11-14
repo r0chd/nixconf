@@ -1,9 +1,19 @@
-{ pkgs, inputs, lib, config, arch, username, std, ... }:
+{ pkgs, inputs, lib, config, username, std, ... }:
 let
 in {
-  imports = [ ./gui ./tools ./hardware ./network ./gaming ./security ./system ];
+  imports = [
+    ./gui
+    ./tools
+    ./hardware
+    ./network
+    ./gaming
+    ./security
+    ./system
+    ./colorschemes.nix
+  ];
 
   options = {
+    initialPassword = lib.mkOption { type = lib.types.str; };
     outputs = lib.mkOption {
       type = lib.types.attrsOf (lib.types.submodule {
         options = {
@@ -25,27 +35,11 @@ in {
     };
 
     email = lib.mkOption { type = lib.types.str; };
-    theme = lib.mkOption { type = lib.types.enum [ "catppuccin" ]; };
-    colorscheme = {
-      name = lib.mkOption { type = lib.types.enum [ "catppuccin" ]; };
-      text = lib.mkOption { type = lib.types.str; };
-      accent1 = lib.mkOption { type = lib.types.str; };
-      accent2 = lib.mkOption { type = lib.types.str; };
-      background1 = lib.mkOption { type = lib.types.str; };
-      background2 = lib.mkOption { type = lib.types.str; };
-      error = lib.mkOption { type = lib.types.str; };
-      special = lib.mkOption { type = lib.types.str; };
-      inactive = lib.mkOption { type = lib.types.str; };
-      warn = lib.mkOption { type = lib.types.str; };
-    };
     font = lib.mkOption { type = lib.types.str; };
-    hostname = lib.mkOption { type = lib.types.str; };
   };
 
   config = {
-    colorscheme = (import ./colorschemes.nix)."${config.theme}";
-
-    boot.kernelPackages = pkgs.linuxPackages_latest;
+    boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
     home-manager = {
       backupFileExtension = "backup";
@@ -75,18 +69,33 @@ in {
       };
     };
 
-    users = {
-      mutableUsers = false;
+    users = let sops = config.sops;
+    in {
+      # Disable mutable user if sops manages password
+      mutableUsers = (!sops.enable || !sops.managePassword);
       users."${username}" = {
         isNormalUser = true;
-        hashedPasswordFile = config.sops.secrets.password.path;
+
+        # If sops manages password look for hashedPasswordFile otherwise require initialPassword
+        hashedPasswordFile = lib.mkIf (sops.enable && sops.managePassword)
+          config.sops.secrets.password.path;
+        initialPassword = lib.mkIf (!sops.enable || !sops.managePassword)
+          config.initialPassword;
         extraGroups = [ "wheel" ];
       };
     };
 
     environment.systemPackages = with pkgs; [
+      nvd
+      nix-output-monitor
+      just
       (writeShellScriptBin "shell" ''
-        nix develop "${std.dirs.config}#devShells.$@.${arch}" -c ${config.shell}
+        nix develop "${std.dirs.config}#devShells.$@.${pkgs.system}" -c ${config.shell}
+      '')
+
+      (writeShellScriptBin "rebuild" ''
+        sudo nix build '/home/unixpariah/nixconf#nixosConfigurations.""laptop"".config.system.build.toplevel' --log-format internal-json --verbose --out-link /tmp/nh-osxg4u7B/result | nom --json
+        nvd diff /run/current-system /tmp/nh-osxg4u7B/result
       '')
 
       (writeShellScriptBin "nb" ''

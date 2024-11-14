@@ -4,10 +4,7 @@ in {
   config = lib.mkIf (window-manager.enable && window-manager.name == "niri") {
     environment.systemPackages = with pkgs; [ xwayland-satellite ];
 
-    xdg.portal = {
-      extraPortals = with pkgs; [ xdg-desktop-portal-gnome ];
-      config.common.default = "gnome";
-    };
+    xdg.portal = { extraPortals = with pkgs; [ xdg-desktop-portal-gnome ]; };
 
     systemd.user.services.pipewire = {
       wantedBy = [ "niri.service" ];
@@ -100,6 +97,8 @@ in {
               ];
             }
           ];
+
+          animations = { enable = true; };
 
           binds = {
             "XF86MonBrightnessUp".action.spawn =

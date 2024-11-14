@@ -67,9 +67,6 @@ in {
 
             decoration = {
               rounding = "16";
-              drop_shadow = "yes";
-              shadow_range = "4";
-              shadow_render_power = "3";
 
               blur.enabled = false;
             };
@@ -186,39 +183,6 @@ in {
           };
         };
 
-        services.hypridle = lib.mkIf config.lockscreen.enable {
-          enable = true;
-          settings = {
-            general = {
-              before_sleep_cmd = "loginctl lock-session";
-              after_sleep_cmd = "hyprctl dispatch dpms on";
-              ignore_dbus_inhibit = true;
-              lock_cmd = "${config.lockscreen.program}";
-            };
-            listener = let
-              lockScript = pkgs.writeShellScript "lock-script" ''
-                action=$1
-                pw-cli i all | rg running
-                if [ $? == 1 ]; then
-                  if [ "$action" == "lock" ]; then
-                    "${config.lockscreen.program}"
-                  elif [ "$action" == "suspend" ]; then
-                    systemctl suspend
-                  fi
-                fi
-              '';
-            in [
-              {
-                timeout = 300;
-                on-timeout = "${lockScript.outPath} lock";
-              }
-              {
-                timeout = 1800;
-                on-timeout = "${lockScript.outPath} suspend";
-              }
-            ];
-          };
-        };
       };
     };
 }

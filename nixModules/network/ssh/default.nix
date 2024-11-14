@@ -1,4 +1,4 @@
-{ std, username, ... }:
+{ std, username, config, lib, ... }:
 let
   keysDir = "${std.dirs.host}/keys";
   keysList = if (builtins.pathExists keysDir) then
@@ -14,6 +14,7 @@ in {
     enable = true;
     settings.PasswordAuthentication = false;
     settings.KbdInteractiveAuthentication = false;
+    extraConfig = lib.mkIf config.yubikey.enable "AddKeysToAgent yes";
   };
 
   impermanence.persist-home.directories = [ ".ssh" ];
