@@ -36,9 +36,9 @@ in {
               monitor = lib.mapAttrsToList (name: value:
                 "${name}, ${toString value.dimensions.width}x${
                   toString value.dimensions.height
-                }, ${toString value.position.x}x${toString value.position.y}, ${
-                  toString value.scale
-                }") config.outputs;
+                }@${toString value.refresh}, ${toString value.position.x}x${
+                  toString value.position.y
+                }, ${toString value.scale}") config.outputs;
 
               kb_layout = "us";
               kb_variant = "";

@@ -35,7 +35,7 @@
       u2f = {
         enable = true;
         settings = {
-          cue = false;
+          cue = true;
           authFile = "${std.dirs.home}/.config/Yubico/u2f_keys";
         };
       };
@@ -55,3 +55,4 @@
 
 # ykman fido access change-pin
 # ssh-keygen -t ed25519-sk -N "" -C "unixpariah@laptop" -f ~/.ssh/id_of_key
+# pamu2fcfg -u user > ~/u2f_keys

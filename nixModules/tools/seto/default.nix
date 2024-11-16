@@ -30,7 +30,7 @@ in {
                   selected_color = "${special}",
               },
               keys = {
-                  search = "sadfjklewcmpgh",
+                  search = "asdfghjkl",
                   bindings = {
                       z = { move = { -5, 0 } },
                       x = { move = { 0, -5 } },

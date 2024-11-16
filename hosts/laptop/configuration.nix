@@ -1,5 +1,22 @@
-{ pkgs, pkgs-stable, username, std, ... }: {
+{ username, std, pkgs, pkgs-stable, ... }: {
   imports = [ ./disko.nix ./gpu.nix ./hardware-configuration.nix ];
+
+  host = {
+    impermanence = {
+      enable = true;
+      persist = {
+        directories =
+          [ "/var/log" "/var/lib/nixos" "/var/lib/systemd/coredump" ];
+        files = [ ];
+      };
+    };
+    users = {
+      "unixpariah" = {
+        enable = true;
+        root.enable = true;
+      };
+    };
+  };
 
   outputs = {
     "eDP-1" = {
@@ -7,6 +24,7 @@
         x = 0;
         y = 0;
       };
+      refresh = 144.0;
       dimensions = {
         width = 1920;
         height = 1920;
@@ -17,6 +35,7 @@
         x = 1920;
         y = 0;
       };
+      refresh = 60.0;
       dimensions = {
         width = 1920;
         height = 1920;
@@ -24,14 +43,23 @@
     };
   };
 
-  sops.secrets.nixos-access-token-github = {
-    owner = "${username}";
-    path = "${std.dirs.home}/.config/nix/nix.conf";
+  power.enable = true;
+  boot = {
+    program = "grub";
+    legacy = false;
   };
+  wireless.enable = true;
+  bluetooth.enable = true;
+  audio.enable = true;
+  zram.enable = true;
 
   sops = {
     enable = true;
     managePassword = true;
+    secrets.nixos-access-token-github = {
+      owner = "${username}";
+      path = "${std.dirs.home}/.config/nix/nix.conf";
+    };
   };
   colorscheme.name = "catppuccin";
   font = "JetBrainsMono Nerd Font";
@@ -57,7 +85,7 @@
   screenIdle = {
     idle = {
       enable = true;
-      program = "hypridle";
+      program = "swayidle";
       timeout = {
         lock = 300;
         suspend = 1800;
@@ -73,7 +101,6 @@
     enable = true;
     program = "fuzzel";
   };
-  power.enable = true;
   terminal = {
     enable = true;
     program = "foot";
@@ -81,10 +108,6 @@
   browser = {
     enable = true;
     program = "zen";
-  };
-  boot = {
-    program = "grub";
-    legacy = false;
   };
   tmux.enable = true;
   nh.enable = true;
@@ -96,11 +119,7 @@
   nix-index.enable = true;
   ydotool.enable = true;
   seto.enable = true;
-  wireless.enable = true;
-  bluetooth.enable = true;
-  audio.enable = true;
   virtualisation.enable = true;
-  zram.enable = true;
   btop.enable = true;
   obs.enable = true;
   gaming = {
@@ -114,17 +133,10 @@
     program = "ruin";
     path = "nix";
   };
-  impermanence = {
-    enable = true;
-    persist = {
-      directories = [ "/var/log" "/var/lib/nixos" "/var/lib/systemd/coredump" ];
-      files = [ ];
-    };
-    persist-home = {
-      directories =
-        [ "workspace" "Images" "Videos" ".config/discord" "Documents" ];
-      files = [ ];
-    };
+  impermanence.persist-home = {
+    directories =
+      [ "workspace" "Images" "Videos" ".config/discord" "Documents" ];
+    files = [ ];
   };
 
   time.timeZone = "Europe/Warsaw";
@@ -132,7 +144,6 @@
 
   environment.systemPackages = with pkgs; [
     zathura
-    renderdoc
     mpv
     ani-cli
     libreoffice

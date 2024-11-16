@@ -10,6 +10,7 @@ in {
     ./security
     ./system
     ./colorschemes.nix
+    ./host.nix
   ];
 
   options = {
@@ -21,6 +22,7 @@ in {
             x = lib.mkOption { type = lib.types.int; };
             y = lib.mkOption { type = lib.types.int; };
           };
+          refresh = lib.mkOption { type = lib.types.float; };
           dimensions = {
             width = lib.mkOption { type = lib.types.int; };
             height = lib.mkOption { type = lib.types.int; };
@@ -69,22 +71,6 @@ in {
       };
     };
 
-    users = let sops = config.sops;
-    in {
-      # Disable mutable user if sops manages password
-      mutableUsers = (!sops.enable || !sops.managePassword);
-      users."${username}" = {
-        isNormalUser = true;
-
-        # If sops manages password look for hashedPasswordFile otherwise require initialPassword
-        hashedPasswordFile = lib.mkIf (sops.enable && sops.managePassword)
-          config.sops.secrets.password.path;
-        initialPassword = lib.mkIf (!sops.enable || !sops.managePassword)
-          config.initialPassword;
-        extraGroups = [ "wheel" ];
-      };
-    };
-
     environment.systemPackages = with pkgs; [
       nvd
       nix-output-monitor
@@ -94,7 +80,7 @@ in {
       '')
 
       (writeShellScriptBin "rebuild" ''
-        sudo nix build '/home/unixpariah/nixconf#nixosConfigurations.""laptop"".config.system.build.toplevel' --log-format internal-json --verbose --out-link /tmp/nh-osxg4u7B/result | nom --json
+        nix build '${std.dirs.home}/nixconf#nixosConfigurations.""laptop"".config.system.build.toplevel' --log-format internal-json --verbose --out-link /tmp/nh-osxg4u7B/result | nom --json
         nvd diff /run/current-system /tmp/nh-osxg4u7B/result
       '')
 

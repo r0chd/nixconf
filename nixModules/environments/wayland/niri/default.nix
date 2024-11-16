@@ -23,6 +23,7 @@ in {
             mode = {
               width = value.dimensions.width;
               height = value.dimensions.height;
+              refresh = value.refresh;
             };
             position = value.position;
           }) config.outputs;
@@ -91,6 +92,10 @@ in {
                 [ "${config.terminal.program}" ];
             }
             {
+              command = lib.mkIf config.notifications.enable
+                [ "${config.notifications.program}" ];
+            }
+            {
               command = lib.mkIf config.wallpaper.enable [
                 "${config.wallpaper.program}"
                 "${config.wallpaper.path}"
@@ -107,11 +112,8 @@ in {
               [ "brightnessctl" "set" "5%-" ];
             "XF86AudioRaiseVolume".action.spawn = [ "pamixer" "-i" "5" ];
             "XF86AudioLowerVolume".action.spawn = [ "pamixer" "-d" "5" ];
-            "Print".action.spawn = [
-              "bash"
-              "-c"
-              ''grim -g "$(seto - r)" - | wl-copy -t image/png''
-            ];
+            "Print".action.spawn =
+              [ "bash" "-c" "grim -g $(seto -r) - | wl-copy -t image/png" ];
 
             "Alt+G".action.spawn = [
               "bash"

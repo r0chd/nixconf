@@ -15,6 +15,6 @@
       inetutils
     ];
 
-    impermanence.persist.directories = [ "/var/lib/iwd" ];
+    host.impermanence.persist.directories = [ "/var/lib/iwd" ];
   };
 }

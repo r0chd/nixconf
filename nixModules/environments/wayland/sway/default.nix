@@ -24,13 +24,12 @@ in {
               "${toString value.position.x} ${toString value.position.y}";
             resolution = "${toString value.dimensions.width}x${
                 toString value.dimensions.height
-              }";
+              }@${toString value.refresh}Hz";
             scale = "${toString value.scale}";
           }) config.outputs;
 
-          input."9011:26214:ydotoold_virtual_device" = {
-            "accel_profile" = "flat";
-          };
+          input."9011:26214:ydotoold_virtual_device" =
+            lib.mkIf config.ydotool.enable { "accel_profile" = "flat"; };
 
           startup = [ ] ++ lib.optional (config.terminal.enable) {
             command = "sway workspace 1; ${terminal.program}";
