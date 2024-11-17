@@ -1,10 +1,8 @@
-{ lib, config, std, inputs, username, ... }:
-let inherit (config) impermanence;
-in {
+{ lib, config, std, inputs, username, ... }: {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
 
   options = {
-    host.impermanence = {
+    impermanence = {
       enable = lib.mkEnableOption "Enable impermanence";
       persist = {
         directories = lib.mkOption {
@@ -17,38 +15,9 @@ in {
         };
       };
     };
-    impermanence.persist-home = {
-      directories = lib.mkOption {
-        type = with lib.types;
-          listOf (either str (submodule {
-            options = {
-              directory = lib.mkOption {
-                type = str;
-                default = null;
-                description = "The directory path to be linked.";
-              };
-              method = lib.mkOption {
-                type = types.enum [ "bindfs" "symlink" ];
-                default = "bindfs";
-                description = ''
-                  The linking method that should be used for this
-                  directory. bindfs is the default and works for most use
-                  cases, however some programs may behave better with
-                  symlinks.
-                '';
-              };
-            };
-          }));
-        default = [ ];
-      };
-      files = lib.mkOption {
-        type = lib.types.listOf lib.types.str;
-        default = [ ];
-      };
-    };
   };
 
-  config = lib.mkIf config.host.impermanence.enable {
+  config = lib.mkIf config.impermanence.enable {
     boot.initrd.postDeviceCommands = lib.mkAfter ''
       mkdir /btrfs_tmp
       mount /dev/root_vg/root /btrfs_tmp
@@ -85,18 +54,53 @@ in {
 
     home-manager.users."${username}" = {
       imports = [ inputs.impermanence.homeManagerModules.default ];
-      home.persistence."${std.dirs.home-persist}" = {
-        directories = config.impermanence.persist-home.directories
-          ++ [ "nixconf" ];
-        files = config.impermanence.persist-home.files;
-        allowOther = true;
+
+      options.impermanence.persist = {
+        directories = lib.mkOption {
+          type = with lib.types;
+            listOf (either str (submodule {
+              options = {
+                directory = lib.mkOption {
+                  type = str;
+                  default = null;
+                  description = "The directory path to be linked.";
+                };
+                method = lib.mkOption {
+                  type = types.enum [ "bindfs" "symlink" ];
+                  default = "bindfs";
+                  description = ''
+                    The linking method that should be used for this
+                    directory. bindfs is the default and works for most use
+                    cases, however some programs may behave better with
+                    symlinks.
+                  '';
+                };
+              };
+            }));
+          default = [ ];
+        };
+        files = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [ ];
+        };
+      };
+
+      config = {
+        home.persistence."${std.dirs.home-persist}" = {
+          directories =
+            config.home-manager.users.${username}.impermanence.persist.directories
+            ++ [ "nixconf" ];
+          files =
+            config.home-manager.users.${username}.impermanence.persist.files;
+          allowOther = true;
+        };
       };
     };
 
     environment.persistence."/persist/system" = {
       hideMounts = true;
-      directories = config.host.impermanence.persist.directories;
-      files = config.host.impermanence.persist.files;
+      directories = config.impermanence.persist.directories;
+      files = config.impermanence.persist.files;
     };
   };
 }

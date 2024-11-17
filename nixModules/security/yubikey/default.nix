@@ -48,7 +48,7 @@
       };
     };
 
-    impermanence.persist-home.directories =
+    impermanence.persist.directories =
       [ "${std.dirs.home}/.config/Yubico/u2f_keys" ];
   };
 }

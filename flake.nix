@@ -70,6 +70,7 @@
             home-manager.nixosModules.default
             disko.nixosModules.default
             ./nixModules
+            ./homeModules
           ];
         };
     in {

@@ -1,1 +1,1 @@
-{ ... }: { imports = [ ./sops ./root ./idle ./yubikey ]; }
+{ ... }: { imports = [ ./root ./idle ./yubikey ]; }

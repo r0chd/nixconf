@@ -1,57 +1,47 @@
-{ pkgs, inputs, lib, config, username, std, ... }:
+{ pkgs, lib, std, config, ... }:
 let
 in {
-  imports = [
-    ./gui
-    ./tools
-    ./hardware
-    ./network
-    ./gaming
-    ./security
-    ./system
-    ./colorschemes.nix
-    ./host.nix
-  ];
+  imports = [ ./system ./hardware ./network ];
 
   options = {
-    initialPassword = lib.mkOption { type = lib.types.str; };
-    outputs = lib.mkOption {
+    systemUsers = lib.mkOption {
       type = lib.types.attrsOf (lib.types.submodule {
         options = {
-          position = {
-            x = lib.mkOption { type = lib.types.int; };
-            y = lib.mkOption { type = lib.types.int; };
-          };
-          refresh = lib.mkOption { type = lib.types.float; };
-          dimensions = {
-            width = lib.mkOption { type = lib.types.int; };
-            height = lib.mkOption { type = lib.types.int; };
-          };
-          scale = lib.mkOption {
-            type = lib.types.int;
-            default = 1;
-          };
+          enable = lib.mkEnableOption "Enable user";
+          root.enable = lib.mkEnableOption "Enable root for user";
         };
       });
       default = { };
     };
-
-    email = lib.mkOption { type = lib.types.str; };
-    font = lib.mkOption { type = lib.types.str; };
   };
 
   config = {
     boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
-    home-manager = {
-      backupFileExtension = "backup";
-      users."${username}" = {
-        programs.home-manager.enable = true;
-        home = {
-          username = "${username}";
-          stateVersion = "24.05";
-        };
-      };
+    system.activationScripts.createUserConfigs = ''
+      for user in ${
+        lib.concatStringsSep " " (lib.attrNames config.systemUsers)
+      }; do
+        mkdir -p ${std.dirs.host}/users/$user
+        touch ${std.dirs.host}/users/$user/configuration.nix
+      done
+    '';
+
+    users = let sops = config.sops;
+    in {
+      # Disable mutable user if sops manages password
+      mutableUsers = (!sops.enable || !sops.managePassword);
+      users = lib.mapAttrs (name: value: {
+        isNormalUser = true;
+
+        hashedPasswordFile = lib.mkIf (sops.enable && sops.managePassword)
+          config.sops.secrets.password.path;
+        # Require initialPassword if password isnt managed by sops and impermanence is enabled
+        initialPassword = lib.mkIf
+          ((!sops.enable || !sops.managePassword) && config.impermanence.enable)
+          config.initialPassword;
+        extraGroups = lib.mkIf value.root.enable [ "wheel" ];
+      }) config.systemUsers;
     };
 
     nix = {
@@ -62,76 +52,12 @@ in {
         trusted-public-keys = [
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         ];
-        trusted-users = [ "root" "${username}" ];
+        trusted-users = [ "root" "@wheel" ];
       };
       gc = {
         automatic = true;
         dates = "weekly";
         options = "--delete-older-than 7d";
-      };
-    };
-
-    environment.systemPackages = with pkgs; [
-      nvd
-      nix-output-monitor
-      just
-      (writeShellScriptBin "shell" ''
-        nix develop "${std.dirs.config}#devShells.$@.${pkgs.system}" -c ${config.shell}
-      '')
-
-      (writeShellScriptBin "rebuild" ''
-        nix build '${std.dirs.home}/nixconf#nixosConfigurations.""laptop"".config.system.build.toplevel' --log-format internal-json --verbose --out-link /tmp/nh-osxg4u7B/result | nom --json
-        nvd diff /run/current-system /tmp/nh-osxg4u7B/result
-      '')
-
-      (writeShellScriptBin "nb" ''
-        command "$@" > /dev/null 2>&1 &
-        disown
-      '')
-    ];
-
-    specialisation = {
-      Hyprland.configuration = let
-        window-manager = {
-          enable = true;
-          name = "Hyprland";
-          backend = "Wayland";
-        };
-      in {
-        environment.etc."specialisation".text = "Hyprland";
-        imports = [
-          (import ./environments {
-            inherit config inputs pkgs lib username window-manager;
-          })
-        ];
-      };
-      Sway.configuration = let
-        window-manager = {
-          enable = true;
-          name = "sway";
-          backend = "Wayland";
-        };
-      in {
-        environment.etc."specialisation".text = "sway";
-        imports = [
-          (import ./environments {
-            inherit config inputs pkgs lib username window-manager;
-          })
-        ];
-      };
-      niri.configuration = let
-        window-manager = {
-          enable = true;
-          name = "niri";
-          backend = "Wayland";
-        };
-      in {
-        environment.etc."specialisation".text = "niri";
-        imports = [
-          (import ./environments {
-            inherit config inputs pkgs lib username window-manager;
-          })
-        ];
       };
     };
   };

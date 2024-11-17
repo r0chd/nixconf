@@ -1,12 +1,9 @@
 { lib, ... }: {
-  options.boot = {
-    program = lib.mkOption { type = lib.types.enum [ "grub" "systemd-boot" ]; };
-    legacy = lib.mkEnableOption "Enable legacy boot";
-  };
+  options.boot.program =
+    lib.mkOption { type = lib.types.enum [ "grub" "systemd-boot" ]; };
 
   imports = [ ./systemd-boot ./grub ];
 
-  # TODO: do the legacy boot thing
   config.boot = {
     loader.systemd-boot.enable = lib.mkDefault false;
     supportedFilesystems = [ "btrfs" ];

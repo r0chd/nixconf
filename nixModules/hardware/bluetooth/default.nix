@@ -4,6 +4,6 @@
   config = lib.mkIf config.bluetooth.enable {
     hardware.bluetooth.enable = true;
 
-    host.impermanence.persist.directories = [ "/var/lib/bluetooth" ];
+    impermanence.persist.directories = [ "/var/lib/bluetooth" ];
   };
 }
