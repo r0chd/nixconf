@@ -1,8 +1,8 @@
-{ lib, pkgs, config, username, std, ... }: {
+{ lib, pkgs, config, std, ... }: {
   options.nh.enable = lib.mkEnableOption "Enable nh";
 
   config = lib.mkIf config.nh.enable {
-    home-manager.users."${username}".programs.nh = {
+    programs.nh = {
       enable = true;
       package =
         pkgs.nh.override { nix-output-monitor = pkgs.nix-output-monitor; };

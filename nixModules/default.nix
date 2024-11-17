@@ -1,7 +1,5 @@
-{ pkgs, lib, std, config, ... }:
-let
-in {
-  imports = [ ./system ./hardware ./network ];
+{ pkgs, lib, std, config, ... }: {
+  imports = [ ./system ./hardware ./network ./security ];
 
   options = {
     systemUsers = lib.mkOption {
@@ -16,6 +14,7 @@ in {
   };
 
   config = {
+    programs.nano.enable = false;
     boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
     system.activationScripts.createUserConfigs = ''

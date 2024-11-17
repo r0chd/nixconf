@@ -1,5 +1,4 @@
 { pkgs, inputs, lib, config, username, window-manager, ... }: {
-
   imports = [
     (import ./hyprland {
       inherit inputs pkgs lib config username window-manager;
@@ -21,7 +20,6 @@
               window-manager.name)}
             fi
           '';
-        systemPackages = with pkgs; [ wl-clipboard wayland ];
         variables = {
           XDG_SESSION_TYPE = "wayland";
           __GL_GSYNC_ALLOWED = "1";
@@ -29,20 +27,24 @@
           QT_AUTO_SCREEN_SCALE_FACTOR = "1";
           QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
         };
-        sessionVariables = {
-          NIXOS_OZONE_WL = "1";
-          WLR_NO_HARDWARE_CURSORS = "1";
-        };
       };
 
-      xdg.portal = {
-        enable = true;
-        wlr.enable = true;
-        extraPortals = with pkgs; [
-          xdg-desktop-portal-gtk
-          xdg-desktop-portal-wlr
-        ];
-        config.common.default = "*";
+      home-manager.users.${username} = {
+        home = {
+          packages = with pkgs; [ wl-clipboard wayland ];
+          sessionVariables = {
+            NIXOS_OZONE_WL = "1";
+            WLR_NO_HARDWARE_CURSORS = "1";
+          };
+        };
+        xdg.portal = {
+          enable = true;
+          extraPortals = with pkgs; [
+            xdg-desktop-portal-gtk
+            xdg-desktop-portal-wlr
+          ];
+          config.common.default = "*";
+        };
       };
     };
 }

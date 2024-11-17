@@ -1,5 +1,8 @@
 { lib, config, username, window-manager, ... }:
-let inherit (config) terminal seto colorscheme ydotool;
+let
+  conf = config.home-manager.users.${username};
+  inherit (conf) colorscheme;
+  inherit (config) ydotool;
 in {
   config = lib.mkIf (window-manager.enable && window-manager.name == "sway") {
     security.polkit.enable = true;
@@ -13,9 +16,11 @@ in {
           client.focused ${accent1} ${accent1} ${accent1} ${accent1}
         '';
         config = rec {
-          bars = [ ] ++ (lib.optional (config.statusBar.enable) {
-            command = "${config.statusBar.program}";
-          });
+          bars = [ ] ++ (lib.optional
+            (config.home-manager.users.${username}.statusBar.enable) {
+              command =
+                "${config.home-manager.users.${username}.statusBar.program}";
+            });
           modifier = "Mod1";
           gaps.outer = 7;
 
@@ -26,16 +31,23 @@ in {
                 toString value.dimensions.height
               }@${toString value.refresh}Hz";
             scale = "${toString value.scale}";
-          }) config.outputs;
+          }) config.home-manager.users.${username}.outputs;
 
           input."9011:26214:ydotoold_virtual_device" =
             lib.mkIf config.ydotool.enable { "accel_profile" = "flat"; };
 
-          startup = [ ] ++ lib.optional (config.terminal.enable) {
-            command = "sway workspace 1; ${terminal.program}";
-          } ++ lib.optional (config.wallpaper.enable) {
-            command = "${config.wallpaper.program} ${config.wallpaper.path}";
-          };
+          startup = [ ] ++ lib.optional
+            (config.home-manager.users.${username}.terminal.enable) {
+              command = "sway workspace 1; ${
+                  config.home-manager.users.${username}.terminal.program
+                }";
+            } ++ lib.optional
+            (config.home-manager.users.${username}.wallpaper.enable) {
+              command =
+                "${config.home-manager.users.${username}.wallpaper.program} ${
+                  config.home-manager.users.${username}.wallpaper.path
+                }";
+            };
 
           keybindings = {
             "${modifier}+Shift+c" = "kill";
@@ -90,16 +102,25 @@ in {
           } // lib.optionalAttrs config.audio.enable {
             "XF86AudioRaiseVolume" = "exec pamixer -i 5";
             "XF86AudioLowerVolume" = "exec pamixer -d 5";
-          } // lib.optionalAttrs seto.enable {
-            "Print" = ''exec grim -g "$(seto -r)" - | wl-copy -t image/png'';
-          } // lib.optionalAttrs (seto.enable && ydotool.enable) {
-            "${modifier}+g" = ''
-              exec "ydotool mousemove -a $(seto -f "%x %y") && ydotool click 0xC0"'';
-          } // lib.optionalAttrs (config.terminal.enable) {
-            "${modifier}+Shift+Return" = "exec ${config.terminal.program}";
-          } // lib.optionalAttrs (config.launcher.enable) {
-            "${modifier}+S" = "exec ${config.launcher.program}";
-          };
+          } // lib.optionalAttrs
+            config.home-manager.users.${username}.seto.enable {
+              "Print" = ''exec grim -g "$(seto -r)" - | wl-copy -t image/png'';
+            } // lib.optionalAttrs
+            (config.home-manager.users.${username}.seto.enable
+              && ydotool.enable) {
+                "${modifier}+g" = ''
+                  exec "ydotool mousemove -a $(seto -f "%x %y") && ydotool click 0xC0"'';
+              } // lib.optionalAttrs
+            (config.home-manager.users.${username}.terminal.enable) {
+              "${modifier}+Shift+Return" = "exec ${
+                  config.home-manager.users.${username}.terminal.program
+                }";
+            } // lib.optionalAttrs
+            (config.home-manager.users.${username}.launcher.enable) {
+              "${modifier}+S" = "exec ${
+                  config.home-manager.users.${username}.launcher.program
+                }";
+            };
         };
       };
 

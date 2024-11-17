@@ -1,5 +1,8 @@
 { pkgs, inputs, lib, config, username, window-manager, ... }:
-let inherit (config) colorscheme seto ydotool;
+let
+  conf = config.home-manager.users.${username};
+  inherit (conf) colorscheme;
+  inherit (config) ydotool;
 in {
   config =
     lib.mkIf (window-manager.enable && window-manager.name == "Hyprland") {
@@ -29,8 +32,6 @@ in {
 
       home-manager.users."${username}" = {
         wayland.windowManager.hyprland = {
-          portalPackage =
-            inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
           enable = true;
           package = inputs.hyprland.packages.${pkgs.system}.hyprland;
           settings = {
@@ -40,7 +41,8 @@ in {
                   toString value.dimensions.height
                 }@${toString value.refresh}, ${toString value.position.x}x${
                   toString value.position.y
-                }, ${toString value.scale}") config.outputs;
+                }, ${toString value.scale}")
+                config.home-manager.users.${username}.outputs;
 
               kb_layout = "us";
               kb_variant = "";
@@ -109,15 +111,23 @@ in {
 
             "$mainMod" = "ALT"; # Mod key
 
-            exec-once = [ ] ++ (lib.optional (config.statusBar.enable)
-              "${config.statusBar.program}")
-              ++ (lib.optional (config.terminal.enable)
-                "${config.terminal.program}")
-              ++ lib.optional (config.wallpaper.enable)
-              "${config.wallpaper.program} ${config.wallpaper.path}";
+            exec-once = [ ] ++ (lib.optional
+              (config.home-manager.users.${username}.statusBar.enable)
+              "${config.home-manager.users.${username}.statusBar.program}")
+              ++ (lib.optional
+                (config.home-manager.users.${username}.terminal.enable)
+                "${config.home-manager.users.${username}.terminal.program}")
+              ++ lib.optional
+              (config.home-manager.users.${username}.wallpaper.enable)
+              "${config.home-manager.users.${username}.wallpaper.program} ${
+                config.home-manager.users.${username}.wallpaper.path
+              }";
 
-            env = [ ] ++ (lib.optional (config.cursor.enable)
-              "HYPRCURSOR_SIZE,${toString config.cursor.size}");
+            env = [ ] ++ (lib.optional
+              (config.home-manager.users.${username}.cursor.enable)
+              "HYPRCURSOR_SIZE,${
+                toString config.home-manager.users.${username}.cursor.size
+              }");
 
             bind = [
               # Brightness
@@ -167,15 +177,22 @@ in {
             ] ++ (lib.optional config.audio.enable
               ", XF86AudioRaiseVolume, exec, pamixer -i 5")
               ++ (lib.optional config.audio.enable
-                ", XF86AudioLowerVolume, exec, pamixer -d 5")
-              ++ (lib.optional (config.terminal.enable)
-                "$mainMod SHIFT, RETURN, exec, ${config.terminal.program}")
-              ++ (lib.optional seto.enable ''
-                , Print, exec, grim -g "$(seto -r)" - | wl-copy -t image/png'')
-              ++ (lib.optional (seto.enable && ydotool.enable)
-                "$mainMod, G, exec, click")
-              ++ (lib.optional (config.launcher.enable)
-                "$mainMod, S, exec, ${config.launcher.program}");
+                ", XF86AudioLowerVolume, exec, pamixer -d 5") ++ (lib.optional
+                  (config.home-manager.users.${username}.terminal.enable)
+                  "$mainMod SHIFT, RETURN, exec, ${
+                    config.home-manager.users.${username}.terminal.program
+                  }")
+              ++ (lib.optional config.home-manager.users.${username}.seto.enable
+                ''
+                  , Print, exec, grim -g "$(seto -r)" - | wl-copy -t image/png'')
+              ++ (lib.optional
+                (config.home-manager.users.${username}.seto.enable
+                  && ydotool.enable) "$mainMod, G, exec, click")
+              ++ (lib.optional
+                (config.home-manager.users.${username}.launcher.enable)
+                "$mainMod, S, exec, ${
+                  config.home-manager.users.${username}.launcher.program
+                }");
 
             bindm = [
               # Move/resize windows with mainMod + LMB/RMB and dragging

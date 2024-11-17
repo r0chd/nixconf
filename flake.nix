@@ -67,10 +67,11 @@
           };
           modules = [
             ./hosts/${hostname}/configuration.nix
-            home-manager.nixosModules.default
-            disko.nixosModules.default
             ./nixModules
             ./homeModules
+            home-manager.nixosModules.default
+            disko.nixosModules.default
+            inputs.sops-nix.nixosModules.sops
           ];
         };
     in {

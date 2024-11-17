@@ -2,18 +2,16 @@
 let inherit (config) colorscheme;
 in {
   config = lib.mkIf (window-manager.enable && window-manager.name == "niri") {
-    environment.systemPackages = with pkgs; [ xwayland-satellite ];
-
-    xdg.portal = { extraPortals = with pkgs; [ xdg-desktop-portal-gnome ]; };
-
     systemd.user.services.pipewire = {
       wantedBy = [ "niri.service" ];
       before = [ "niri.service" ];
     };
 
     home-manager.users."${username}" = {
+      xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gnome ];
       imports = [ inputs.niri.homeModules.niri ];
       nixpkgs.overlays = [ inputs.niri.overlays.niri ];
+      home.packages = with pkgs; [ xwayland-satellite ];
       programs.niri = {
         enable = true;
         settings = let inherit (colorscheme) accent1 inactive;
@@ -26,7 +24,7 @@ in {
               refresh = value.refresh;
             };
             position = value.position;
-          }) config.outputs;
+          }) config.home-manager.users.${username}.outputs;
 
           input = {
             keyboard = {
@@ -84,22 +82,29 @@ in {
           spawn-at-startup = [
             { command = [ "xwayland-satellite" ]; }
             {
-              command = lib.mkIf config.statusBar.enable
-                [ "${config.statusBar.program}" ];
+              command =
+                lib.mkIf config.home-manager.users.${username}.statusBar.enable
+                [
+                  "${config.home-manager.users.${username}.statusBar.program}"
+                ];
             }
             {
-              command = lib.mkIf config.terminal.enable
-                [ "${config.terminal.program}" ];
+              command =
+                lib.mkIf config.home-manager.users.${username}.terminal.enable
+                [ "${config.home-manager.users.${username}.terminal.program}" ];
             }
             {
-              command = lib.mkIf config.notifications.enable
-                [ "${config.notifications.program}" ];
+              command = lib.mkIf
+                config.home-manager.users.${username}.notifications.enable [
+                  "${config.home-manager.users.${username}.notifications.program}"
+                ];
             }
             {
-              command = lib.mkIf config.wallpaper.enable [
-                "${config.wallpaper.program}"
-                "${config.wallpaper.path}"
-              ];
+              command = lib.mkIf
+                config.home-manager.users.${username}.wallpaper.enable [
+                  "${config.home-manager.users.${username}.wallpaper.program}"
+                  "${config.home-manager.users.${username}.wallpaper.path}"
+                ];
             }
           ];
 
@@ -121,9 +126,11 @@ in {
               "ydotool mousemove -a $(seto -f $'%x %y') && ydotool click 0xC0"
             ];
 
-            "Alt+Shift+Return".action.spawn = [ "${config.terminal.program}" ];
+            "Alt+Shift+Return".action.spawn =
+              [ "${config.home-manager.users.${username}.terminal.program}" ];
 
-            "Alt+S".action.spawn = [ "${config.launcher.program}" ];
+            "Alt+S".action.spawn =
+              [ "${config.home-manager.users.${username}.launcher.program}" ];
 
             "Alt+0".action.focus-workspace = 10;
             "Alt+1".action.focus-workspace = 1;

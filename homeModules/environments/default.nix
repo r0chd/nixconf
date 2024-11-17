@@ -17,5 +17,4 @@
     })
     (import ./x11 { inherit inputs pkgs lib config username window-manager; })
   ];
-
 }

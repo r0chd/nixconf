@@ -1,8 +1,8 @@
-{ config, lib, username, ... }: {
+{ config, lib, ... }: {
   options.lsd.enable = lib.mkEnableOption "Enable lsd";
 
   config = lib.mkIf config.lsd.enable {
-    home-manager.users."${username}".programs.lsd = {
+    programs.lsd = {
       enable = true;
       enableAliases = true;
     };

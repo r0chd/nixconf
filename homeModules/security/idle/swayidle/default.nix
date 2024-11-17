@@ -1,8 +1,8 @@
-{ lib, config, username, pkgs, ... }:
+{ lib, config, pkgs, ... }:
 let cfg = config.screenIdle;
 in {
   config = lib.mkIf (cfg.idle.enable && cfg.idle.program == "swayidle") {
-    home-manager.users."${username}".services.swayidle = {
+    services.swayidle = {
       enable = true;
       timeouts = [{
         timeout = cfg.idle.timeout.lock;

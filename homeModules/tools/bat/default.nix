@@ -1,8 +1,8 @@
-{ config, lib, username, ... }: {
+{ config, lib, ... }: {
   options.bat.enable = lib.mkEnableOption "Enable bat";
 
   config = lib.mkIf config.bat.enable {
-    environment.shellAliases.cat = "bat";
-    home-manager.users."${username}".programs.bat.enable = true;
+    home.shellAliases.cat = "bat";
+    programs.bat.enable = true;
   };
 }

@@ -1,5 +1,5 @@
-{ lib, config, pkgs, std, ... }: {
-  options.yubikey = { enable = lib.mkEnableOption "yubikey"; };
+{ lib, config, pkgs, std, username, ... }: {
+  options.yubikey.enable = lib.mkEnableOption "yubikey";
 
   config = lib.mkIf config.yubikey.enable {
     environment.systemPackages = with pkgs; [
@@ -48,7 +48,7 @@
       };
     };
 
-    impermanence.persist.directories =
+    home-manager.users.${username}.impermanence.persist.directories =
       [ "${std.dirs.home}/.config/Yubico/u2f_keys" ];
   };
 }

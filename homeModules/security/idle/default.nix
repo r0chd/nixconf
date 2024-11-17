@@ -1,5 +1,5 @@
 { lib, ... }: {
-  #imports = [ ./hypridle ./swayidle ];
+  imports = [ ./hypridle ./swayidle ];
 
   options.screenIdle.idle = {
     enable = lib.mkEnableOption "Idle daemon";

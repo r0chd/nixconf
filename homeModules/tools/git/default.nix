@@ -1,7 +1,7 @@
 { config, std, username, ... }:
 let publicKey = "${std.dirs.home}/.ssh/id_ed25519";
 in {
-  home-manager.users."${username}".programs.git = {
+  programs.git = {
     enable = true;
     userName = username;
     userEmail = config.email;

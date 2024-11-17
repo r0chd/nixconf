@@ -1,14 +1,12 @@
-{ config, lib, username, ... }: {
+{ config, lib, ... }: {
   options.zoxide.enable = lib.mkEnableOption "Enable zoxide";
 
   config = lib.mkIf config.zoxide.enable {
-    home-manager.users."${username}" = {
-      impermanence.persist.directories =
-        [ ".cache/zoxide" ".local/share/zoxide" ];
-      programs.zoxide = {
-        enable = true;
-        options = [ "--cmd cd" ];
-      };
+    impermanence.persist.directories =
+      [ ".cache/zoxide" ".local/share/zoxide" ];
+    programs.zoxide = {
+      enable = true;
+      options = [ "--cmd cd" ];
     };
   };
 }

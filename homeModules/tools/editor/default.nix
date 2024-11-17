@@ -1,10 +1,7 @@
-{ config, lib, ... }: {
+{ lib, config, ... }: {
   options.editor = lib.mkOption { type = lib.types.enum [ "nvim" "nano" ]; };
 
-  config = {
-    environment.variables.EDITOR = config.editor;
-    programs.nano.enable = lib.mkDefault false;
-  };
+  config = { home.sessionVariables.EDITOR = config.editor; };
 
   imports = [ ./nvim ./nano ];
 }

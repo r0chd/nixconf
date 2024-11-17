@@ -1,1 +1,3 @@
-{ ... }: { imports = [ ./bootloader ./virtualization ./zram ./impermanence ]; }
+{ ... }: {
+  imports = [ ./bootloader ./virtualization ./zram ./impermanence ./ydotool ];
+}

@@ -1,19 +1,14 @@
-{ pkgs, inputs, config, lib, username, ... }:
+{ pkgs, inputs, config, lib, ... }:
 let
   inherit (config) colorscheme font;
   inherit (colorscheme) text accent1 special warn;
 in {
-  options.seto = {
-    enable = lib.mkEnableOption "Enable seto";
-    font = lib.mkOption { type = lib.types.str; };
-  };
+  options.seto.enable = lib.mkEnableOption "Enable seto";
 
   config = lib.mkIf config.seto.enable {
-    environment.systemPackages = with pkgs; [ grim ];
-
-    home-manager.users."${username}" = {
-      imports = [ inputs.seto.homeManagerModules.default ];
-      home.seto = {
+    home = {
+      packages = with pkgs; [ grim ];
+      seto = {
         enable = true;
         package = inputs.seto.packages.${pkgs.system}.default;
         extraConfig = ''

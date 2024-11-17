@@ -1,7 +1,7 @@
-{ lib, username, config, ... }:
+{ lib, config, ... }:
 let cfg = config.screenIdle;
 in {
-  home-manager.users."${username}".services.hypridle =
+  services.hypridle =
     lib.mkIf (cfg.idle.enable && cfg.idle.program == "hypridle") {
       enable = true;
       settings = {

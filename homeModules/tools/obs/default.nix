@@ -1,7 +1,7 @@
-{ lib, config, pkgs, username, ... }: {
-  options = { obs.enable = lib.mkEnableOption "Enable obs module"; };
+{ lib, config, pkgs, ... }: {
+  options.obs.enable = lib.mkEnableOption "Enable obs module";
   config = lib.mkIf config.obs.enable {
-    home-manager.users.${username}.programs.obs-studio = {
+    programs.obs-studio = {
       enable = true;
       plugins = with pkgs.obs-studio-plugins; [
         wlrobs
