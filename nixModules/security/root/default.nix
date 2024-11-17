@@ -15,5 +15,6 @@
     };
     sudo.enable = (config.root == "sudo");
     rtkit.enable = true;
+    polkit.enable = true;
   };
 }

@@ -1,4 +1,4 @@
-{ pkgs, lib, std, config, ... }: {
+{ pkgs, lib, config, ... }: {
   imports = [ ./system ./hardware ./network ./security ];
 
   options = {
@@ -14,17 +14,8 @@
   };
 
   config = {
-    programs.nano.enable = false;
+    programs.nano.enable = lib.mkDefault false;
     boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
-
-    system.activationScripts.createUserConfigs = ''
-      for user in ${
-        lib.concatStringsSep " " (lib.attrNames config.systemUsers)
-      }; do
-        mkdir -p ${std.dirs.host}/users/$user
-        touch ${std.dirs.host}/users/$user/configuration.nix
-      done
-    '';
 
     users = let sops = config.sops;
     in {
@@ -56,7 +47,7 @@
       gc = {
         automatic = true;
         dates = "weekly";
-        options = "--delete-older-than 7d";
+        options = "--delete-older-than 3d";
       };
     };
   };

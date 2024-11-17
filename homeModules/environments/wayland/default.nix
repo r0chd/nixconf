@@ -1,23 +1,17 @@
-{ pkgs, inputs, lib, config, username, window-manager, ... }: {
-  imports = [
-    (import ./hyprland {
-      inherit inputs pkgs lib config username window-manager;
-    })
-    (import ./sway { inherit lib config username window-manager; })
-    (import ./niri { inherit inputs lib config username window-manager pkgs; })
-  ];
+{ pkgs, lib, config, username, ... }: {
+  imports = [ ./hyprland ./sway ./niri ];
 
-  config =
-    lib.mkIf (window-manager.enable && window-manager.backend == "Wayland") {
+  config = lib.mkIf (config.window-manager.enable
+    && config.window-manager.backend == "Wayland") {
       environment = {
         loginShellInit =
           # bash
           ''
             if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-            ${(if window-manager.name == "sway" then
+            ${(if config.window-manager.name == "sway" then
               "exec sway --unsupported-gpu"
             else
-              window-manager.name)}
+              config.window-manager.name)}
             fi
           '';
         variables = {

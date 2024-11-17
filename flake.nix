@@ -32,7 +32,6 @@
     zls.url = "github:zigtools/zls";
     zig.url = "github:mitchellh/zig-overlay";
 
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     niri.url = "github:sodiboo/niri-flake";
 
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
@@ -44,8 +43,7 @@
     ruin.url = "git+https://github.com/unixpariah/ruin?submodules=1";
   };
 
-  outputs =
-    { nixpkgs-stable, nixpkgs, home-manager, disko, flake-utils, ... }@inputs:
+  outputs = { nixpkgs-stable, nixpkgs, flake-utils, ... }@inputs:
     let
       newConfig = username: hostname: arch:
         let
@@ -69,8 +67,8 @@
             ./hosts/${hostname}/configuration.nix
             ./nixModules
             ./homeModules
-            home-manager.nixosModules.default
-            disko.nixosModules.default
+            inputs.home-manager.nixosModules.default
+            inputs.disko.nixosModules.default
             inputs.sops-nix.nixosModules.sops
           ];
         };

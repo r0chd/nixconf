@@ -34,10 +34,13 @@
       nerdfonts
     ];
   };
-  impermanence.persist = {
-    directories =
-      [ "workspace" "Images" "Videos" ".config/discord" "Documents" ];
-    files = [ ];
+  impermanence = {
+    enable = true;
+    persist = {
+      directories =
+        [ "workspace" "Images" "Videos" ".config/discord" "Documents" ];
+      files = [ ];
+    };
   };
   gaming = {
     heroic.enable = true;

@@ -1,13 +1,13 @@
-{ pkgs, inputs, lib, config, username, window-manager, ... }:
+{ pkgs, lib, config, username, ... }:
 let
   conf = config.home-manager.users.${username};
   inherit (conf) colorscheme;
   inherit (config) ydotool;
 in {
-  config =
-    lib.mkIf (window-manager.enable && window-manager.name == "Hyprland") {
-      environment = {
-        systemPackages = with pkgs;
+  config = lib.mkIf
+    (config.window-manager.enable && config.window-manager.name == "Hyprland") {
+      home-manager.users."${username}" = {
+        home.packages = with pkgs;
           [
             (writeShellScriptBin "click" ''
               cursorpos=$(hyprctl cursorpos)
@@ -18,22 +18,9 @@ in {
               ydotool mousemove -a $(seto -f $'%x %y\\n') && ydotool click 0xC0 && ydotool mousemove -a $initial_cursorpos
             '')
           ];
-      };
 
-      programs.hyprland.portalPackage =
-        inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
-
-      nix.settings = {
-        substituters = [ "https://hyprland.cachix.org" ];
-        trusted-public-keys = [
-          "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-        ];
-      };
-
-      home-manager.users."${username}" = {
         wayland.windowManager.hyprland = {
           enable = true;
-          package = inputs.hyprland.packages.${pkgs.system}.hyprland;
           settings = {
             input = {
               monitor = lib.mapAttrsToList (name: value:
