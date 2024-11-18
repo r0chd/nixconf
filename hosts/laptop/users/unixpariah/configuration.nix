@@ -4,11 +4,11 @@
   ...
 }:
 {
+  services.yubikey-touch-detector.enable = true;
   colorscheme.name = "catppuccin";
   editor = "nvim";
   shell = "fish";
   tmux.enable = true;
-  nh.enable = true;
   zoxide.enable = true;
   lsd.enable = true;
   man.enable = true;
@@ -23,8 +23,13 @@
   sops = {
     enable = true;
     managePassword = true;
-    secrets.nixos-access-token-github = {
-      path = "/home/unixpariah/.config/nix/nix.conf";
+    secrets = {
+      "ssh_keys/main" = {
+        path = "/home/unixpariah/.ssh/id_main";
+      };
+      nixos-access-token-github = {
+        path = "/home/unixpariah/.config/nix/nix.conf";
+      };
     };
   };
   home = {

@@ -105,12 +105,13 @@
         home = {
           packages = with pkgs; [
             just
+            nvd
+            nix-output-monitor
             (writeShellScriptBin "shell" ''
               nix develop "${std.dirs.config}#devShells.$@.${pkgs.system}" -c ${
                 config.home-manager.users.${username}.shell
               }
             '')
-
             (writeShellScriptBin "nb" ''
               command "$@" > /dev/null 2>&1 &
               disown

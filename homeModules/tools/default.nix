@@ -5,7 +5,6 @@
     ./shell
     ./editor
     ./tmux
-    ./nh
     ./zoxide
     ./lsd
     ./man

@@ -1,5 +1,10 @@
-{ lib, config, ... }:
+{ lib, ... }:
 {
+  imports = [
+    ./sudo
+    ./doas
+  ];
+
   options.root = lib.mkOption {
     type = lib.types.enum [
       "sudo"
@@ -8,19 +13,5 @@
     default = "sudo";
   };
 
-  config.security = {
-    doas = {
-      enable = true;
-      extraRules = [
-        {
-          users = [ "@wheel" ];
-          keepEnv = true;
-          persist = true;
-        }
-      ];
-    };
-    sudo.enable = (config.root == "sudo");
-    rtkit.enable = true;
-    polkit.enable = true;
-  };
+  config.security.sudo.enable = lib.mkDefault false;
 }

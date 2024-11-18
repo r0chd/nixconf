@@ -6,7 +6,9 @@
   ...
 }:
 {
-  options.yubikey.enable = lib.mkEnableOption "yubikey";
+  options.yubikey = {
+    enable = lib.mkEnableOption "yubikey";
+  };
 
   config = lib.mkIf config.yubikey.enable {
     environment.systemPackages = with pkgs; [
@@ -26,13 +28,19 @@
       u2f = {
         enable = true;
         settings = {
-          cue = false;
+          cue = true;
           authFile = "${std.dirs.home}/.config/Yubico/u2f_keys";
         };
       };
       services = {
         login.u2fAuth = true;
         sudo = {
+          rules.auth.rssh = {
+            order = config.rules.auth.ssh_agent_auth.order - 1;
+            control = "sufficient";
+            modulePath = "${pkgs.pam_rssh}/lib/libpam_rssh.so";
+            settings.authorized_keys_command = pkgs.writeShellScript "get-authorized-keys" "cat ~/etc/ssh/authorized_keys.d/$1";
+          };
           u2fAuth = true;
           sshAgentAuth = true;
         };

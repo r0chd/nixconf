@@ -17,6 +17,8 @@
     imports = [ ./users/unixpariah/configuration.nix ];
   };
 
+  root = "sudo";
+
   systemUsers = {
     "unixpariah" = {
       enable = true;
@@ -73,9 +75,6 @@
   sops = {
     enable = true;
     managePassword = false;
-    secrets.nixos-access-token-github = {
-      path = "${std.dirs.home}/.config/nix/nix.conf";
-    };
   };
   ydotool.enable = true;
   system.stateVersion = "24.11";

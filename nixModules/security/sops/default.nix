@@ -16,10 +16,13 @@
 
   config = lib.mkIf config.sops.enable {
     sops = {
-      secrets = lib.genAttrs (builtins.attrNames config.systemUsers) (user: {
-        neededForUsers = true;
-        sopsFile = "${std.dirs.host}/users/${user}/secrets/secrets.yaml";
-      });
+      secrets =
+        {
+        }
+        // lib.genAttrs (builtins.attrNames config.systemUsers) (user: {
+          neededForUsers = true;
+          sopsFile = "${std.dirs.host}/users/${user}/secrets/secrets.yaml";
+        });
       defaultSopsFile = "${std.dirs.host}/secrets/secrets.yaml";
       defaultSopsFormat = "yaml";
       age = {
