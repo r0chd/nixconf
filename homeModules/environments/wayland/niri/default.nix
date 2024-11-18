@@ -1,17 +1,28 @@
-{ inputs, lib, config, username, pkgs, ... }:
-let inherit (config) colorscheme;
-in {
-  config = lib.mkIf
-    (config.window-manager.enable && config.window-manager.name == "niri") {
-      home-manager.users."${username}" = {
-        xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gnome ];
-        imports = [ inputs.niri.homeModules.niri ];
-        nixpkgs.overlays = [ inputs.niri.overlays.niri ];
-        home.packages = with pkgs; [ xwayland-satellite ];
-        programs.niri = {
-          enable = true;
-          settings = let inherit (colorscheme) accent1 inactive;
-          in {
+{
+  inputs,
+  lib,
+  config,
+  username,
+  pkgs,
+  ...
+}:
+let
+  inherit (config) colorscheme;
+in
+{
+  config = lib.mkIf (config.window-manager.enable && config.window-manager.name == "niri") {
+    home-manager.users."${username}" = {
+      xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gnome ];
+      imports = [ inputs.niri.homeModules.niri ];
+      nixpkgs.overlays = [ inputs.niri.overlays.niri ];
+      home.packages = with pkgs; [ xwayland-satellite ];
+      programs.niri = {
+        enable = true;
+        settings =
+          let
+            inherit (colorscheme) accent1 inactive;
+          in
+          {
             outputs = lib.mapAttrs (name: value: {
               scale = value.scale;
               mode = {
@@ -40,18 +51,25 @@ in {
               };
             };
 
-            window-rules = [{
-              geometry-corner-radius = let radius = 8.0;
-              in {
-                bottom-left = radius;
-                bottom-right = radius;
-                top-left = radius;
-                top-right = radius;
-              };
-              clip-to-geometry = true;
-            }];
+            window-rules = [
+              {
+                geometry-corner-radius =
+                  let
+                    radius = 8.0;
+                  in
+                  {
+                    bottom-left = radius;
+                    bottom-right = radius;
+                    top-left = radius;
+                    top-right = radius;
+                  };
+                clip-to-geometry = true;
+              }
+            ];
 
-            environment = { DISPLAY = ":0"; };
+            environment = {
+              DISPLAY = ":0";
+            };
 
             prefer-no-csd = true;
 
@@ -78,44 +96,58 @@ in {
             spawn-at-startup = [
               { command = [ "xwayland-satellite" ]; }
               {
-                command = lib.mkIf
-                  config.home-manager.users.${username}.statusBar.enable [
-                    "${config.home-manager.users.${username}.statusBar.program}"
-                  ];
+                command = lib.mkIf config.home-manager.users.${username}.statusBar.enable [
+                  "${config.home-manager.users.${username}.statusBar.program}"
+                ];
               }
               {
-                command =
-                  lib.mkIf config.home-manager.users.${username}.terminal.enable
-                  [
-                    "${config.home-manager.users.${username}.terminal.program}"
-                  ];
+                command = lib.mkIf config.home-manager.users.${username}.terminal.enable [
+                  "${config.home-manager.users.${username}.terminal.program}"
+                ];
               }
               {
-                command = lib.mkIf
-                  config.home-manager.users.${username}.notifications.enable [
-                    "${config.home-manager.users.${username}.notifications.program}"
-                  ];
+                command = lib.mkIf config.home-manager.users.${username}.notifications.enable [
+                  "${config.home-manager.users.${username}.notifications.program}"
+                ];
               }
               {
-                command = lib.mkIf
-                  config.home-manager.users.${username}.wallpaper.enable [
-                    "${config.home-manager.users.${username}.wallpaper.program}"
-                    "${config.home-manager.users.${username}.wallpaper.path}"
-                  ];
+                command = lib.mkIf config.home-manager.users.${username}.wallpaper.enable [
+                  "${config.home-manager.users.${username}.wallpaper.program}"
+                  "${config.home-manager.users.${username}.wallpaper.path}"
+                ];
               }
             ];
 
-            animations = { enable = true; };
+            animations = {
+              enable = true;
+            };
 
             binds = {
-              "XF86MonBrightnessUp".action.spawn =
-                [ "brightnessctl" "set" "+5%" ];
-              "XF86MonBrightnessDown".action.spawn =
-                [ "brightnessctl" "set" "5%-" ];
-              "XF86AudioRaiseVolume".action.spawn = [ "pamixer" "-i" "5" ];
-              "XF86AudioLowerVolume".action.spawn = [ "pamixer" "-d" "5" ];
-              "Print".action.spawn =
-                [ "bash" "-c" "grim -g $(seto -r) - | wl-copy -t image/png" ];
+              "XF86MonBrightnessUp".action.spawn = [
+                "brightnessctl"
+                "set"
+                "+5%"
+              ];
+              "XF86MonBrightnessDown".action.spawn = [
+                "brightnessctl"
+                "set"
+                "5%-"
+              ];
+              "XF86AudioRaiseVolume".action.spawn = [
+                "pamixer"
+                "-i"
+                "5"
+              ];
+              "XF86AudioLowerVolume".action.spawn = [
+                "pamixer"
+                "-d"
+                "5"
+              ];
+              "Print".action.spawn = [
+                "bash"
+                "-c"
+                "grim -g $(seto -r) - | wl-copy -t image/png"
+              ];
 
               "Alt+G".action.spawn = [
                 "bash"
@@ -123,11 +155,9 @@ in {
                 "ydotool mousemove -a $(seto -f $'%x %y') && ydotool click 0xC0"
               ];
 
-              "Alt+Shift+Return".action.spawn =
-                [ "${config.home-manager.users.${username}.terminal.program}" ];
+              "Alt+Shift+Return".action.spawn = [ "${config.home-manager.users.${username}.terminal.program}" ];
 
-              "Alt+S".action.spawn =
-                [ "${config.home-manager.users.${username}.launcher.program}" ];
+              "Alt+S".action.spawn = [ "${config.home-manager.users.${username}.launcher.program}" ];
 
               "Alt+0".action.focus-workspace = 10;
               "Alt+1".action.focus-workspace = 1;
@@ -173,8 +203,7 @@ in {
               "Alt+Shift+J".action.set-column-width = "+10%";
             };
           };
-        };
       };
     };
+  };
 }
-

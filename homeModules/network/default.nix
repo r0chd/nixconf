@@ -1,1 +1,4 @@
-{ ... }: { imports = [ ./ssh ]; }
+{ ... }:
+{
+  imports = [ ./ssh ];
+}

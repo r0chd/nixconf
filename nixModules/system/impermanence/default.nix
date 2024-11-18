@@ -1,4 +1,10 @@
-{ lib, config, std, inputs, username, ... }: {
+{
+  lib,
+  config,
+  inputs,
+  ...
+}:
+{
   imports = [ inputs.impermanence.nixosModules.impermanence ];
 
   options = {
@@ -43,10 +49,12 @@
       umount /btrfs_tmp
     '';
 
-    systemd.tmpfiles.rules = [
-      "d /persist/home 0777 root root -"
-      "d ${std.dirs.home-persist} 0700 ${username} users -"
-    ];
+    systemd.tmpfiles.rules =
+      [ "d /persist/home 0777 root root -" ]
+      ++ (
+        builtins.attrNames config.systemUsers
+        |> lib.concatMap (user: [ "d /persist/home/${user} 0700 ${user} users -" ])
+      );
 
     fileSystems."/persist".neededForBoot = true;
 

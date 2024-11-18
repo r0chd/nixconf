@@ -1,8 +1,20 @@
-{ pkgs, inputs, config, lib, ... }:
+{
+  pkgs,
+  inputs,
+  config,
+  lib,
+  ...
+}:
 let
   inherit (config) colorscheme font;
-  inherit (colorscheme) text accent1 special warn;
-in {
+  inherit (colorscheme)
+    text
+    accent1
+    special
+    warn
+    ;
+in
+{
   options.seto.enable = lib.mkEnableOption "Enable seto";
 
   config = lib.mkIf config.seto.enable {

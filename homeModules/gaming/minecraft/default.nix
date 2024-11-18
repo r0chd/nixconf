@@ -1,4 +1,10 @@
-{ lib, config, pkgs, ... }: {
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+{
   config = lib.mkIf config.gaming.minecraft.enable {
     home.packages = with pkgs; [ prismlauncher ];
 

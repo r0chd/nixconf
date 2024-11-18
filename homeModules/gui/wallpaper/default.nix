@@ -1,4 +1,5 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
   options.wallpaper = {
     enable = lib.mkEnableOption "Enable wallpaper";
     program = lib.mkOption { type = lib.types.enum [ "ruin" ]; };

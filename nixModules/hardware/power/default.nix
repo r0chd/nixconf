@@ -1,4 +1,5 @@
-{ config, lib, ... }: {
+{ config, lib, ... }:
+{
   options.power.enable = lib.mkEnableOption "Enable power management";
 
   config = lib.mkIf config.power.enable {

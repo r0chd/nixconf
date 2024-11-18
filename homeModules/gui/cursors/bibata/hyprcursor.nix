@@ -1,6 +1,15 @@
-{ stdenvNoCC, fetchFromGitHub, python3, python3Packages, lib, hyprcursor
-, variant ? "modern", baseColor ? "#000000", outlineColor ? "#FFFFFF"
-, watchBackgroundColor ? "#000000", }:
+{
+  stdenvNoCC,
+  fetchFromGitHub,
+  python3,
+  python3Packages,
+  lib,
+  hyprcursor,
+  variant ? "modern",
+  baseColor ? "#000000",
+  outlineColor ? "#FFFFFF",
+  watchBackgroundColor ? "#000000",
+}:
 assert builtins.elem variant [
   "modern"
   "modern-right"
@@ -18,10 +27,19 @@ stdenvNoCC.mkDerivation (final: {
     hash = "sha256-kIKidw1vditpuxO1gVuZeUPdWBzkiksO/q2R/+DUdEc=";
   };
 
-  nativeBuildInputs =
-    [ python3 python3Packages.tomli python3Packages.tomli-w hyprcursor.out ];
+  nativeBuildInputs = [
+    python3
+    python3Packages.tomli
+    python3Packages.tomli-w
+    hyprcursor.out
+  ];
 
-  phases = [ "unpackPhase" "configurePhase" "buildPhase" "installPhase" ];
+  phases = [
+    "unpackPhase"
+    "configurePhase"
+    "buildPhase"
+    "installPhase"
+  ];
 
   unpackPhase = ''
     runHook preUnpack

@@ -1,6 +1,30 @@
-{ username, std, ... }: {
-  imports = [ ./disko.nix ./gpu.nix ./hardware-configuration.nix ];
+{
+  username,
+  std,
+  pkgs,
+  ...
+}:
+{
+  imports = [
+    ./disko.nix
+    ./gpu.nix
+    ./hardware-configuration.nix
+  ];
 
+  yubikey.enable = true;
+
+  home-manager.users.${username} = {
+    imports = [ ./users/unixpariah/configuration.nix ];
+  };
+
+  systemUsers = {
+    "unixpariah" = {
+      enable = true;
+      root.enable = true;
+    };
+  };
+
+  users.users."unixpariah".shell = pkgs.fish;
   programs.fish.enable = true;
   programs.zsh.enable = true;
   environment.interactiveShellInit =
@@ -29,7 +53,11 @@
   impermanence = {
     enable = true;
     persist = {
-      directories = [ "/var/log" "/var/lib/nixos" "/var/lib/systemd/coredump" ];
+      directories = [
+        "/var/log"
+        "/var/lib/nixos"
+        "/var/lib/systemd/coredump"
+      ];
       files = [ ];
     };
   };
@@ -40,25 +68,15 @@
   boot.program = "grub";
   virtualisation.enable = true;
   zram.enable = true;
-  systemUsers = {
-    "unixpariah" = {
-      enable = true;
-      root.enable = true;
-    };
-  };
   time.timeZone = "Europe/Warsaw";
   i18n.defaultLocale = "en_US.UTF-8";
   sops = {
     enable = true;
-    managePassword = true;
+    managePassword = false;
     secrets.nixos-access-token-github = {
       path = "${std.dirs.home}/.config/nix/nix.conf";
     };
   };
   ydotool.enable = true;
   system.stateVersion = "24.11";
-
-  home-manager.users.${username} = {
-    imports = [ ./users/unixpariah/configuration.nix ];
-  };
 }

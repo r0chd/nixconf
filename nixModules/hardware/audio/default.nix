@@ -1,4 +1,10 @@
-{ pkgs, config, lib, ... }: {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+{
   options.audio.enable = lib.mkEnableOption "Enable audio";
 
   config = lib.mkIf config.audio.enable {
@@ -14,6 +20,9 @@
       audio.enable = true;
     };
 
-    environment.systemPackages = with pkgs; [ pavucontrol pamixer ];
+    environment.systemPackages = with pkgs; [
+      pavucontrol
+      pamixer
+    ];
   };
 }

@@ -1,1 +1,7 @@
-{ ... }: { imports = [ ./sops ./idle ]; }
+{ ... }:
+{
+  imports = [
+    ./sops
+    ./idle
+  ];
+}

@@ -1,9 +1,19 @@
-{ pkgs, config, lib, ... }:
-let cfg = config.gaming;
-in {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+let
+  cfg = config.gaming;
+in
+{
   config = lib.mkIf cfg.heroic.enable {
     home.packages = with pkgs; [ heroic ];
 
-    impermanence.persist.directories = [ ".config/heroic" "Games/Heroic" ];
+    impermanence.persist.directories = [
+      ".config/heroic"
+      "Games/Heroic"
+    ];
   };
 }

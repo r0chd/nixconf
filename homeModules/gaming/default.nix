@@ -1,4 +1,5 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
   options.gaming = {
     heroic.enable = lib.mkEnableOption "Enable heroic launcher";
     steam.enable = lib.mkEnableOption "Enable steam";
@@ -6,5 +7,10 @@
     minecraft.enable = lib.mkEnableOption "Enable minecraft";
   };
 
-  imports = [ ./heroic ./steam ./lutris ./minecraft ];
+  imports = [
+    ./heroic
+    ./steam
+    ./lutris
+    ./minecraft
+  ];
 }

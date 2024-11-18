@@ -1,16 +1,26 @@
-{ config, pkgs, inputs, std, lib, ... }:
-let inherit (config) colorscheme;
-in {
-  config = lib.mkIf
-    (config.statusBar.enable && config.statusBar.program == "waystatus") {
-      home = {
-        packages = with pkgs; [ inputs.waystatus.packages.${system}.default ];
-        file = {
-          ".config/waystatus/style.css" = {
-            text = let
+{
+  config,
+  pkgs,
+  inputs,
+  std,
+  lib,
+  ...
+}:
+let
+  inherit (config) colorscheme;
+in
+{
+  config = lib.mkIf (config.statusBar.enable && config.statusBar.program == "waystatus") {
+    home = {
+      packages = with pkgs; [ inputs.waystatus.packages.${system}.default ];
+      file = {
+        ".config/waystatus/style.css" = {
+          text =
+            let
               inherit (config) font;
               inherit (colorscheme) text;
-            in ''
+            in
+            ''
               * {
                   font-family: "${font}";
                   font-size: 16px;
@@ -58,12 +68,14 @@ in {
                   margin-left: 35px;
               }
             '';
-          };
-          ".config/waystatus/config.toml" = {
-            text = let
+        };
+        ".config/waystatus/config.toml" = {
+          text =
+            let
               inherit (colorscheme) background2;
               inherit (std) conversions;
-            in ''
+            in
+            ''
               unkown = "N/A"
               background = ${conversions.hexToRGBString "," background2};
               layer = "bottom"
@@ -94,8 +106,8 @@ in {
               [[modules.right]]
               command.Battery = { interval = 5000, formatting = "%c %s%", icons = ["󰁺" ,"󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"] }
             '';
-          };
         };
       };
     };
+  };
 }

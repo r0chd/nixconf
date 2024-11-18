@@ -1,4 +1,9 @@
-{ pkgs, pkgs-stable, ... }: {
+{
+  pkgs,
+  pkgs-stable,
+  ...
+}:
+{
   colorscheme.name = "catppuccin";
   editor = "nvim";
   shell = "fish";
@@ -15,6 +20,13 @@
   obs.enable = true;
   email = "oskar.rochowiak@tutanota.com";
   font = "JetBrainsMono Nerd Font";
+  sops = {
+    enable = true;
+    managePassword = true;
+    secrets.nixos-access-token-github = {
+      path = "/home/unixpariah/.config/nix/nix.conf";
+    };
+  };
   home = {
     packages = with pkgs; [
       zathura
@@ -37,8 +49,13 @@
   impermanence = {
     enable = true;
     persist = {
-      directories =
-        [ "workspace" "Images" "Videos" ".config/discord" "Documents" ];
+      directories = [
+        "workspace"
+        "Images"
+        "Videos"
+        ".config/discord"
+        "Documents"
+      ];
       files = [ ];
     };
   };

@@ -1,8 +1,16 @@
-{ lib, ... }: {
-  options.boot.program =
-    lib.mkOption { type = lib.types.enum [ "grub" "systemd-boot" ]; };
+{ lib, ... }:
+{
+  options.boot.program = lib.mkOption {
+    type = lib.types.enum [
+      "grub"
+      "systemd-boot"
+    ];
+  };
 
-  imports = [ ./systemd-boot ./grub ];
+  imports = [
+    ./systemd-boot
+    ./grub
+  ];
 
   config.boot = {
     loader.systemd-boot.enable = lib.mkDefault false;

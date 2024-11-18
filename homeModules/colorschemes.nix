@@ -1,4 +1,5 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
   options.colorscheme = {
     name = lib.mkOption { type = lib.types.enum [ "catppuccin" ]; };
     text = lib.mkOption { type = lib.types.str; };

@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   disko.devices = {
     disk = {
       main = {
@@ -71,15 +72,23 @@
               extraArgs = [ "-f" ];
 
               subvolumes = {
-                "/root" = { mountpoint = "/"; };
+                "/root" = {
+                  mountpoint = "/";
+                };
 
                 "/persist" = {
-                  mountOptions = [ "subvol=persist" "noatime" ];
+                  mountOptions = [
+                    "subvol=persist"
+                    "noatime"
+                  ];
                   mountpoint = "/persist";
                 };
 
                 "/nix" = {
-                  mountOptions = [ "subvol=nix" "noatime" ];
+                  mountOptions = [
+                    "subvol=nix"
+                    "noatime"
+                  ];
                   mountpoint = "/nix";
                 };
               };

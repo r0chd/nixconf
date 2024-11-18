@@ -1,1 +1,4 @@
-{ ... }: { imports = [ ./impermanence ]; }
+{ ... }:
+{
+  imports = [ ./impermanence ];
+}

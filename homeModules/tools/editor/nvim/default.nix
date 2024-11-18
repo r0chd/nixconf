@@ -1,4 +1,11 @@
-{ pkgs, inputs, config, lib, ... }: {
+{
+  pkgs,
+  inputs,
+  config,
+  lib,
+  ...
+}:
+{
   config = lib.mkIf (config.editor == "nvim") {
     home = {
       packages = with pkgs; [
@@ -9,7 +16,7 @@
         adwaita-icon-theme
         lua-language-server
         alejandra
-        nixfmt-classic
+        inputs.nixfmt.packages.${system}.default
         gcc
         stylua
       ];
@@ -19,7 +26,10 @@
       };
     };
 
-    impermanence.persist.directories =
-      [ ".cache/nvim" ".local/share/nvim" ".local/state/nvim" ];
+    impermanence.persist.directories = [
+      ".cache/nvim"
+      ".local/share/nvim"
+      ".local/state/nvim"
+    ];
   };
 }

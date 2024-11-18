@@ -1,4 +1,5 @@
-{ lib, config, ... }: {
+{ lib, config, ... }:
+{
   options.nix-index.enable = lib.mkEnableOption "Enable nix-index";
 
   config = lib.mkIf config.nix-index.enable {

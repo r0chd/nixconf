@@ -5,6 +5,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
 
+    nixfmt.url = "github:NixOS/nixfmt";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -43,9 +45,16 @@
     ruin.url = "git+https://github.com/unixpariah/ruin?submodules=1";
   };
 
-  outputs = { nixpkgs-stable, nixpkgs, flake-utils, ... }@inputs:
+  outputs =
+    {
+      nixpkgs-stable,
+      nixpkgs,
+      flake-utils,
+      ...
+    }@inputs:
     let
-      newConfig = username: hostname: arch:
+      newConfig =
+        username: hostname: arch:
         let
           pkgs = import nixpkgs {
             system = arch;
@@ -55,9 +64,16 @@
             system = arch;
             config.allowUnfree = true;
           };
-        in nixpkgs.lib.nixosSystem {
+        in
+        nixpkgs.lib.nixosSystem {
           specialArgs = rec {
-            inherit inputs hostname pkgs pkgs-stable username;
+            inherit
+              inputs
+              hostname
+              pkgs
+              pkgs-stable
+              username
+              ;
             std = import ./std {
               inherit hostname username;
               lib = pkgs.lib;
@@ -72,17 +88,22 @@
             inputs.sops-nix.nixosModules.sops
           ];
         };
-    in {
+    in
+    {
       nixosConfigurations = {
         laptop = newConfig "unixpariah" "laptop" "x86_64-linux";
       };
 
-      devShells = flake-utils.lib.eachDefaultSystem (system:
-        let pkgs = import nixpkgs { inherit system; };
-        in {
+      devShells = flake-utils.lib.eachDefaultSystem (
+        system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
           zig = import ./shells/zig.nix { inherit pkgs inputs; };
           c = import ./shells/c.nix { inherit pkgs; };
           rust = import ./shells/rust.nix { inherit pkgs; };
-        });
+        }
+      );
     };
 }

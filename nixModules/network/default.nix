@@ -1,1 +1,7 @@
-{ ... }: { imports = [ ./wireless ./ssh ]; }
+{ ... }:
+{
+  imports = [
+    ./wireless
+    ./ssh
+  ];
+}

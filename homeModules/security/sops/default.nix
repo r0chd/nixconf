@@ -1,13 +1,21 @@
-{ pkgs, std, config, lib, username, ... }: {
+{
+  std,
+  lib,
+  config,
+  pkgs,
+  username,
+  ...
+}:
+{
   options.sops = {
-    enable = lib.mkEnableOption "sops";
-    managePassword = lib.mkEnableOption "manage passwords with sops";
+    enable = lib.mkEnableOption "Enable sops";
+    managePassword = lib.mkEnableOption "Manage password with sops";
   };
 
   config = lib.mkIf config.sops.enable {
     impermanence.persist.directories = [ ".config/sops/age" ];
     sops = {
-      defaultSopsFile = "${std.dirs.host}/secrets/secrets.yaml";
+      defaultSopsFile = "${std.dirs.host}/users/${username}/secrets/secrets.yaml";
       defaultSopsFormat = "yaml";
       age = {
         sshKeyPaths = [ "${std.dirs.home-persist}/.ssh/id_ed25519" ];
@@ -15,18 +23,8 @@
       };
     };
     home = {
+      shellAliases.opensops = "sops ${std.dirs.host}/users/${username}/secrets/secrets.yaml";
       packages = with pkgs; [ sops ];
-      shellAliases.opensops = "sops ${std.dirs.host}/secrets/secrets.yaml";
-      activation.sopsGenerateKey = let
-        escapedKeyFile = lib.escapeShellArg config.sops.age.keyFile;
-        sshKeyPath = builtins.elemAt config.sops.age.sshKeyPaths 0;
-      in ''
-        mkdir -p $(dirname ${escapedKeyFile})
-        ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
-        chown -R ${username} ${std.dirs.home-persist}/.config
-        chmod 600 ${escapedKeyFile}
-        chown -R ${username} ${std.dirs.home}/.config
-      '';
     };
   };
 }

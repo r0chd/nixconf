@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   config = lib.mkIf (config.cursor.enable && config.cursor.name == "banana") {
     home.pointerCursor = {
       gtk.enable = true;
