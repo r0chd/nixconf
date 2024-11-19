@@ -1,17 +1,8 @@
-{ lib, ... }:
+{ ... }:
 {
-  imports = [
-    ./sudo
-    ./doas
-  ];
-
-  options.root = lib.mkOption {
-    type = lib.types.enum [
-      "sudo"
-      "doas"
-    ];
-    default = "sudo";
+  security.sudo = {
+    enable = true;
+    execWheelOnly = true;
+    extraConfig = "Defaults rootpw";
   };
-
-  config.security.sudo.enable = lib.mkDefault false;
 }

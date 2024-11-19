@@ -6,8 +6,8 @@
 }:
 {
   environment.systemPackages = with pkgs; [
-    inputs.nixvim.packages.${system}.default
     sops
+    inputs.nixvim.packages.${system}.default
   ];
   imports = [
     ./disko.nix
@@ -20,8 +20,6 @@
   home-manager.users.${username} = {
     imports = [ ./users/unixpariah/configuration.nix ];
   };
-
-  root = "sudo";
 
   systemUsers = {
     "unixpariah" = {
@@ -78,12 +76,15 @@
   i18n.defaultLocale = "en_US.UTF-8";
   ydotool.enable = true;
   system.stateVersion = "24.11";
-  sops = {
-    secrets = {
-      "ssh_keys/unixpariah" = {
-        owner = "unixpariah";
-        path = "/home/unixpariah/.ssh/id_ed25519";
-      };
+
+  sops.secrets = {
+    "ssh_keys/unixpariah" = {
+      owner = "unixpariah";
+      path = "/persist/home/unixpariah/.ssh/id_ed25519";
+    };
+    "ssh_keys/unixpariah-yubikey" = {
+      owner = "unixpariah";
+      path = "/persist/home/unixpariah/.ssh/id_yubikey";
     };
   };
 }

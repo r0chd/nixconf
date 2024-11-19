@@ -11,9 +11,9 @@
   sops = {
     secrets =
       {
-        password = { };
+        password.neededForUsers = true;
         "yubico/u2f_keys" = {
-          path = "/root/.config/Yubico/u2f_keys";
+          path = "/persist/root/.config/Yubico/u2f_keys";
         };
       }
       // lib.genAttrs (builtins.attrNames config.systemUsers) (user: {
@@ -23,10 +23,12 @@
     defaultSopsFile = "${std.dirs.host}/secrets/secrets.yaml";
     defaultSopsFormat = "yaml";
     age = {
-      sshKeyPaths = [ "/root/.ssh/id_ed25519" ];
-      keyFile = "/root/.config/sops/age/keys.txt";
+      sshKeyPaths = [ "/persist/system/root/.ssh/id_ed25519" ];
+      keyFile = "/persist/system/root/.config/sops/age/keys.txt";
     };
   };
+
+  environment.shellAliases.opensops = "sops ${config.sops.defaultSopsFile}";
 
   system.activationScripts = {
     sopsGenerateKey =
@@ -52,8 +54,8 @@
 
     sopsGenerateRootKey =
       let
-        escapedKeyFile = lib.escapeShellArg "/root/.config/sops/age/keys.txt";
-        sshKeyPath = "/root/.ssh/id_ed25519";
+        escapedKeyFile = lib.escapeShellArg "/persist/system/root/.config/sops/age/keys.txt";
+        sshKeyPath = "/persist/system/root/.ssh/id_ed25519";
       in
       ''
         mkdir -p $(dirname ${escapedKeyFile})

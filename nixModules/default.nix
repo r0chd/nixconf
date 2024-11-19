@@ -13,7 +13,6 @@
   ];
 
   options = {
-    initialPassword = lib.mkOption { type = lib.types.str; };
     systemUsers = lib.mkOption {
       type = lib.types.attrsOf (
         lib.types.submodule {
@@ -34,23 +33,15 @@
     users = {
       mutableUsers = false;
       users =
-        let
-          sops = config.sops;
-        in
         {
           root = {
             isNormalUser = false;
-            initialPassword = "1234";
-            #hashedPasswordFile = lib.mkIf (
-            #  sops.enable && sops.managePassword
-            #) config.sops.secrets.password.path;
+            hashedPasswordFile = config.sops.secrets.password.path;
           };
         }
         // lib.mapAttrs (name: value: {
           isNormalUser = true;
-
-          initialPassword = "1234";
-          #hashedPasswordFile = config.sops.secrets.${name}.path;
+          hashedPasswordFile = config.sops.secrets.${name}.path;
           extraGroups = lib.mkIf value.root.enable [ "wheel" ];
         }) config.systemUsers;
     };

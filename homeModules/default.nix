@@ -86,7 +86,6 @@
         };
         font = lib.mkOption { type = lib.types.str; };
         email = lib.mkOption { type = lib.types.str; };
-        initialPassword = lib.mkOption { type = lib.types.str; };
       };
       imports = [
         ./tools
