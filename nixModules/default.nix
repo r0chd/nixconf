@@ -49,8 +49,8 @@
         // lib.mapAttrs (name: value: {
           isNormalUser = true;
 
-	  initialPassword = "1234";
-	  #hashedPasswordFile = config.sops.secrets.${name}.path;
+          initialPassword = "1234";
+          #hashedPasswordFile = config.sops.secrets.${name}.path;
           extraGroups = lib.mkIf value.root.enable [ "wheel" ];
         }) config.systemUsers;
     };

@@ -9,7 +9,10 @@
       "git" = {
         host = "github.com";
         user = "git";
-        identityFile = [ "~/.ssh/id_ed25519" ];
+        identityFile = [
+          "~/.ssh/id_yubikey"
+          "~/.ssh/id_ed25519"
+        ];
       };
     };
   };

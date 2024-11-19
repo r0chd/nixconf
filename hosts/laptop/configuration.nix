@@ -81,7 +81,6 @@
   sops = {
     secrets = {
       "ssh_keys/unixpariah" = {
-        neededForUsers = true;
         owner = "unixpariah";
         path = "/home/unixpariah/.ssh/id_ed25519";
       };
