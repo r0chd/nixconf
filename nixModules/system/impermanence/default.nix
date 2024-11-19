@@ -7,6 +7,8 @@
 {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
 
+  #type = lib.types.listOf (coersedTo str (d: { directory = d; }) rootDir);
+
   options = {
     impermanence = {
       enable = lib.mkEnableOption "Enable impermanence";

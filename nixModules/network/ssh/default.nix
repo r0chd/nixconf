@@ -5,6 +5,8 @@
   ...
 }:
 {
+  impermanence.persist.directories = [ "/root/.ssh" ];
+
   users.users = lib.genAttrs (builtins.attrNames config.systemUsers) (
     user:
     let

@@ -32,22 +32,27 @@
     boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
     users = {
-      users = lib.mapAttrs (
-        name: value:
+      mutableUsers = false;
+      users =
         let
-          sops = config.home-manager.users.${name}.sops;
+          sops = config.sops;
         in
         {
+          root = {
+            isNormalUser = false;
+            initialPassword = "1234";
+            #hashedPasswordFile = lib.mkIf (
+            #  sops.enable && sops.managePassword
+            #) config.sops.secrets.password.path;
+          };
+        }
+        // lib.mapAttrs (name: value: {
           isNormalUser = true;
 
-          hashedPasswordFile = lib.mkIf (sops.enable && sops.managePassword) config.sops.secrets.${name}.path;
-          # Require initialPassword if password isnt managed by sops and impermanence is enabled
-          initialPassword = lib.mkIf (
-            (!sops.enable || !sops.managePassword) && config.impermanence.enable
-          ) config.home-manager.users.${name}.initialPassword;
+	  initialPassword = "1234";
+	  #hashedPasswordFile = config.sops.secrets.${name}.path;
           extraGroups = lib.mkIf value.root.enable [ "wheel" ];
-        }
-      ) config.systemUsers;
+        }) config.systemUsers;
     };
 
     nix = {

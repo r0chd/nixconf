@@ -1,5 +1,4 @@
 {
-  inputs,
   pkgs,
   std,
   config,
@@ -7,31 +6,30 @@
   ...
 }:
 {
-  imports = [ inputs.sops-nix.nixosModules.sops ];
+  impermanence.persist.directories = [ "/root/.config/sops" ];
 
-  options.sops = {
-    enable = lib.mkEnableOption "sops";
-    managePassword = lib.mkEnableOption "manage passwords with sops";
+  sops = {
+    secrets =
+      {
+        password = { };
+        "yubico/u2f_keys" = {
+          path = "/root/.config/Yubico/u2f_keys";
+        };
+      }
+      // lib.genAttrs (builtins.attrNames config.systemUsers) (user: {
+        neededForUsers = true;
+        sopsFile = "${std.dirs.host}/users/${user}/secrets/secrets.yaml";
+      });
+    defaultSopsFile = "${std.dirs.host}/secrets/secrets.yaml";
+    defaultSopsFormat = "yaml";
+    age = {
+      sshKeyPaths = [ "/root/.ssh/id_ed25519" ];
+      keyFile = "/root/.config/sops/age/keys.txt";
+    };
   };
 
-  config = lib.mkIf config.sops.enable {
-    sops = {
-      secrets =
-        {
-        }
-        // lib.genAttrs (builtins.attrNames config.systemUsers) (user: {
-          neededForUsers = true;
-          sopsFile = "${std.dirs.host}/users/${user}/secrets/secrets.yaml";
-        });
-      defaultSopsFile = "${std.dirs.host}/secrets/secrets.yaml";
-      defaultSopsFormat = "yaml";
-      age = {
-        sshKeyPaths = [ "${std.dirs.home-persist}/.ssh/id_ed25519" ];
-        keyFile = "${std.dirs.home-persist}/.config/sops/age/keys.txt";
-      };
-    };
-
-    system.activationScripts.sopsGenerateKey =
+  system.activationScripts = {
+    sopsGenerateKey =
       let
         userScripts = (
           lib.attrNames config.systemUsers |> lib.concatMapStrings (user: "${generateAgeKey user}")
@@ -39,8 +37,8 @@
         generateAgeKey =
           user:
           let
-            escapedKeyFile = lib.escapeShellArg config.home-manager.users.${user}.sops.age.keyFile;
-            sshKeyPath = builtins.elemAt config.home-manager.users.${user}.sops.age.sshKeyPaths 0;
+            escapedKeyFile = lib.escapeShellArg "/home/${user}/.config/sops/age/keys.txt";
+            sshKeyPath = "/home/${user}/.ssh/id_ed25519";
           in
           ''
             mkdir -p $(dirname ${escapedKeyFile})
@@ -51,5 +49,15 @@
           '';
       in
       userScripts;
+
+    sopsGenerateRootKey =
+      let
+        escapedKeyFile = lib.escapeShellArg "/root/.config/sops/age/keys.txt";
+        sshKeyPath = "/root/.ssh/id_ed25519";
+      in
+      ''
+        mkdir -p $(dirname ${escapedKeyFile})
+        ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
+      '';
   };
 }

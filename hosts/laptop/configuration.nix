@@ -1,10 +1,14 @@
 {
   username,
-  std,
   pkgs,
+  inputs,
   ...
 }:
 {
+  environment.systemPackages = with pkgs; [
+    inputs.nixvim.packages.${system}.default
+    sops
+  ];
   imports = [
     ./disko.nix
     ./gpu.nix
@@ -72,10 +76,15 @@
   zram.enable = true;
   time.timeZone = "Europe/Warsaw";
   i18n.defaultLocale = "en_US.UTF-8";
-  sops = {
-    enable = true;
-    managePassword = false;
-  };
   ydotool.enable = true;
   system.stateVersion = "24.11";
+  sops = {
+    secrets = {
+      "ssh_keys/unixpariah" = {
+        neededForUsers = true;
+        owner = "unixpariah";
+        path = "/home/unixpariah/.ssh/id_ed25519";
+      };
+    };
+  };
 }

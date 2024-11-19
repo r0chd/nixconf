@@ -21,12 +21,7 @@
   email = "oskar.rochowiak@tutanota.com";
   font = "JetBrainsMono Nerd Font";
   sops = {
-    enable = true;
-    managePassword = true;
     secrets = {
-      "ssh_keys/main" = {
-        path = "/home/unixpariah/.ssh/id_main";
-      };
       nixos-access-token-github = {
         path = "/home/unixpariah/.config/nix/nix.conf";
       };
@@ -34,6 +29,8 @@
   };
   home = {
     packages = with pkgs; [
+      wl-clipboard
+      keepassxc
       zathura
       mpv
       ani-cli
@@ -61,7 +58,6 @@
         ".config/discord"
         "Documents"
       ];
-      files = [ ];
     };
   };
   gaming = {

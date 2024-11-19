@@ -1,6 +1,6 @@
 { config, lib, ... }:
 {
-  config = lib.mkIf (config.root == "doas") {
+  config = {
     security.doas = {
       enable = true;
       extraRules = [

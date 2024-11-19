@@ -51,11 +51,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1731965300,
-        "narHash": "sha256-mxK2cwY7kTumQzeD8t+M/s5uXwBShsRbCjbVt9pPAdg=",
+        "lastModified": 1731971531,
+        "narHash": "sha256-7VbQLilFprXnLhxVfGM8KgO01b6+fF/HXgcgsrl4JDk=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "6d8ffd14fdfc32a6089ab77a9e6284d968d489c4",
+        "rev": "86386d02f29915596434fc749b7e6171f7d4f105",
         "type": "gitlab"
       },
       "original": {
@@ -388,11 +388,11 @@
         "zig": "zig"
       },
       "locked": {
-        "lastModified": 1731947012,
-        "narHash": "sha256-OL7pQ/dMLC1Ek+rkXHEXpvx+UBO1Pbo1kTVe2kmcYsY=",
+        "lastModified": 1731971697,
+        "narHash": "sha256-6JNMcpy0z19yOLBRt3eE4Rk4A96kcEsRv5+ym1hkv1c=",
         "ref": "refs/heads/main",
-        "rev": "e54ae31d1cf1816f5b9fb7e1fb77d6537dabace6",
-        "revCount": 8018,
+        "rev": "29c3a52e964a97dddaed876ce472aeb167774acf",
+        "revCount": 8021,
         "type": "git",
         "url": "ssh://git@github.com/ghostty-org/ghostty"
       },
@@ -507,11 +507,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1731964590,
-        "narHash": "sha256-NBqbPdUHFaIQILooq+a//vg18gHDgELIeru4L24hDX4=",
+        "lastModified": 1731968878,
+        "narHash": "sha256-+hTCwETOE9N8voTAaF+IzdUZz28Ws3LDpH90FWADrEE=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "705cf3763a6d6074c1b7edb3ff0bb44efa7f091b",
+        "rev": "a42fa14b53ceab66274a21da480c9f8e06204173",
         "type": "github"
       },
       "original": {

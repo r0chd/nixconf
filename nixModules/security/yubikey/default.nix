@@ -2,7 +2,6 @@
   lib,
   config,
   pkgs,
-  std,
   ...
 }:
 {
@@ -11,6 +10,8 @@
   };
 
   config = lib.mkIf config.yubikey.enable {
+    impermanence.persist.directories = [ "/root/.config/Yubico" ];
+
     environment.systemPackages = with pkgs; [
       yubioath-flutter
       yubikey-manager
@@ -29,7 +30,7 @@
         enable = true;
         settings = {
           cue = true;
-          authFile = "${std.dirs.home}/.config/Yubico/u2f_keys";
+          authFile = "/root/.config/Yubico/u2f_keys";
         };
       };
       services = {
