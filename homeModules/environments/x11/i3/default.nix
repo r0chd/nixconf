@@ -1,10 +1,12 @@
 {
   lib,
   config,
-  username,
   pkgs,
   ...
 }:
+let
+  username = "unixpariah"; # Temporary fix
+in
 {
   config = lib.mkIf (config.window-manager.enable && config.window-manager.name == "i3") {
     services.xserver = {

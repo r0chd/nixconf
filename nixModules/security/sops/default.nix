@@ -28,7 +28,10 @@
     };
   };
 
-  environment.shellAliases.opensops = "sops ${config.sops.defaultSopsFile}";
+  environment = {
+    systemPackages = with pkgs; [ sops ];
+    shellAliases.opensops = "sops ${config.sops.defaultSopsFile}";
+  };
 
   system.activationScripts = {
     sopsGenerateKey =

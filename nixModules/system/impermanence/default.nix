@@ -7,8 +7,6 @@
 {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
 
-  #type = lib.types.listOf (coersedTo str (d: { directory = d; }) rootDir);
-
   options = {
     impermanence = {
       enable = lib.mkEnableOption "Enable impermanence";
@@ -43,7 +41,7 @@
           btrfs subvolume delete "$1"
       }
 
-      for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
+      for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +${toString config.gc.interval}); do
           delete_subvolume_recursively "$i"
       done
 

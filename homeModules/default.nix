@@ -5,10 +5,12 @@
   hostname,
   pkgs-stable,
   config,
-  username,
   std,
   ...
 }:
+let
+  username = "unixpariah"; # Temporary
+in
 {
   imports = [ ./environments ];
 
@@ -106,11 +108,12 @@
             just
             nvd
             nix-output-monitor
-            (writeShellScriptBin "shell" ''
-              nix develop "${std.dirs.config}#devShells.$@.${pkgs.system}" -c ${
-                config.home-manager.users.${username}.shell
-              }
-            '')
+            # (writeShellScriptBin "shell" ''
+            #   nix develop "${std.dirs.config}#devShells.$@.${pkgs.system}" -c ${
+            #     config.home-manager.users.${username}.shell
+            #   }
+            # '')
+            (writeShellScriptBin "specialisation" ''cat /etc/specialisation'')
             (writeShellScriptBin "nb" ''
               command "$@" > /dev/null 2>&1 &
               disown

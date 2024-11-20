@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  hostname,
   ...
 }:
 {
@@ -24,9 +25,20 @@
       );
       default = { };
     };
+    gc = {
+      enable = lib.mkEnableOption "Garbage collector";
+      interval = lib.mkOption {
+        type = lib.types.int;
+        default = 7;
+      };
+    };
   };
 
   config = {
+    home-manager.users = lib.genAttrs (lib.attrNames config.systemUsers) (user: {
+      imports = [ ../hosts/${hostname}/users/${user}/configuration.nix ];
+    });
+
     programs.nano.enable = lib.mkDefault false;
     boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
@@ -63,10 +75,10 @@
           "@wheel"
         ];
       };
-      gc = {
+      gc = lib.mkIf config.gc.enable {
         automatic = true;
         dates = "weekly";
-        options = "--delete-older-than 3d";
+        options = "--delete-older-than ${toString config.gc.interval}d";
       };
     };
   };

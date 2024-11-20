@@ -2,9 +2,11 @@
   pkgs,
   lib,
   config,
-  username,
   ...
 }:
+let
+  username = "unixpariah"; # Temporary fix
+in
 {
   imports = [
     ./hyprland

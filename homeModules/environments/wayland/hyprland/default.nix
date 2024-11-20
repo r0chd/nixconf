@@ -2,10 +2,10 @@
   pkgs,
   lib,
   config,
-  username,
   ...
 }:
 let
+  username = "unixpariah"; # Temporary fix
   conf = config.home-manager.users.${username};
   inherit (conf) colorscheme;
   inherit (config) ydotool;

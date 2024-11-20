@@ -54,7 +54,7 @@
     }@inputs:
     let
       newConfig =
-        username: hostname: arch:
+        hostname: arch:
         let
           pkgs = import nixpkgs {
             system = arch;
@@ -72,10 +72,10 @@
               hostname
               pkgs
               pkgs-stable
-              username
               ;
             std = import ./std {
-              inherit hostname username;
+              inherit hostname;
+              username = "unixpariah";
               lib = pkgs.lib;
             };
           };
@@ -91,7 +91,7 @@
     in
     {
       nixosConfigurations = {
-        laptop = newConfig "unixpariah" "laptop" "x86_64-linux";
+        laptop = newConfig "laptop" "x86_64-linux";
       };
 
       devShells = flake-utils.lib.eachDefaultSystem (

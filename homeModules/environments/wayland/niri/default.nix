@@ -2,11 +2,11 @@
   inputs,
   lib,
   config,
-  username,
   pkgs,
   ...
 }:
 let
+  username = "unixpariah"; # Temporary fix
   inherit (config) colorscheme;
 in
 {

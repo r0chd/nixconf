@@ -29,7 +29,7 @@
   };
   home = {
     packages = with pkgs; [
-      wl-clipboard
+      nh
       keepassxc
       zathura
       mpv
@@ -37,6 +37,7 @@
       libreoffice
       lazygit
       discord
+      vesktop
       brightnessctl
       unzip
       gimp
