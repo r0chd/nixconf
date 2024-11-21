@@ -2,13 +2,8 @@
 {
   imports = [ ./i3 ];
 
-  config = lib.mkIf (config.window-manager.enable && config.window-manager.backend == "X11") {
-    services = {
-      xserver = {
-        enable = true;
-        desktopManager.xterm.enable = lib.mkDefault false;
+  config =
+    lib.mkIf (config.window-manager.enable && config.window-manager.backend == "X11")
+      {
       };
-      displayManager.defaultSession = "none+${config.window-manager.name}";
-    };
-  };
 }

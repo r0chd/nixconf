@@ -91,6 +91,13 @@
                   ];
                   mountpoint = "/nix";
                 };
+
+                #"/home" = {
+                #  mountOptions = [ "compress=zstd" ];
+                #  mountpoint = "/home";
+                #};
+
+                #"/home/unixpariah" = { };
               };
             };
           };

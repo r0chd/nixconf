@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   hardware = {
     nvidia = {
@@ -18,6 +18,7 @@
         intelBusId = "PCI:0:2:0";
         nvidiaBusId = "PCI:0:1:0";
       };
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
     };
 
     graphics = {

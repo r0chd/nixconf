@@ -47,10 +47,6 @@ in
         };
       };
       loginShellInit = ''
-        if string match -q -- 'tmux*' $TERM
-            set fish_cursor_insert line
-        end
-
         fish_vi_key_bindings;
 
         bind --mode insert \t fish_vi_on_paging

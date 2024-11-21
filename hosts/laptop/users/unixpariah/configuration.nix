@@ -4,7 +4,9 @@
   ...
 }:
 {
-  services.yubikey-touch-detector.enable = true;
+  services.yubikey-touch-detector = {
+    enable = true;
+  };
   colorscheme.name = "catppuccin";
   editor = "nvim";
   shell = "fish";
@@ -36,7 +38,6 @@
       ani-cli
       libreoffice
       lazygit
-      discord
       vesktop
       brightnessctl
       unzip
@@ -56,7 +57,7 @@
         "workspace"
         "Images"
         "Videos"
-        ".config/discord"
+        ".config/vesktop"
         "Documents"
       ];
     };

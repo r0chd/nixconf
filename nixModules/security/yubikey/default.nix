@@ -4,13 +4,23 @@
   pkgs,
   ...
 }:
+let
+  root = (if config.impermanence.enable then "/persist/system/root" else "/root");
+in
 {
   options.yubikey = {
     enable = lib.mkEnableOption "yubikey";
+    rootAuth = lib.mkEnableOption "root authentication";
   };
 
   config = lib.mkIf config.yubikey.enable {
-    impermanence.persist.directories = [ "/root/.config/Yubico" ];
+    impermanence.persist.directories = lib.mkIf config.yubikey.rootAuth [ "/root/.config/Yubico" ];
+
+    sops.secrets = lib.mkIf config.yubikey.rootAuth {
+      "yubico/u2f_keys" = {
+        path = "${root}/.config/Yubico/u2f_keys";
+      };
+    };
 
     environment.systemPackages = with pkgs; [
       yubioath-flutter
@@ -26,7 +36,7 @@
 
     security.pam = {
       sshAgentAuth.enable = true;
-      u2f = {
+      u2f = lib.mkIf config.yubikey.rootAuth {
         enable = true;
         settings = {
           cue = true;

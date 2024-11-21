@@ -2,7 +2,6 @@
   pkgs,
   config,
   lib,
-  std,
   ...
 }:
 {
@@ -15,7 +14,7 @@
       syntaxHighlighting.enable = true;
       history = {
         size = 10000;
-        path = "${std.dirs.home}/.zsh_history";
+        path = "/home/${config.home.username}/.zsh_history";
         ignoreSpace = true;
         ignoreAllDups = true;
         ignoreDups = true;

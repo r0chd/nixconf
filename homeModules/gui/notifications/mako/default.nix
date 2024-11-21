@@ -12,7 +12,7 @@ in
         enable = true;
         backgroundColor = "#${background1}FF";
         borderColor = "#${accent2}FF";
-        defaultTimeout = 10000;
+        defaultTimeout = 0;
         borderRadius = 5;
       };
   };

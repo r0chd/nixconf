@@ -1,19 +1,26 @@
 {
   std,
   pkgs,
-  username,
   config,
   ...
 }:
+let
+  home = (
+    if config.impermanence.enable then
+      "/persist/home/${config.home.username}"
+    else
+      "persist/home/${config.home.username}"
+  );
+in
 {
   config = {
     impermanence.persist.directories = [ ".config/sops/age" ];
     sops = {
-      defaultSopsFile = "${std.dirs.host}/users/${username}/secrets/secrets.yaml";
+      defaultSopsFile = "${std.dirs.host}/users/${config.home.username}/secrets/secrets.yaml";
       defaultSopsFormat = "yaml";
       age = {
-        sshKeyPaths = [ "${std.dirs.home-persist}/.ssh/id_ed25519" ];
-        keyFile = "${std.dirs.home-persist}/.config/sops/age/keys.txt";
+        sshKeyPaths = [ "${home}/.ssh/id_ed25519" ];
+        keyFile = "${home}/.config/sops/age/keys.txt";
       };
     };
     home = {

@@ -3,14 +3,13 @@
   inputs,
   config,
   lib,
-  username,
   ...
 }:
 {
   config = lib.mkIf (config.browser.enable && config.browser.program == "firefox") {
     programs.firefox = {
       enable = true;
-      profiles."${username}" = {
+      profiles."${config.home.username}" = {
         extensions = with inputs.firefox-addons.packages.${pkgs.system}; [
           ublock-origin
           sponsorblock

@@ -75,7 +75,6 @@
               ;
             std = import ./std {
               inherit hostname;
-              username = "unixpariah";
               lib = pkgs.lib;
             };
           };

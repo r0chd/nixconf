@@ -5,6 +5,9 @@
   lib,
   ...
 }:
+let
+  root = (if config.impermanence.enable then "/persist/system/root" else "/root");
+in
 {
   impermanence.persist.directories = [ "/root/.config/sops" ];
 
@@ -12,9 +15,6 @@
     secrets =
       {
         password.neededForUsers = true;
-        "yubico/u2f_keys" = {
-          path = "/persist/root/.config/Yubico/u2f_keys";
-        };
       }
       // lib.genAttrs (builtins.attrNames config.systemUsers) (user: {
         neededForUsers = true;
@@ -23,8 +23,8 @@
     defaultSopsFile = "${std.dirs.host}/secrets/secrets.yaml";
     defaultSopsFormat = "yaml";
     age = {
-      sshKeyPaths = [ "/persist/system/root/.ssh/id_ed25519" ];
-      keyFile = "/persist/system/root/.config/sops/age/keys.txt";
+      sshKeyPaths = [ "${root}/.ssh/id_ed25519" ];
+      keyFile = "${root}/.config/sops/age/keys.txt";
     };
   };
 
@@ -44,11 +44,12 @@
           let
             escapedKeyFile = lib.escapeShellArg "/home/${user}/.config/sops/age/keys.txt";
             sshKeyPath = "/home/${user}/.ssh/id_ed25519";
+            home = (if config.impermanence.enable then "/persist/home/${user}" else "/home/${user}");
           in
           ''
             mkdir -p $(dirname ${escapedKeyFile})
             ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
-            chown -R ${user} /persist/home/${user}/.config
+            chown -R ${user} ${home}/.config
             chmod 600 ${escapedKeyFile}
             chown -R ${user} /home/${user}/.config
           '';
@@ -57,8 +58,8 @@
 
     sopsGenerateRootKey =
       let
-        escapedKeyFile = lib.escapeShellArg "/persist/system/root/.config/sops/age/keys.txt";
-        sshKeyPath = "/persist/system/root/.ssh/id_ed25519";
+        escapedKeyFile = lib.escapeShellArg "${root}/.config/sops/age/keys.txt";
+        sshKeyPath = "${root}/.ssh/id_ed25519";
       in
       ''
         mkdir -p $(dirname ${escapedKeyFile})

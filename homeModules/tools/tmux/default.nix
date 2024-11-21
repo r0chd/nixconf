@@ -65,5 +65,45 @@ in
           run '~/.config/tmux/plugins/tpm/tpm'
         '';
     };
+
+    home.packages = with pkgs; [
+      (writeShellScriptBin "tmux-init"
+        # bash
+        ''
+          if [ -z "$TMUX" ]; then
+            i=0
+            while true; do
+                session_name="base-$i"
+                if tmux has-session -t "$session_name" 2>/dev/null; then
+                    clients_count=$(tmux list-clients | grep $session_name | wc -l)
+                    if [ $clients_count -eq 0 ]; then
+                        tmux attach-session -t $session_name
+                        break
+                    fi
+                    ((i++))
+                else
+                    tmux new-session -d -s $session_name
+                    tmux attach-session -d -t $session_name
+                    break
+                fi
+            done
+          fi
+        ''
+      )
+    ];
+
+    programs.bash.initExtra = lib.mkIf (config.shell == "bash") ''
+      tmux-init
+    '';
+    programs.zsh.initExtra = lib.mkIf (config.shell == "zsh") ''
+      tmux-init
+    '';
+    programs.fish.loginShellInit = lib.mkIf (config.shell == "fish") ''
+      if string match -q -- 'tmux*' $TERM
+          set fish_cursor_insert line
+      end
+
+      tmux-init
+    '';
   };
 }

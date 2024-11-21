@@ -1,6 +1,5 @@
 {
   lib,
-  std,
   config,
   ...
 }:
@@ -44,9 +43,11 @@
     };
   };
 
-  config.home.persistence."${std.dirs.home-persist}" = lib.mkIf config.impermanence.enable {
-    directories = config.impermanence.persist.directories ++ [ "nixconf" ];
-    files = config.impermanence.persist.files;
-    allowOther = true;
-  };
+  config.home.persistence."/persist/home/${config.home.username}" =
+    lib.mkIf config.impermanence.enable
+      {
+        directories = config.impermanence.persist.directories ++ [ "nixconf" ];
+        files = config.impermanence.persist.files;
+        allowOther = true;
+      };
 }

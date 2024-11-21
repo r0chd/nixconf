@@ -10,6 +10,10 @@
     ./hardware-configuration.nix
   ];
 
+  root = {
+    passwordAuthentication = false;
+  };
+
   systemUsers = {
     "unixpariah" = {
       enable = true;
@@ -22,6 +26,7 @@
   };
   impermanence = {
     enable = true;
+    fileSystem = "btrfs";
     persist = {
       directories = [
         "/var/log"
@@ -37,10 +42,13 @@
   audio.enable = true;
   boot.program = "grub";
   virtualisation.enable = true;
-  zram.enable = true;
   ydotool.enable = true;
-  yubikey.enable = true;
+  yubikey = {
+    enable = true;
+    rootAuth = true;
+  };
 
+  zramSwap.enable = true;
   environment = {
     variables.EDITOR = "nvim";
     systemPackages = with pkgs; [
@@ -51,29 +59,9 @@
   users.users."unixpariah".shell = pkgs.fish;
   programs.fish.enable = true;
   programs.zsh.enable = true;
-  environment.interactiveShellInit =
-    # bash
-    ''
-      if [ -z "$TMUX" ]; then
-        i=0
-        while true; do
-            session_name="base-$i"
-            if tmux has-session -t "$session_name" 2>/dev/null; then
-                clients_count=$(tmux list-clients | grep $session_name | wc -l)
-                if [ $clients_count -eq 0 ]; then
-                    tmux attach-session -t $session_name
-                    break
-                fi
-                ((i++))
-            else
-                tmux new-session -d -s $session_name
-                tmux attach-session -d -t $session_name
-                break
-            fi
-        done
-      fi
-    '';
   security.pam.services.hyprlock = { };
+
+  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 
   sops.secrets = {
     "ssh_keys/unixpariah" = {

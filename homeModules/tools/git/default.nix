@@ -1,16 +1,14 @@
 {
   config,
-  std,
-  username,
   ...
 }:
 let
-  publicKey = "${std.dirs.home}/.ssh/id_ed25519";
+  publicKey = "/home/${config.home.username}/.ssh/id_ed25519";
 in
 {
   programs.git = {
     enable = true;
-    userName = username;
+    userName = config.home.username;
     userEmail = config.email;
     extraConfig = {
       init.defaultBranch = "main";

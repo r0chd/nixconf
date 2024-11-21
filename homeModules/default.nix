@@ -8,47 +8,7 @@
   std,
   ...
 }:
-let
-  username = "unixpariah"; # Temporary
-in
 {
-  imports = [ ./environments ];
-
-  specialisation = {
-    Hyprland.configuration = {
-      window-manager = {
-        enable = true;
-        name = "Hyprland";
-        backend = "Wayland";
-      };
-      environment.etc."specialisation".text = "Hyprland";
-    };
-    sway.configuration = {
-      window-manager = {
-        enable = true;
-        name = "sway";
-        backend = "Wayland";
-      };
-      environment.etc."specialisation".text = "sway";
-    };
-    niri.configuration = {
-      window-manager = {
-        enable = true;
-        name = "niri";
-        backend = "Wayland";
-      };
-      environment.etc."specialisation".text = "niri";
-    };
-    i3.configuration = {
-      window-manager = {
-        enable = true;
-        name = "i3";
-        backend = "X11";
-      };
-      environment.etc."specialisation".text = "i3";
-    };
-  };
-
   home-manager = {
     useUserPackages = true;
     backupFileExtension = "bak";
@@ -58,11 +18,10 @@ in
         hostname
         pkgs
         pkgs-stable
-        username
         std
         ;
     };
-    users."${username}" = {
+    users = lib.genAttrs (lib.attrNames config.systemUsers) (user: {
       options = {
         outputs = lib.mkOption {
           type = lib.types.attrsOf (
@@ -90,6 +49,8 @@ in
         email = lib.mkOption { type = lib.types.str; };
       };
       imports = [
+        "${std.dirs.host}/users/${user}/configuration.nix"
+        ./environments
         ./tools
         ./gaming
         ./gui
@@ -100,29 +61,31 @@ in
         inputs.impermanence.homeManagerModules.default
         inputs.sops-nix.homeManagerModules.sops
         inputs.seto.homeManagerModules.default
+        inputs.niri.homeModules.niri
       ];
       config = {
+        window-manager = config.window-manager;
         programs.home-manager.enable = true;
         home = {
           packages = with pkgs; [
             just
             nvd
             nix-output-monitor
-            # (writeShellScriptBin "shell" ''
-            #   nix develop "${std.dirs.config}#devShells.$@.${pkgs.system}" -c ${
-            #     config.home-manager.users.${username}.shell
-            #   }
-            # '')
+            (writeShellScriptBin "shell" ''
+              nix develop "${std.dirs.host}/../..#devShells.$@.${pkgs.system}" -c ${
+                config.home-manager.users.${user}.shell
+              }
+            '')
             (writeShellScriptBin "specialisation" ''cat /etc/specialisation'')
             (writeShellScriptBin "nb" ''
               command "$@" > /dev/null 2>&1 &
               disown
             '')
           ];
-          username = "${username}";
+          username = "${user}";
           stateVersion = config.system.stateVersion;
         };
       };
-    };
+    });
   };
 }

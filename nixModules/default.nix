@@ -2,7 +2,6 @@
   pkgs,
   lib,
   config,
-  hostname,
   ...
 }:
 {
@@ -11,6 +10,7 @@
     ./hardware
     ./network
     ./security
+    ./environments
   ];
 
   options = {
@@ -35,10 +35,6 @@
   };
 
   config = {
-    home-manager.users = lib.genAttrs (lib.attrNames config.systemUsers) (user: {
-      imports = [ ../hosts/${hostname}/users/${user}/configuration.nix ];
-    });
-
     programs.nano.enable = lib.mkDefault false;
     boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
@@ -48,7 +44,8 @@
         {
           root = {
             isNormalUser = false;
-            hashedPasswordFile = config.sops.secrets.password.path;
+            hashedPassword = lib.mkIf (!config.root.passwordAuthentication) "";
+            hashedPasswordFile = lib.mkIf config.root.passwordAuthentication config.sops.secrets.password;
           };
         }
         // lib.mapAttrs (name: value: {
@@ -81,5 +78,41 @@
         options = "--delete-older-than ${toString config.gc.interval}d";
       };
     };
+
+    specialisation = {
+      Hyprland.configuration = {
+        window-manager = {
+          enable = true;
+          name = "Hyprland";
+          backend = "Wayland";
+        };
+        environment.etc."specialisation".text = "Hyprland";
+      };
+      sway.configuration = {
+        window-manager = {
+          enable = true;
+          name = "sway";
+          backend = "Wayland";
+        };
+        environment.etc."specialisation".text = "sway";
+      };
+      niri.configuration = {
+        window-manager = {
+          enable = true;
+          name = "niri";
+          backend = "Wayland";
+        };
+        environment.etc."specialisation".text = "niri";
+      };
+      i3.configuration = {
+        window-manager = {
+          enable = true;
+          name = "i3";
+          backend = "X11";
+        };
+        environment.etc."specialisation".text = "i3";
+      };
+    };
+
   };
 }
