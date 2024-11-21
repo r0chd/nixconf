@@ -11,13 +11,17 @@
   ];
 
   root = {
-    passwordAuthentication = false;
+    auth = {
+      password = false;
+      rootPw = true;
+    };
+    timeout = 0;
   };
-
   systemUsers = {
     "unixpariah" = {
       enable = true;
       root.enable = true;
+      shell = "fish";
     };
   };
   gc = {
@@ -46,6 +50,10 @@
   yubikey = {
     enable = true;
     rootAuth = true;
+    unplug = {
+      enable = true;
+      action = "${pkgs.hyprlock}/bin/hyprlock";
+    };
   };
 
   zramSwap.enable = true;
@@ -56,9 +64,6 @@
     ];
   };
 
-  users.users."unixpariah".shell = pkgs.fish;
-  programs.fish.enable = true;
-  programs.zsh.enable = true;
   security.pam.services.hyprlock = { };
 
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];

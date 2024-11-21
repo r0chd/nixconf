@@ -4,11 +4,11 @@
 
   config = lib.mkIf config.ydotool.enable {
     programs.ydotool.enable = true;
-    users.users = lib.genAttrs (builtins.attrNames config.systemUsers) (user: {
-      extraGroups = [
+    users.users = lib.mapAttrs (name: value: {
+      extraGroups = lib.mkIf value.root.enable [
         "ydotool"
         "uinput"
       ];
-    });
+    }) config.systemUsers;
   };
 }

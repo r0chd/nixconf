@@ -20,6 +20,14 @@
           options = {
             enable = lib.mkEnableOption "Enable user";
             root.enable = lib.mkEnableOption "Enable root for user";
+            shell = lib.mkOption {
+              type = lib.types.enum [
+                "bash"
+                "zsh"
+                "fish"
+              ];
+              default = "bash";
+            };
           };
         }
       );
@@ -35,8 +43,16 @@
   };
 
   config = {
-    programs.nano.enable = lib.mkDefault false;
     boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+
+    # Enables all required shells
+    programs = builtins.foldl' (
+      acc: user:
+      acc
+      // {
+        ${user.shell}.enable = true;
+      }
+    ) { nano.enable = lib.mkDefault false; } (builtins.attrValues config.systemUsers);
 
     users = {
       mutableUsers = false;
@@ -44,14 +60,15 @@
         {
           root = {
             isNormalUser = false;
-            hashedPassword = lib.mkIf (!config.root.passwordAuthentication) "";
-            hashedPasswordFile = lib.mkIf config.root.passwordAuthentication config.sops.secrets.password;
+            hashedPassword = lib.mkIf (!config.root.auth.password) "";
+            hashedPasswordFile = lib.mkIf config.root.auth.password config.sops.secrets.password;
           };
         }
         // lib.mapAttrs (name: value: {
           isNormalUser = true;
           hashedPasswordFile = config.sops.secrets.${name}.path;
           extraGroups = lib.mkIf value.root.enable [ "wheel" ];
+          shell = pkgs.${value.shell};
         }) config.systemUsers;
     };
 

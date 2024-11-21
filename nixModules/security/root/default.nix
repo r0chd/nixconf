@@ -1,18 +1,27 @@
-{ lib, ... }:
+{ lib, config, ... }:
 {
   options.root = {
-    passwordAuthentication = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
+    auth = {
+      password = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+      };
+      rootPw = lib.mkEnableOption "Root password";
+    };
+    timeout = lib.mkOption {
+      type = lib.types.int;
+      default = 15;
     };
   };
 
   config.security.sudo = {
-    enable = true;
     execWheelOnly = true;
-    extraConfig = ''
-      Defaults rootpw
-      Defaults timestamp_timeout=0
-    '';
+    extraConfig =
+      ''
+        Defaults timestamp_timeout=${toString config.root.timeout}
+      ''
+      + lib.optionalString (config.root.auth.rootPw) ''
+        Defaults rootpw
+      '';
   };
 }

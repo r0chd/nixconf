@@ -11,6 +11,13 @@ in
   options.yubikey = {
     enable = lib.mkEnableOption "yubikey";
     rootAuth = lib.mkEnableOption "root authentication";
+    unplug = {
+      enable = lib.mkEnableOption "Action when unplugging";
+      action = lib.mkOption {
+        type = lib.types.str;
+        default = "${pkgs.systemd}/bin/loginctl lock-sessions";
+      };
+    };
   };
 
   config = lib.mkIf config.yubikey.enable {
@@ -30,7 +37,17 @@ in
 
     services = {
       pcscd.enable = true;
-      udev.packages = with pkgs; [ yubikey-personalization ];
+      udev = {
+        extraRules = lib.mkIf config.yubikey.unplug.enable ''
+          ACTION=="remove",\
+           ENV{ID_BUS}=="usb",\
+           ENV{ID_MODEL_ID}=="0407",\
+           ENV{ID_VENDOR_ID}=="1050",\
+           ENV{ID_VENDOR}=="Yubico",\
+           RUN+="${config.yubikey.unplug.action}"
+        '';
+        packages = with pkgs; [ yubikey-personalization ];
+      };
       yubikey-agent.enable = true;
     };
 
