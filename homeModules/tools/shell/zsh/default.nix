@@ -2,10 +2,11 @@
   pkgs,
   config,
   lib,
+  shell,
   ...
 }:
 {
-  config = lib.mkIf (config.shell == "zsh") {
+  config = lib.mkIf (shell == "zsh") {
     impermanence.persist.files = [ ".zsh_history" ];
     home.packages = with pkgs; [ fzf ];
     programs.zsh = {

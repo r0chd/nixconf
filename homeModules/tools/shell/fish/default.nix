@@ -1,9 +1,14 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  shell,
+  ...
+}:
 let
   inherit (config) colorscheme;
 in
 {
-  config = lib.mkIf (config.shell == "fish") {
+  config = lib.mkIf (shell == "fish") {
     impermanence.persist.directories = [ ".local/share/fish" ];
     programs.fish = {
       enable = true;

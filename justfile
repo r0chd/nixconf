@@ -32,7 +32,7 @@ rebuild-switch-update:
 
 home-switch:
     @home-manager switch --flake .#$(whoami)@$(hostname)
-    @{{HOME_ACTIVATION_PATH}}$(cat /etc/specialisation > /dev/null 2>&1 && echo /specialisation/$(cat /etc/specialisation)/activate || echo /activate)
+    @{{HOME_ACTIVATION_PATH}}$(cat /etc/specialisation > /dev/null 2>&1 && echo /specialisation/$(cat /etc/specialisation)/activate || echo /activate) test
 
 gen-database:
     nix run github:nix-community/nix-index#nix-index

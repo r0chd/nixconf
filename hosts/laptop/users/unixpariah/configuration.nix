@@ -9,7 +9,6 @@
   };
   colorscheme.name = "catppuccin";
   editor = "nvim";
-  shell = "fish";
   tmux.enable = true;
   zoxide.enable = true;
   lsd.enable = true;

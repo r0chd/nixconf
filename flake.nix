@@ -89,6 +89,44 @@
           ];
         };
 
+      newHomeConfig =
+        host: user:
+        let
+          pkgs = import nixpkgs {
+            system = hosts.${host}.arch;
+            config.allowUnfree = true;
+          };
+          pkgs-stable = import nixpkgs-stable {
+            system = hosts.${host}.arch;
+            config.allowUnfree = true;
+          };
+        in
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          extraSpecialArgs = {
+            inherit
+              inputs
+              pkgs
+              pkgs-stable
+              ;
+            std = import ./std {
+              hostname = "${host}";
+              lib = pkgs.lib;
+            };
+            shell = "${hosts.${host}.users.${user}.shell}";
+            username = "${user}";
+          };
+
+          modules = [
+            ./hosts/laptop/users/unixpariah/configuration.nix
+            ./homeModules
+            inputs.impermanence.homeManagerModules.default
+            inputs.sops-nix.homeManagerModules.sops
+            inputs.seto.homeManagerModules.default
+            inputs.niri.homeModules.niri
+          ];
+        };
+
       hosts = {
         laptop = {
           arch = "x86_64-linux";
@@ -142,54 +180,18 @@
       nixosConfigurations = hosts |> lib.mapAttrs (hostname: attrs: newConfig hostname attrs);
 
       homeConfigurations =
-        let
-          pkgs = import nixpkgs {
-            system = "x86_64-linux";
-            config.allowUnfree = true;
-          };
-          pkgs-stable = import nixpkgs-stable {
-            system = "x86_64-linux";
-            config.allowUnfree = true;
-          };
-        in
-        builtins.listToAttrs (
-          builtins.concatLists (
-            builtins.attrNames hosts
-            |> builtins.map (
-              host:
-              let
-                hostData = builtins.getAttr host hosts;
-              in
-              builtins.map (user: {
-                name = "${user}@${host}";
-                value = home-manager.lib.homeManagerConfiguration {
-                  inherit pkgs;
-                  extraSpecialArgs = {
-                    inherit
-                      inputs
-                      pkgs
-                      pkgs-stable
-                      ;
-                    std = import ./std {
-                      hostname = "${host}";
-                      lib = pkgs.lib;
-                    };
-                    username = "${user}";
-                  };
-
-                  modules = [
-                    ./hosts/laptop/users/unixpariah/configuration.nix
-                    ./homeModules
-                    inputs.impermanence.homeManagerModules.default
-                    inputs.sops-nix.homeManagerModules.sops
-                    inputs.seto.homeManagerModules.default
-                    inputs.niri.homeModules.niri
-                  ];
-                };
-              }) (builtins.attrNames hostData.users)
-            )
-          )
-        );
+        builtins.attrNames hosts
+        |> builtins.map (
+          host:
+          hosts.${host}.users
+          |> builtins.attrNames
+          |> builtins.map (user: {
+            name = "${user}@${host}";
+            value = newHomeConfig host user;
+          })
+        )
+        |> builtins.concatLists
+        |> builtins.listToAttrs;
 
       devShells = flake-utils.lib.eachDefaultSystem (
         system:

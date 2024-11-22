@@ -2,6 +2,7 @@
   pkgs,
   config,
   lib,
+  shell,
   ...
 }:
 let
@@ -92,13 +93,13 @@ in
       )
     ];
 
-    programs.bash.initExtra = lib.mkIf (config.shell == "bash") ''
+    programs.bash.initExtra = lib.mkIf (shell == "bash") ''
       tmux-init
     '';
-    programs.zsh.initExtra = lib.mkIf (config.shell == "zsh") ''
+    programs.zsh.initExtra = lib.mkIf (shell == "zsh") ''
       tmux-init
     '';
-    programs.fish.loginShellInit = lib.mkIf (config.shell == "fish") ''
+    programs.fish.loginShellInit = lib.mkIf (shell == "fish") ''
       if string match -q -- 'tmux*' $TERM
           set fish_cursor_insert line
       end
