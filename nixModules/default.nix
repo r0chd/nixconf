@@ -133,6 +133,5 @@
         environment.etc."specialisation".text = "i3";
       };
     };
-
   };
 }

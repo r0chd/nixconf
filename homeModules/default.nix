@@ -57,7 +57,7 @@
         '')
       ];
       username = username;
-      homeDirectory = "/home/unixpariah";
+      homeDirectory = "/home/${username}";
       stateVersion = "24.11";
     };
 

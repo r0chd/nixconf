@@ -143,7 +143,12 @@
     {
       options.hosts = {
         arch = lib.mkOption {
-          type = lib.types.enum [ "x86_64-linux" ];
+          type = lib.types.enum [
+            "x86_64-linux"
+            "aarch64-linux"
+            "x86_64-darwin"
+            "aarch64-darwin"
+          ];
         };
         users = lib.mkOption {
           type = lib.types.attrsOf (

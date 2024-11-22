@@ -12,11 +12,65 @@
       enable = lib.mkEnableOption "Enable impermanence";
       persist = {
         directories = lib.mkOption {
-          type = lib.types.listOf lib.types.str;
+          type =
+            with lib.types;
+            listOf (
+              either str (submodule {
+                options = {
+                  directory = lib.mkOption {
+                    type = str;
+                    default = null;
+                    description = "The directory path to be linked.";
+                  };
+                  user = lib.mkOption {
+                    type = str;
+                    default = null;
+                    description = "User owning the directory";
+                  };
+                  group = lib.mkOption {
+                    type = str;
+                    default = null;
+                    description = "Group owning the directory";
+                  };
+                  mode = lib.mkOption {
+                    type = str;
+                    default = null;
+                    description = "Permissions";
+                  };
+                };
+              })
+            );
           default = [ ];
         };
         files = lib.mkOption {
-          type = lib.types.listOf lib.types.str;
+          type =
+            with lib.types;
+            listOf (
+              either str (submodule {
+                options = {
+                  file = lib.mkOption {
+                    type = str;
+                    default = null;
+                    description = "The file path to be linked.";
+                  };
+                  user = lib.mkOption {
+                    type = str;
+                    default = "root";
+                    description = "User owning the file";
+                  };
+                  group = lib.mkOption {
+                    type = str;
+                    default = "root";
+                    description = "Group owning the file";
+                  };
+                  mode = lib.mkOption {
+                    type = str;
+                    default = "0755";
+                    description = "Permissions";
+                  };
+                };
+              })
+            );
           default = [ ];
         };
       };
@@ -67,7 +121,14 @@
 
     environment.persistence."/persist/system" = {
       hideMounts = true;
-      directories = config.impermanence.persist.directories;
+      directories = [
+        {
+          directory = "/var/lib/nixconf";
+          user = "root";
+          group = "wheel";
+          mode = "u=rw, g=rw, o=r";
+        }
+      ] ++ config.impermanence.persist.directories;
       files = config.impermanence.persist.files;
     };
   };
