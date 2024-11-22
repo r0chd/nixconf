@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  systemUsers,
   ...
 }:
 {
@@ -46,13 +47,15 @@
     boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
     # Enables all required shells
-    programs = builtins.foldl' (
-      acc: user:
-      acc
-      // {
-        ${user.shell}.enable = true;
-      }
-    ) { nano.enable = lib.mkDefault false; } (builtins.attrValues config.systemUsers);
+    programs =
+      (builtins.attrValues systemUsers)
+      |> builtins.foldl' (
+        acc: user:
+        acc
+        // {
+          ${user.shell}.enable = true;
+        }
+      ) { nano.enable = lib.mkDefault false; };
 
     users = {
       mutableUsers = false;
@@ -69,7 +72,7 @@
           hashedPasswordFile = config.sops.secrets.${name}.path;
           extraGroups = lib.mkIf value.root.enable [ "wheel" ];
           shell = pkgs.${value.shell};
-        }) config.systemUsers;
+        }) systemUsers;
     };
 
     nix = {

@@ -50,18 +50,19 @@
       nixpkgs-stable,
       nixpkgs,
       flake-utils,
+      home-manager,
       ...
     }@inputs:
     let
       newConfig =
-        hostname: arch:
+        hostname: attrs:
         let
           pkgs = import nixpkgs {
-            system = arch;
+            system = attrs.arch;
             config.allowUnfree = true;
           };
           pkgs-stable = import nixpkgs-stable {
-            system = arch;
+            system = attrs.arch;
             config.allowUnfree = true;
           };
         in
@@ -73,6 +74,7 @@
               pkgs
               pkgs-stable
               ;
+            systemUsers = attrs.users;
             std = import ./std {
               inherit hostname;
               lib = pkgs.lib;
@@ -81,17 +83,142 @@
           modules = [
             ./hosts/${hostname}/configuration.nix
             ./nixModules
-            ./homeModules
             inputs.home-manager.nixosModules.default
             inputs.disko.nixosModules.default
             inputs.sops-nix.nixosModules.sops
           ];
         };
-    in
-    {
-      nixosConfigurations = {
-        laptop = newConfig "laptop" "x86_64-linux";
+
+      hosts = {
+        laptop = {
+          arch = "x86_64-linux";
+          users = {
+            unixpariah = {
+              root.enable = true;
+              shell = "fish";
+            };
+          };
+        };
       };
+    in
+    with nixpkgs;
+    {
+      options.hosts = {
+        arch = lib.mkOption {
+          type = lib.types.enum [ "x86_64-linux" ];
+        };
+        users = lib.mkOption {
+          type = lib.types.attrsOf (
+            lib.types.submodule {
+              options = {
+                root.enable = lib.mkEnableOption "Enable root for user";
+                shell = lib.mkOption {
+                  type = lib.types.enum [
+                    "bash"
+                    "zsh"
+                    "fish"
+                  ];
+                  default = "bash";
+                };
+              };
+            }
+          );
+          default = { };
+        };
+      };
+
+      config.hosts = {
+        laptop = {
+          arch = "x86_64-linux";
+          users = {
+            unixpariah = {
+              root.enable = true;
+              shell = "fish";
+            };
+          };
+        };
+      };
+
+      nixosConfigurations = hosts |> lib.mapAttrs (hostname: attrs: newConfig hostname attrs);
+      #homeConfigurations =
+      #  hosts
+      #  |> lib.mapAttrs (
+      #    host: hostConfig:
+      #    hostConfig.users
+      #    |> lib.mapAttrs (
+      #      user: userConfig:
+      #      let
+      #        configName = "${user}@${host}";
+      #        pkgs = import nixpkgs {
+      #          system = hostConfig.arch;
+      #          config.allowUnfree = true;
+      #        };
+      #        pkgs-stable = import nixpkgs-stable {
+      #          system = hostConfig.arch;
+      #          config.allowUnfree = true;
+      #        };
+      #      in
+      #      {
+      #        inherit configName;
+      #        value = home-manager.lib.homeManagerConfiguration {
+      #          useUserPackages = true;
+      #          backupFileExtension = "bak";
+      #          extraSpecialArgs = {
+      #            inherit
+      #              inputs
+      #              pkgs
+      #              pkgs-stable
+      #              ;
+      #            useUserPackages = true;
+      #            backupFileExtension = "bak";
+      #            config.shell = userConfig.shell;
+      #          };
+      #          modules = [
+      #            ./hosts/${host}/users/${user}/configuration.nix
+      #            ./homeModules
+      #            inputs.impermanence.homeManagerModules.default
+      #            inputs.sops-nix.homeManagerModules.sops
+      #            inputs.seto.homeManagerModules.default
+      #            inputs.niri.homeModules.niri
+      #          ];
+      #        };
+      #      }
+      #    )
+      #  );
+      homeConfigurations."unixpariah@laptop" =
+        let
+          pkgs = import nixpkgs {
+            system = "x86_64-linux";
+            config.allowUnfree = true;
+          };
+          pkgs-stable = import nixpkgs-stable {
+            system = "x86_64-linux";
+            config.allowUnfree = true;
+          };
+        in
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          extraSpecialArgs = {
+            inherit
+              inputs
+              pkgs
+              pkgs-stable
+              ;
+            std = import ./std {
+              hostname = "laptop";
+              lib = pkgs.lib;
+            };
+            username = "unixpariah";
+          };
+          modules = [
+            ./hosts/laptop/users/unixpariah/configuration.nix
+            ./homeModules
+            inputs.impermanence.homeManagerModules.default
+            inputs.sops-nix.homeManagerModules.sops
+            inputs.seto.homeManagerModules.default
+            inputs.niri.homeModules.niri
+          ];
+        };
 
       devShells = flake-utils.lib.eachDefaultSystem (
         system:

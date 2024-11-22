@@ -1,5 +1,4 @@
 {
-  std,
   pkgs,
   config,
   ...
@@ -11,12 +10,13 @@ let
     else
       "persist/home/${config.home.username}"
   );
+  a = ../../../hosts/laptop;
 in
 {
   config = {
     impermanence.persist.directories = [ ".config/sops/age" ];
     sops = {
-      defaultSopsFile = "${std.dirs.host}/users/${config.home.username}/secrets/secrets.yaml";
+      defaultSopsFile = "${a}/users/${config.home.username}/secrets/secrets.yaml";
       defaultSopsFormat = "yaml";
       age = {
         sshKeyPaths = [ "${home}/.ssh/id_ed25519" ];
