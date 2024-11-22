@@ -42,20 +42,15 @@
     ./system
   ];
   config = {
-    window-manager = {
-      enable = true;
-      backend = "Wayland";
-      name = "niri";
-    };
     programs.home-manager.enable = true;
     home = {
       packages = with pkgs; [
         just
         nvd
         nix-output-monitor
-        # (writeShellScriptBin "shell" ''
-        #   nix develop "${../shells#devShells.$@.${pkgs.system}}" -c ${config.users.${user}.shell}
-        # '')
+        #(writeShellScriptBin "shell" ''
+        #  nix develop "${../shells}#devShells.$@.${pkgs.system}" -c ${config.shell}
+        #'')
         (writeShellScriptBin "nb" ''
           command "$@" > /dev/null 2>&1 &
           disown
@@ -66,19 +61,35 @@
       stateVersion = "24.11";
     };
 
-    # specialisation = {
-    #   Hyprland.configuration =
-    #     {
-    #     };
-    #   sway.configuration =
-    #     {
-    #     };
-    #   niri.configuration =
-    #     {
-    #     };
-    #   i3.configuration =
-    #     {
-    #     };
-    # };
+    specialisation = {
+      Hyprland.configuration = {
+        window-manager = {
+          enable = true;
+          name = "Hyprland";
+          backend = "Wayland";
+        };
+      };
+      sway.configuration = {
+        window-manager = {
+          enable = true;
+          name = "sway";
+          backend = "Wayland";
+        };
+      };
+      niri.configuration = {
+        window-manager = {
+          enable = true;
+          name = "niri";
+          backend = "Wayland";
+        };
+      };
+      i3.configuration = {
+        window-manager = {
+          enable = true;
+          name = "i3";
+          backend = "X11";
+        };
+      };
+    };
   };
 }

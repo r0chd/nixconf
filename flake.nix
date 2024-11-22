@@ -140,52 +140,8 @@
       };
 
       nixosConfigurations = hosts |> lib.mapAttrs (hostname: attrs: newConfig hostname attrs);
-      #homeConfigurations =
-      #  hosts
-      #  |> lib.mapAttrs (
-      #    host: hostConfig:
-      #    hostConfig.users
-      #    |> lib.mapAttrs (
-      #      user: userConfig:
-      #      let
-      #        configName = "${user}@${host}";
-      #        pkgs = import nixpkgs {
-      #          system = hostConfig.arch;
-      #          config.allowUnfree = true;
-      #        };
-      #        pkgs-stable = import nixpkgs-stable {
-      #          system = hostConfig.arch;
-      #          config.allowUnfree = true;
-      #        };
-      #      in
-      #      {
-      #        inherit configName;
-      #        value = home-manager.lib.homeManagerConfiguration {
-      #          useUserPackages = true;
-      #          backupFileExtension = "bak";
-      #          extraSpecialArgs = {
-      #            inherit
-      #              inputs
-      #              pkgs
-      #              pkgs-stable
-      #              ;
-      #            useUserPackages = true;
-      #            backupFileExtension = "bak";
-      #            config.shell = userConfig.shell;
-      #          };
-      #          modules = [
-      #            ./hosts/${host}/users/${user}/configuration.nix
-      #            ./homeModules
-      #            inputs.impermanence.homeManagerModules.default
-      #            inputs.sops-nix.homeManagerModules.sops
-      #            inputs.seto.homeManagerModules.default
-      #            inputs.niri.homeModules.niri
-      #          ];
-      #        };
-      #      }
-      #    )
-      #  );
-      homeConfigurations."unixpariah@laptop" =
+
+      homeConfigurations =
         let
           pkgs = import nixpkgs {
             system = "x86_64-linux";
@@ -196,29 +152,44 @@
             config.allowUnfree = true;
           };
         in
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          extraSpecialArgs = {
-            inherit
-              inputs
-              pkgs
-              pkgs-stable
-              ;
-            std = import ./std {
-              hostname = "laptop";
-              lib = pkgs.lib;
-            };
-            username = "unixpariah";
-          };
-          modules = [
-            ./hosts/laptop/users/unixpariah/configuration.nix
-            ./homeModules
-            inputs.impermanence.homeManagerModules.default
-            inputs.sops-nix.homeManagerModules.sops
-            inputs.seto.homeManagerModules.default
-            inputs.niri.homeModules.niri
-          ];
-        };
+        builtins.listToAttrs (
+          builtins.concatLists (
+            builtins.attrNames hosts
+            |> builtins.map (
+              host:
+              let
+                hostData = builtins.getAttr host hosts;
+              in
+              builtins.map (user: {
+                name = "${user}@${host}";
+                value = home-manager.lib.homeManagerConfiguration {
+                  inherit pkgs;
+                  extraSpecialArgs = {
+                    inherit
+                      inputs
+                      pkgs
+                      pkgs-stable
+                      ;
+                    std = import ./std {
+                      hostname = "${host}";
+                      lib = pkgs.lib;
+                    };
+                    username = "${user}";
+                  };
+
+                  modules = [
+                    ./hosts/laptop/users/unixpariah/configuration.nix
+                    ./homeModules
+                    inputs.impermanence.homeManagerModules.default
+                    inputs.sops-nix.homeManagerModules.sops
+                    inputs.seto.homeManagerModules.default
+                    inputs.niri.homeModules.niri
+                  ];
+                };
+              }) (builtins.attrNames hostData.users)
+            )
+          )
+        );
 
       devShells = flake-utils.lib.eachDefaultSystem (
         system:

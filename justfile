@@ -1,6 +1,7 @@
 ROOT := `which sudo > /dev/null 2>&1 && echo sudo || echo doas`
 GENERATION := `readlink /nix/var/nix/profiles/system | awk -F'-' '{print $1"-"($2+1)"-"$3}'`
 CONFIGURATION_PATH := `cat /etc/specialisation > /dev/null 2>&1 && echo /result/specialisation/$(cat /etc/specialisation) || echo /result/`
+HOME_ACTIVATION_PATH := "$(home-manager generations | head -1 | sed 's/^.*-> //')"
 
 default:
     @just --list
@@ -28,6 +29,10 @@ rebuild-switch:
 rebuild-switch-update:
     @nix flake update
     @just rebuild-switch
+
+home-switch:
+    @home-manager switch --flake .#$(whoami)@$(hostname)
+    @{{HOME_ACTIVATION_PATH}}$(cat /etc/specialisation > /dev/null 2>&1 && echo /specialisation/$(cat /etc/specialisation)/activate || echo /activate)
 
 gen-database:
     nix run github:nix-community/nix-index#nix-index
