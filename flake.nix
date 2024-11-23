@@ -54,7 +54,7 @@
       ...
     }@inputs:
     let
-      newConfig =
+      mkHost =
         hostname: attrs:
         let
           pkgs = import nixpkgs {
@@ -89,7 +89,7 @@
           ];
         };
 
-      newHomeConfig =
+      mkHome =
         host: user:
         let
           pkgs = import nixpkgs {
@@ -115,6 +115,11 @@
             };
             shell = "${hosts.${host}.users.${user}.shell}";
             username = "${user}";
+            home-manager = {
+              backupFileExtension = "bak";
+              useUserPackages = true;
+              useGlobalPkgs = false;
+            };
           };
 
           modules = [
@@ -141,49 +146,7 @@
     in
     with nixpkgs;
     {
-      options.hosts = {
-        arch = lib.mkOption {
-          type = lib.types.enum [
-            "x86_64-linux"
-            "aarch64-linux"
-            "x86_64-darwin"
-            "aarch64-darwin"
-          ];
-        };
-        users = lib.mkOption {
-          type = lib.types.attrsOf (
-            lib.types.submodule {
-              options = {
-                root.enable = lib.mkEnableOption "Enable root for user";
-                shell = lib.mkOption {
-                  type = lib.types.enum [
-                    "bash"
-                    "zsh"
-                    "fish"
-                  ];
-                  default = "bash";
-                };
-              };
-            }
-          );
-          default = { };
-        };
-      };
-
-      config.hosts = {
-        laptop = {
-          arch = "x86_64-linux";
-          users = {
-            unixpariah = {
-              root.enable = true;
-              shell = "fish";
-            };
-          };
-        };
-      };
-
-      nixosConfigurations = hosts |> lib.mapAttrs (hostname: attrs: newConfig hostname attrs);
-
+      nixosConfigurations = hosts |> lib.mapAttrs (hostname: attrs: mkHost hostname attrs);
       homeConfigurations =
         builtins.attrNames hosts
         |> builtins.map (
@@ -192,7 +155,7 @@
           |> builtins.attrNames
           |> builtins.map (user: {
             name = "${user}@${host}";
-            value = newHomeConfig host user;
+            value = mkHome host user;
           })
         )
         |> builtins.concatLists

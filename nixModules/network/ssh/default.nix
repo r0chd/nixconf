@@ -5,7 +5,14 @@
   ...
 }:
 {
-  impermanence.persist.directories = [ "/root/.ssh" ];
+  impermanence.persist.directories = [
+    {
+      directory = "/root/.ssh";
+      user = "root";
+      group = "root";
+      mode = "u=rwx, g=, o=";
+    }
+  ];
 
   users.users = lib.genAttrs (builtins.attrNames config.systemUsers) (
     user:

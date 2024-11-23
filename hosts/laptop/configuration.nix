@@ -60,13 +60,14 @@
   environment = {
     variables.EDITOR = "nvim";
     systemPackages = with pkgs; [
+      nvd
+      nix-output-monitor
+      just
       inputs.nixvim.packages.${system}.default
     ];
   };
 
   security.pam.services.hyprlock = { };
-
-  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 
   sops.secrets = {
     "ssh_keys/unixpariah" = {

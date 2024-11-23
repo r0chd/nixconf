@@ -9,7 +9,14 @@ let
   root = (if config.impermanence.enable then "/persist/system/root" else "/root");
 in
 {
-  impermanence.persist.directories = [ "/root/.config/sops" ];
+  impermanence.persist.directories = [
+    {
+      directory = "/root/.config/sops";
+      user = "root";
+      group = "root";
+      mode = "u=rwx, g=, o=";
+    }
+  ];
 
   sops = {
     secrets =

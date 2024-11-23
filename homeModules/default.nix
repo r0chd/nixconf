@@ -5,6 +5,17 @@
   ...
 }:
 {
+  imports = [
+    ./environments
+    ./tools
+    ./gaming
+    ./gui
+    ./colorschemes.nix
+    ./security
+    ./network
+    ./system
+  ];
+
   options = {
     outputs = lib.mkOption {
       type = lib.types.attrsOf (
@@ -31,23 +42,12 @@
     font = lib.mkOption { type = lib.types.str; };
     email = lib.mkOption { type = lib.types.str; };
   };
-  imports = [
-    ./environments
-    ./tools
-    ./gaming
-    ./gui
-    ./colorschemes.nix
-    ./security
-    ./network
-    ./system
-  ];
+
   config = {
     programs.home-manager.enable = true;
     home = {
+      shellAliases.rebind = "systemctl --user list-units --type=service --all | grep 'bindMount-persist-home-${username}-' | awk '{print $1}' | xargs -r systemctl --user start";
       packages = with pkgs; [
-        just
-        nvd
-        nix-output-monitor
         #(writeShellScriptBin "shell" ''
         #  nix develop "${../shells}#devShells.$@.${pkgs.system}" -c ${config.shell}
         #'')

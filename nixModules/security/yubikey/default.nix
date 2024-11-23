@@ -21,7 +21,14 @@ in
   };
 
   config = lib.mkIf config.yubikey.enable {
-    impermanence.persist.directories = lib.mkIf config.yubikey.rootAuth [ "/root/.config/Yubico" ];
+    impermanence.persist.directories = lib.mkIf config.yubikey.rootAuth [
+      {
+        directory = "/root/.config/Yubico";
+        user = "root";
+        group = "root";
+        mode = "u=rwx, g=, o=";
+      }
+    ];
 
     sops.secrets = lib.mkIf config.yubikey.rootAuth {
       "yubico/u2f_keys" = {

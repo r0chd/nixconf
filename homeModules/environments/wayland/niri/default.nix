@@ -10,7 +10,6 @@ let
 in
 {
   config = lib.mkIf (config.window-manager.enable && config.window-manager.name == "niri") {
-    xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gnome ];
     nixpkgs.overlays = [ inputs.niri.overlays.niri ];
     home.packages = with pkgs; [ xwayland-satellite ];
     programs.niri = {

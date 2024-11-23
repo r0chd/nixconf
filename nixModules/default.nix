@@ -133,5 +133,14 @@
         environment.etc."specialisation".text = "i3";
       };
     };
+
+    system.activationScripts.activateHomeManager = ''
+      export PATH=${pkgs.sudo}/bin:${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}/bin:${pkgs.systemd}/bin:${pkgs.gawk}/bin:$PATH
+
+      rm -rf /home/unixpariah/.config/fish
+
+      sudo -u unixpariah nix build "/persist/home/unixpariah/nixconf#homeConfigurations.unixpariah@$(hostname).config.home.activationPackage" --out-link /tmp/nh-homeEBVKhH/result
+      sudo -u unixpariah /tmp/nh-homeEBVKhH/result/specialisation/niri/activate test
+    '';
   };
 }
