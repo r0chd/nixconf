@@ -5,8 +5,7 @@
   ...
 }:
 let
-  username = "unixpariah"; # Temporary fix
-  inherit (config) ydotool colorscheme;
+  inherit (config) colorscheme;
 in
 {
   config = lib.mkIf (config.window-manager.enable && config.window-manager.name == "Hyprland") {

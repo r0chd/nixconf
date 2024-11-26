@@ -134,13 +134,25 @@
       };
     };
 
-    system.activationScripts.activateHomeManager = ''
-      export PATH=${pkgs.sudo}/bin:${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}/bin:${pkgs.systemd}/bin:${pkgs.gawk}/bin:$PATH
-
-      rm -rf /home/unixpariah/.config/fish
-
-      sudo -u unixpariah nix build "/persist/home/unixpariah/nixconf#homeConfigurations.unixpariah@$(hostname).config.home.activationPackage" --out-link /tmp/nh-homeEBVKhH/result
-      sudo -u unixpariah /tmp/nh-homeEBVKhH/result/specialisation/niri/activate test
-    '';
+    systemd.services.activate-home-manager = {
+      enable = true;
+      description = "Activate home manager";
+      wantedBy = [ "default.target" ];
+      requiredBy = [ "systemd-user-sessions.service" ];
+      before = [ "systemd-user-sessions.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+        User = "unixpariah";
+        Group = "users";
+      };
+      environment = {
+        PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}:$PATH";
+        HOME_MANAGER_BACKUP_EXT = "bak";
+      };
+      script = ''
+        nix build "/persist/home/unixpariah/nixconf#homeConfigurations.unixpariah@laptop.config.home.activationPackage" --out-link /tmp/result
+        /tmp/result/specialisation/niri/activate test
+      '';
+    };
   };
 }

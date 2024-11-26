@@ -72,11 +72,11 @@
   sops.secrets = {
     "ssh_keys/unixpariah" = {
       owner = "unixpariah";
-      path = "/persist/home/unixpariah/.ssh/id_ed25519";
+      path = "/home/unixpariah/.ssh/id_ed25519";
     };
     "ssh_keys/unixpariah-yubikey" = {
       owner = "unixpariah";
-      path = "/persist/home/unixpariah/.ssh/id_yubikey";
+      path = "/home/unixpariah/.ssh/id_yubikey";
     };
   };
 

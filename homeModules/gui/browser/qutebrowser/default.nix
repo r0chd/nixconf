@@ -2,7 +2,6 @@
 {
   config = lib.mkIf (config.browser.enable && config.browser.program == "qutebrowser") {
     impermanence.persist.directories = [
-      ".cache/qutebrowser"
       ".local/share/qutebrowser"
     ];
     programs.qutebrowser = {

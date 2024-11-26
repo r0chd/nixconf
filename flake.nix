@@ -116,7 +116,6 @@
             shell = "${hosts.${host}.users.${user}.shell}";
             username = "${user}";
             home-manager = {
-              backupFileExtension = "bak";
               useUserPackages = true;
               useGlobalPkgs = false;
             };

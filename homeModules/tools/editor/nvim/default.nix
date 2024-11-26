@@ -27,7 +27,6 @@
     };
 
     impermanence.persist.directories = [
-      ".cache/nvim"
       ".local/share/nvim"
       ".local/state/nvim"
     ];

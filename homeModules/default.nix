@@ -46,7 +46,7 @@
   config = {
     programs.home-manager.enable = true;
     home = {
-      shellAliases.rebind = "systemctl --user list-units --type=service --all | grep 'bindMount-persist-home-${username}-' | awk '{print $1}' | xargs -r systemctl --user start";
+      shellAliases.rebind = "systemctl --user list-units --type=service --all | grep 'bindMount-persist-home-unixpariah-' | awk '{print $1}' | xargs -r systemctl --user start";
       packages = with pkgs; [
         #(writeShellScriptBin "shell" ''
         #  nix develop "${../shells}#devShells.$@.${pkgs.system}" -c ${config.shell}

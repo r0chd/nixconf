@@ -69,9 +69,9 @@
 
   cursor = {
     enable = true;
-    name = "banana";
     themeName = "Banana";
-    size = 40;
+    size = 36;
+    package = pkgs.banana-cursor;
   };
   statusBar = {
     enable = true;
@@ -122,7 +122,7 @@
       refresh = 144.0;
       dimensions = {
         width = 1920;
-        height = 1920;
+        height = 1080;
       };
     };
     "HDMI-A-1" = {
@@ -133,7 +133,7 @@
       refresh = 60.0;
       dimensions = {
         width = 1920;
-        height = 1920;
+        height = 1080;
       };
     };
   };

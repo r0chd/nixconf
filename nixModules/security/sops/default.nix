@@ -51,14 +51,13 @@ in
           let
             escapedKeyFile = lib.escapeShellArg "/home/${user}/.config/sops/age/keys.txt";
             sshKeyPath = "/home/${user}/.ssh/id_ed25519";
-            home = (if config.impermanence.enable then "/persist/home/${user}" else "/home/${user}");
           in
           ''
             mkdir -p $(dirname ${escapedKeyFile})
             ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
-            chown -R ${user} ${home}/.config
+            chown -R ${user} /home/${user}
             chmod 600 ${escapedKeyFile}
-            chown -R ${user} /home/${user}/.config
+            chown -R ${user} /home/${user}
           '';
       in
       userScripts;

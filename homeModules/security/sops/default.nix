@@ -4,23 +4,16 @@
   ...
 }:
 let
-  home = (
-    if config.impermanence.enable then
-      "/persist/home/${config.home.username}"
-    else
-      "persist/home/${config.home.username}"
-  );
-  a = ../../../hosts/laptop;
+  host = ../../../hosts/laptop;
 in
 {
   config = {
-    impermanence.persist.directories = [ ".config/sops/age" ];
     sops = {
-      defaultSopsFile = "${a}/users/${config.home.username}/secrets/secrets.yaml";
+      defaultSopsFile = "${host}/users/${config.home.username}/secrets/secrets.yaml";
       defaultSopsFormat = "yaml";
       age = {
-        sshKeyPaths = [ "${home}/.ssh/id_ed25519" ];
-        keyFile = "${home}/.config/sops/age/keys.txt";
+        sshKeyPaths = [ "/home/${config.home.username}/.ssh/id_ed25519" ];
+        keyFile = "/home/${config.home.username}/.config/sops/age/keys.txt";
       };
     };
     home = {

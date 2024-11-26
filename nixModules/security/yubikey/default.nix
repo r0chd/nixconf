@@ -4,9 +4,6 @@
   pkgs,
   ...
 }:
-let
-  root = (if config.impermanence.enable then "/persist/system/root" else "/root");
-in
 {
   options.yubikey = {
     enable = lib.mkEnableOption "yubikey";
@@ -32,7 +29,7 @@ in
 
     sops.secrets = lib.mkIf config.yubikey.rootAuth {
       "yubico/u2f_keys" = {
-        path = "${root}/.config/Yubico/u2f_keys";
+        path = "/root/.config/Yubico/u2f_keys";
       };
     };
 
