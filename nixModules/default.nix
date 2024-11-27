@@ -15,25 +15,6 @@
   ];
 
   options = {
-    systemUsers = lib.mkOption {
-      type = lib.types.attrsOf (
-        lib.types.submodule {
-          options = {
-            enable = lib.mkEnableOption "Enable user";
-            root.enable = lib.mkEnableOption "Enable root for user";
-            shell = lib.mkOption {
-              type = lib.types.enum [
-                "bash"
-                "zsh"
-                "fish"
-              ];
-              default = "bash";
-            };
-          };
-        }
-      );
-      default = { };
-    };
     gc = {
       enable = lib.mkEnableOption "Garbage collector";
       interval = lib.mkOption {
@@ -142,39 +123,18 @@
       before = [ "systemd-user-sessions.service" ];
       serviceConfig = {
         Type = "oneshot";
-        # User = "unixpariah";
-        # Group = "wheel";
       };
       environment = {
-        PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}:${pkgs.coreutils}/bin:${pkgs.inetutils}/bin:${pkgs.sudo}/bin:$PATH";
+        PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}:${pkgs.sudo}/bin:$PATH";
         HOME_MANAGER_BACKUP_EXT = "bak";
       };
-      script = ''
-        nix build "/persist/system/var/lib/nixconf#homeConfigurations.unixpariah@$(hostname).config.home.activationPackage" --out-link /tmp/result
-        chown -R unixpariah:users /tmp/result
-        sudo -u unixpariah /tmp/result/specialisation/niri/activate test
-      '';
-    };
+      script = lib.concatMapStrings (user: ''
+        if [ ! -d "/persist/home/${user}/.cache/home-generations/result" ]; then
+            nix build ".#homeConfigurations.${user}@$(hostname).config.home.activationPackage" --log-format internal-json --verbose --out-link /persist/home/${user}/.cache/home-generations/result
+        fi
 
-    #systemd.services.activate-home-manager = {
-    #  enable = true;
-    #  description = "Activate home manager";
-    #  wantedBy = [ "default.target" ];
-    #  requiredBy = [ "systemd-user-sessions.service" ];
-    #  before = [ "systemd-user-sessions.service" ];
-    #  serviceConfig = {
-    #    Type = "oneshot";
-    #    User = "unixpariah";
-    #    Group = "users";
-    #  };
-    #  environment = {
-    #    PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}:$PATH";
-    #    HOME_MANAGER_BACKUP_EXT = "bak";
-    #  };
-    #  script = ''
-    #    nix build "/persist/home/unixpariah/nixconf#homeConfigurations.unixpariah@laptop.config.home.activationPackage" --out-link /tmp/result
-    #    /tmp/result/specialisation/niri/activate test
-    #  '';
-    #};
+        sudo -u ${user} /persist/home/${user}/.cache/home-generations/result/specialisation/niri/activate
+      '') (lib.attrNames systemUsers);
+    };
   };
 }

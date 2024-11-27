@@ -1,7 +1,7 @@
 {
   std,
-  config,
   lib,
+  systemUsers,
   ...
 }:
 {
@@ -14,7 +14,7 @@
     }
   ];
 
-  users.users = lib.genAttrs (builtins.attrNames config.systemUsers) (
+  users.users = lib.genAttrs (builtins.attrNames systemUsers) (
     user:
     let
       keysDir = "${std.dirs.host}/users/${user}/keys";

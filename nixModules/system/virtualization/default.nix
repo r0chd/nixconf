@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  systemUsers,
+  ...
+}:
 {
   options.virtualisation.enable = lib.mkEnableOption "Enable virtualisation";
 
@@ -10,7 +15,7 @@
     };
 
     programs.virt-manager.enable = true;
-    users.users = lib.genAttrs (builtins.attrNames config.systemUsers) (user: {
+    users.users = lib.genAttrs (builtins.attrNames systemUsers) (user: {
       extraGroups = [ "libvirtd" ];
     });
   };

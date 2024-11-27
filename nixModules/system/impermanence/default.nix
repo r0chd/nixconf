@@ -2,6 +2,7 @@
   lib,
   config,
   inputs,
+  systemUsers,
   ...
 }:
 {
@@ -111,7 +112,7 @@
     systemd.tmpfiles.rules =
       [ "d /persist/home 0777 root root -" ]
       ++ (
-        builtins.attrNames config.systemUsers
+        builtins.attrNames systemUsers
         |> lib.concatMap (user: [ "d /persist/home/${user} 0700 ${user} users -" ])
       );
 

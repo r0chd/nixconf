@@ -46,7 +46,7 @@
   config.home.persistence."/persist/home/${config.home.username}" =
     lib.mkIf config.impermanence.enable
       {
-        directories = [ ] ++ config.impermanence.persist.directories;
+        directories = [ ".cache/home-generations" ] ++ config.impermanence.persist.directories;
         files = config.impermanence.persist.files;
         allowOther = true;
       };

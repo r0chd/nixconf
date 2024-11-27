@@ -17,13 +17,6 @@
     };
     timeout = 0;
   };
-  systemUsers = {
-    "unixpariah" = {
-      enable = true;
-      root.enable = true;
-      shell = "fish";
-    };
-  };
   gc = {
     enable = true;
     interval = 3;

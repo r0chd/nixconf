@@ -3,6 +3,7 @@
   std,
   config,
   lib,
+  systemUsers,
   ...
 }:
 let
@@ -23,7 +24,7 @@ in
       {
         password.neededForUsers = true;
       }
-      // lib.genAttrs (builtins.attrNames config.systemUsers) (user: {
+      // lib.genAttrs (builtins.attrNames systemUsers) (user: {
         neededForUsers = true;
         sopsFile = "${std.dirs.host}/users/${user}/secrets/secrets.yaml";
       });
@@ -43,9 +44,7 @@ in
   system.activationScripts = {
     sopsGenerateKey =
       let
-        userScripts = (
-          lib.attrNames config.systemUsers |> lib.concatMapStrings (user: "${generateAgeKey user}")
-        );
+        userScripts = (lib.attrNames systemUsers |> lib.concatMapStrings (user: "${generateAgeKey user}"));
         generateAgeKey =
           user:
           let

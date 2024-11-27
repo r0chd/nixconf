@@ -32,11 +32,12 @@ rebuild-switch-update:
     @just rebuild-switch
 
 home-build:
-    @nix build ".#homeConfigurations.$(whoami)@$(hostname).config.home.activationPackage" --log-format internal-json --verbose --out-link /tmp/result |& nom --json
+    @nix build ".#homeConfigurations.$(whoami)@$(hostname).config.home.activationPackage" --log-format internal-json --verbose --out-link $HOME/.cache/home-generations/result |& nom --json
 
 home-switch:
-    @/tmp/result$(cat /etc/specialisation > /dev/null 2>&1 && echo /specialisation/$(cat /etc/specialisation)/activate || echo /activate) test
-    @nvd diff {{HOME_ACTIVATION_PATH}} /tmp/result/$(cat /etc/specialisation > /dev/null 2>&1 && echo /specialisation/$(cat /etc/specialisation))
+    @$HOME/.cache/home-generations/result$(cat /etc/specialisation > /dev/null 2>&1 && echo /specialisation/$(cat /etc/specialisation)/activate || echo /activate)
+    @nvd diff {{HOME_ACTIVATION_PATH}} $HOME/.cache/home-generations/result/$(cat /etc/specialisation > /dev/null 2>&1 && echo /specialisation/$(cat /etc/specialisation))
+
 home-rebuild-switch:
     @just home-build
     @just home-switch

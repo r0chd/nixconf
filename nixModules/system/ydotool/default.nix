@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  systemUsers,
+  ...
+}:
 {
   options.ydotool.enable = lib.mkEnableOption "Enable ydotool";
 
@@ -9,6 +14,6 @@
         "ydotool"
         "uinput"
       ];
-    }) config.systemUsers;
+    }) systemUsers;
   };
 }
