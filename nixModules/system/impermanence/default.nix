@@ -122,12 +122,12 @@
     environment.persistence."/persist/system" = {
       hideMounts = true;
       directories = [
-        # { For future :)
-        #   directory = "/var/lib/nixconf";
-        #   user = "root";
-        #   group = "wheel";
-        #   mode = "0664";
-        # }
+        {
+          directory = "/var/lib/nixconf";
+          user = "root";
+          group = "wheel";
+          mode = "0664";
+        }
       ] ++ config.impermanence.persist.directories;
       files = config.impermanence.persist.files;
     };

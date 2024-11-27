@@ -26,6 +26,7 @@ in
       };
       gpg.format = "ssh";
       user.signing.key = publicKey;
+      safe.directory = [ "/var/lib/nixconf" ];
     };
   };
 }

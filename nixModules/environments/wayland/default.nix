@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 {
@@ -33,6 +34,25 @@
         QT_AUTO_SCREEN_SCALE_FACTOR = "1";
         QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
       };
+    };
+
+    xdg.portal = {
+      enable = true;
+      xdgOpenUsePortal = true;
+
+      config = {
+        common.default = [ "gtk" ];
+        hyprland.default = [
+          "gtk"
+          "hyprland"
+        ];
+      };
+
+      extraPortals = [
+        pkgs.xdg-desktop-portal-gtk
+        pkgs.xdg-desktop-portal
+        pkgs.xdg-desktop-portal-wlr
+      ];
     };
   };
 }

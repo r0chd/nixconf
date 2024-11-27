@@ -134,7 +134,7 @@
       };
     };
 
-    systemd.services.activate-home-manager = {
+    systemd.services.activate-home-manager = lib.mkIf config.impermanence.enable {
       enable = true;
       description = "Activate home manager";
       wantedBy = [ "default.target" ];
@@ -142,17 +142,39 @@
       before = [ "systemd-user-sessions.service" ];
       serviceConfig = {
         Type = "oneshot";
-        User = "unixpariah";
-        Group = "users";
+        # User = "unixpariah";
+        # Group = "wheel";
       };
       environment = {
-        PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}:$PATH";
+        PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}:${pkgs.coreutils}/bin:${pkgs.inetutils}/bin:${pkgs.sudo}/bin:$PATH";
         HOME_MANAGER_BACKUP_EXT = "bak";
       };
       script = ''
-        nix build "/persist/home/unixpariah/nixconf#homeConfigurations.unixpariah@laptop.config.home.activationPackage" --out-link /tmp/result
-        /tmp/result/specialisation/niri/activate test
+        nix build "/persist/system/var/lib/nixconf#homeConfigurations.unixpariah@$(hostname).config.home.activationPackage" --out-link /tmp/result
+        chown -R unixpariah:users /tmp/result
+        sudo -u unixpariah /tmp/result/specialisation/niri/activate test
       '';
     };
+
+    #systemd.services.activate-home-manager = {
+    #  enable = true;
+    #  description = "Activate home manager";
+    #  wantedBy = [ "default.target" ];
+    #  requiredBy = [ "systemd-user-sessions.service" ];
+    #  before = [ "systemd-user-sessions.service" ];
+    #  serviceConfig = {
+    #    Type = "oneshot";
+    #    User = "unixpariah";
+    #    Group = "users";
+    #  };
+    #  environment = {
+    #    PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}:$PATH";
+    #    HOME_MANAGER_BACKUP_EXT = "bak";
+    #  };
+    #  script = ''
+    #    nix build "/persist/home/unixpariah/nixconf#homeConfigurations.unixpariah@laptop.config.home.activationPackage" --out-link /tmp/result
+    #    /tmp/result/specialisation/niri/activate test
+    #  '';
+    #};
   };
 }

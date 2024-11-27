@@ -57,7 +57,6 @@ in
             ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
             chown -R ${user} /home/${user}
             chmod 600 ${escapedKeyFile}
-            chown -R ${user} /home/${user}
           '';
       in
       userScripts;
