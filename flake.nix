@@ -75,6 +75,7 @@
               pkgs-stable
               ;
             systemUsers = attrs.users;
+            host = "${hostname}";
             std = import ./std {
               inherit hostname;
               lib = pkgs.lib;
@@ -115,6 +116,7 @@
             };
             shell = "${hosts.${host}.users.${user}.shell}";
             username = "${user}";
+            host = "${host}";
           };
 
           modules = [

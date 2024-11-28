@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  inputs,
   ...
 }:
 let
@@ -10,9 +11,9 @@ in
 {
   config = lib.mkIf (config.window-manager.enable && config.window-manager.name == "niri") {
     home.packages = with pkgs; [ xwayland-satellite ];
+    nixpkgs.overlays = [ inputs.niri.overlays.niri ];
     programs.niri = {
       enable = true;
-      package = pkgs.niri;
       settings =
         let
           inherit (colorscheme) accent1 inactive;

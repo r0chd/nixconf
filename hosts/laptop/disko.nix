@@ -13,7 +13,7 @@
               size = "1M";
               type = "EF00";
             };
-            esp = {
+            ESP = {
               name = "ESP";
               size = "500M";
               type = "EF00";
@@ -21,6 +21,7 @@
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
+                mountOptions = [ "umask=0077" ];
               };
             };
             swap = {
@@ -30,12 +31,20 @@
                 resumeDevice = true;
               };
             };
-            root = {
-              name = "root";
+            luks = {
               size = "100%";
               content = {
-                type = "lvm_pv";
-                vg = "root_vg";
+                type = "luks";
+                name = "crypted-main";
+                extraOpenArgs = [ ];
+                settings = {
+                  keyFile = "/tmp/secret.key";
+                  allowDiscards = true;
+                };
+                content = {
+                  type = "lvm_pv";
+                  vg = "root_vg";
+                };
               };
             };
           };
@@ -48,12 +57,20 @@
         content = {
           type = "gpt";
           partitions = {
-            root_extra = {
-              name = "root_extra";
+            luks = {
               size = "100%";
               content = {
-                type = "lvm_pv";
-                vg = "root_vg";
+                type = "luks";
+                name = "crypted-extra";
+                extraOpenArgs = [ ];
+                settings = {
+                  keyFile = "/tmp/secret.key";
+                  allowDiscards = true;
+                };
+                content = {
+                  type = "lvm_pv";
+                  vg = "root_vg";
+                };
               };
             };
           };
@@ -91,13 +108,6 @@
                   ];
                   mountpoint = "/nix";
                 };
-
-                #"/home" = {
-                #  mountOptions = [ "compress=zstd" ];
-                #  mountpoint = "/home";
-                #};
-
-                #"/home/unixpariah" = { };
               };
             };
           };

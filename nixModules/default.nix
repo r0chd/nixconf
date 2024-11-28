@@ -3,6 +3,7 @@
   lib,
   config,
   systemUsers,
+  host,
   ...
 }:
 {
@@ -130,7 +131,7 @@
       };
       script = lib.concatMapStrings (user: ''
         if [ ! -d "/persist/home/${user}/.cache/home-generations/result" ]; then
-            nix build ".#homeConfigurations.${user}@$(hostname).config.home.activationPackage" --log-format internal-json --verbose --out-link /persist/home/${user}/.cache/home-generations/result
+            nix build ".#homeConfigurations.${user}@${host}.config.home.activationPackage" --log-format internal-json --verbose --out-link /persist/home/${user}/.cache/home-generations/result
         fi
 
         sudo -u ${user} /persist/home/${user}/.cache/home-generations/result/specialisation/niri/activate

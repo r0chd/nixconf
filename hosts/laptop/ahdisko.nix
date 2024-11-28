@@ -21,7 +21,6 @@
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
-                mountOptions = [ "umask=0077" ];
               };
             };
             swap = {
@@ -31,20 +30,12 @@
                 resumeDevice = true;
               };
             };
-            luks = {
+            root = {
+              name = "root";
               size = "100%";
               content = {
-                type = "luks";
-                name = "crypted-main";
-                extraOpenArgs = [ ];
-                settings = {
-                  keyFile = "/tmp/secret.key";
-                  allowDiscards = true;
-                };
-                content = {
-                  type = "lvm_pv";
-                  vg = "root_vg";
-                };
+                type = "lvm_pv";
+                vg = "root_vg";
               };
             };
           };
@@ -57,20 +48,12 @@
         content = {
           type = "gpt";
           partitions = {
-            luks = {
+            root_extra = {
+              name = "root_extra";
               size = "100%";
               content = {
-                type = "luks";
-                name = "crypted-extra";
-                extraOpenArgs = [ ];
-                settings = {
-                  keyFile = "/tmp/secret.key";
-                  allowDiscards = true;
-                };
-                content = {
-                  type = "lvm_pv";
-                  vg = "root_vg";
-                };
+                type = "lvm_pv";
+                vg = "root_vg";
               };
             };
           };
@@ -108,6 +91,13 @@
                   ];
                   mountpoint = "/nix";
                 };
+
+                #"/home" = {
+                #  mountOptions = [ "compress=zstd" ];
+                #  mountpoint = "/home";
+                #};
+
+                #"/home/unixpariah" = { };
               };
             };
           };
