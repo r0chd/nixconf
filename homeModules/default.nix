@@ -2,6 +2,7 @@
   pkgs,
   lib,
   username,
+  shell,
   ...
 }:
 {
@@ -14,6 +15,7 @@
     ./security
     ./network
     ./system
+    ../hosts/laptop/users/${username}/configuration.nix
   ];
 
   options = {
@@ -46,11 +48,10 @@
   config = {
     programs.home-manager.enable = true;
     home = {
-      shellAliases.rebind = "systemctl --user list-units --type=service --all | grep 'bindMount-persist-home-unixpariah-' | awk '{print $1}' | xargs -r systemctl --user start";
       packages = with pkgs; [
-        #(writeShellScriptBin "shell" ''
-        #  nix develop "${../shells}#devShells.$@.${pkgs.system}" -c ${config.shell}
-        #'')
+        (writeShellScriptBin "shell" ''
+          nix develop "/var/lib/nixconf#devShells.$@.${pkgs.system}" -c ${shell}
+        '')
         (writeShellScriptBin "nb" ''
           command "$@" > /dev/null 2>&1 &
           disown

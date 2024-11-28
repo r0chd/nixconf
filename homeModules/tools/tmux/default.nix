@@ -99,7 +99,7 @@ in
     programs.zsh.initExtra = lib.mkIf (shell == "zsh") ''
       tmux-init
     '';
-    programs.fish.loginShellInit = lib.mkIf (shell == "fish") ''
+    programs.fish.interactiveShellInit = lib.mkIf (shell == "fish") ''
       if string match -q -- 'tmux*' $TERM
           set fish_cursor_insert line
       end

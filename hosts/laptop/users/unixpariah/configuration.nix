@@ -30,7 +30,6 @@
   };
   home = {
     packages = with pkgs; [
-      nh
       keepassxc
       zathura
       mpv

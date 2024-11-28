@@ -115,14 +115,9 @@
             };
             shell = "${hosts.${host}.users.${user}.shell}";
             username = "${user}";
-            home-manager = {
-              useUserPackages = true;
-              useGlobalPkgs = false;
-            };
           };
 
           modules = [
-            ./hosts/laptop/users/unixpariah/configuration.nix
             ./homeModules
             inputs.impermanence.homeManagerModules.default
             inputs.sops-nix.homeManagerModules.sops
