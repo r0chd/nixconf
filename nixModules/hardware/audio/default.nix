@@ -4,10 +4,13 @@
   lib,
   ...
 }:
+let
+  cfg = config.hardware.audio;
+in
 {
-  options.audio.enable = lib.mkEnableOption "Enable audio";
+  options.hardware.audio.enable = lib.mkEnableOption "Enable audio";
 
-  config = lib.mkIf config.audio.enable {
+  config = lib.mkIf cfg.enable {
     services.pipewire = {
       enable = true;
       alsa = {

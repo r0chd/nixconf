@@ -4,8 +4,11 @@
   pkgs,
   ...
 }:
+let
+  cfg = config.security.yubikey;
+in
 {
-  options.yubikey = {
+  options.security.yubikey = {
     enable = lib.mkEnableOption "yubikey";
     rootAuth = lib.mkEnableOption "root authentication";
     unplug = {
@@ -17,8 +20,8 @@
     };
   };
 
-  config = lib.mkIf config.yubikey.enable {
-    impermanence.persist.directories = lib.mkIf config.yubikey.rootAuth [
+  config = lib.mkIf cfg.enable {
+    system.impermanence.persist.directories = lib.mkIf cfg.rootAuth [
       {
         directory = "/root/.config/Yubico";
         user = "root";
@@ -27,7 +30,7 @@
       }
     ];
 
-    sops.secrets = lib.mkIf config.yubikey.rootAuth {
+    sops.secrets = lib.mkIf cfg.rootAuth {
       "yubico/u2f_keys" = {
         path = "/root/.config/Yubico/u2f_keys";
       };
@@ -42,13 +45,13 @@
     services = {
       pcscd.enable = true;
       udev = {
-        extraRules = lib.mkIf config.yubikey.unplug.enable ''
+        extraRules = lib.mkIf cfg.unplug.enable ''
           ACTION=="remove",\
            ENV{ID_BUS}=="usb",\
            ENV{ID_MODEL_ID}=="0010|0111|0112|0113|0114|0115|0116|0401|0402|0403|0404|0405|0406|0407|0410",\
            ENV{ID_VENDOR_ID}=="1050",\
            ENV{ID_VENDOR}=="Yubico",\
-           RUN+="${config.yubikey.unplug.action}"
+           RUN+="${cfg.unplug.action}"
         '';
         packages = with pkgs; [ yubikey-personalization ];
       };
@@ -57,7 +60,7 @@
 
     security.pam = {
       sshAgentAuth.enable = true;
-      u2f = lib.mkIf config.yubikey.rootAuth {
+      u2f = lib.mkIf cfg.rootAuth {
         enable = true;
         settings = {
           cue = true;

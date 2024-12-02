@@ -6,9 +6,10 @@
 }:
 let
   inherit (config) colorscheme;
+  cfg = config.environment;
 in
 {
-  config = lib.mkIf (config.window-manager.enable && config.window-manager.name == "Hyprland") {
+  config = lib.mkIf (cfg.window-manager.enable && cfg.window-manager.name == "Hyprland") {
     home.packages = with pkgs; [
       (writeShellScriptBin "click" ''
         cursorpos=$(hyprctl cursorpos)

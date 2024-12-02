@@ -32,7 +32,7 @@ rebuild-switch-update:
     @just rebuild-switch
 
 home-build:
-    @nix build ".#homeConfigurations.$(whoami)@$(hostname).config.home.activationPackage" --log-format internal-json --verbose --out-link $HOME/.cache/home-generations/result |& nom --json
+    @nix build ".#homeConfigurations.unixpariah@$(hostname).config.home.activationPackage" --log-format internal-json --verbose --out-link /home/unixpariah/.cache/home-generations/result |& nom --json
 
 home-switch:
     @$HOME/.cache/home-generations/result$(cat /etc/specialisation > /dev/null 2>&1 && echo /specialisation/$(cat /etc/specialisation)/activate || echo /activate)

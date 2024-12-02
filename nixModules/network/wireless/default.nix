@@ -5,10 +5,13 @@
   hostname,
   ...
 }:
+let
+  cfg = config.network.wireless;
+in
 {
-  options.wireless.enable = lib.mkEnableOption "Enable wireless wifi connection";
+  options.network.wireless.enable = lib.mkEnableOption "Enable wireless wifi connection";
 
-  config = lib.mkIf config.wireless.enable {
+  config = lib.mkIf cfg.enable {
     networking = {
       wireless.iwd = {
         enable = true;
@@ -26,6 +29,6 @@
       inetutils
     ];
 
-    impermanence.persist.directories = [ "/var/lib/iwd" ];
+    system.impermanence.persist.directories = [ "/var/lib/iwd" ];
   };
 }

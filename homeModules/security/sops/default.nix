@@ -1,15 +1,16 @@
 {
   pkgs,
   config,
+  std,
+  lib,
+  username,
+  host,
   ...
 }:
-let
-  host = ../../../hosts/laptop;
-in
 {
   config = {
     sops = {
-      defaultSopsFile = "${host}/users/${config.home.username}/secrets/secrets.yaml";
+      defaultSopsFile = ../../../hosts/laptop/users/${username}/secrets/secrets.yaml;
       defaultSopsFormat = "yaml";
       age = {
         sshKeyPaths = [ "/home/${config.home.username}/.ssh/id_ed25519" ];
@@ -17,7 +18,17 @@ in
       };
     };
     home = {
-      shellAliases.opensops = "sops ${config.sops.defaultSopsFile}";
+      activation.sopsGenerateKey =
+        let
+          escapedKeyFile = lib.escapeShellArg "/home/${username}/.config/sops/age/keys.txt";
+          sshKeyPath = "/home/${username}/.ssh/id_ed25519";
+        in
+        ''
+          mkdir -p $(dirname ${escapedKeyFile})
+          ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
+        '';
+
+      shellAliases.opensops = "sops ${std.dirs.config}/hosts/${host}/users/${username}/secrets/secrets.yaml";
       packages = with pkgs; [ sops ];
     };
   };

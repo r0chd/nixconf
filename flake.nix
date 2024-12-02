@@ -75,14 +75,12 @@
               pkgs-stable
               ;
             systemUsers = attrs.users;
-            host = "${hostname}";
             std = import ./std {
               inherit hostname;
               lib = pkgs.lib;
             };
           };
           modules = [
-            ./hosts/${hostname}/configuration.nix
             ./nixModules
             inputs.home-manager.nixosModules.default
             inputs.disko.nixosModules.default

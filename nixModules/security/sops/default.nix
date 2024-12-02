@@ -4,13 +4,14 @@
   config,
   lib,
   systemUsers,
+  hostname,
   ...
 }:
 let
-  root = (if config.impermanence.enable then "/persist/system/root" else "/root");
+  root = (if config.system.impermanence.enable then "/persist/system/root" else "/root");
 in
 {
-  impermanence.persist.directories = [
+  system.impermanence.persist.directories = [
     {
       directory = "/root/.config/sops";
       user = "root";
@@ -26,9 +27,9 @@ in
       }
       // lib.genAttrs (builtins.attrNames systemUsers) (user: {
         neededForUsers = true;
-        sopsFile = "${std.dirs.host}/users/${user}/secrets/secrets.yaml";
+        sopsFile = ../../../hosts/${hostname}/users/${user}/secrets/secrets.yaml;
       });
-    defaultSopsFile = "${std.dirs.host}/secrets/secrets.yaml";
+    defaultSopsFile = ../../../hosts/${hostname}/secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     age = {
       sshKeyPaths = [ "${root}/.ssh/id_ed25519" ];
@@ -38,36 +39,16 @@ in
 
   environment = {
     systemPackages = with pkgs; [ sops ];
-    shellAliases.opensops = "sops ${config.sops.defaultSopsFile}";
+    shellAliases.opensops = "sops ${std.dirs.config}/hosts/${hostname}/secrets/secrets.yaml";
   };
 
-  system.activationScripts = {
-    sopsGenerateKey =
-      let
-        userScripts = (lib.attrNames systemUsers |> lib.concatMapStrings (user: "${generateAgeKey user}"));
-        generateAgeKey =
-          user:
-          let
-            escapedKeyFile = lib.escapeShellArg "/home/${user}/.config/sops/age/keys.txt";
-            sshKeyPath = "/home/${user}/.ssh/id_ed25519";
-          in
-          ''
-            mkdir -p $(dirname ${escapedKeyFile})
-            ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
-            chown -R ${user} /home/${user}
-            chmod 600 ${escapedKeyFile}
-          '';
-      in
-      userScripts;
-
-    sopsGenerateRootKey =
-      let
-        escapedKeyFile = lib.escapeShellArg "${root}/.config/sops/age/keys.txt";
-        sshKeyPath = "${root}/.ssh/id_ed25519";
-      in
-      ''
-        mkdir -p $(dirname ${escapedKeyFile})
-        ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
-      '';
-  };
+  system.activationScripts.sopsGenerateKey =
+    let
+      escapedKeyFile = lib.escapeShellArg "${root}/.config/sops/age/keys.txt";
+      sshKeyPath = "${root}/.ssh/id_ed25519";
+    in
+    ''
+      mkdir -p $(dirname ${escapedKeyFile})
+      ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
+    '';
 }

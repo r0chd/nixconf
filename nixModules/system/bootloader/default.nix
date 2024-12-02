@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  options.boot.program = lib.mkOption {
+  options.system.bootloader = lib.mkOption {
     type = lib.types.enum [
       "grub"
       "systemd-boot"

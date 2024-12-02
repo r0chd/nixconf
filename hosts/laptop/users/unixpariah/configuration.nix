@@ -1,6 +1,7 @@
 {
   pkgs,
   pkgs-stable,
+  config,
   ...
 }:
 {
@@ -23,29 +24,32 @@
   font = "JetBrainsMono Nerd Font";
   sops = {
     secrets = {
-      nixos-access-token-github = {
-        path = "/home/unixpariah/.config/nix/nix.conf";
-      };
+      aoc-session = { };
+      nixos-access-token-github = { };
+    };
+    templates."nix.conf" = {
+      path = "/home/unixpariah/.config/nix/nix.conf";
+      content = ''
+        access-tokens = github.com=${config.sops.placeholder.nixos-access-token-github}
+      '';
     };
   };
+
   home = {
     packages = with pkgs; [
-      keepassxc
       zathura
       mpv
       ani-cli
       libreoffice
       lazygit
-      vesktop
       brightnessctl
       unzip
       gimp
       spotify
       imagemagick
       pkgs-stable.wf-recorder
+      nerd-fonts.jetbrains-mono
       jetbrains-mono
-      font-awesome
-      nerdfonts
     ];
   };
   impermanence = {
@@ -55,7 +59,6 @@
         "workspace"
         "Images"
         "Videos"
-        ".config/vesktop"
         "Documents"
       ];
     };
@@ -66,6 +69,8 @@
     lutris.enable = true;
     minecraft.enable = true;
   };
+
+  discord.enable = true;
 
   cursor = {
     enable = true;

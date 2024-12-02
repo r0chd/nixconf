@@ -5,10 +5,13 @@
   systemUsers,
   ...
 }:
+let
+  cfg = config.system.impermanence;
+in
 {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
 
-  options = {
+  options.system = {
     impermanence = {
       enable = lib.mkEnableOption "Enable impermanence";
       persist = {
@@ -75,14 +78,11 @@
           default = [ ];
         };
       };
-      fileSystem = lib.mkOption {
-        type = lib.types.enum [ "btrfs" ];
-      };
     };
   };
 
-  config = lib.mkIf config.impermanence.enable {
-    boot.initrd.postDeviceCommands = lib.mkIf (config.impermanence.fileSystem == "btrfs") (
+  config = lib.mkIf cfg.enable {
+    boot.initrd.postDeviceCommands = lib.mkIf (config.system.fileSystem == "btrfs") (
       lib.mkAfter ''
         mkdir /btrfs_tmp
         mount /dev/root_vg/root /btrfs_tmp
@@ -100,7 +100,7 @@
             btrfs subvolume delete "$1"
         }
 
-        for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +${toString config.gc.interval}); do
+        for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +${toString config.system.gc.interval}); do
             delete_subvolume_recursively "$i"
         done
 
@@ -129,8 +129,8 @@
           group = "wheel";
           mode = "0664";
         }
-      ] ++ config.impermanence.persist.directories;
-      files = config.impermanence.persist.files;
+      ] ++ cfg.persist.directories;
+      files = cfg.persist.files;
     };
   };
 }

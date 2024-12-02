@@ -43,11 +43,11 @@
     };
   };
 
-  config.home.persistence."/persist/home/${config.home.username}" =
-    lib.mkIf config.impermanence.enable
-      {
-        directories = [ ".cache/home-generations" ] ++ config.impermanence.persist.directories;
-        files = config.impermanence.persist.files;
-        allowOther = true;
-      };
+  config = {
+    home.persistence."/persist/home/${config.home.username}" = lib.mkIf config.impermanence.enable {
+      directories = [ ".cache/home-generations" ] ++ config.impermanence.persist.directories;
+      files = config.impermanence.persist.files;
+      allowOther = true;
+    };
+  };
 }

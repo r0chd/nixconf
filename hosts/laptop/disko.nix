@@ -37,9 +37,13 @@
                 type = "luks";
                 name = "crypted-main";
                 extraOpenArgs = [ ];
+		passwordFile = "/tmp/secret.key";
                 settings = {
-                  keyFile = "/tmp/secret.key";
                   allowDiscards = true;
+		    crypttabExtraOpts = [
+			"fido2-device=auto"
+			"token-timeout=10"
+		    ];
                 };
                 content = {
                   type = "lvm_pv";
@@ -63,9 +67,13 @@
                 type = "luks";
                 name = "crypted-extra";
                 extraOpenArgs = [ ];
+		passwordFile = "/tmp/secret.key";
                 settings = {
-                  keyFile = "/tmp/secret.key";
                   allowDiscards = true;
+		    crypttabExtraOpts = [
+			"fido2-device=auto"
+			"token-timeout=10"
+		    ];
                 };
                 content = {
                   type = "lvm_pv";

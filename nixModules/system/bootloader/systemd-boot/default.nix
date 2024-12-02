@@ -1,6 +1,9 @@
 { config, lib, ... }:
+let
+  cfg = config.system.bootloader;
+in
 {
-  config = lib.mkIf (config.boot.program == "systemd-boot") {
+  config = lib.mkIf (cfg == "systemd-boot") {
     boot.loader.systemd-boot.enable = true;
   };
 }

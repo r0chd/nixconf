@@ -4,10 +4,13 @@
   systemUsers,
   ...
 }:
+let
+  cfg = config.system.virtualisation;
+in
 {
-  options.virtualisation.enable = lib.mkEnableOption "Enable virtualisation";
+  options.system.virtualisation.enable = lib.mkEnableOption "Enable virtualisation";
 
-  config = lib.mkIf config.virtualisation.enable {
+  config = lib.mkIf cfg.enable {
     virtualisation.libvirtd = {
       enable = true;
       onBoot = "ignore";

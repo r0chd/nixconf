@@ -5,9 +5,10 @@
 }:
 let
   inherit (config) colorscheme;
+  cfg = config.environment;
 in
 {
-  config = lib.mkIf (config.window-manager.enable && config.window-manager.name == "sway") {
+  config = lib.mkIf (cfg.window-manager.enable && cfg.window-manager.name == "sway") {
     wayland.windowManager.sway = {
       enable = true;
       extraConfig =

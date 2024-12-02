@@ -10,44 +10,63 @@
     ./hardware-configuration.nix
   ];
 
-  root = {
-    auth = {
-      password = false;
-      rootPw = true;
-    };
-    timeout = 0;
-  };
-  gc = {
-    enable = true;
-    interval = 3;
-  };
-  impermanence = {
-    enable = true;
+  system = {
     fileSystem = "btrfs";
-    persist = {
-      directories = [
-        "/var/log"
-        "/var/lib/nixos"
-        "/var/lib/systemd/coredump"
-      ];
-      files = [ ];
-    };
-  };
-  wireless.enable = true;
-  power.enable = true;
-  bluetooth.enable = true;
-  audio.enable = true;
-  boot.program = "grub";
-  virtualisation.enable = true;
-  ydotool.enable = true;
-  yubikey = {
-    enable = true;
-    rootAuth = true;
-    unplug = {
+    bootloader = "grub";
+    virtualisation.enable = true;
+    ydotool.enable = true;
+    impermanence = {
       enable = true;
-      action = "${pkgs.hyprlock}/bin/hyprlock";
+      persist = {
+        directories = [
+          "/var/log"
+          "/var/lib/nixos"
+          "/var/lib/systemd/coredump"
+        ];
+        files = [ ];
+      };
+    };
+    gc = {
+      enable = true;
+      interval = 3;
     };
   };
+
+  security = {
+    yubikey = {
+      enable = true;
+      rootAuth = true;
+      unplug = {
+        enable = true;
+        action = "${pkgs.hyprlock}/bin/hyprlock";
+      };
+    };
+    root = {
+      auth = {
+        passwordless = true;
+        rootPw = true;
+      };
+      timeout = 0;
+    };
+  };
+
+  hardware = {
+    power-management = {
+      enable = true;
+      thresh = {
+        start = 40;
+        stop = 80;
+      };
+    };
+    audio.enable = true;
+    bluetooth.enable = true;
+  };
+
+  network = {
+    ssh.enable = true;
+    wireless.enable = true;
+  };
+  programs.steam.enable = true; # TODO: delete once I figure out what I'm missing to make steam work
 
   zramSwap.enable = true;
   environment = {
@@ -59,8 +78,6 @@
       inputs.nixvim.packages.${system}.default
     ];
   };
-
-  security.pam.services.hyprlock = { };
 
   sops.secrets = {
     "ssh_keys/unixpariah" = {
@@ -75,5 +92,4 @@
 
   time.timeZone = "Europe/Warsaw";
   i18n.defaultLocale = "en_US.UTF-8";
-  system.stateVersion = "24.11";
 }

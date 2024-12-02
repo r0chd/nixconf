@@ -7,9 +7,10 @@
 }:
 let
   inherit (config) colorscheme;
+  cfg = config.environment;
 in
 {
-  config = lib.mkIf (config.window-manager.enable && config.window-manager.name == "niri") {
+  config = lib.mkIf (cfg.window-manager.enable && cfg.window-manager.name == "niri") {
     home.packages = with pkgs; [ xwayland-satellite ];
     nixpkgs.overlays = [ inputs.niri.overlays.niri ];
     programs.niri = {

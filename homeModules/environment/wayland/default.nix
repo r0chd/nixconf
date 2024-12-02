@@ -4,6 +4,9 @@
   config,
   ...
 }:
+let
+  cfg = config.environment.window-manager;
+in
 {
   imports = [
     ./hyprland
@@ -11,7 +14,7 @@
     ./niri
   ];
 
-  config = lib.mkIf (config.window-manager.enable && config.window-manager.backend == "Wayland") {
+  config = lib.mkIf (cfg.enable && cfg.backend == "Wayland") {
     home = {
       packages = with pkgs; [
         wl-clipboard
