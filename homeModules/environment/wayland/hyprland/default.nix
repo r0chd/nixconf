@@ -59,7 +59,7 @@ in
           };
 
         decoration = {
-          rounding = "16";
+          rounding = 16;
 
           blur.enabled = false;
         };
@@ -67,7 +67,7 @@ in
         debug.disable_logs = false;
 
         animations = {
-          enabled = "true";
+          enabled = true;
 
           bezier = [
             "overshot, 0.05, 0.9, 0.1, 1.05"
@@ -104,11 +104,9 @@ in
 
         exec-once =
           [ ]
-          ++ (lib.optional (config.statusBar.enable) "${config.statusBar.program}")
-          ++ (lib.optional (config.terminal.enable) "${config.terminal.program}")
-          ++ lib.optional (config.wallpaper.enable) "${config.wallpaper.program} ${config.wallpaper.path}";
-
-        env = [ ] ++ (lib.optional (config.cursor.enable) "HYPRCURSOR_SIZE,${toString config.cursor.size}");
+          ++ (lib.optional (config.statusBar.enable) "uwsm app ${config.statusBar.program}")
+          ++ (lib.optional (config.terminal.enable) "uwsm app ${config.terminal.program}")
+          ++ lib.optional (config.wallpaper.enable) "uwsm app -- ${config.wallpaper.program} ${config.wallpaper.path}";
 
         bind =
           [
@@ -160,10 +158,10 @@ in
             ", XF86AudioRaiseVolume, exec, pamixer -i 5"
             ", XF86AudioLowerVolume, exec, pamixer -d 5"
           ]
-          ++ (lib.optional (config.terminal.enable) "$mainMod SHIFT, RETURN, exec, ${config.terminal.program}")
-          ++ (lib.optional config.seto.enable '', Print, exec, grim -g "$(seto -r)" - | wl-copy -t image/png'')
+          ++ (lib.optional (config.terminal.enable) "$mainMod SHIFT, RETURN, exec, uwsm app ${config.terminal.program}")
+          ++ (lib.optional config.seto.enable '', Print, exec, uwsm app -- grim -g "$(seto -r)" - | wl-copy -t image/png'')
           ++ (lib.optional (config.seto.enable) "$mainMod, G, exec, click")
-          ++ (lib.optional (config.launcher.enable) "$mainMod, S, exec, ${config.launcher.program}");
+          ++ (lib.optional (config.launcher.enable) "$mainMod, S, exec, uwsm app ${config.launcher.program}");
 
         bindm = [
           # Move/resize windows with mainMod + LMB/RMB and dragging

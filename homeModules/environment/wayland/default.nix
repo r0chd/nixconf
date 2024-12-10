@@ -25,12 +25,5 @@ in
         WLR_NO_HARDWARE_CURSORS = "1";
       };
     };
-    xdg.portal = {
-      enable = true;
-      extraPortals = with pkgs; [
-        xdg-desktop-portal-wlr
-      ];
-      config.common.default = "*";
-    };
   };
 }

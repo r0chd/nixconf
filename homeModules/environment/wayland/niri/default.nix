@@ -64,6 +64,8 @@ in
             }
           ];
 
+          animations = { };
+
           environment = {
             DISPLAY = ":0";
           };
@@ -91,24 +93,39 @@ in
           };
 
           spawn-at-startup = [
-            { command = [ "xwayland-satellite" ]; }
+            {
+              command = [
+                "uwsm"
+                "app"
+                "xwayland-satellite"
+              ];
+            }
             {
               command = lib.mkIf config.statusBar.enable [
+                "uwsm"
+                "app"
                 "${config.statusBar.program}"
               ];
             }
             {
               command = lib.mkIf config.terminal.enable [
+                "uwsm"
+                "app"
                 "${config.terminal.program}"
               ];
             }
             {
               command = lib.mkIf config.notifications.enable [
+                "uwsm"
+                "app"
                 "${config.notifications.program}"
               ];
             }
             {
               command = lib.mkIf config.wallpaper.enable [
+                "uwsm"
+                "app"
+                "--"
                 "${config.wallpaper.program}"
                 "${config.wallpaper.path}"
               ];
@@ -141,20 +158,34 @@ in
               "5"
             ];
             "Print".action.spawn = [
+              "uwsm"
+              "app"
+              "--"
               "bash"
               "-c"
               "grim -g $(seto -r) - | wl-copy"
             ];
 
             "Alt+G".action.spawn = [
+              "uwsm"
+              "app"
+              "--"
               "bash"
               "-c"
               "ydotool mousemove -a $(seto -f $'%x %y') && ydotool click 0xC0"
             ];
 
-            "Alt+Shift+Return".action.spawn = [ "${config.terminal.program}" ];
+            "Alt+Shift+Return".action.spawn = [
+              "uwsm"
+              "app"
+              "${config.terminal.program}"
+            ];
 
-            "Alt+S".action.spawn = [ "${config.launcher.program}" ];
+            "Alt+S".action.spawn = [
+              "uwsm"
+              "app"
+              "${config.launcher.program}"
+            ];
 
             "Alt+0".action.focus-workspace = 10;
             "Alt+1".action.focus-workspace = 1;

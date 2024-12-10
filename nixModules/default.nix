@@ -111,8 +111,10 @@
           nix build "/var/lib/nixconf#homeConfigurations.${user}@${hostname}.config.home.activationPackage" --log-format internal-json --verbose --out-link /persist/home/${user}/.cache/home-generations/result
       fi
 
+      specialisation_path=$(cat /etc/specialisation > /dev/null 2>&1 && echo /result/specialisation/$(cat /etc/specialisation) || echo /result/)
+
       chown -R ${user}:users /home/${user}/.ssh
-      sudo -u ${user} /persist/home/${user}/.cache/home-generations/result/specialisation/niri/activate
+      sudo -u ${user} /persist/home/${user}/.cache/home-generations/$specialisation_path/activate
     '') (lib.attrNames systemUsers);
   };
 

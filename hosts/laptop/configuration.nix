@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  config,
   ...
 }:
 {
@@ -12,7 +13,7 @@
 
   system = {
     fileSystem = "btrfs";
-    bootloader = "grub";
+    bootloader = "lanzaboote";
     virtualisation.enable = true;
     ydotool.enable = true;
     impermanence = {
@@ -30,6 +31,11 @@
       enable = true;
       interval = 3;
     };
+  };
+
+  services.mysql = {
+    enable = true;
+    package = pkgs.mariadb;
   };
 
   security = {
@@ -66,12 +72,34 @@
     ssh.enable = true;
     wireless.enable = true;
   };
-  programs.steam.enable = true; # TODO: delete once I figure out what I'm missing to make steam work
 
   zramSwap.enable = true;
+
+  services.protonvpn = {
+    enable = false;
+    interface = {
+      privateKeyFile = config.sops.secrets.wireguard-key.path;
+      ip = "10.2.0.2/32";
+    };
+    endpoint = {
+      publicKey = "dldo97jXTUvjEQqaAx3pHy4lKFSxcmZYDCGFvvDOIGQ=";
+      ip = "149.34.244.179";
+    };
+  };
+
+  programs = {
+    steam = {
+      enable = true;
+      gamescopeSession.enable = true;
+    };
+    gamemode.enable = true;
+  };
+
   environment = {
     variables.EDITOR = "nvim";
     systemPackages = with pkgs; [
+      protonup
+      mangohud
       nvd
       nix-output-monitor
       just
@@ -88,6 +116,7 @@
       owner = "unixpariah";
       path = "/home/unixpariah/.ssh/id_yubikey";
     };
+    wireguard-key = { };
   };
 
   time.timeZone = "Europe/Warsaw";

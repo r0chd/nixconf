@@ -5,6 +5,11 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
 
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixfmt.url = "github:NixOS/nixfmt";
 
     home-manager = {
@@ -31,6 +36,11 @@
       inputs.nixpkgs-unstable.follows = "nixpkgs";
     };
 
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     zls.url = "github:zigtools/zls";
     zig.url = "github:mitchellh/zig-overlay";
 
@@ -50,7 +60,6 @@
       nixpkgs-stable,
       nixpkgs,
       flake-utils,
-      home-manager,
       ...
     }@inputs:
     let
@@ -82,9 +91,8 @@
           };
           modules = [
             ./nixModules
-            inputs.home-manager.nixosModules.default
+            inputs.nur.modules.nixos.default
             inputs.disko.nixosModules.default
-            inputs.sops-nix.nixosModules.sops
           ];
         };
 
@@ -100,7 +108,7 @@
             config.allowUnfree = true;
           };
         in
-        home-manager.lib.homeManagerConfiguration {
+        inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = {
             inherit

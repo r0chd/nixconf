@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, config, ... }:
 {
   imports = [
     ./wayland
@@ -22,4 +22,10 @@
       ];
     };
   };
+
+  config.environment.loginShellInit = lib.mkIf config.window-manager.enable ''
+    if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
+        ${config.window-manager.name}
+    fi
+  '';
 }

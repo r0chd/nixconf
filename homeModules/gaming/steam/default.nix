@@ -9,7 +9,9 @@ let
 in
 {
   config = lib.mkIf cfg.steam.enable {
-    home.packages = with pkgs; [ steam ];
+    #home.packages = with pkgs; [
+    #  steam
+    #];
 
     impermanence.persist.directories = [
       {

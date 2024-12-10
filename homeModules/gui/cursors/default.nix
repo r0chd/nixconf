@@ -3,6 +3,9 @@
   lib,
   ...
 }:
+let
+  cfg = config.cursor;
+in
 {
   options.cursor = {
     enable = lib.mkEnableOption "Cursor";
@@ -18,15 +21,15 @@
     };
   };
 
-  config.home.pointerCursor = lib.mkIf config.window-manager.enable {
+  config.home.pointerCursor = lib.mkIf config.environment.window-manager.enable {
     gtk.enable = true;
-    x11.enable = config.window-manager.backend == "X11";
+    x11.enable = config.environment.window-manager.backend == "X11";
     hyprcursor = {
-      enable = config.window-manager.name == "Hyprland";
-      size = config.cursor.size;
+      enable = config.environment.window-manager.name == "Hyprland";
+      size = cfg.size;
     };
-    name = config.cursor.themeName;
-    size = config.cursor.size;
-    package = config.cursor.package;
+    name = cfg.themeName;
+    size = cfg.size;
+    package = cfg.package;
   };
 }

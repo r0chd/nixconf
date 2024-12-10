@@ -3,7 +3,8 @@ let
   cfg = config.system.bootloader;
 in
 {
-  config = lib.mkIf (cfg == "systemd-boot") {
-    boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot = lib.mkIf (cfg == "systemd-boot") {
+    enable = true;
+    editor = true;
   };
 }

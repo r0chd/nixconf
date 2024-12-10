@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 {
@@ -13,20 +12,11 @@
 
   config = lib.mkIf (config.window-manager.enable && config.window-manager.backend == "Wayland") {
     environment = {
-      loginShellInit =
-        # bash
-        ''
-          if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-          ${
-            (
-              if config.window-manager.name == "sway" then
-                "exec sway --unsupported-gpu"
-              else
-                config.window-manager.name
-            )
-          }
-          fi
-        '';
+      loginShellInit = ''
+        if uwsm check may-start && uwsm select; then
+            exec uwsm start ${lib.toLower config.window-manager.name}.desktop
+        fi
+      '';
       variables = {
         XDG_SESSION_TYPE = "wayland";
         __GL_GSYNC_ALLOWED = "1";
@@ -36,23 +26,13 @@
       };
     };
 
-    xdg.portal = {
+    programs.uwsm = {
       enable = true;
-      xdgOpenUsePortal = true;
-
-      config = {
-        common.default = [ "gtk" ];
-        hyprland.default = [
-          "gtk"
-          "hyprland"
-        ];
+      waylandCompositors."${config.window-manager.name}" = {
+        prettyName = "${config.window-manager.name}";
+        comment = "Compositor managed by UWSM";
+        binPath = "/run/current-system/sw/bin/${config.window-manager.name}";
       };
-
-      extraPortals = [
-        pkgs.xdg-desktop-portal-gtk
-        pkgs.xdg-desktop-portal
-        pkgs.xdg-desktop-portal-wlr
-      ];
     };
   };
 }

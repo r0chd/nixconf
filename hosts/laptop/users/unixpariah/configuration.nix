@@ -27,12 +27,12 @@
       aoc-session = { };
       nixos-access-token-github = { };
     };
-    templates."nix.conf" = {
-      path = "/home/unixpariah/.config/nix/nix.conf";
-      content = ''
-        access-tokens = github.com=${config.sops.placeholder.nixos-access-token-github}
-      '';
-    };
+    # templates."nix.conf" = {
+    #   path = "/home/unixpariah/.config/nix/nix.conf";
+    #   content = ''
+    #     access-tokens = github.com=${config.sops.placeholder.nixos-access-token-github}
+    #   '';
+    # };
   };
 
   home = {

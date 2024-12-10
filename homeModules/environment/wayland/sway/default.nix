@@ -42,10 +42,10 @@ in
         startup =
           [ ]
           ++ lib.optional (config.terminal.enable) {
-            command = "sway workspace 1; ${config.terminal.program}";
+            command = "sway workspace 1; uwsm app ${config.terminal.program}";
           }
           ++ lib.optional (config.wallpaper.enable) {
-            command = "${config.wallpaper.program} ${config.wallpaper.path}";
+            command = "uwsm app -- ${config.wallpaper.program} ${config.wallpaper.path}";
           };
 
         keybindings =
@@ -91,16 +91,17 @@ in
             "XF86AudioLowerVolume" = "exec pamixer -d 5";
           }
           // lib.optionalAttrs config.seto.enable {
-            "Print" = ''exec grim -g "$(seto -r)" - | wl-copy -t image/png'';
+            "Print" = ''exec uwsm app -- grim -g "$(seto -r)" - | wl-copy -t image/png'';
           }
           // lib.optionalAttrs (config.seto.enable) {
-            "${modifier}+g" = ''exec "ydotool mousemove -a $(seto -f "%x %y") && ydotool click 0xC0"'';
+            "${modifier}+g" =
+              ''exec "uwsm app -- ydotool mousemove -a $(seto -f "%x %y") && ydotool click 0xC0"'';
           }
           // lib.optionalAttrs (config.terminal.enable) {
-            "${modifier}+Shift+Return" = "exec ${config.terminal.program}";
+            "${modifier}+Shift+Return" = "exec uwsm app ${config.terminal.program}";
           }
           // lib.optionalAttrs (config.launcher.enable) {
-            "${modifier}+S" = "exec ${config.launcher.program}";
+            "${modifier}+S" = "exec uwsm app ${config.launcher.program}";
           };
       };
     };
