@@ -8,10 +8,12 @@
     ./hyprland
     ./sway
     ./niri
+    ./gamescope
   ];
 
   config = lib.mkIf (config.window-manager.enable && config.window-manager.backend == "Wayland") {
     environment = {
+      # TODO Idk why but uwsm isnt starting anything this way
       loginShellInit = ''
         if uwsm check may-start && uwsm select; then
             exec uwsm start ${lib.toLower config.window-manager.name}.desktop

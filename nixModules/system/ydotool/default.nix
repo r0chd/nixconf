@@ -12,11 +12,15 @@ in
 
   config = lib.mkIf cfg.enable {
     programs.ydotool.enable = true;
-    users.users = lib.mapAttrs (name: value: {
-      extraGroups = lib.mkIf value.root.enable [
-        "ydotool"
-        "uinput"
-      ];
-    }) systemUsers;
+    users.users =
+      systemUsers
+      |> lib.mapAttrs (
+        name: value: {
+          extraGroups = lib.mkIf value.root.enable [
+            "ydotool"
+            "uinput"
+          ];
+        }
+      );
   };
 }

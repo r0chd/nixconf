@@ -1,11 +1,14 @@
-{ lib, ... }:
+{ lib, config, ... }:
+let
+  cfg = config.environment;
+in
 {
   imports = [
     ./wayland
     ./x11
   ];
 
-  options = {
+  options.environment = {
     outputs = lib.mkOption {
       type = lib.types.attrsOf (
         lib.types.submodule {
@@ -29,24 +32,53 @@
       default = { };
     };
 
-    environment = {
-      window-manager = {
-        enable = lib.mkEnableOption "Enable";
-        backend = lib.mkOption {
-          type = lib.types.enum [
-            "X11"
-            "Wayland"
-          ];
-        };
-        name = lib.mkOption {
-          type = lib.types.enum [
-            "Hyprland"
-            "sway"
-            "niri"
-            "i3"
-          ];
-        };
+    window-manager = {
+      enable = lib.mkEnableOption "Enable";
+      backend = lib.mkOption {
+        type = lib.types.enum [
+          "X11"
+          "Wayland"
+        ];
+      };
+      name = lib.mkOption {
+        type = lib.types.enum [
+          "Hyprland"
+          "sway"
+          "niri"
+          "i3"
+          "gamescope"
+        ];
       };
     };
+  };
+
+  config = {
+    wayland.windowManager = {
+      hyprland.settings.input.monitor = lib.mapAttrsToList (
+        name: value:
+        "${name}, ${toString value.dimensions.width}x${toString value.dimensions.height}@${toString value.refresh}, ${toString value.position.x}x${toString value.position.y}, ${toString value.scale}"
+      ) cfg.outputs;
+
+      sway.config.output =
+        config.environment.outputs
+        |> lib.mapAttrs (
+          name: value: {
+            position = "${toString value.position.x} ${toString value.position.y}";
+            resolution = "${toString value.dimensions.width}x${toString value.dimensions.height}@${toString value.refresh}Hz";
+            scale = "${toString value.scale}";
+          }
+        );
+    };
+
+    programs.niri.settings.outputs = lib.mapAttrs (name: value: {
+      scale = value.scale;
+      mode = {
+        width = value.dimensions.width;
+        height = value.dimensions.height;
+        refresh = value.refresh;
+      };
+      position = value.position;
+    }) config.environment.outputs;
+
   };
 }

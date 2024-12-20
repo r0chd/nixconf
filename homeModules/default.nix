@@ -8,8 +8,7 @@
 {
   imports = [
     ./environment
-    ./tools
-    ./gaming
+    ./programs
     ./gui
     ./colorschemes.nix
     ./security
@@ -68,6 +67,13 @@
           enable = true;
           name = "i3";
           backend = "X11";
+        };
+      };
+      gamescope.configuration = {
+        environment.window-manager = {
+          enable = true;
+          name = "gamescope";
+          backend = "Wayland";
         };
       };
     };

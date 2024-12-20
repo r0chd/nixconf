@@ -32,7 +32,12 @@
   users = {
     mutableUsers = false;
     users =
-      { }
+      {
+        root = {
+          isNormalUser = false;
+          hashedPasswordFile = config.sops.secrets.password.path;
+        };
+      }
       // lib.mapAttrs (name: value: {
         isNormalUser = true;
         hashedPasswordFile = config.sops.secrets.${name}.path;
@@ -91,6 +96,14 @@
       };
       environment.etc."specialisation".text = "i3";
     };
+    gamescope.configuration = {
+      window-manager = {
+        enable = true;
+        name = "gamescope";
+        backend = "Wayland";
+      };
+      environment.etc."specialisation".text = "gamescope";
+    };
   };
 
   systemd.services.activate-home-manager = lib.mkIf config.system.impermanence.enable {
@@ -106,16 +119,18 @@
       PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}:${pkgs.sudo}/bin:${pkgs.coreutils}/bin:$PATH";
       HOME_MANAGER_BACKUP_EXT = "bak";
     };
-    script = lib.concatMapStrings (user: ''
-      if [ ! -d "/persist/home/${user}/.cache/home-generations/result" ]; then
-          nix build "/var/lib/nixconf#homeConfigurations.${user}@${hostname}.config.home.activationPackage" --log-format internal-json --verbose --out-link /persist/home/${user}/.cache/home-generations/result
-      fi
+    script =
+      lib.attrNames systemUsers
+      |> lib.concatMapStrings (user: ''
+        if [ ! -d "/persist/home/${user}/.cache/home-generations/result" ]; then
+            nix build "/var/lib/nixconf#homeConfigurations.${user}@${hostname}.config.home.activationPackage" --log-format internal-json --verbose --out-link /persist/home/${user}/.cache/home-generations/result
+        fi
 
-      specialisation_path=$(cat /etc/specialisation > /dev/null 2>&1 && echo /result/specialisation/$(cat /etc/specialisation) || echo /result/)
+        specialisation_path=$(cat /etc/specialisation > /dev/null 2>&1 && echo /result/specialisation/$(cat /etc/specialisation) || echo /result/)
 
-      chown -R ${user}:users /home/${user}/.ssh
-      sudo -u ${user} /persist/home/${user}/.cache/home-generations/$specialisation_path/activate
-    '') (lib.attrNames systemUsers);
+        chown -R ${user}:users /home/${user}/.ssh
+        sudo -u ${user} /persist/home/${user}/.cache/home-generations/$specialisation_path/activate
+      '');
   };
 
   system.stateVersion = "24.11";

@@ -14,7 +14,10 @@
   system = {
     fileSystem = "btrfs";
     bootloader = "lanzaboote";
-    virtualisation.enable = true;
+    virtualisation = {
+      virt-manager.enable = true;
+      distrobox.enable = true;
+    };
     ydotool.enable = true;
     impermanence = {
       enable = true;
@@ -31,11 +34,6 @@
       enable = true;
       interval = 3;
     };
-  };
-
-  services.mysql = {
-    enable = true;
-    package = pkgs.mariadb;
   };
 
   security = {
@@ -87,18 +85,10 @@
     };
   };
 
-  programs = {
-    steam = {
-      enable = true;
-      gamescopeSession.enable = true;
-    };
-    gamemode.enable = true;
-  };
-
   environment = {
     variables.EDITOR = "nvim";
     systemPackages = with pkgs; [
-      protonup
+      obsidian
       mangohud
       nvd
       nix-output-monitor

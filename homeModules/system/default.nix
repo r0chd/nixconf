@@ -1,4 +1,7 @@
 { ... }:
 {
-  imports = [ ./impermanence ];
+  imports = [
+    ./impermanence
+    ./virtualisation
+  ];
 }

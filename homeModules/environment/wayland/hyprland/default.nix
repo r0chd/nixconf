@@ -25,11 +25,6 @@ in
       enable = true;
       settings = {
         input = {
-          monitor = lib.mapAttrsToList (
-            name: value:
-            "${name}, ${toString value.dimensions.width}x${toString value.dimensions.height}@${toString value.refresh}, ${toString value.position.x}x${toString value.position.y}, ${toString value.scale}"
-          ) config.outputs;
-
           kb_layout = "us";
           kb_variant = "";
           kb_model = "";
@@ -117,10 +112,11 @@ in
             # Manage workspace
             "$mainMod SHIFT, C, killactive,"
             "$mainMod, F, togglefloating,"
-            "$mainMod, H, movefocus, l"
-            "$mainMod, L, movefocus, r"
-            "$mainMod, K, movefocus, u"
-            "$mainMod, J, movefocus, d"
+            "$mainMod, H, focusmonitor, -1"
+            "$mainMod, L, focusmonitor, +1"
+
+            "$mainMod SHIFT, H, movewindow, mon:-1"
+            "$mainMod SHIFT, L, movewindow, mon:+1"
 
             # Switch workspaces with mainMod + [0-9]
             "$mainMod, 1, workspace, 1"
@@ -133,15 +129,14 @@ in
             "$mainMod, 8, workspace, 8"
             "$mainMod, 9, workspace, 9"
             "$mainMod, 0, workspace, 10"
-            "ALT, less, pass, ^discord$"
 
             # Move to next workspace with mainMod + [M/N]
-            "$mainMod, N, workspace, e-1"
-            "$mainMod, M, workspace, e+1"
+            "$mainMod, N, workspace, m-1"
+            "$mainMod, M, workspace, m+1"
 
-            # Move active window to next workspace with mainMod + [M/N]
-            "$mainMod SHIFT, N, movetoworkspace, -1"
-            "$mainMod SHIFT, M, movetoworkspace, +1"
+            # Move active window to next workspace with mainMod + Shift + [M/N]
+            "$mainMod SHIFT, N, movetoworkspace, r-1"
+            "$mainMod SHIFT, M, movetoworkspace, r+1"
 
             # Move active window to a workspace with mainMod + SHIFT + [0-9]
             "$mainMod SHIFT, 1, movetoworkspace, 1"
@@ -159,8 +154,8 @@ in
             ", XF86AudioLowerVolume, exec, pamixer -d 5"
           ]
           ++ (lib.optional (config.terminal.enable) "$mainMod SHIFT, RETURN, exec, uwsm app ${config.terminal.program}")
-          ++ (lib.optional config.seto.enable '', Print, exec, uwsm app -- grim -g "$(seto -r)" - | wl-copy -t image/png'')
-          ++ (lib.optional (config.seto.enable) "$mainMod, G, exec, click")
+          ++ (lib.optional config.programs.seto.enable '', Print, exec, uwsm app -- grim -g "$(seto -r)" - | wl-copy -t image/png'')
+          ++ (lib.optional (config.programs.seto.enable) "$mainMod, G, exec, click")
           ++ (lib.optional (config.launcher.enable) "$mainMod, S, exec, uwsm app ${config.launcher.program}");
 
         bindm = [

@@ -20,16 +20,6 @@ in
           inherit (colorscheme) accent1 inactive;
         in
         {
-          outputs = lib.mapAttrs (name: value: {
-            scale = value.scale;
-            mode = {
-              width = value.dimensions.width;
-              height = value.dimensions.height;
-              refresh = value.refresh;
-            };
-            position = value.position;
-          }) config.outputs;
-
           input = {
             keyboard = {
               repeat-delay = 600;

@@ -1,7 +1,6 @@
 { ... }:
 {
   imports = [
-    ./browser
     ./terminal
     ./cursors
     ./status

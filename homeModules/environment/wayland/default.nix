@@ -12,6 +12,7 @@ in
     ./hyprland
     ./sway
     ./niri
+    ./gamescope
   ];
 
   config = lib.mkIf (cfg.enable && cfg.backend == "Wayland") {

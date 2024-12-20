@@ -29,11 +29,15 @@ in
         modifier = "Mod1";
         gaps.outer = 7;
 
-        output = lib.mapAttrs (name: value: {
-          position = "${toString value.position.x} ${toString value.position.y}";
-          resolution = "${toString value.dimensions.width}x${toString value.dimensions.height}@${toString value.refresh}Hz";
-          scale = "${toString value.scale}";
-        }) config.outputs;
+        output =
+          config.environment.outputs
+          |> lib.mapAttrs (
+            name: value: {
+              position = "${toString value.position.x} ${toString value.position.y}";
+              resolution = "${toString value.dimensions.width}x${toString value.dimensions.height}@${toString value.refresh}Hz";
+              scale = "${toString value.scale}";
+            }
+          );
 
         input."9011:26214:ydotoold_virtual_device" = {
           "accel_profile" = "flat";
@@ -90,10 +94,10 @@ in
             "XF86AudioRaiseVolume" = "exec pamixer -i 5";
             "XF86AudioLowerVolume" = "exec pamixer -d 5";
           }
-          // lib.optionalAttrs config.seto.enable {
+          // lib.optionalAttrs config.programs.seto.enable {
             "Print" = ''exec uwsm app -- grim -g "$(seto -r)" - | wl-copy -t image/png'';
           }
-          // lib.optionalAttrs (config.seto.enable) {
+          // lib.optionalAttrs (config.programs.seto.enable) {
             "${modifier}+g" =
               ''exec "uwsm app -- ydotool mousemove -a $(seto -f "%x %y") && ydotool click 0xC0"'';
           }
