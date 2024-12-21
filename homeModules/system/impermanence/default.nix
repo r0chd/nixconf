@@ -1,9 +1,12 @@
 {
   lib,
   config,
+  inputs,
   ...
 }:
 {
+  imports = [ inputs.impermanence.homeManagerModules.default ];
+
   options.impermanence = {
     enable = lib.mkEnableOption "Enable home persistance";
     persist = {

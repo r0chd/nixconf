@@ -4,22 +4,15 @@
   ...
 }:
 let
-  inherit (config) colorscheme;
   cfg = config.environment;
 in
 {
   config = lib.mkIf (cfg.window-manager.enable && cfg.window-manager.name == "sway") {
     wayland.windowManager.sway = {
-      enable = true;
-      extraConfig =
-        let
-          inherit (colorscheme) accent1 inactive;
-        in
-        ''
-          default_border pixel 2
-          client.unfocused ${inactive} ${inactive} ${inactive} ${inactive}
-          client.focused ${accent1} ${accent1} ${accent1} ${accent1}
-        '';
+      enable = false;
+      extraConfig = ''
+        default_border pixel 2
+      '';
       config = rec {
         bars =
           [ ]

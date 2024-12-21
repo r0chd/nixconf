@@ -63,7 +63,6 @@
   services.yubikey-touch-detector = {
     enable = true;
   };
-  colorscheme.name = "catppuccin";
   editor = "nvim";
   email = "oskar.rochowiak@tutanota.com";
   font = "JetBrainsMono Nerd Font";
@@ -80,6 +79,42 @@
     # };
   };
 
+  stylix = {
+    enable = true;
+    targets.fish.enable = false;
+    cursor = {
+      name = "Banana";
+      package = pkgs.banana-cursor;
+      size = 36;
+    };
+    fonts = {
+      sizes = {
+        terminal = 9;
+      };
+      monospace = {
+        package = pkgs.nerd-fonts.jetbrains-mono;
+        name = "JetBrainsMono Nerd Font Mono";
+      };
+      sansSerif = {
+        package = pkgs.dejavu_fonts;
+        name = "DejaVu Sans";
+      };
+      serif = {
+        package = pkgs.dejavu_fonts;
+        name = "DejaVu Serif";
+      };
+    };
+    opacity = {
+      terminal = 0.0;
+    };
+    image = pkgs.fetchurl {
+      url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nixos-wallpaper-catppuccin-mocha.png";
+      sha256 = "7e6285630da06006058cebf896bf089173ed65f135fbcf32290e2f8c471ac75b";
+    };
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-frappe.yaml";
+    polarity = "dark";
+  };
+
   home.packages = with pkgs; [
     zathura
     mpv
@@ -92,9 +127,8 @@
     spotify
     imagemagick
     pkgs-stable.wf-recorder
-    nerd-fonts.jetbrains-mono
-    jetbrains-mono
   ];
+
   impermanence = {
     enable = true;
     persist = {
@@ -107,12 +141,6 @@
     };
   };
 
-  cursor = {
-    enable = true;
-    themeName = "Banana";
-    size = 36;
-    package = pkgs.banana-cursor;
-  };
   statusBar = {
     enable = true;
     program = "waystatus";

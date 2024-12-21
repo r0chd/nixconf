@@ -1,12 +1,9 @@
 {
   config,
-  std,
   lib,
   ...
 }:
 let
-  inherit (config) colorscheme;
-  inherit (colorscheme) text background1;
   cfg = config.screenIdle.lockscreen;
 in
 {
@@ -20,32 +17,6 @@ in
           disable_loading_bar = true;
           grace = 0;
         };
-        background = [
-          {
-            monitor = "";
-            color = "rgb(${std.conversions.hexToRGBString "," background1})";
-            brightness = 0.2;
-          }
-        ];
-        input-field = [
-          {
-            monitor = "";
-            size = "250, 60";
-            outline_thickness = 2;
-            dots_size = 0.2;
-            dots_spacing = 0.2;
-            dots_center = true;
-            outer_color = "rgb(0, 0, 0, 0)";
-            inner_color = "rgba(0, 0, 0, 0.5)";
-            font_color = "rgb(${text})";
-            fade_on_empty = false;
-            placeholder_text = ''<i><span foreground="##cdd6f4">Input Password...</span></i>'';
-            hide_input = false;
-            position = "0, -120";
-            halign = "center";
-            valign = "center";
-          }
-        ];
         label = [
           {
             monitor = "";

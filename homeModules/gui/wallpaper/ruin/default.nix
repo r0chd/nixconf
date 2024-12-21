@@ -6,9 +6,6 @@
   lib,
   ...
 }:
-let
-  inherit (config) colorscheme;
-in
 {
   config = lib.mkIf (config.wallpaper.enable && config.wallpaper.program == "ruin") {
     impermanence.persist.directories = [ ".config/ruin/images" ];
@@ -18,20 +15,14 @@ in
       file.".config/ruin/colorschemes.yaml" = {
         text =
           let
-            inherit (colorscheme)
-              error
-              special
-              background1
-              accent2
-              ;
             inherit (std.conversions) hexToRGBString;
           in
           ''
             nix:
-              charging: [${hexToRGBString ", " special}]
-              default: [${hexToRGBString ", " accent2}]
-              low_battery: [${hexToRGBString ", " error}]
-              background: [${hexToRGBString ", " background1}]
+              charging: [${hexToRGBString ", " "A6E3A1"}]
+              default: [${hexToRGBString ", " "C9CBFF"}]
+              low_battery: [${hexToRGBString ", " "CA8080"}]
+              background: [${hexToRGBString ", " "170E1F"}]
           '';
       };
     };

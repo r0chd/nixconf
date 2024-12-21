@@ -10,7 +10,6 @@
     ./environment
     ./programs
     ./gui
-    ./colorschemes.nix
     ./security
     ./network
     ./system
@@ -26,6 +25,7 @@
   config = {
     programs.home-manager.enable = true;
     home = {
+      sessionVariables.HOME_MANAGER_BACKUP_EXT = "bak";
       packages = with pkgs; [
         (writeShellScriptBin "shell" ''
           nix develop "/var/lib/nixconf#devShells.$@.${pkgs.system}" -c ${shell}

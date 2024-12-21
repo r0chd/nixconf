@@ -6,7 +6,7 @@
 {
   config = lib.mkIf (config.window-manager.enable && config.window-manager.name == "sway") {
     programs.sway = {
-      enable = true;
+      enable = false;
       extraOptions = [ "--unsupported-gpu" ];
     };
   };

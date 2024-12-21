@@ -15,69 +15,63 @@ in
       packages = with pkgs; [ inputs.waystatus.packages.${system}.default ];
       file = {
         ".config/waystatus/style.css" = {
-          text =
-            let
-              inherit (config) font;
-              inherit (colorscheme) text;
-            in
-            ''
-              * {
-                  font-family: "${font}";
-                  font-size: 16px;
-                  font-weight: bold;
-                  color: #${text};
-                  background-color: rgba(0, 0, 0, 0);
-                  margin-bottom: 10px;
-              }
+          text = ''
+            * {
+                font-family: "JetBrainsMono Nerd Font Mono";
+                font-size: 16px;
+                font-weight: bold;
+                color: #FFFFFF;
+                background-color: rgba(0, 0, 0, 0);
+                margin-bottom: 10px;
+            }
 
-              backlight {
-                  margin-left: 25px;
-                  margin-right: 10px;
-              }
+            backlight {
+                margin-left: 25px;
+                margin-right: 10px;
+            }
 
-              audio {
-                  margin-right: 25px;
-              }
+            audio {
+                margin-right: 25px;
+            }
 
-              cpu {
-                  margin-right: 25px;
-              }
+            cpu {
+                margin-right: 25px;
+            }
 
-              memory {
-                  margin-right: 10px;
-              }
+            memory {
+                margin-right: 10px;
+            }
 
-              workspaces {
-                  margin-left: 35px;
-              }
+            workspaces {
+                margin-left: 35px;
+            }
 
-              network {
-                  margin-right: 25px;
-              }
+            network {
+                margin-right: 25px;
+            }
 
-              title {
-                  margin-right: 25px;
-              }
+            title {
+                margin-right: 25px;
+            }
 
-              date {
-                  color: #C5AAEC;
-              }
+            date {
+                color: #C5AAEC;
+            }
 
-              persistant_workspaces {
-                  letter-spacing: 10px;
-                  margin-left: 35px;
-              }
-            '';
+            persistant_workspaces {
+                letter-spacing: 10px;
+                margin-left: 35px;
+            }
+          '';
         };
         ".config/waystatus/config.toml" = {
           text =
             let
-              inherit (colorscheme) background2;
               inherit (std) conversions;
             in
             ''
               unkown = "N/A"
-              background = ${conversions.hexToRGBString "," background2};
+              background = ${conversions.hexToRGBString "," "140F21"};
               layer = "bottom"
               topbar = true
               height = 40

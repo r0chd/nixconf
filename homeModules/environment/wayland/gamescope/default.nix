@@ -5,7 +5,6 @@
   ...
 }:
 let
-  inherit (config) colorscheme;
   cfg = config.environment.window-manager;
 in
 {
@@ -69,18 +68,11 @@ in
           accel_profile = "flat";
         };
 
-        general =
-          let
-            inherit (colorscheme) accent1 inactive;
-          in
-          {
-            "col.active_border" = "rgb(${accent1})";
-            "col.inactive_border" = "rgb(${inactive})";
-
-            border_size = 1;
-            gaps_out = 0;
-            gaps_in = 0;
-          };
+        general = {
+          border_size = 1;
+          gaps_out = 0;
+          gaps_in = 0;
+        };
 
         decoration.blur.enabled = false;
 

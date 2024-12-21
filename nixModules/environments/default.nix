@@ -1,7 +1,4 @@
-{ lib, config, ... }:
-let
-  cfg = config.window-manager;
-in
+{ lib, ... }:
 {
   imports = [
     ./wayland
@@ -26,10 +23,4 @@ in
       ];
     };
   };
-
-  config.environment.loginShellInit = lib.mkIf cfg.enable ''
-    if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-        ${if cfg.name == "gamescope" then "Hyprland" else cfg.name}
-    fi
-  '';
 }

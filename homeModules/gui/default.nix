@@ -2,7 +2,6 @@
 {
   imports = [
     ./terminal
-    ./cursors
     ./status
     ./notifications
     ./lockscreen

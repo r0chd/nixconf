@@ -5,12 +5,9 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
 
-    nur = {
-      url = "github:nix-community/NUR";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nixfmt.url = "github:NixOS/nixfmt";
+
+    stylix.url = "github:danth/stylix";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -91,8 +88,8 @@
           };
           modules = [
             ./nixModules
-            inputs.nur.modules.nixos.default
             inputs.disko.nixosModules.default
+            inputs.stylix.nixosModules.stylix
           ];
         };
 
@@ -127,10 +124,7 @@
 
           modules = [
             ./homeModules
-            inputs.impermanence.homeManagerModules.default
-            inputs.sops-nix.homeManagerModules.sops
-            inputs.seto.homeManagerModules.default
-            inputs.niri.homeModules.niri
+            inputs.stylix.homeManagerModules.stylix
           ];
         };
 
@@ -140,7 +134,7 @@
           users = {
             unixpariah = {
               root.enable = true;
-              shell = "fish";
+              shell = "zsh";
             };
           };
         };

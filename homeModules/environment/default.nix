@@ -79,6 +79,5 @@ in
       };
       position = value.position;
     }) config.environment.outputs;
-
   };
 }
