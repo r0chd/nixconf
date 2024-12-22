@@ -41,40 +41,14 @@
     };
 
     specialisation = {
-      Hyprland.configuration = {
-        environment.window-manager = {
-          enable = true;
-          name = "Hyprland";
-          backend = "Wayland";
-        };
+      Wayland.configuration = {
+        environment.session = "Wayland";
       };
-      sway.configuration = {
-        environment.window-manager = {
-          enable = true;
-          name = "sway";
-          backend = "Wayland";
-        };
+      X11.configuration = {
+        environment.session = "X11";
       };
-      niri.configuration = {
-        environment.window-manager = {
-          enable = true;
-          name = "niri";
-          backend = "Wayland";
-        };
-      };
-      i3.configuration = {
-        environment.window-manager = {
-          enable = true;
-          name = "i3";
-          backend = "X11";
-        };
-      };
-      gamescope.configuration = {
-        environment.window-manager = {
-          enable = true;
-          name = "gamescope";
-          backend = "Wayland";
-        };
+      Gaming.configuration = {
+        environment.session = "Gaming";
       };
     };
   };

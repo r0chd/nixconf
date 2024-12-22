@@ -12,7 +12,7 @@
     ./hardware
     ./network
     ./security
-    ./environments
+    ./environment
     ../hosts/${hostname}/configuration.nix
   ];
 
@@ -64,45 +64,23 @@
   };
 
   specialisation = {
-    Hyprland.configuration = {
-      window-manager = {
-        enable = true;
-        name = "Hyprland";
-        backend = "Wayland";
+    Wayland.configuration = {
+      environment = {
+        etc."specialisation".text = "Wayland";
+        session = "Wayland";
       };
-      environment.etc."specialisation".text = "Hyprland";
     };
-    sway.configuration = {
-      window-manager = {
-        enable = true;
-        name = "sway";
-        backend = "Wayland";
+    X11.configuration = {
+      environment = {
+        etc."specialisation".text = "X11";
+        session = "X11";
       };
-      environment.etc."specialisation".text = "sway";
     };
-    niri.configuration = {
-      window-manager = {
-        enable = true;
-        name = "niri";
-        backend = "Wayland";
+    Gaming.configuration = {
+      environment = {
+        etc."specialisation".text = "Gaming";
+        session = "Gaming";
       };
-      environment.etc."specialisation".text = "niri";
-    };
-    i3.configuration = {
-      window-manager = {
-        enable = true;
-        name = "i3";
-        backend = "X11";
-      };
-      environment.etc."specialisation".text = "i3";
-    };
-    gamescope.configuration = {
-      window-manager = {
-        enable = true;
-        name = "gamescope";
-        backend = "Wayland";
-      };
-      environment.etc."specialisation".text = "gamescope";
     };
   };
 
