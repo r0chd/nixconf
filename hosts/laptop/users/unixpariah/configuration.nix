@@ -26,6 +26,13 @@
     };
   };
 
+  gaming = {
+    steam.enable = true;
+    lutris.enable = true;
+    heroic.enable = true;
+    minecraft.enable = true;
+  };
+
   environment.outputs = {
     "eDP-1" = {
       position = {

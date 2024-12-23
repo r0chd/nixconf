@@ -6,7 +6,6 @@ in
   imports = [
     ./wayland
     ./x11
-    ./gaming
   ];
 
   options.environment = {
@@ -36,7 +35,6 @@ in
       type = lib.types.enum [
         "X11"
         "Wayland"
-        "Gaming"
         "None"
       ];
       default = "None";

@@ -51,6 +51,11 @@ in
         comment = "Compositor managed by UWSM";
         binPath = "/run/current-system/sw/bin/niri-session";
       };
+      waylandCompositors.gamescope = {
+        prettyName = "Gamescope";
+        comment = "Compositor managed by UWSM";
+        binPath = "/run/current-system/sw/bin/gamescope-session";
+      };
     };
   };
 }

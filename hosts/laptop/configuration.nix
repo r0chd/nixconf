@@ -98,8 +98,18 @@
   environment = {
     variables.EDITOR = "nvim";
     systemPackages = with pkgs; [
+      (writeShellScriptBin "gamescope-session" ''
+        #!/bin/bash
+        gamescope --mangoapp -e -- steam -steamdeck -steamos3 &
+        GAMESCOPE_PID=$!
+
+        sleep 2
+
+        FINALIZED="I'm here" WAYLAND_DISPLAY=your_wayland_display uwsm finalize
+
+        wait $GAMESCOPE_PID
+      '')
       obsidian
-      mangohud
       nvd
       nix-output-monitor
       just

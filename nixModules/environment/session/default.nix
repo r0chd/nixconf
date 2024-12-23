@@ -3,7 +3,6 @@
   imports = [
     ./wayland
     ./x11
-    ./gaming
   ];
 
   config.programs.xwayland.enable = true;
@@ -12,7 +11,6 @@
     type = lib.types.enum [
       "X11"
       "Wayland"
-      "Gaming"
       "None"
     ];
     default = "None";

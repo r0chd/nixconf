@@ -76,12 +76,6 @@
         session = "X11";
       };
     };
-    Gaming.configuration = {
-      environment = {
-        etc."specialisation".text = "Gaming";
-        session = "Gaming";
-      };
-    };
   };
 
   systemd.services.activate-home-manager = lib.mkIf config.system.impermanence.enable {

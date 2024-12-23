@@ -7,6 +7,7 @@
 }:
 {
   imports = [
+    ./gaming
     ./environment
     ./programs
     ./gui
@@ -46,9 +47,6 @@
       };
       X11.configuration = {
         environment.session = "X11";
-      };
-      Gaming.configuration = {
-        environment.session = "Gaming";
       };
     };
   };
