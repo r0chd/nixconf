@@ -1,14 +1,27 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
   cfg = config.environment;
 in
 {
   config = lib.mkIf (cfg.session == "Gaming") {
-    environment.loginShellInit = ''
-      if uwsm check may-start && uwsm select; then
-          exec uwsm start default
-      fi
-    '';
+    environment = {
+      systemPackages = with pkgs; [
+        (writeShellScriptBin "steam-gamescope-run" ''
+          gamescope --steam --expose-wayland -- steam -tenfoot -pipewire-dmabuf &
+          uwsm finalize FINALIZED="I'm here" WAYLAND_DISPLAY
+        '')
+      ];
+      loginShellInit = ''
+        if uwsm check may-start && uwsm select; then
+            exec uwsm start default
+        fi
+      '';
+    };
 
     programs = {
       uwsm = {
@@ -17,6 +30,11 @@ in
           prettyName = "Hyprland";
           comment = "Compositor managed by UWSM";
           binPath = "/run/current-system/sw/bin/Hyprland";
+        };
+        waylandCompositors.gamescope = {
+          prettyName = "Gamescope";
+          comment = "Compositor managed by UWSM";
+          binPath = "/run/current-system/sw/bin/steam-gamescope-run";
         };
       };
       hyprland.enable = true;

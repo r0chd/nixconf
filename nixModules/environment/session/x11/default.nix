@@ -8,10 +8,10 @@ in
   config = lib.mkIf (cfg.session == "X11") {
     services = {
       xserver = {
-        enable = false;
+        enable = true;
         desktopManager.xterm.enable = lib.mkDefault false;
       };
-      displayManager.defaultSession = "none+${config.window-manager.name}";
+      displayManager.defaultSession = "none+i3";
     };
   };
 }

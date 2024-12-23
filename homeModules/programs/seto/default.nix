@@ -17,5 +17,6 @@ in
   home.packages = lib.mkIf cfg.enable [ pkgs.grim ];
   programs.seto = {
     package = inputs.seto.packages.${pkgs.system}.default;
+    font.size = lib.mkForce "20";
   };
 }
