@@ -5,7 +5,15 @@
     ./x11
   ];
 
-  config.programs.xwayland.enable = true;
+  config.services.libinput = {
+    enable = true;
+    mouse = {
+      accelProfile = "flat";
+    };
+    touchpad = {
+      accelProfile = "flat";
+    };
+  };
 
   options.environment.session = lib.mkOption {
     type = lib.types.enum [

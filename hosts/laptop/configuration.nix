@@ -98,14 +98,12 @@
   environment = {
     variables.EDITOR = "nvim";
     systemPackages = with pkgs; [
-      (writeShellScriptBin "gamescope-session" ''
+      (writeShellScriptBin "gamescope-session-uwsm" ''
         #!/bin/bash
-        gamescope --mangoapp -e -- steam -steamdeck -steamos3 &
+        gamescope --mangoapp -e --force-grab-cursor -- steam -steamdeck -steamos3 &
         GAMESCOPE_PID=$!
 
-        sleep 2
-
-        FINALIZED="I'm here" WAYLAND_DISPLAY=your_wayland_display uwsm finalize
+        FINALIZED="I'm here" WAYLAND_DISPLAY=gamescope-0 uwsm finalize
 
         wait $GAMESCOPE_PID
       '')

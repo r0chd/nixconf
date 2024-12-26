@@ -9,9 +9,10 @@ in
     services = {
       xserver = {
         enable = true;
-        desktopManager.xterm.enable = lib.mkDefault false;
       };
-      displayManager.defaultSession = "none+i3";
+      displayManager = {
+        enable = true;
+      };
     };
   };
 }

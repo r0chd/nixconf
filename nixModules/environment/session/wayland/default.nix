@@ -34,27 +34,30 @@ in
       wlr.enable = lib.mkForce true;
     };
 
-    programs.uwsm = {
-      enable = true;
-      waylandCompositors.Hyprland = {
-        prettyName = "Hyprland";
-        comment = "Compositor managed by UWSM";
-        binPath = "/run/current-system/sw/bin/Hyprland";
-      };
-      waylandCompositors.sway = {
-        prettyName = "Sway";
-        comment = "Compositor managed by UWSM";
-        binPath = "/run/current-system/sw/bin/sway";
-      };
-      waylandCompositors.niri = {
-        prettyName = "Niri";
-        comment = "Compositor managed by UWSM";
-        binPath = "/run/current-system/sw/bin/niri-session";
-      };
-      waylandCompositors.gamescope = {
-        prettyName = "Gamescope";
-        comment = "Compositor managed by UWSM";
-        binPath = "/run/current-system/sw/bin/gamescope-session";
+    programs = {
+      xwayland.enable = true;
+      uwsm = {
+        enable = true;
+        waylandCompositors.Hyprland = {
+          prettyName = "Hyprland";
+          comment = "Compositor managed by UWSM";
+          binPath = "/run/current-system/sw/bin/Hyprland";
+        };
+        waylandCompositors.sway = {
+          prettyName = "Sway";
+          comment = "Compositor managed by UWSM";
+          binPath = "/run/current-system/sw/bin/sway";
+        };
+        waylandCompositors.niri = {
+          prettyName = "Niri";
+          comment = "Compositor managed by UWSM";
+          binPath = "/run/current-system/sw/bin/niri-session";
+        };
+        waylandCompositors.gamescope = {
+          prettyName = "Gamescope";
+          comment = "Compositor managed by UWSM";
+          binPath = "/run/current-system/sw/bin/gamescope-session-uwsm";
+        };
       };
     };
   };

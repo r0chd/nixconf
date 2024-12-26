@@ -44,7 +44,7 @@ in
         };
 
         general = {
-          border_size = 2;
+          border_size = 1;
         };
 
         decoration = {

@@ -159,7 +159,7 @@ in
             "--"
             "bash"
             "-c"
-            "grim -g $(seto -r) - | wl-copy"
+            "grim -g \"$(seto -r)\" - | wl-copy"
           ];
 
           "Alt+G".action.spawn = [
