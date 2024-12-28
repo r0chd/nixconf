@@ -2,6 +2,5 @@
 {
   imports = [
     ./impermanence
-    ./virtualisation
   ];
 }

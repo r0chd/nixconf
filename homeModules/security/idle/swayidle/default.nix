@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.screenIdle;
+  cfg = config.environment.screenIdle;
 in
 {
   config = lib.mkIf (cfg.idle.enable && cfg.idle.program == "swayidle") {
@@ -18,7 +18,7 @@ in
             command = "${pkgs.${cfg.lockscreen.program}}/bin/${cfg.lockscreen.program}";
           }
         ]
-        ++ (lib.optional (config.notifications.enable) {
+        ++ (lib.optional (config.environment.notifications.enable) {
           timeout = cfg.idle.timeout.lock - 5;
           command = "${pkgs.libnotify}/bin/notify-send 'Locking screen in 5 seconds...' -t 5000";
         });

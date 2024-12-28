@@ -16,7 +16,7 @@
         adwaita-icon-theme
         lua-language-server
         alejandra
-        inputs.nixfmt.packages.${system}.default
+        nixfmt-rfc-style
         gcc
         stylua
       ];

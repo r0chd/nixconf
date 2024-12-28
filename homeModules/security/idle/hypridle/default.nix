@@ -1,6 +1,6 @@
 { lib, config, ... }:
 let
-  cfg = config.screenIdle;
+  cfg = config.environment.screenIdle;
 in
 {
   services.hypridle = lib.mkIf (cfg.idle.enable && cfg.idle.program == "hypridle") {

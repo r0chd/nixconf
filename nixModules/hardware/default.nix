@@ -7,7 +7,6 @@
   ];
 
   hardware = {
-    steam-hardware.enable = true;
     enableAllFirmware = true;
   };
 }

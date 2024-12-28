@@ -29,41 +29,71 @@
   gaming = {
     steam.enable = true;
     lutris.enable = true;
-    heroic.enable = true;
+    heroic.enable = false;
     minecraft.enable = true;
+    bottles.enable = false;
   };
 
-  environment.outputs = {
-    "eDP-1" = {
-      position = {
-        x = 0;
-        y = 0;
+  environment = {
+    outputs = {
+      "eDP-1" = {
+        position = {
+          x = 0;
+          y = 0;
+        };
+        refresh = 144.0;
+        dimensions = {
+          width = 1920;
+          height = 1080;
+        };
       };
-      refresh = 144.0;
-      dimensions = {
-        width = 1920;
-        height = 1080;
+      "HDMI-A-1" = {
+        position = {
+          x = 1920;
+          y = 0;
+        };
+        refresh = 60.0;
+        dimensions = {
+          width = 1920;
+          height = 1080;
+        };
       };
     };
-    "HDMI-A-1" = {
-      position = {
-        x = 1920;
-        y = 0;
-      };
-      refresh = 60.0;
-      dimensions = {
-        width = 1920;
-        height = 1080;
-      };
-    };
-  };
 
-  virtualisation.distrobox = {
-    enable = false;
-    images = {
-      archlinux = {
+    statusBar = {
+      enable = true;
+      program = "waystatus";
+    };
+    notifications = {
+      enable = true;
+      program = "mako";
+    };
+    screenIdle = {
+      lockscreen = {
         enable = true;
+        program = "hyprlock";
       };
+      idle = {
+        enable = true;
+        program = "swayidle";
+        timeout = {
+          lock = 300;
+          suspend = 1800;
+        };
+      };
+    };
+    launcher = {
+      enable = true;
+      program = "fuzzel";
+    };
+    terminal = {
+      enable = true;
+      program = "foot";
+    };
+    wallpaper = {
+      enable = true;
+      program = "ruin";
+      path = "nix";
     };
   };
 
@@ -72,7 +102,6 @@
   };
   editor = "nvim";
   email = "oskar.rochowiak@tutanota.com";
-  font = "JetBrainsMono Nerd Font";
   sops = {
     secrets = {
       aoc-session = { };
@@ -146,42 +175,6 @@
         "Documents"
       ];
     };
-  };
-
-  statusBar = {
-    enable = true;
-    program = "waystatus";
-  };
-  notifications = {
-    enable = true;
-    program = "mako";
-  };
-  screenIdle = {
-    lockscreen = {
-      enable = true;
-      program = "hyprlock";
-    };
-    idle = {
-      enable = true;
-      program = "swayidle";
-      timeout = {
-        lock = 300;
-        suspend = 1800;
-      };
-    };
-  };
-  launcher = {
-    enable = true;
-    program = "fuzzel";
-  };
-  terminal = {
-    enable = true;
-    program = "foot";
-  };
-  wallpaper = {
-    enable = true;
-    program = "ruin";
-    path = "nix";
   };
 
 }

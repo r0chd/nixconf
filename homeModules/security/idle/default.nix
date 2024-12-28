@@ -5,7 +5,7 @@
     ./swayidle
   ];
 
-  options.screenIdle.idle = {
+  options.environment.screenIdle.idle = {
     enable = lib.mkEnableOption "Idle daemon";
     program = lib.mkOption {
       type = lib.types.enum [

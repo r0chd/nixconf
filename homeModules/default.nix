@@ -10,7 +10,6 @@
     ./gaming
     ./environment
     ./programs
-    ./gui
     ./security
     ./network
     ./system
@@ -19,7 +18,6 @@
   ];
 
   options = {
-    font = lib.mkOption { type = lib.types.str; };
     email = lib.mkOption { type = lib.types.str; };
   };
 

@@ -97,33 +97,33 @@ in
             ];
           }
           {
-            command = lib.mkIf config.statusBar.enable [
+            command = lib.mkIf cfg.statusBar.enable [
               "uwsm"
               "app"
-              "${config.statusBar.program}"
+              "${cfg.statusBar.program}"
             ];
           }
           {
-            command = lib.mkIf config.terminal.enable [
+            command = lib.mkIf cfg.terminal.enable [
               "uwsm"
               "app"
-              "${config.terminal.program}"
+              "${cfg.terminal.program}"
             ];
           }
           {
-            command = lib.mkIf config.notifications.enable [
+            command = lib.mkIf cfg.notifications.enable [
               "uwsm"
               "app"
-              "${config.notifications.program}"
+              "${cfg.notifications.program}"
             ];
           }
           {
-            command = lib.mkIf config.wallpaper.enable [
+            command = lib.mkIf cfg.wallpaper.enable [
               "uwsm"
               "app"
               "--"
-              "${config.wallpaper.program}"
-              "${config.wallpaper.path}"
+              "${cfg.wallpaper.program}"
+              "${cfg.wallpaper.path}"
             ];
           }
         ];
@@ -157,8 +157,6 @@ in
             "uwsm"
             "app"
             "--"
-            "bash"
-            "-c"
             "grim -g \"$(seto -r)\" - | wl-copy"
           ];
 
@@ -174,13 +172,13 @@ in
           "Alt+Shift+Return".action.spawn = [
             "uwsm"
             "app"
-            "${config.terminal.program}"
+            "${cfg.terminal.program}"
           ];
 
           "Alt+S".action.spawn = [
             "uwsm"
             "app"
-            "${config.launcher.program}"
+            "${cfg.launcher.program}"
           ];
 
           "Alt+0".action.focus-workspace = 10;

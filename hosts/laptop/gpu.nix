@@ -1,14 +1,15 @@
 { config, ... }:
 {
   hardware = {
-    steam-hardware.enable = true;
-
     nvidia = {
       modesetting.enable = true;
       powerManagement = {
         enable = true;
         finegrained = true;
       };
+
+      dynamicBoost.enable = true;
+      forceFullCompositionPipeline = true;
 
       open = true;
       nvidiaSettings = true;

@@ -2,7 +2,7 @@
 {
   imports = [
     ./bootloader
-    ./virtualization
+    ./virtualisation
     ./impermanence
     ./ydotool
     ./gc

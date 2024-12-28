@@ -13,16 +13,25 @@ in
     ./heroic
     ./lutris
     ./minecraft
+    ./bottles
   ];
 
   home.packages =
     with pkgs;
-    lib.mkIf (cfg.steam.enable || cfg.heroic.enable || cfg.lutris.enable || cfg.minecraft.enable) [
-      protonup
-      gamescope
-      mangohud
-      (writeShellScriptBin "steamos-session-select" ''
-        steam -shutdown
-      '')
-    ];
+    lib.mkIf
+      (
+        cfg.steam.enable
+        || cfg.heroic.enable
+        || cfg.lutris.enable
+        || cfg.minecraft.enable
+        || cfg.bottles.enable
+      )
+      [
+        protonup
+        gamescope
+        mangohud
+        (writeShellScriptBin "steamos-session-select" ''
+          steam -shutdown
+        '')
+      ];
 }

@@ -5,8 +5,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
 
-    nixfmt.url = "github:NixOS/nixfmt";
-
     stylix.url = "github:danth/stylix";
 
     home-manager = {

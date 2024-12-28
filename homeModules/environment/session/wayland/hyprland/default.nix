@@ -93,9 +93,9 @@ in
 
         exec-once =
           [ ]
-          ++ (lib.optional (config.statusBar.enable) "uwsm app ${config.statusBar.program}")
-          ++ (lib.optional (config.terminal.enable) "uwsm app ${config.terminal.program}")
-          ++ lib.optional (config.wallpaper.enable) "uwsm app -- ${config.wallpaper.program} ${config.wallpaper.path}";
+          ++ (lib.optional (cfg.statusBar.enable) "uwsm app ${cfg.statusBar.program}")
+          ++ (lib.optional (cfg.terminal.enable) "uwsm app ${cfg.terminal.program}")
+          ++ lib.optional (cfg.wallpaper.enable) "uwsm app -- ${cfg.wallpaper.program} ${cfg.wallpaper.path}";
 
         bind =
           [
@@ -113,9 +113,14 @@ in
             "$mainMod SHIFT, L, movewindow, mon:+1"
 
             "$mainMod, left, movefocus, l"
-            "$mainMod, top, movefocus, t"
+            "$mainMod, up, movefocus, u"
             "$mainMod, right, movefocus, r"
-            "$mainMod, bottom, movefocus, b"
+            "$mainMod, down, movefocus, d"
+
+            "$mainMod SHIFT, left, movewindow, l"
+            "$mainMod SHIFT, up, movewindow, u"
+            "$mainMod SHIFT, right, movewindow, r"
+            "$mainMod SHIFT, down, movewindow, d"
 
             # Switch workspaces with mainMod + [0-9]
             "$mainMod, 1, workspace, 1"
@@ -152,10 +157,10 @@ in
             ", XF86AudioRaiseVolume, exec, pamixer -i 5"
             ", XF86AudioLowerVolume, exec, pamixer -d 5"
           ]
-          ++ (lib.optional (config.terminal.enable) "$mainMod SHIFT, RETURN, exec, uwsm app ${config.terminal.program}")
+          ++ (lib.optional (cfg.terminal.enable) "$mainMod SHIFT, RETURN, exec, uwsm app ${cfg.terminal.program}")
           ++ (lib.optional config.programs.seto.enable '', Print, exec, uwsm app -- grim -g "$(seto -r)" - | wl-copy -t image/png'')
           ++ (lib.optional (config.programs.seto.enable) "$mainMod, G, exec, click")
-          ++ (lib.optional (config.launcher.enable) "$mainMod, S, exec, uwsm app ${config.launcher.program}");
+          ++ (lib.optional (cfg.launcher.enable) "$mainMod, S, exec, uwsm app ${cfg.launcher.program}");
 
         bindm = [
           # Move/resize windows with mainMod + LMB/RMB and dragging

@@ -21,13 +21,22 @@
     polarity = "dark";
   };
 
+  virtualisation = {
+    waydroid.enable = true;
+    virt-manager.enable = true;
+    distrobox = {
+      enable = false;
+      images = {
+        archlinux = {
+          enable = true;
+        };
+      };
+    };
+  };
+
   system = {
     fileSystem = "btrfs";
     bootloader = "lanzaboote";
-    virtualisation = {
-      virt-manager.enable = true;
-      distrobox.enable = true;
-    };
     ydotool.enable = true;
     impermanence = {
       enable = true;
