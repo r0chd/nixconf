@@ -3,7 +3,7 @@ let
   cfg = config.environment.screenIdle;
 in
 {
-  services.hypridle = lib.mkIf (cfg.idle.enable && cfg.idle.program == "hypridle") {
+  services.hypridle = lib.mkIf (cfg.idle.enable && cfg.idle.variant == "hypridle") {
     enable = true;
     settings = {
       general = {

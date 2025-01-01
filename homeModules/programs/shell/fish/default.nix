@@ -1,37 +1,14 @@
 {
-  config,
   lib,
   shell,
   ...
 }:
-with config.lib.stylix.colors.withHashtag;
-with config.stylix.fonts;
 {
   config = lib.mkIf (shell == "fish") {
     impermanence.persist.directories = [ ".local/share/fish" ];
     programs.fish = {
       enable = true;
       functions = {
-        fish_mode_prompt = {
-          body = ''
-            switch $fish_bind_mode
-              case default
-                echo -en "\e[2 q"
-                set_color -o '${base08}'
-                echo " [N]"
-              case insert
-                echo -en "\e[6 q"
-                set_color -o '${base0B}'
-                echo " [I]"
-              end
-              set_color normal
-          '';
-        };
-        fish_prompt = {
-          body = ''
-            echo -s ' '(set_color '${base0D}' --bold)(basename (prompt_pwd)) (set_color '${base0D}' --bold) (fish_git_prompt " git:("(set_color FAB387 --bold)"%s"(set_color '${base0D}' --bold)")") (set_color '${base0E}' --bold)'  '
-          '';
-        };
         fish_vi_on_paging = {
           body = ''
             commandline -f complete

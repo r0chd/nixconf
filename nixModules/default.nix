@@ -63,6 +63,12 @@
     ];
   };
 
+  environment.systemPackages = with pkgs; [
+    nvd
+    nix-output-monitor
+    just
+  ];
+
   specialisation = {
     Wayland.configuration = {
       environment = {

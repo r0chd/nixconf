@@ -8,11 +8,20 @@ let
   cfg = config.programs.discord;
 in
 {
-  options.programs.discord.enable = lib.mkEnableOption "discord";
+  options.programs.discord = {
+    enable = lib.mkEnableOption "discord";
+    package = lib.mkOption {
+      type = lib.types.package;
+      default = pkgs.discord;
+    };
+  };
 
-  config = lib.mkIf config.programs.discord.enable {
-    home.packages = with pkgs; [ discord-canary ];
+  config = lib.mkIf cfg.enable {
+    home.packages = [ cfg.package ];
 
-    impermanence.persist.directories = [ ".config/discordcanary" ];
+    impermanence.persist.directories = [
+      ".config/discordcanary"
+      ".config/discord"
+    ];
   };
 }

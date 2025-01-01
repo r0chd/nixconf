@@ -3,7 +3,7 @@ let
   cfg = config.system.bootloader;
 in
 {
-  boot.loader.grub = lib.mkIf (cfg == "grub") {
+  boot.loader.grub = lib.mkIf (cfg.variant == "grub") {
     enable = true;
     device = "nodev";
     efiSupport = true;

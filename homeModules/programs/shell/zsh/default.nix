@@ -37,50 +37,6 @@ with config.stylix.fonts;
 
         bindkey '^[[A' history-search-backward
         bindkey '^[[B' history-search-forward
-
-        # -------------------------------------- PS1 -------------------------------------- #
-
-        _git_branch() {
-          local branch
-          branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-          if [[ -n "$branch" ]]; then
-              echo "%F{${base0D}}git:(%f%F{#FAB387}$branch%f%F{${base0D}})%f "
-          fi
-        }
-
-        _current_dir() {
-          local dir
-          if [[ "$PWD" == "$HOME" ]]; then
-              dir="~"
-          else
-            dir=$(basename $PWD)
-          fi
-          echo "%F{${base0D}}''${dir}%f"
-        }
-
-        _vi_mode() {
-          case ''${KEYMAP} in
-              (vicmd)
-                  printf "\033[2 q"
-                  echo "%F{${base08}}[N]%f"
-              ;;
-              (*)
-                  printf "\033[6 q"
-                  echo "%F{${base0B}}[I]%f"
-              ;;
-          esac
-        }
-
-        function zle-line-init zle-keymap-select () {
-          PS1=" $(_vi_mode) $(_current_dir) $(_git_branch)%F{#${base0E}}%f "
-
-          zle reset-prompt
-        }
-
-        zle -N zle-keymap-select
-        zle -N zle-line-init
-
-        bindkey -v
       '';
       zplug = {
         enable = true;

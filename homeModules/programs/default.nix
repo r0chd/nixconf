@@ -15,5 +15,6 @@
     ./obs
     ./keepassxc
     ./browser
+    ./starship
   ];
 }

@@ -59,7 +59,7 @@ in
     };
 
     security.pam = {
-      sshAgentAuth.enable = false; # TODO: its borked rn
+      sshAgentAuth.enable = true;
       u2f = lib.mkIf cfg.rootAuth {
         enable = true;
         settings = {

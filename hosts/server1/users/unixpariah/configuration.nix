@@ -5,100 +5,14 @@
 }:
 {
   programs = {
-    starship.enable = true;
     man.enable = true;
     bat.enable = true;
     zoxide.enable = true;
     lsd.enable = true;
     direnv.enable = true;
     nix-index.enable = true;
-    seto.enable = true;
     tmux.enable = true;
     btop.enable = true;
-    obs-studio.enable = true;
-    discord = {
-      enable = true;
-      package = pkgs.discord-canary;
-    };
-    browser = {
-      enable = true;
-      variant = "zen";
-    };
-    keepassxc = {
-      enable = true;
-      database.files = [ "Passwords.kdbx" ];
-    };
-  };
-
-  gaming = {
-    steam.enable = true;
-    lutris.enable = true;
-    heroic.enable = false;
-    minecraft.enable = true;
-    bottles.enable = false;
-  };
-
-  environment = {
-    outputs = {
-      "eDP-1" = {
-        position = {
-          x = 0;
-          y = 0;
-        };
-        refresh = 144.0;
-        dimensions = {
-          width = 1920;
-          height = 1080;
-        };
-      };
-      "HDMI-A-1" = {
-        position = {
-          x = 1920;
-          y = 0;
-        };
-        refresh = 60.0;
-        dimensions = {
-          width = 1920;
-          height = 1080;
-        };
-      };
-    };
-
-    statusBar = {
-      enable = true;
-      program = "waystatus";
-    };
-    notifications = {
-      enable = true;
-      program = "mako";
-    };
-    screenIdle = {
-      lockscreen = {
-        enable = true;
-        program = "hyprlock";
-      };
-      idle = {
-        enable = true;
-        variant = "hypridle";
-        timeout = {
-          lock = 300;
-          suspend = 1800;
-        };
-      };
-    };
-    launcher = {
-      enable = true;
-      program = "fuzzel";
-    };
-    terminal = {
-      enable = true;
-      program = "foot";
-    };
-    wallpaper = {
-      enable = true;
-      program = "ruin";
-      path = "nix";
-    };
   };
 
   services.yubikey-touch-detector = {
@@ -121,6 +35,7 @@
 
   stylix = {
     enable = true;
+    targets.fish.enable = false;
     cursor = {
       name = "Banana";
       package = pkgs.banana-cursor;
@@ -155,17 +70,8 @@
   };
 
   home.packages = with pkgs; [
-    zathura
-    mpv
-    ani-cli
-    libreoffice
     lazygit
-    brightnessctl
     unzip
-    gimp
-    spotify
-    imagemagick
-    pkgs-stable.wf-recorder
   ];
 
   impermanence = {
@@ -173,9 +79,6 @@
     persist = {
       directories = [
         "workspace"
-        "Images"
-        "Videos"
-        "Documents"
       ];
     };
   };

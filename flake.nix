@@ -137,6 +137,15 @@
             };
           };
         };
+        server1 = {
+          arch = "x86_64-linux";
+          users = {
+            unixpariah = {
+              root.enable = true;
+              shell = "zsh";
+            };
+          };
+        };
       };
     in
     with nixpkgs;

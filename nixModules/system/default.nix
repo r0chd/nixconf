@@ -6,6 +6,7 @@
     ./impermanence
     ./ydotool
     ./gc
+    ./displayManager
   ];
 
   options.system.fileSystem = lib.mkOption {

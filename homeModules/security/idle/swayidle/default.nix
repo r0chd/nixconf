@@ -8,7 +8,7 @@ let
   cfg = config.environment.screenIdle;
 in
 {
-  config = lib.mkIf (cfg.idle.enable && cfg.idle.program == "swayidle") {
+  config = lib.mkIf (cfg.idle.enable && cfg.idle.variant == "swayidle") {
     services.swayidle = {
       enable = true;
       timeouts =

@@ -1,13 +1,11 @@
 {
   pkgs,
   inputs,
-  config,
   ...
 }:
 {
   imports = [
     ./disko.nix
-    ./gpu.nix
     ./hardware-configuration.nix
   ];
 
@@ -20,9 +18,6 @@
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
     polarity = "dark";
   };
-
-  security.pam.services.swaylock = { };
-  security.pam.services.hyprlock = { };
 
   virtualisation = {
     waydroid.enable = true;
@@ -40,13 +35,8 @@
   system = {
     fileSystem = "btrfs";
     bootloader = {
-      variant = "lanzaboote";
+      variant = "systemd-boot";
       silent = true;
-    };
-    ydotool.enable = true;
-    displayManager = {
-      enable = true;
-      variant = "greetd";
     };
     impermanence = {
       enable = true;
@@ -65,34 +55,11 @@
     };
   };
 
-  security = {
-    yubikey = {
-      enable = true;
-      rootAuth = true;
-      unplug = {
-        enable = true;
-        action = "${pkgs.hyprlock}/bin/hyprlock";
-      };
+  security.root = {
+    auth = {
+      passwordless = true;
     };
-    root = {
-      auth = {
-        passwordless = true;
-        rootPw = true;
-      };
-      timeout = 0;
-    };
-  };
-
-  hardware = {
-    power-management = {
-      enable = true;
-      thresh = {
-        start = 40;
-        stop = 80;
-      };
-    };
-    audio.enable = true;
-    bluetooth.enable = true;
+    timeout = 0;
   };
 
   network = {
@@ -101,18 +68,6 @@
   };
 
   zramSwap.enable = true;
-
-  services.protonvpn = {
-    enable = false;
-    interface = {
-      privateKeyFile = config.sops.secrets.wireguard-key.path;
-      ip = "10.2.0.2/32";
-    };
-    endpoint = {
-      publicKey = "dldo97jXTUvjEQqaAx3pHy4lKFSxcmZYDCGFvvDOIGQ=";
-      ip = "149.34.244.179";
-    };
-  };
 
   environment = {
     variables.EDITOR = "nvim";

@@ -22,6 +22,9 @@
   };
 
   config = {
+    services.hyprpaper.enable = lib.mkForce false; # TODO: Remove these once wallpaper is optionalized in stylix
+    stylix.targets.hyprpaper.enable = lib.mkForce false;
+
     programs.home-manager.enable = true;
     home = {
       sessionVariables.HOME_MANAGER_BACKUP_EXT = "bak";
