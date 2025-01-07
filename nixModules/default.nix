@@ -18,16 +18,11 @@
 
   boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
-  # Enables all required shells
-  programs =
-    (builtins.attrValues systemUsers)
-    |> builtins.foldl' (
-      acc: user:
-      acc
-      // {
-        ${user.shell}.enable = true;
-      }
-    ) { nano.enable = lib.mkDefault false; };
+  programs = {
+    fish.enable = true;
+    zsh.enable = true;
+    nano.enable = lib.mkDefault false;
+  };
 
   users = {
     mutableUsers = false;
@@ -36,6 +31,7 @@
         root = {
           isNormalUser = false;
           hashedPasswordFile = config.sops.secrets.password.path;
+          extraGroups = [ "wheel" ];
         };
       }
       // lib.mapAttrs (name: value: {
@@ -53,21 +49,24 @@
       "pipe-operators"
     ];
     auto-optimise-store = true;
-    substituters = [ "https://nix-community.cachix.org" ];
+    substituters = [
+      "https://nix-community.cachix.org"
+      "https://cache.nixos.org/"
+    ];
     trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
-    trusted-users = [
-      "root"
-      "@wheel"
-    ];
+    trusted-users = [ "@wheel" ];
+    allowed-users = [ "@wheel" ];
   };
 
-  environment.systemPackages = with pkgs; [
-    nvd
-    nix-output-monitor
-    just
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+      nvd
+      nix-output-monitor
+      just
+    ];
+  };
 
   specialisation = {
     Wayland.configuration = {
@@ -95,16 +94,15 @@
     };
     environment = {
       PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}:${pkgs.sudo}/bin:${pkgs.coreutils}/bin:$PATH";
-      HOME_MANAGER_BACKUP_EXT = "bak";
     };
     script =
       lib.attrNames systemUsers
       |> lib.concatMapStrings (user: ''
         if [ ! -d "/persist/home/${user}/.cache/home-generations/result" ]; then
-            nix build "/var/lib/nixconf#homeConfigurations.${user}@${hostname}.config.home.activationPackage" --log-format internal-json --verbose --out-link /persist/home/${user}/.cache/home-generations/result
+            HOME_MANAGER_BACKUP_EXT="bak" nix build "/var/lib/nixconf#homeConfigurations.${user}@${hostname}.config.home.activationPackage" --log-format internal-json --verbose --out-link /persist/home/${user}/.cache/home-generations/result
         fi
 
-        specialisation_path=$(cat /etc/specialisation > /dev/null 2>&1 && echo /result/specialisation/$(cat /etc/specialisation) || echo /result/)
+        HOME_MANAGER_BACKUP_EXT="bak" specialisation_path=$(cat /etc/specialisation > /dev/null 2>&1 && echo /result/specialisation/$(cat /etc/specialisation) || echo /result/)
 
         chown -R ${user}:users /home/${user}/.ssh
         sudo -u ${user} /persist/home/${user}/.cache/home-generations/$specialisation_path/activate

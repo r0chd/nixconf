@@ -86,13 +86,15 @@ in
             "XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
             "XF86AudioRaiseVolume" = "exec pamixer -i 5";
             "XF86AudioLowerVolume" = "exec pamixer -d 5";
+
+            "${modifier}+q" = "exec uwsm stop";
           }
           // lib.optionalAttrs config.programs.seto.enable {
             "Print" = ''exec uwsm app -- grim -g "$(seto -r)" - | wl-copy -t image/png'';
           }
           // lib.optionalAttrs config.programs.seto.enable {
             "${modifier}+g" =
-              ''exec "uwsm app -- ydotool mousemove -a $(seto -f "%x %y") && ydotool click 0xC0"'';
+              ''exec uwsm app -- ydotool mousemove -a "$(seto -f "%x %y")" && ydotool click 0xC0'';
           }
           // lib.optionalAttrs (cfg.terminal.enable) {
             "${modifier}+Shift+Return" = "exec uwsm app ${cfg.terminal.program}";

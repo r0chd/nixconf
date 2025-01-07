@@ -7,6 +7,7 @@ in
     impermanence.persist.directories = [
       ".local/share/zoxide"
     ];
+
     programs.zoxide = {
       options = [ "--cmd cd" ];
     };

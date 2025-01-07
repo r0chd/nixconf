@@ -13,6 +13,8 @@ in
 
   config = lib.mkIf cfg.enable {
     networking = {
+      firewall.enable = true;
+
       wireless.iwd = {
         enable = true;
       };
@@ -30,5 +32,24 @@ in
     ];
 
     system.impermanence.persist.directories = [ "/var/lib/iwd" ];
+
+    systemd.services.iwd = {
+      serviceConfig = {
+        NoNewPrivileges = true;
+        ProtectClock = true;
+        ProtectKernelLogs = true;
+        ProtectControlGroups = true;
+        ProtectKernelModules = true;
+        SystemCallArchitectures = "native";
+        MemoryDenyWriteExecute = true;
+        ProtectProc = "invisible";
+        ProcSubset = "pid";
+        RestrictNamespaces = true;
+        ProtectKernelTunables = true;
+        ProtectHome = true;
+        PrivateTmp = true;
+        UMask = "0077";
+      };
+    };
   };
 }

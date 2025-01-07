@@ -9,8 +9,6 @@ let
   cfg = config.programs.tmux;
 in
 {
-  options.tmux.enable = lib.mkEnableOption "Enable tmux";
-
   config = lib.mkIf cfg.enable {
     programs.tmux = {
       aggressiveResize = true;

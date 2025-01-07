@@ -5,7 +5,6 @@ in
 {
   options.security.root = {
     auth = {
-      passwordless = lib.mkEnableOption "Passwordless root";
       rootPw = lib.mkEnableOption "Root password";
     };
     timeout = lib.mkOption {
@@ -16,6 +15,7 @@ in
 
   config = {
     security.sudo = {
+      enable = true;
       execWheelOnly = true;
       extraConfig =
         ''
@@ -24,12 +24,6 @@ in
         + lib.optionalString (cfg.auth.rootPw) ''
           Defaults rootpw
         '';
-    };
-
-    users.users.root = {
-      isNormalUser = false;
-      hashedPassword = lib.mkIf (cfg.auth.passwordless) " ";
-      hashedPasswordFile = lib.mkIf (!cfg.auth.passwordless) config.sops.secrets.password;
     };
   };
 }

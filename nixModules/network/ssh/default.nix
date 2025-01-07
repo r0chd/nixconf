@@ -16,10 +16,18 @@ in
   config = lib.mkIf cfg.enable {
     services.openssh = {
       enable = true;
+      allowSFTP = false;
       settings = {
         PasswordAuthentication = false;
-        KbdInteractiveAuthentication = false;
+        ChallengeResponseAuthentication = false;
       };
+      extraConfig = ''
+        AllowTcpForwarding yes
+        X11Forwarding no
+        AllowAgentForwarding no
+        AllowStreamLocalForwarding no
+        AuthenticationMethods publickey
+      '';
     };
 
     users.users = lib.genAttrs (builtins.attrNames systemUsers) (

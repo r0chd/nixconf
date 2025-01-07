@@ -44,7 +44,6 @@
         directories = [
           "/var/log"
           "/var/lib/nixos"
-          "/var/lib/systemd/coredump"
         ];
         files = [ ];
       };
@@ -56,9 +55,7 @@
   };
 
   security.root = {
-    auth = {
-      passwordless = true;
-    };
+    auth.passwordless = true;
     timeout = 0;
   };
 

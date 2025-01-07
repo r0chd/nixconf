@@ -8,10 +8,16 @@ let
   cfg = config.gaming.minecraft;
 in
 {
-  options.gaming.minecraft.enable = lib.mkEnableOption "Enable minecraft";
+  options.gaming.minecraft = {
+    enable = lib.mkEnableOption "Enable minecraft";
+    package = lib.mkOption {
+      type = lib.types.package;
+      default = pkgs.prismlauncher;
+    };
+  };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ pkgs.prismlauncher ];
+    home.packages = [ cfg.package ];
 
     impermanence.persist.directories = [
       ".local/share/PrismLauncher"

@@ -34,6 +34,12 @@ in
       before = [ "systemd-user-sessions.service" ];
       serviceConfig = {
         Type = "oneshot";
+        #ProtectHome = "yes";
+        ProtectSystem = "yes";
+        NoNewPrivileges = "yes";
+        ProtectKernelLogs = "yes";
+        ProtectKernelModules = "yes";
+        ProtectKernelTunables = "yes";
       };
       environment = {
         PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}:${pkgs.sudo}/bin:${pkgs.coreutils}/bin:$PATH";

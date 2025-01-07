@@ -28,6 +28,11 @@ in
           wait $GAMESCOPE_PID
         '')
       ];
+      loginShellInit = lib.mkIf (!config.system.displayManager.enable || config.specialisation != { }) ''
+        if uwsm check may-start && uwsm select; then
+            exec uwsm start default
+        fi
+      '';
       variables = {
         __GL_GSYNC_ALLOWED = "1";
         __GL_VRR_ALLOWED = "0";

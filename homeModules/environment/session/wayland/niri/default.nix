@@ -13,7 +13,6 @@ in
 
   config = lib.mkIf (cfg.session == "Wayland") {
     home.packages = with pkgs; [ xwayland-satellite ];
-    nixpkgs.overlays = [ inputs.niri.overlays.niri ];
     programs.niri = {
       enable = true;
       settings = {
@@ -166,7 +165,12 @@ in
             "--"
             "bash"
             "-c"
-            "ydotool mousemove -a $(seto -f $'%x %y') && ydotool click 0xC0"
+            "ydotool mousemove -a $(seto -f $'%X %Y') && ydotool click 0xC0"
+          ];
+
+          "Alt+Q".action.spawn = [
+            "uwsm"
+            "stop"
           ];
 
           "Alt+Shift+Return".action.spawn = [

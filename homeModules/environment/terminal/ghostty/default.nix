@@ -17,6 +17,7 @@ in
         font-family = "JetBrainsMono Nerd Font Mono"
 
         window-decoration = false
+        gtk-adwaita = false
 
         background-opacity = 0.0
         background = #000000

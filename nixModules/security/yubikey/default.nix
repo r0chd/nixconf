@@ -37,7 +37,7 @@ in
     };
 
     environment.systemPackages = with pkgs; [
-      yubioath-flutter
+      #yubioath-flutter
       yubikey-manager
       pam_u2f
     ];
@@ -59,7 +59,7 @@ in
     };
 
     security.pam = {
-      sshAgentAuth.enable = true;
+      sshAgentAuth.enable = false; # TODO: jesus christ everything is broken
       u2f = lib.mkIf cfg.rootAuth {
         enable = true;
         settings = {

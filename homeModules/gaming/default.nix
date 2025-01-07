@@ -30,8 +30,5 @@ in
         protonup
         gamescope
         mangohud
-        (writeShellScriptBin "steamos-session-select" ''
-          steam -shutdown
-        '')
       ];
 }

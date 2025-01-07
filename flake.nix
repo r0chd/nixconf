@@ -2,38 +2,46 @@
   description = "My nixconfig";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
 
-    stylix.url = "github:danth/stylix";
+    nixpkgs-wayland = {
+      url = "github:nix-community/nixpkgs-wayland";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
+    stylix = {
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     disko = {
       url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     impermanence.url = "github:nix-community/impermanence";
 
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     ghostty = {
       url = "git+ssh://git@github.com/ghostty-org/ghostty";
-      inputs.nixpkgs-stable.follows = "nixpkgs";
-      inputs.nixpkgs-unstable.follows = "nixpkgs";
+      inputs.nixpkgs-stable.follows = "nixpkgs-unstable";
+      inputs.nixpkgs-unstable.follows = "nixpkgs-unstable";
     };
 
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.1";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     zls.url = "github:zigtools/zls";
@@ -54,7 +62,7 @@
   outputs =
     {
       nixpkgs-stable,
-      nixpkgs,
+      nixpkgs-unstable,
       flake-utils,
       ...
     }@inputs:
@@ -62,22 +70,17 @@
       mkHost =
         hostname: attrs:
         let
-          pkgs = import nixpkgs {
-            system = attrs.arch;
-            config.allowUnfree = true;
-          };
-          pkgs-stable = import nixpkgs-stable {
+          pkgs = import nixpkgs-unstable {
             system = attrs.arch;
             config.allowUnfree = true;
           };
         in
-        nixpkgs.lib.nixosSystem {
+        nixpkgs-unstable.lib.nixosSystem {
+          inherit pkgs;
           specialArgs = rec {
             inherit
               inputs
               hostname
-              pkgs
-              pkgs-stable
               ;
             systemUsers = attrs.users;
             std = import ./std {
@@ -90,26 +93,23 @@
             inputs.disko.nixosModules.default
             inputs.stylix.nixosModules.stylix
           ];
+
         };
 
       mkHome =
         host: user:
         let
-          pkgs = import nixpkgs {
+          pkgs = import nixpkgs-unstable {
             system = hosts.${host}.arch;
             config.allowUnfree = true;
           };
-          pkgs-stable = import nixpkgs-stable {
-            system = hosts.${host}.arch;
-            config.allowUnfree = true;
-          };
+          pkgs-stable = import nixpkgs-stable { system = hosts.${host}.arch; };
         in
         inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = {
             inherit
               inputs
-              pkgs
               pkgs-stable
               ;
             std = import ./std {
@@ -148,7 +148,7 @@
         };
       };
     in
-    with nixpkgs;
+    with nixpkgs-unstable;
     {
       nixosConfigurations = hosts |> lib.mapAttrs (hostname: attrs: mkHost hostname attrs);
       homeConfigurations =

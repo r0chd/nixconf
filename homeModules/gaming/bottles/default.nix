@@ -8,9 +8,15 @@ let
   cfg = config.gaming.bottles;
 in
 {
-  options.gaming.bottles.enable = lib.mkEnableOption "Enable bottles";
+  options.gaming.bottles = {
+    enable = lib.mkEnableOption "Enable heroic launcher";
+    package = lib.mkOption {
+      type = lib.types.package;
+      default = pkgs.bottles;
+    };
+  };
 
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ bottles ];
+    home.packages = [ cfg.package ];
   };
 }

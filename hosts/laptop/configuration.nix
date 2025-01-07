@@ -21,9 +21,6 @@
     polarity = "dark";
   };
 
-  security.pam.services.swaylock = { };
-  security.pam.services.hyprlock = { };
-
   virtualisation = {
     waydroid.enable = true;
     virt-manager.enable = true;
@@ -54,7 +51,6 @@
         directories = [
           "/var/log"
           "/var/lib/nixos"
-          "/var/lib/systemd/coredump"
         ];
         files = [ ];
       };
@@ -75,12 +71,10 @@
       };
     };
     root = {
-      auth = {
-        passwordless = true;
-        rootPw = true;
-      };
+      auth.rootPw = true;
       timeout = 0;
     };
+    antivirus.enable = true;
   };
 
   hardware = {

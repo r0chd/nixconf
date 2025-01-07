@@ -34,8 +34,8 @@
     steam.enable = true;
     lutris.enable = true;
     heroic.enable = false;
-    minecraft.enable = true;
-    bottles.enable = false;
+    bottles.enable = true;
+    minecraft.enable = false;
   };
 
   environment = {
@@ -163,7 +163,6 @@
     brightnessctl
     unzip
     gimp
-    spotify
     imagemagick
     pkgs-stable.wf-recorder
   ];

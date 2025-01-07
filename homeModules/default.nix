@@ -22,6 +22,28 @@
   };
 
   config = {
+    #nixpkgs.overlays = [
+    #  (final: prev: {
+    #    libuv = prev.libuv.overrideAttrs (old: {
+    #      postPatch =
+    #        (old.postPatch or "")
+    #        + ''
+    #          sed '/fs_utime_round/d' -i test/test-list.h
+    #        '';
+    #    });
+    #  })
+    #  (self: super: {
+    #    isl = super.isl.overrideAttrs (oldAttrs: {
+    #      src = super.fetchurl {
+    #        urls = [
+    #          "https://gcc.gnu.org/pub/gcc/infrastructure/isl-0.20.tar.xz"
+    #        ];
+    #        sha256 = oldAttrs.src.sha256;
+    #      };
+    #    });
+    #  })
+    #];
+
     services.hyprpaper.enable = lib.mkForce false; # TODO: Remove these once wallpaper is optionalized in stylix
     stylix.targets.hyprpaper.enable = lib.mkForce false;
 

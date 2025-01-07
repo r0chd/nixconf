@@ -156,6 +156,8 @@ in
 
             ", XF86AudioRaiseVolume, exec, pamixer -i 5"
             ", XF86AudioLowerVolume, exec, pamixer -d 5"
+
+            "$mainMod, q, exec, uwsm stop"
           ]
           ++ (lib.optional (cfg.terminal.enable) "$mainMod SHIFT, RETURN, exec, uwsm app ${cfg.terminal.program}")
           ++ (lib.optional config.programs.seto.enable '', Print, exec, uwsm app -- grim -g "$(seto -r)" - | wl-copy -t image/png'')

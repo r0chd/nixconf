@@ -11,7 +11,8 @@ in
         "alt+c" = "copy_to_clipboard";
       };
       settings = {
-        "confirm_os_window_close" = 0;
+        confirm_os_window_close = 0;
+        cursor_trail = 3;
       };
     };
   };
