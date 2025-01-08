@@ -1,4 +1,9 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
   cfg = config.environment.screenIdle;
 in
@@ -9,16 +14,21 @@ in
       general = {
         ignore_dbus_inhibit = true;
       };
-      listener = [
-        {
-          timeout = 300;
-          on-timeout = "${cfg.lockscreen.program}";
+      listener =
+        [
+        ]
+        ++ lib.optional (cfg.idle.timeout.lock != null) {
+          timeout = cfg.idle.timeout.lock;
+          on-timeout = "${pkgs.${cfg.lockscreen.program}}/bin/${cfg.lockscreen.program}";
         }
-        {
-          timeout = 1800;
+        ++ lib.optional (cfg.idle.timeout.suspend != null) {
+          timeout = cfg.idle.timeout.suspend;
           on-timeout = "systemctl suspend";
         }
-      ];
+        ++ lib.optional config.environment.notifications.enable {
+          timeout = cfg.idle.timeout.lock - 5;
+          on-timeout = "${pkgs.libnotify}/bin/notify-send 'Locking screen in 5 seconds...' -t 5000";
+        };
     };
   };
 }

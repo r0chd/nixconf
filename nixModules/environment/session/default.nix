@@ -5,13 +5,19 @@
     ./x11
   ];
 
-  config.services.libinput = {
-    enable = true;
-    mouse = {
-      accelProfile = "flat";
+  config.services = {
+    xserver.xkb = {
+      layout = "us";
+      variant = "";
     };
-    touchpad = {
-      accelProfile = "flat";
+    libinput = {
+      enable = true;
+      mouse = {
+        accelProfile = "flat";
+      };
+      touchpad = {
+        accelProfile = "flat";
+      };
     };
   };
 

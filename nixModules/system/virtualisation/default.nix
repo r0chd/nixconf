@@ -10,20 +10,21 @@ in
 {
   imports = [
     ./distrobox
+    ./looking-glass
   ];
 
   options.virtualisation = {
+    enable = lib.mkEnableOption "Virtualisation";
     virt-manager.enable = lib.mkEnableOption "Enable virt-manager";
   };
 
-  config = lib.mkIf cfg.virt-manager.enable {
+  config = lib.mkIf cfg.enable {
     virtualisation.libvirtd = {
       enable = true;
       onBoot = "ignore";
       onShutdown = "shutdown";
     };
 
-    programs.virt-manager.enable = true;
     users.users =
       systemUsers
       |> lib.mapAttrs (
@@ -33,6 +34,8 @@ in
           ];
         }
       );
+
+    programs.virt-manager.enable = cfg.virt-manager.enable;
 
     systemd.services.virtlockd = {
       serviceConfig = {
@@ -62,34 +65,34 @@ in
         IPAddressDeny = "any"; # May need adjustment for network operations
       };
     };
-    systemd.services.virtlogd = {
-      serviceConfig = {
-        ProtectSystem = "strict";
-        ProtectHome = true;
-        ProtectKernelTunables = true;
-        ProtectKernelModules = true;
-        ProtectControlGroups = true;
-        ProtectKernelLogs = true;
-        ProtectClock = true;
-        ProtectProc = "invisible";
-        ProcSubset = "pid";
-        PrivateTmp = true;
-        PrivateUsers = true;
-        PrivateDevices = true; # May need adjustment for accessing VM logs
-        PrivateIPC = true;
-        MemoryDenyWriteExecute = true;
-        NoNewPrivileges = true;
-        LockPersonality = true;
-        RestrictRealtime = true;
-        RestrictSUIDSGID = true;
-        RestrictAddressFamilies = "AF_INET AF_INET6";
-        RestrictNamespaces = true;
-        SystemCallFilter = [ "@system-service" ]; # Adjust based on log management needs
-        SystemCallArchitectures = "native";
-        UMask = "0077";
-        IPAddressDeny = "any"; # May need to be relaxed for network-based log collection
-      };
-    };
+    #systemd.services.virtlogd = {
+    #  serviceConfig = {
+    #    ProtectSystem = "strict";
+    #    ProtectHome = true;
+    #    ProtectKernelTunables = true;
+    #    ProtectKernelModules = true;
+    #    ProtectControlGroups = true;
+    #    ProtectKernelLogs = true;
+    #    ProtectClock = true;
+    #    ProtectProc = "invisible";
+    #    ProcSubset = "pid";
+    #    PrivateTmp = true;
+    #    PrivateUsers = true;
+    #    PrivateDevices = true; # May need adjustment for accessing VM logs
+    #    PrivateIPC = true;
+    #    MemoryDenyWriteExecute = true;
+    #    NoNewPrivileges = true;
+    #    LockPersonality = true;
+    #    RestrictRealtime = true;
+    #    RestrictSUIDSGID = true;
+    #    RestrictAddressFamilies = "AF_INET AF_INET6";
+    #    RestrictNamespaces = true;
+    #    SystemCallFilter = [ "@system-service" ]; # Adjust based on log management needs
+    #    SystemCallArchitectures = "native";
+    #    UMask = "0077";
+    #    IPAddressDeny = "any"; # May need to be relaxed for network-based log collection
+    #  };
+    #};
     systemd.services.virtlxcd = {
       serviceConfig = {
         ProtectSystem = "strict";

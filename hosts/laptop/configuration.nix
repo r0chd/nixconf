@@ -2,6 +2,7 @@
   pkgs,
   inputs,
   config,
+  lib,
   ...
 }:
 {
@@ -10,6 +11,19 @@
     ./gpu.nix
     ./hardware-configuration.nix
   ];
+
+  boot = {
+    kernelModules = [ "tuxedo_keyboard" ];
+    kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
+  };
+
+  nixpkgs.config.allowUnfreePredicate = (
+    pkgs:
+    builtins.elem (lib.getName pkgs) [
+      "nvidia-x11"
+      "nvidia-settings"
+    ]
+  );
 
   stylix = {
     enable = true;
@@ -22,6 +36,8 @@
   };
 
   virtualisation = {
+    enable = true;
+    looking-glass.enable = true;
     waydroid.enable = true;
     virt-manager.enable = true;
     distrobox = {

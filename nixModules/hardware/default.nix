@@ -5,8 +5,4 @@
     ./bluetooth
     ./power
   ];
-
-  hardware = {
-    enableAllFirmware = true;
-  };
 }

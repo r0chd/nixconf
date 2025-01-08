@@ -39,8 +39,6 @@ in
             natural_scroll = "no";
           };
 
-          sensitivity = "0";
-          accel_profile = "flat";
         };
 
         general = {

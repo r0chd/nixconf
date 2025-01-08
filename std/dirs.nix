@@ -1,7 +1,3 @@
-{
-  hostname,
-}:
-{
-  host = ../hosts/${hostname};
+_: {
   config = "/var/lib/nixconf";
 }

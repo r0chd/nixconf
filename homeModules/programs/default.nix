@@ -1,6 +1,7 @@
 { ... }:
 {
   imports = [
+    ./cachix
     ./git
     ./shell
     ./editor

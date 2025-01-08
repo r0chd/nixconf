@@ -1,8 +1,8 @@
 {
-  std,
   lib,
   systemUsers,
   config,
+  hostname,
   ...
 }:
 let
@@ -33,7 +33,7 @@ in
     users.users = lib.genAttrs (builtins.attrNames systemUsers) (
       user:
       let
-        keysDir = "${std.dirs.host}/users/${user}/keys";
+        keysDir = ../../../hosts/${hostname}/users/${user}/keys;
         keysList =
           if (builtins.pathExists keysDir) then
             builtins.readDir keysDir

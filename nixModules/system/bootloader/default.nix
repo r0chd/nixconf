@@ -31,8 +31,6 @@ in
       initrd.verbose = lib.mkIf cfg.silent false;
       kernelParams =
         [
-          "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-
           "slab_nomerge"
           "init_on_alloc=1"
           "init_on_free=1"
@@ -115,13 +113,19 @@ in
     };
 
     users.groups.proc = { };
-    systemd.services.systemd-logind.serviceConfig.SupplementaryGroups = [ "proc" ];
 
-    services.syslogd.enable = true;
-    systemd.coredump.enable = false;
-    services.syslogd.extraConfig = ''
-      *.*  -/var/log/syslog
-    '';
-    services.journald.forwardToSyslog = true;
+    systemd = {
+      services.systemd-logind.serviceConfig.SupplementaryGroups = [ "proc" ];
+      coredump.enable = false;
+    };
+    services = {
+      journald.forwardToSyslog = true;
+      syslogd = {
+        enable = true;
+        extraConfig = ''
+          *.*  -/var/log/syslog
+        '';
+      };
+    };
   };
 }

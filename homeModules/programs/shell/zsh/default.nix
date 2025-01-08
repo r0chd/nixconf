@@ -29,7 +29,7 @@ with config.stylix.fonts;
       initExtra =
         let
           transientPrompt = ''
-            TRANSIENT_PROMPT=starship module character
+            TRANSIENT_PROMPT=$(starship module character)
             function zle-line-init() {
                 emulate -L zsh
 

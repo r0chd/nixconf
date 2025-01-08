@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   config,
   lib,
   ...
@@ -11,7 +10,7 @@ in
 {
   config = lib.mkIf (cfg.enable && cfg.program == "ghostty") {
     home = {
-      packages = with pkgs; [ inputs.ghostty.packages.${system}.default ];
+      packages = with pkgs; [ ghostty ];
       file.".config/ghostty/config".text = ''
         font-size = 9
         font-family = "JetBrainsMono Nerd Font Mono"

@@ -1,10 +1,19 @@
 {
   pkgs,
-  pkgs-stable,
+  lib,
   ...
 }:
 {
+  nixpkgs.config.allowUnfreePredicate =
+    pkgs:
+    builtins.elem (lib.getName pkgs) [
+      "discord-canary"
+      "steam"
+      "steam-unwrapped"
+    ];
+
   programs = {
+    cachix.enable = true;
     starship.enable = true;
     man.enable = true;
     bat.enable = true;
@@ -32,9 +41,9 @@
 
   gaming = {
     steam.enable = true;
-    lutris.enable = true;
+    lutris.enable = false;
     heroic.enable = false;
-    bottles.enable = true;
+    bottles.enable = false;
     minecraft.enable = false;
   };
 
@@ -79,7 +88,7 @@
       };
       idle = {
         enable = true;
-        variant = "hypridle";
+        variant = "swayidle";
         timeout = {
           lock = 300;
           suspend = 1800;
@@ -122,8 +131,8 @@
   stylix = {
     enable = true;
     cursor = {
-      name = "Banana";
-      package = pkgs.banana-cursor;
+      name = "Bibata-Modern-Classic";
+      package = pkgs.bibata-cursors;
       size = 36;
     };
     fonts = {
@@ -155,6 +164,7 @@
   };
 
   home.packages = with pkgs; [
+    cachix
     zathura
     mpv
     ani-cli
@@ -164,7 +174,7 @@
     unzip
     gimp
     imagemagick
-    pkgs-stable.wf-recorder
+    wf-recorder
   ];
 
   impermanence = {
@@ -175,6 +185,7 @@
         "Images"
         "Videos"
         "Documents"
+        "Iso"
       ];
     };
   };

@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  inputs,
   ...
 }:
 let
@@ -46,7 +47,10 @@ in
       wlr = {
         enable = lib.mkForce true;
         settings = {
-          screencast.chooser_cmd = "slurp -f %o"; # TODO: make it seto
+          screencast = {
+            chooser_cmd = "${inputs.seto.packages.${pkgs.system}.default}/bin/seto -f %o";
+            chooser_type = "simple";
+          };
         };
       };
     };

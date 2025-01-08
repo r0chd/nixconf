@@ -14,8 +14,14 @@
       ];
     };
     timeout = {
-      lock = lib.mkOption { type = lib.types.int; };
-      suspend = lib.mkOption { type = lib.types.int; };
+      lock = lib.mkOption {
+        type = lib.types.nullOr lib.types.int;
+        default = null;
+      };
+      suspend = lib.mkOption {
+        type = lib.types.nullOr lib.types.int;
+        default = null;
+      };
     };
   };
 }
