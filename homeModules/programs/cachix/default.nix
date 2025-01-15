@@ -23,11 +23,14 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = [ cfg.package ];
 
-    #home.file.".config/cachix/cachix.dhall".text = ''
-    #  { authToken = ${cfg.authToken}
-    #  , hostname = "https://cachix.org"
-    #  , binaryCaches = [] : List { name : Text, secretKey : Text }
-    #  }
-    #'';
+    sops.templates."cachix.dhall" = {
+      path = "/home/unixpariah/.config/cachix/cachix.dhall";
+      content = ''
+        { authToken = ${cfg.authToken}
+        , hostname = "https://cachix.org"
+        , binaryCaches = [] : List { name : Text, secretKey : Text }
+        }
+      '';
+    };
   };
 }

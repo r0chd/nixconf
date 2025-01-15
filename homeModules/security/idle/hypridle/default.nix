@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  std,
   ...
 }:
 let
@@ -12,6 +13,7 @@ in
     enable = true;
     settings = {
       general = {
+        lock_cmd = "${std.nameToPackage pkgs cfg.lockscreen.program}";
         ignore_dbus_inhibit = true;
       };
       listener =
@@ -19,7 +21,7 @@ in
         ]
         ++ lib.optional (cfg.idle.timeout.lock != null) {
           timeout = cfg.idle.timeout.lock;
-          on-timeout = "${pkgs.${cfg.lockscreen.program}}/bin/${cfg.lockscreen.program}";
+          on-timeout = "${pkgs.systemd}/bin/loginctl lock-session";
         }
         ++ lib.optional (cfg.idle.timeout.suspend != null) {
           timeout = cfg.idle.timeout.suspend;

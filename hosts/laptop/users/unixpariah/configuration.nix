@@ -13,12 +13,17 @@
       "steam-unwrapped"
     ];
 
+  #nix.access-tokens = [ "github.com = ${config.sops.placeholder.nixos-access-token-github}" ];
+
   programs = {
     nh.enable = true;
     fastfetch.enable = true;
     fuzzel.enable = true;
     kitty.enable = true;
-    cachix.enable = true;
+    #cachix = {
+    #  enable = true;
+    #  authToken = config.sops.placeholder.cachix;
+    #};
     starship.enable = true;
     man.enable = true;
     bat.enable = true;
@@ -59,6 +64,10 @@
         enable = true;
       };
     };
+  };
+
+  sops.secrets."yubico/u2f_keys" = {
+    path = "/home/unixpariah/.config/Yubico/u2f_keys";
   };
 
   environment = {
@@ -133,23 +142,6 @@
 
   editor = "nvim";
   email = "oskar.rochowiak@tutanota.com";
-  sops = {
-    templates."nix.conf" = {
-      path = "/home/unixpariah/.config/nix/nix.conf";
-      content = ''
-        access-tokens = github.com=${config.sops.placeholder.nixos-access-token-github}
-      '';
-    };
-    templates."cachix.dhall" = {
-      path = "/home/unixpariah/.config/cachix/cachix.dhall";
-      content = ''
-        { authToken = ${config.sops.placeholder.cachix}
-        , hostname = "https://cachix.org"
-        , binaryCaches = [] : List { name : Text, secretKey : Text }
-        }
-      '';
-    };
-  };
 
   stylix = {
     enable = true;
@@ -163,7 +155,7 @@
         terminal = 9;
       };
       monospace = {
-        package = pkgs.jetbrains-mono;
+        package = pkgs.nerd-fonts.jetbrains-mono;
         name = "JetBrainsMono Nerd Font Mono";
       };
       sansSerif = {

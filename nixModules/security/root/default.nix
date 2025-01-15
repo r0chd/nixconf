@@ -4,9 +4,6 @@ let
 in
 {
   options.security.root = {
-    auth = {
-      rootPw = lib.mkEnableOption "Root password";
-    };
     timeout = lib.mkOption {
       type = lib.types.int;
       default = 15;
@@ -17,13 +14,9 @@ in
     security.sudo = {
       enable = true;
       execWheelOnly = true;
-      extraConfig =
-        ''
-          Defaults timestamp_timeout=${toString cfg.timeout}
-        ''
-        + lib.optionalString (cfg.auth.rootPw) ''
-          Defaults rootpw
-        '';
+      extraConfig = ''
+        Defaults timestamp_timeout=${toString cfg.timeout}
+      '';
     };
   };
 }

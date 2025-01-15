@@ -71,15 +71,9 @@
     yubikey = {
       enable = true;
       rootAuth = true;
-      unplug = {
-        enable = true;
-        action = "${pkgs.hyprlock}/bin/hyprlock";
-      };
+      unplug.enable = true;
     };
-    root = {
-      auth.rootPw = true;
-      timeout = 0;
-    };
+    root.timeout = 0;
   };
 
   hardware = {

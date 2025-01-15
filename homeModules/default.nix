@@ -11,6 +11,7 @@ let
 in
 {
   imports = [
+    ./nix
     ./gaming
     ./environment
     ./programs
@@ -46,8 +47,6 @@ in
 
     services.hyprpaper.enable = lib.mkForce false; # TODO: Remove these once wallpaper is optionalized in stylix
     stylix.targets.hyprpaper.enable = lib.mkForce false;
-    services.swaybg.enable = lib.mkForce false;
-    stylix.targets.swaybg.enable = lib.mkForce false;
 
     programs.home-manager.enable = true;
     home = {

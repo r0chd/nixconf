@@ -18,8 +18,16 @@
   ];
 
   options.specialisations = {
-    Wayland.enable = lib.mkEnableOption "Wayland session";
-    X11.enable = lib.mkEnableOption "X11 session";
+    Wayland.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable Wayland session";
+    };
+    X11.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable X11 session";
+    };
   };
 
   config = {
@@ -28,8 +36,8 @@
     nixpkgs.overlays = [ inputs.nixpkgs-wayland.overlay ];
 
     programs = {
-      fish.enable = true;
-      zsh.enable = true;
+      fish.enable = lib.mkDefault true;
+      zsh.enable = lib.mkDefault true;
       nano.enable = lib.mkDefault false;
     };
 
@@ -39,8 +47,7 @@
         {
           root = {
             isNormalUser = false;
-            hashedPasswordFile = config.sops.secrets.password.path;
-            extraGroups = [ "wheel" ];
+            hashedPassword = "*";
           };
         }
         // lib.mapAttrs (name: value: {
@@ -69,14 +76,8 @@
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
           "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
         ];
-        trusted-users = [
-          "root"
-          "@wheel"
-        ];
-        allowed-users = [
-          "root"
-          "@wheel"
-        ];
+        trusted-users = [ "@wheel" ];
+        allowed-users = [ "@wheel" ];
       };
     };
 
@@ -89,13 +90,13 @@
     };
 
     specialisation = {
-      Wayland.configuration = {
+      Wayland.configuration = lib.mkIf config.specialisations.Wayland.enable {
         environment = {
           etc."specialisation".text = "Wayland";
           session = "Wayland";
         };
       };
-      X11.configuration = {
+      X11.configuration = lib.mkIf config.specialisations.Wayland.enable {
         environment = {
           etc."specialisation".text = "X11";
           session = "X11";

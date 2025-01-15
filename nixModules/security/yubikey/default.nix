@@ -21,21 +21,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    system.impermanence.persist.directories = lib.mkIf cfg.rootAuth [
-      {
-        directory = "/root/.config/Yubico";
-        user = "root";
-        group = "root";
-        mode = "u=rwx, g=, o=";
-      }
-    ];
-
-    sops.secrets = lib.mkIf cfg.rootAuth {
-      "yubico/u2f_keys" = {
-        path = "/root/.config/Yubico/u2f_keys";
-      };
-    };
-
     environment.systemPackages = with pkgs; [
       yubioath-flutter
       yubikey-manager

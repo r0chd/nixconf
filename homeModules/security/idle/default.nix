@@ -2,7 +2,6 @@
 {
   imports = [
     ./hypridle
-    ./swayidle
   ];
 
   options.environment.screenIdle.idle = {
@@ -10,7 +9,6 @@
     variant = lib.mkOption {
       type = lib.types.enum [
         "hypridle"
-        "swayidle"
       ];
     };
     timeout = {
