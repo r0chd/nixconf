@@ -37,7 +37,7 @@ in
     };
 
     environment.systemPackages = with pkgs; [
-      #yubioath-flutter TODO
+      yubioath-flutter
       yubikey-manager
       pam_u2f
     ];

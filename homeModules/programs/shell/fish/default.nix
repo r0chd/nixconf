@@ -5,7 +5,7 @@
 }:
 {
   config = lib.mkIf (shell == "fish") {
-    impermanence.persist.directories = [ ".local/share/fish" ];
+    home.persist.directories = [ ".local/share/fish" ];
     programs.fish = {
       enable = true;
       functions = {

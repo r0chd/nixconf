@@ -1,13 +1,8 @@
 {
   pkgs,
   inputs,
-  config,
-  lib,
   ...
 }:
-let
-  cfg = config.programs.seto;
-in
 {
   imports = [
     inputs.seto.homeManagerModules.default
@@ -19,7 +14,6 @@ in
   #  trusted-public-keys = [ "seto.cachix.org-1:Hp2sGslAufwWgip0p5QuIzAf1jaREeTp8MuCLU0Io4E=" ];
   #};
 
-  home.packages = lib.mkIf cfg.enable [ pkgs.grim ];
   programs.seto = {
     package = inputs.seto.packages.${pkgs.system}.default;
     settings.keys.bindings = {

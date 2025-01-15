@@ -16,14 +16,18 @@ in
       description = "The Cachix package to use";
     };
     authToken = lib.mkOption {
-      type = lib.types.str;
-    };
-    authTokenFile = lib.mkOption {
-      type = lib.types.path;
+      type = lib.types.nullOr lib.types.str;
     };
   };
 
   config = lib.mkIf cfg.enable {
     home.packages = [ cfg.package ];
+
+    #home.file.".config/cachix/cachix.dhall".text = ''
+    #  { authToken = ${cfg.authToken}
+    #  , hostname = "https://cachix.org"
+    #  , binaryCaches = [] : List { name : Text, secretKey : Text }
+    #  }
+    #'';
   };
 }

@@ -17,10 +17,11 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ cfg.package ];
-
-    impermanence.persist.directories = [
-      ".local/share/PrismLauncher"
-    ];
+    home = {
+      packages = [ cfg.package ];
+      persist.directories = [
+        ".local/share/PrismLauncher"
+      ];
+    };
   };
 }

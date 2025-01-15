@@ -12,11 +12,6 @@
     ./hardware-configuration.nix
   ];
 
-  boot = {
-    kernelModules = [ "tuxedo_keyboard" ];
-    kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
-  };
-
   nixpkgs.config.allowUnfreePredicate = (
     pkgs:
     builtins.elem (lib.getName pkgs) [
@@ -31,23 +26,18 @@
       url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nixos-wallpaper-catppuccin-mocha.png";
       sha256 = "7e6285630da06006058cebf896bf089173ed65f135fbcf32290e2f8c471ac75b";
     };
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-night-dark.yaml";
     polarity = "dark";
   };
 
   virtualisation = {
     enable = true;
-    looking-glass.enable = true;
+    podman = {
+      enable = true;
+      dockerCompat = true;
+    };
     waydroid.enable = true;
     virt-manager.enable = true;
-    distrobox = {
-      enable = false;
-      images = {
-        archlinux = {
-          enable = true;
-        };
-      };
-    };
   };
 
   system = {
@@ -90,7 +80,6 @@
       auth.rootPw = true;
       timeout = 0;
     };
-    antivirus.enable = true;
   };
 
   hardware = {

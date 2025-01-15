@@ -17,11 +17,12 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ cfg.package ];
-
-    impermanence.persist.directories = [
-      ".config/heroic"
-      "Games/Heroic"
-    ];
+    home = {
+      packages = [ cfg.package ];
+      persist.directories = [
+        ".config/heroic"
+        "Games/Heroic"
+      ];
+    };
   };
 }

@@ -9,7 +9,6 @@ let
 in
 {
   config = lib.mkIf (cfg.idle.enable && cfg.idle.variant == "swayidle") {
-    home.packages = [ pkgs.swayaudioidleinhibit ];
     services.swayidle = {
       enable = true;
       timeouts =

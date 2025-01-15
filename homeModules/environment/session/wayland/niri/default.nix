@@ -52,11 +52,7 @@ in
           }
         ];
 
-        animations = { };
-
-        environment = {
-          DISPLAY = ":0";
-        };
+        environment.DISPLAY = ":0";
 
         prefer-no-csd = true;
 
@@ -103,20 +99,6 @@ in
             ];
           }
           {
-            command = lib.mkIf cfg.terminal.enable [
-              "uwsm"
-              "app"
-              "${cfg.terminal.program}"
-            ];
-          }
-          {
-            command = lib.mkIf cfg.notifications.enable [
-              "uwsm"
-              "app"
-              "${cfg.notifications.program}"
-            ];
-          }
-          {
             command = lib.mkIf cfg.wallpaper.enable [
               "uwsm"
               "app"
@@ -153,10 +135,9 @@ in
             "5"
           ];
           "Print".action.spawn = [
-            "uwsm"
-            "app"
-            "--"
-            "grim -g \"$(seto -r)\" - | wl-copy"
+            "bash"
+            "-c"
+            "${pkgs.grim}/bin/grim -g \"$(seto -r)\" - | ${pkgs.swappy}/bin/swappy -f -"
           ];
 
           "Alt+G".action.spawn = [
@@ -171,18 +152,6 @@ in
           "Alt+Q".action.spawn = [
             "uwsm"
             "stop"
-          ];
-
-          "Alt+Shift+Return".action.spawn = [
-            "uwsm"
-            "app"
-            "${cfg.terminal.program}"
-          ];
-
-          "Alt+S".action.spawn = [
-            "uwsm"
-            "app"
-            "${cfg.launcher.program}"
           ];
 
           "Alt+0".action.focus-workspace = 10;

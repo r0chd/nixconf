@@ -4,7 +4,7 @@ let
 in
 {
   config = lib.mkIf (cfg.enable && cfg.variant == "qutebrowser") {
-    impermanence.persist.directories = [
+    home.persist.directories = [
       ".local/share/qutebrowser"
     ];
     programs.qutebrowser = {

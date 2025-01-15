@@ -25,11 +25,12 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ keepassxc ];
-
-    impermanence.persist = {
-      directories = [ ".config/keepassxc" ] ++ cfg.database.directories;
-      files = [ ] ++ cfg.database.files;
+    home = {
+      packages = with pkgs; [ keepassxc ];
+      persist = {
+        directories = [ ".config/keepassxc" ] ++ cfg.database.directories;
+        files = [ ] ++ cfg.database.files;
+      };
     };
   };
 }

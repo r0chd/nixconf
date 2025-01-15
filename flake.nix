@@ -2,6 +2,7 @@
   description = "My nixconfig";
 
   inputs = {
+    #nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
@@ -35,17 +36,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    zls.url = "github:zigtools/zls";
-    zig.url = "github:mitchellh/zig-overlay";
-
     niri = {
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    hyprland.url = "github:hyprwm/Hyprland";
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
@@ -69,12 +64,15 @@
       url = "git+https://github.com/unixpariah/ruin?submodules=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nh = {
+      url = "github:unixpariah/nh/home-specialisation";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     {
       nixpkgs,
-      flake-utils,
       ...
     }@inputs:
     let
@@ -135,15 +133,6 @@
             };
           };
         };
-        server1 = {
-          arch = "x86_64-linux";
-          users = {
-            unixpariah = {
-              root.enable = true;
-              shell = "zsh";
-            };
-          };
-        };
       };
     in
     with nixpkgs;
@@ -162,17 +151,5 @@
         )
         |> builtins.concatLists
         |> builtins.listToAttrs;
-
-      devShells = flake-utils.lib.eachDefaultSystem (
-        system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-        in
-        {
-          zig = import ./shells/zig.nix { inherit pkgs inputs; };
-          c = import ./shells/c.nix { inherit pkgs; };
-          rust = import ./shells/rust.nix { inherit pkgs; };
-        }
-      );
     };
 }

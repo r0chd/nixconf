@@ -4,12 +4,16 @@
   inputs,
   ...
 }:
+let
+  cfg = config.services.impermanence;
+in
 {
-  imports = [ inputs.impermanence.homeManagerModules.default ];
+  imports = [ inputs.impermanence.homeManagerModules.impermanence ];
 
-  options.impermanence = {
-    enable = lib.mkEnableOption "Enable home persistance";
-    persist = {
+  options = {
+    services.impermanence.enable = lib.mkEnableOption "Enable home persistance";
+
+    home.persist = {
       directories = lib.mkOption {
         type =
           with lib.types;
@@ -46,10 +50,13 @@
     };
   };
 
-  config = {
-    home.persistence."/persist/home/${config.home.username}" = lib.mkIf config.impermanence.enable {
-      directories = [ ".cache/home-generations" ] ++ config.impermanence.persist.directories;
-      files = config.impermanence.persist.files;
+  config = lib.mkIf cfg.enable {
+    home.persistence."/persist/home/${config.home.username}" = {
+      directories = [
+        ".cache/home-generations"
+        ".local/state/nix/profiles"
+      ] ++ config.home.persist.directories;
+      files = config.home.persist.files;
       allowOther = true;
     };
   };

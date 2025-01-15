@@ -11,10 +11,9 @@ let
 in
 {
   config = lib.mkIf (cfg.enable && cfg.program == "ruin") {
-    impermanence.persist.directories = [ ".config/ruin/images" ];
     home = {
+      persist.directories = [ ".config/ruin/images" ];
       packages = with pkgs; [ inputs.ruin.packages.${system}.default ];
-
       file.".config/ruin/colorschemes.yaml" = {
         text =
           let

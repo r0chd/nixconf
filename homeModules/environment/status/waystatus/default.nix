@@ -12,7 +12,7 @@ in
 {
   config = lib.mkIf (cfg.enable && cfg.program == "waystatus") {
     home = {
-      packages = with pkgs; [ inputs.waystatus.packages.${system}.default ];
+      packages = [ inputs.waystatus.packages.${pkgs.system}.default ];
       file = {
         ".config/waystatus/style.css" = {
           text = ''

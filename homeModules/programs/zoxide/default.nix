@@ -4,7 +4,7 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    impermanence.persist.directories = [
+    home.persist.directories = [
       ".local/share/zoxide"
     ];
 

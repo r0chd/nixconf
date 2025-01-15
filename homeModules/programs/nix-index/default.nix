@@ -4,6 +4,6 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    impermanence.persist.directories = [ ".cache/nix-index" ];
+    home.persist.directories = [ ".cache/nix-index" ];
   };
 }

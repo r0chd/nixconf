@@ -9,28 +9,24 @@ let
 in
 {
   config = lib.mkIf (cfg.session == "Wayland") {
-    home.packages = [ pkgs.autotiling-rs ];
     wayland.windowManager.sway = {
       enable = true;
       extraConfig = ''
         default_border pixel 2
       '';
       config = rec {
-        defaultWorkspace = "workspace number 10";
+        defaultWorkspace = "workspace number 1";
 
         bars =
           [ ]
           ++ (lib.optional (cfg.statusBar.enable) {
-            command = "${cfg.statusBar.program}";
+            command = "uwsm app ${cfg.statusBar.program}";
           });
         modifier = "Mod1";
         gaps.outer = 7;
 
         startup =
-          [ { command = "autotiling-rs"; } ]
-          ++ lib.optional (cfg.terminal.enable) {
-            command = "sway workspace 1; uwsm app ${cfg.terminal.program}";
-          }
+          [ { command = "uwsm app ${pkgs.autotiling-rs}/bin/autotiling-rs"; } ]
           ++ lib.optional (cfg.wallpaper.enable) {
             command = "uwsm app -- ${cfg.wallpaper.program} ${cfg.wallpaper.path}";
           };
@@ -90,17 +86,11 @@ in
             "${modifier}+q" = "exec uwsm stop";
           }
           // lib.optionalAttrs config.programs.seto.enable {
-            "Print" = ''exec uwsm app -- grim -g "$(seto -r)" - | wl-copy -t image/png'';
+            "Print" = "exec ${pkgs.grim}/bin/grim -g \"$(seto -r)\" - | ${pkgs.swappy}/bin/swappy -f -";
           }
           // lib.optionalAttrs config.programs.seto.enable {
             "${modifier}+g" =
-              ''exec uwsm app -- ydotool mousemove -a "$(seto -f "%x %y")" && ydotool click 0xC0'';
-          }
-          // lib.optionalAttrs (cfg.terminal.enable) {
-            "${modifier}+Shift+Return" = "exec uwsm app ${cfg.terminal.program}";
-          }
-          // lib.optionalAttrs (cfg.launcher.enable) {
-            "${modifier}+S" = "exec uwsm app ${cfg.launcher.program}";
+              ''exec uwsm app -- ydotool mousemove -a $(seto -f "%x %y") && ydotool click 0xC0'';
           };
       };
     };

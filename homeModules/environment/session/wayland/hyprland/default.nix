@@ -92,7 +92,6 @@ in
         exec-once =
           [ ]
           ++ (lib.optional (cfg.statusBar.enable) "uwsm app ${cfg.statusBar.program}")
-          ++ (lib.optional (cfg.terminal.enable) "uwsm app ${cfg.terminal.program}")
           ++ lib.optional (cfg.wallpaper.enable) "uwsm app -- ${cfg.wallpaper.program} ${cfg.wallpaper.path}";
 
         bind =
@@ -157,10 +156,8 @@ in
 
             "$mainMod, q, exec, uwsm stop"
           ]
-          ++ (lib.optional (cfg.terminal.enable) "$mainMod SHIFT, RETURN, exec, uwsm app ${cfg.terminal.program}")
-          ++ (lib.optional config.programs.seto.enable '', Print, exec, uwsm app -- grim -g "$(seto -r)" - | wl-copy -t image/png'')
-          ++ (lib.optional (config.programs.seto.enable) "$mainMod, G, exec, click")
-          ++ (lib.optional (cfg.launcher.enable) "$mainMod, S, exec, uwsm app ${cfg.launcher.program}");
+          ++ (lib.optional config.programs.seto.enable ", Print, exec, ${pkgs.grim}/bin/grim -g \"$(seto -r)\" - | ${pkgs.swappy}/bin/swappy -f -")
+          ++ (lib.optional (config.programs.seto.enable) "$mainMod, G, exec, click");
 
         bindm = [
           # Move/resize windows with mainMod + LMB/RMB and dragging

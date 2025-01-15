@@ -43,10 +43,12 @@ in
 
   config = {
     wayland.windowManager = {
-      hyprland.settings.input.monitor = lib.mapAttrsToList (
-        name: value:
-        "${name}, ${toString value.dimensions.width}x${toString value.dimensions.height}@${toString value.refresh}, ${toString value.position.x}x${toString value.position.y}, ${toString value.scale}"
-      ) cfg.outputs;
+      hyprland.settings.input.monitor =
+        cfg.outputs
+        |> lib.mapAttrsToList (
+          name: value:
+          "${name}, ${toString value.dimensions.width}x${toString value.dimensions.height}@${toString value.refresh}, ${toString value.position.x}x${toString value.position.y}, ${toString value.scale}"
+        );
 
       sway.config.output =
         config.environment.outputs

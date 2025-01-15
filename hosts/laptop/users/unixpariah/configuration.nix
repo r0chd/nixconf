@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   ...
@@ -13,6 +14,10 @@
     ];
 
   programs = {
+    nh.enable = true;
+    fastfetch.enable = true;
+    fuzzel.enable = true;
+    kitty.enable = true;
     cachix.enable = true;
     starship.enable = true;
     man.enable = true;
@@ -41,10 +46,19 @@
 
   gaming = {
     steam.enable = true;
-    lutris.enable = false;
-    heroic.enable = false;
-    bottles.enable = false;
-    minecraft.enable = false;
+    lutris.enable = true;
+    heroic.enable = true;
+    bottles.enable = true;
+    minecraft.enable = true;
+  };
+
+  virtualisation.distrobox = {
+    enable = true;
+    images = {
+      archlinux = {
+        enable = true;
+      };
+    };
   };
 
   environment = {
@@ -88,7 +102,7 @@
       };
       idle = {
         enable = true;
-        variant = "swayidle";
+        variant = "hypridle";
         timeout = {
           lock = 300;
           suspend = 1800;
@@ -101,7 +115,7 @@
     };
     terminal = {
       enable = true;
-      program = "foot";
+      program = "kitty";
     };
     wallpaper = {
       enable = true;
@@ -110,22 +124,31 @@
     };
   };
 
-  services.yubikey-touch-detector = {
-    enable = true;
+  services = {
+    mako.enable = true;
+    impermanence.enable = true;
+    sway-audio-idle-inhibit.enable = true;
+    yubikey-touch-detector.enable = true;
   };
+
   editor = "nvim";
   email = "oskar.rochowiak@tutanota.com";
   sops = {
-    secrets = {
-      aoc-session = { };
-      nixos-access-token-github = { };
+    templates."nix.conf" = {
+      path = "/home/unixpariah/.config/nix/nix.conf";
+      content = ''
+        access-tokens = github.com=${config.sops.placeholder.nixos-access-token-github}
+      '';
     };
-    # templates."nix.conf" = {
-    #   path = "/home/unixpariah/.config/nix/nix.conf";
-    #   content = ''
-    #     access-tokens = github.com=${config.sops.placeholder.nixos-access-token-github}
-    #   '';
-    # };
+    templates."cachix.dhall" = {
+      path = "/home/unixpariah/.config/cachix/cachix.dhall";
+      content = ''
+        { authToken = ${config.sops.placeholder.cachix}
+        , hostname = "https://cachix.org"
+        , binaryCaches = [] : List { name : Text, secretKey : Text }
+        }
+      '';
+    };
   };
 
   stylix = {
@@ -140,7 +163,7 @@
         terminal = 9;
       };
       monospace = {
-        package = pkgs.nerd-fonts.jetbrains-mono;
+        package = pkgs.jetbrains-mono;
         name = "JetBrainsMono Nerd Font Mono";
       };
       sansSerif = {
@@ -159,26 +182,23 @@
       url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nixos-wallpaper-catppuccin-mocha.png";
       sha256 = "7e6285630da06006058cebf896bf089173ed65f135fbcf32290e2f8c471ac75b";
     };
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-night-dark.yaml";
     polarity = "dark";
   };
 
-  home.packages = with pkgs; [
-    cachix
-    zathura
-    mpv
-    ani-cli
-    libreoffice
-    lazygit
-    brightnessctl
-    unzip
-    gimp
-    imagemagick
-    wf-recorder
-  ];
+  home = {
+    packages = with pkgs; [
+      zathura
+      mpv
+      lazygit
+      brightnessctl
+      unzip
+      gimp
+      imagemagick
+      wf-recorder
+      libreoffice
+    ];
 
-  impermanence = {
-    enable = true;
     persist = {
       directories = [
         "workspace"
@@ -189,5 +209,4 @@
       ];
     };
   };
-
 }

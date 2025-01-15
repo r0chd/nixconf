@@ -18,8 +18,12 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    services = {
+    hardware.openrazer.batteryNotifier = {
+      enable = true;
+      percentage = 20;
+    };
 
+    services = {
       tlp = {
         enable = true;
         settings = {
@@ -37,37 +41,5 @@ in
     };
 
     powerManagement.enable = true;
-
-    # Thermald service hardening
-    systemd.services.thermald = {
-      serviceConfig = {
-        ProtectSystem = "strict";
-        ProtectHome = true;
-        ProtectKernelTunables = true; # Necessary for adjusting cooling policies
-        ProtectKernelModules = true; # May need adjustment for module control
-        ProtectControlGroups = true;
-        ProtectKernelLogs = true;
-        ProtectClock = true;
-        ProtectProc = "invisible";
-        ProcSubset = "pid";
-        PrivateTmp = true;
-        PrivateUsers = true;
-        PrivateDevices = true; # May require access to specific hardware devices
-        PrivateIPC = true;
-        MemoryDenyWriteExecute = true;
-        NoNewPrivileges = true;
-        LockPersonality = true;
-        RestrictRealtime = true;
-        RestrictSUIDSGID = true;
-        CapabilityBoundingSet = "";
-        RestrictNamespaces = true;
-        SystemCallFilter = [ "@system-service" ];
-        SystemCallArchitectures = "native";
-        UMask = "0077";
-        IPAddressDeny = "any";
-        DeviceAllow = [ ];
-        RestrictAddressFamilies = [ ];
-      };
-    };
   };
 }

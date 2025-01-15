@@ -20,15 +20,16 @@
         gcc
         stylua
       ];
+
       shellAliases = {
         vi = "nvim";
         vim = "nvim";
       };
-    };
 
-    impermanence.persist.directories = [
-      ".local/share/nvim"
-      ".local/state/nvim"
-    ];
+      persist.directories = [
+        ".local/share/nvim"
+        ".local/state/nvim"
+      ];
+    };
   };
 }

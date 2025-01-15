@@ -9,11 +9,13 @@ with config.lib.stylix.colors.withHashtag;
 with config.stylix.fonts;
 {
   config = lib.mkIf (shell == "zsh") {
-    impermanence.persist = {
-      files = [ ".zsh_history" ];
-      directories = [ ".zplug" ];
+    home = {
+      packages = with pkgs; [ fzf ];
+      persist = {
+        files = [ ".zsh_history" ];
+        directories = [ ".zplug" ];
+      };
     };
-    home.packages = with pkgs; [ fzf ];
     programs.zsh = {
       enable = true;
       enableCompletion = true;

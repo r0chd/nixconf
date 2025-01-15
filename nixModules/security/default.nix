@@ -4,8 +4,6 @@
     ./root
     ./yubikey
     ./sops
-    ./systemd
-    ./antivirus
   ];
 
   security = {

@@ -42,7 +42,7 @@ in
 
   environment = {
     systemPackages = with pkgs; [ sops ];
-    shellAliases.opensops = "sops ${std.dirs.config}/hosts/${hostname}/secrets/secrets.yaml";
+    shellAliases.opensops = "SOPS_AGE_KEY_FILE=\"${config.sops.age.keyFile}\" sops ${std.dirs.config}/hosts/${hostname}/secrets/secrets.yaml";
   };
 
   system.activationScripts.sopsGenerateKey =
