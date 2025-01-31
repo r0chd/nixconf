@@ -9,7 +9,7 @@ in
 {
   config = lib.mkIf (cfg.session == "Wayland") {
     programs.sway = {
-      enable = true;
+      enable = lib.mkDefault true;
       extraOptions = [ "--unsupported-gpu" ];
     };
   };

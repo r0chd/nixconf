@@ -2,6 +2,5 @@
 {
   imports = [
     ./sops
-    ./idle
   ];
 }

@@ -10,7 +10,7 @@ in
 {
   config = lib.mkIf (cfg.session == "Wayland") {
     wayland.windowManager.sway = {
-      enable = true;
+      enable = lib.mkDefault true;
       extraConfig = ''
         default_border pixel 2
       '';

@@ -16,6 +16,7 @@ in
   ];
 
   config = lib.mkIf (cfg.session == "Wayland") {
+    nixpkgs.overlays = [ inputs.nixpkgs-wayland.overlay ];
 
     environment = {
       systemPackages = [

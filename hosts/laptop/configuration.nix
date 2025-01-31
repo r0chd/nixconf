@@ -20,6 +20,8 @@
     ]
   );
 
+  programs.nix-index.enable = true;
+
   stylix = {
     enable = true;
     image = pkgs.fetchurl {
@@ -31,11 +33,11 @@
   };
 
   virtualisation = {
-    enable = true;
-    podman = {
+    docker = {
       enable = true;
-      dockerCompat = true;
+      rootless.enable = true;
     };
+    enable = true;
     waydroid.enable = true;
     virt-manager.enable = true;
   };
@@ -95,15 +97,18 @@
 
   zramSwap.enable = true;
 
-  services.protonvpn = {
-    enable = false;
-    interface = {
-      privateKeyFile = config.sops.secrets.wireguard-key.path;
-      ip = "10.2.0.2/32";
-    };
-    endpoint = {
-      publicKey = "dldo97jXTUvjEQqaAx3pHy4lKFSxcmZYDCGFvvDOIGQ=";
-      ip = "149.34.244.179";
+  services = {
+    upower.enable = true;
+    protonvpn = {
+      enable = false;
+      interface = {
+        privateKeyFile = config.sops.secrets.wireguard-key.path;
+        ip = "10.2.0.2/32";
+      };
+      endpoint = {
+        publicKey = "dldo97jXTUvjEQqaAx3pHy4lKFSxcmZYDCGFvvDOIGQ=";
+        ip = "149.34.244.179";
+      };
     };
   };
 

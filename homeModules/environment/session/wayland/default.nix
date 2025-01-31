@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  inputs,
   ...
 }:
 let
@@ -15,6 +16,8 @@ in
   ];
 
   config = lib.mkIf (cfg.session == "Wayland") {
+    nixpkgs.overlays = [ inputs.nixpkgs-wayland.overlay ];
+
     home = {
       packages = with pkgs; [
         wl-clipboard

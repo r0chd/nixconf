@@ -1,6 +1,7 @@
 { ... }:
 {
   imports = [
+    ./nixcord
     ./fuzzel
     ./cachix
     ./git
@@ -11,7 +12,6 @@
     ./lsd
     ./bat
     ./direnv
-    ./nix-index
     ./seto
     ./btop
     ./obs

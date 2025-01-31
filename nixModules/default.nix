@@ -15,6 +15,7 @@
     ./security
     ./environment
     ../hosts/${hostname}/configuration.nix
+    inputs.nix-index-database.nixosModules.nix-index
   ];
 
   options.specialisations = {
@@ -31,9 +32,9 @@
   };
 
   config = {
-    boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+    nixpkgs.overlays = import ../overlays inputs config;
 
-    nixpkgs.overlays = [ inputs.nixpkgs-wayland.overlay ];
+    boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
     programs = {
       fish.enable = lib.mkDefault true;
@@ -79,14 +80,6 @@
         trusted-users = [ "@wheel" ];
         allowed-users = [ "@wheel" ];
       };
-    };
-
-    environment = {
-      systemPackages = with pkgs; [
-        nvd
-        nix-output-monitor
-        just
-      ];
     };
 
     specialisation = {

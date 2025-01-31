@@ -21,6 +21,7 @@ in
     ./services
     ./virtualisation
     ../hosts/laptop/users/${username}/configuration.nix
+    inputs.nix-index-database.hmModules.nix-index
   ];
 
   options = {
@@ -40,10 +41,7 @@ in
   };
 
   config = {
-    nixpkgs.overlays = [
-      inputs.nixpkgs-wayland.overlay
-      inputs.nh.overlays.default
-    ];
+    nixpkgs.overlays = import ../overlays inputs config ++ [ inputs.nh.overlays.default ];
 
     services.hyprpaper.enable = lib.mkForce false; # TODO: Remove these once wallpaper is optionalized in stylix
     stylix.targets.hyprpaper.enable = lib.mkForce false;

@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   lib,
   ...
@@ -8,37 +7,30 @@
   nixpkgs.config.allowUnfreePredicate =
     pkgs:
     builtins.elem (lib.getName pkgs) [
-      "discord-canary"
+      "discord"
       "steam"
       "steam-unwrapped"
     ];
 
-  #nix.access-tokens = [ "github.com = ${config.sops.placeholder.nixos-access-token-github}" ];
+  wayland.windowManager.sway.enable = false;
 
   programs = {
+    nix-index.enable = true;
     nh.enable = true;
     fastfetch.enable = true;
     fuzzel.enable = true;
     kitty.enable = true;
-    #cachix = {
-    #  enable = true;
-    #  authToken = config.sops.placeholder.cachix;
-    #};
     starship.enable = true;
     man.enable = true;
     bat.enable = true;
     zoxide.enable = true;
     lsd.enable = true;
     direnv.enable = true;
-    nix-index.enable = true;
     seto.enable = true;
     tmux.enable = true;
     btop.enable = true;
     obs-studio.enable = true;
-    discord = {
-      enable = true;
-      package = pkgs.discord-canary;
-    };
+    nixcord.enable = true;
     browser = {
       enable = true;
       variant = "zen";
@@ -109,14 +101,6 @@
         enable = true;
         program = "hyprlock";
       };
-      idle = {
-        enable = true;
-        variant = "hypridle";
-        timeout = {
-          lock = 300;
-          suspend = 1800;
-        };
-      };
     };
     launcher = {
       enable = true;
@@ -136,7 +120,6 @@
   services = {
     mako.enable = true;
     impermanence.enable = true;
-    sway-audio-idle-inhibit.enable = true;
     yubikey-touch-detector.enable = true;
   };
 

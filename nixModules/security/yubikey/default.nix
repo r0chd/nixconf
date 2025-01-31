@@ -22,7 +22,7 @@ in
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      yubioath-flutter
+      stable.yubioath-flutter
       yubikey-manager
       pam_u2f
     ];

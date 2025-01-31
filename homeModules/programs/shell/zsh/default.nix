@@ -12,8 +12,10 @@ with config.stylix.fonts;
     home = {
       packages = with pkgs; [ fzf ];
       persist = {
-        files = [ ".zsh_history" ];
-        directories = [ ".zplug" ];
+        directories = [
+          ".zplug"
+          ".config/zsh"
+        ];
       };
     };
     programs.zsh = {
@@ -22,7 +24,7 @@ with config.stylix.fonts;
       syntaxHighlighting.enable = true;
       history = {
         size = 10000;
-        path = "/home/${config.home.username}/.zsh_history";
+        path = "/home/${config.home.username}/.config/zsh/history";
         ignoreSpace = true;
         ignoreAllDups = true;
         ignoreDups = true;
