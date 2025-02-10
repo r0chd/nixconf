@@ -31,7 +31,7 @@
               230
               255
             ];
-            size = 12;
+            size = 15;
             family = "JetBrains Mono NerdFont";
           };
           border = {
