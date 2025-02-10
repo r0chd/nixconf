@@ -10,7 +10,6 @@ in
 {
   imports = [
     ./distrobox
-    ./looking-glass
   ];
 
   options.virtualisation = {

@@ -1,7 +1,4 @@
-{ lib, config, ... }:
-let
-  cfg = config.environment.wallpaper;
-in
+{ lib, ... }:
 {
   imports = [ ./ruin ];
 

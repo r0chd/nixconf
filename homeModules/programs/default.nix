@@ -21,7 +21,6 @@
     ./kitty
     ./ghostty
     ./foot
-    ./mako
     ./nh
   ];
 }

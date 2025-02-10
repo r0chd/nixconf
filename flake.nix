@@ -19,7 +19,7 @@
               hostname
               systemUsers
               ;
-            std = import ./std { lib = nixpkgs.lib; };
+            std = import ./std { inherit (nixpkgs) lib; };
           };
           modules = [
             ./nixModules
@@ -45,7 +45,7 @@
               hostname
               shell
               ;
-            std = import ./std { lib = pkgs.lib; };
+            std = import ./std { inherit (pkgs) lib; };
           };
 
           modules = [
@@ -163,12 +163,12 @@
       url = "git+https://github.com/unixpariah/ruin?submodules=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nh = {
-      url = "github:unixpariah/nh/home-specialisation";
+    moxidle = {
+      url = "github:unixpariah/moxidle";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    moxidle = {
-      url = "github:unixpariah/moxidle/home-manager";
+    moxalert = {
+      url = "git+ssh://git@github.com/unixpariah/moxalert.git?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -10,7 +10,7 @@ let
   cfg = config.environment.statusBar;
 in
 {
-  config = lib.mkIf (cfg.enable && cfg.program == "waystatus") {
+  config = lib.mkIf cfg.enable {
     home = {
       packages = [ inputs.waystatus.packages.${pkgs.system}.default ];
       file = {

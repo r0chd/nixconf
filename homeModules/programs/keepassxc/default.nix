@@ -29,7 +29,7 @@ in
       packages = with pkgs; [ keepassxc ];
       persist = {
         directories = [ ".config/keepassxc" ] ++ cfg.database.directories;
-        files = [ ] ++ cfg.database.files;
+        inherit (cfg.database) files;
       };
     };
   };

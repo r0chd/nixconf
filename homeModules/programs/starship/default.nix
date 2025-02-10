@@ -1,7 +1,4 @@
-{
-  ...
-}:
-{
+_: {
   programs.starship = {
     enableTransience = true;
     settings = {

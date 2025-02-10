@@ -88,14 +88,7 @@
       };
     };
 
-    statusBar = {
-      enable = true;
-      program = "waystatus";
-    };
-    notifications = {
-      enable = true;
-      program = "mako";
-    };
+    statusBar.enable = true;
     screenIdle = {
       lockscreen = {
         enable = true;
@@ -118,7 +111,6 @@
   };
 
   services = {
-    mako.enable = true;
     impermanence.enable = true;
     yubikey-touch-detector.enable = true;
   };

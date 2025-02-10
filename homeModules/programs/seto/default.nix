@@ -1,5 +1,4 @@
 {
-  pkgs,
   inputs,
   ...
 }:
@@ -9,13 +8,13 @@
     inputs.seto.homeManagerModules.stylix
   ];
 
-  #nix.settings = {
-  #  substituters = [ "https://seto.cachix.org" ];
-  #  trusted-public-keys = [ "seto.cachix.org-1:Hp2sGslAufwWgip0p5QuIzAf1jaREeTp8MuCLU0Io4E=" ];
-  #};
+  nixpkgs.overlays = [
+    (final: prev: {
+      seto = inputs.seto.packages.${prev.system}.default;
+    })
+  ];
 
   programs.seto = {
-    package = inputs.seto.packages.${pkgs.system}.default;
     settings.keys.bindings = {
       z.move = [
         (-5)

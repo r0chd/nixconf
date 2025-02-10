@@ -1,12 +1,11 @@
 { ... }:
 {
   imports = [
-    ./session
+    ./compositor
     ./terminal
     ./status
-    ./notifications
     ./lockscreen
-    ./wallpaper
     ./launcher
+    ./wallpaper
   ];
 }

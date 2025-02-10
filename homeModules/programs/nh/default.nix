@@ -1,6 +1,6 @@
-{ ... }:
-{
+_: {
   programs.nh = {
+    enable = true;
     #  clean = {
     #    dates = "weekly";
     #    enable = true;

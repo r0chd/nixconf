@@ -1,11 +1,18 @@
-{ lib, config, ... }:
+{
+  pkgs,
+  inputs,
+  lib,
+  config,
+  ...
+}:
 let
   cfg = config.environment;
 in
 {
   imports = [
-    ./wayland
-    ./x11
+    ./hyprland
+    ./sway
+    ./niri
   ];
 
   options.environment = {
@@ -31,17 +38,11 @@ in
       );
       default = { };
     };
-    session = lib.mkOption {
-      type = lib.types.enum [
-        "X11"
-        "Wayland"
-        "None"
-      ];
-      default = "None";
-    };
   };
 
   config = {
+    nixpkgs.overlays = [ inputs.nixpkgs-wayland.overlay ];
+
     wayland.windowManager = {
       hyprland.settings.input.monitor =
         cfg.outputs
@@ -70,5 +71,16 @@ in
       };
       position = value.position;
     }) config.environment.outputs;
+
+    home = {
+      packages = with pkgs; [
+        wl-clipboard
+        wayland
+      ];
+      sessionVariables = {
+        NIXOS_OZONE_WL = "1";
+        WLR_NO_HARDWARE_CURSORS = "1";
+      };
+    };
   };
 }

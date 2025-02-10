@@ -9,7 +9,7 @@
   ...
 }:
 let
-  root = (if config.system.impermanence.enable then "/persist/system/root" else "/root");
+  root = if config.system.impermanence.enable then "/persist/system/root" else "/root";
 in
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];

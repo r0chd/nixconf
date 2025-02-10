@@ -14,30 +14,45 @@
     })
   ];
 
-  services.moxidle = {
-    enable = true;
-    settings = {
-      general = {
-        lock_cmd = "pidof ${pkgs.hyprlock}/bin/hyprlock || ${pkgs.hyprlock}/bin/hyprlock";
-        unlock_cmd = "${pkgs.libnotify}/bin/notify-send 'unlock!'";
-        before_sleep_cmd = "${pkgs.libnotify}/bin/notify-send 'Zzz'";
-        after_sleep_cmd = "${pkgs.libnotify}/bin/notify-send 'Awake!'";
-        ignore_dbus_inhibit = false;
-        ignore_systemd_inhibit = false;
-        ignore_audio_inhibit = false;
+  services.moxidle =
+    let
+      dbus_cmd = "${pkgs.dbus}/bin/dbus-send --session --dest=org.freedesktop.ScreenSaver --print-reply /org/freedesktop/ScreenSaver org.freedesktop.ScreenSaver.GetActiveTime";
+      message = "${pkgs.libnotify}/bin/notify-send \"You've been inactive for $(${dbus_cmd} | ${pkgs.gawk}/bin/awk '/uint32/ {print $2}' | ${pkgs.gawk}/bin/awk '{h=int($1/3600); m=int(($1%3600)/60); s=$1%60; printf \"%02d:%02d:%02d\", h, m, s}')\"";
+    in
+    {
+      enable = true;
+      settings = {
+        general = {
+          lock_cmd = "pidof ${pkgs.hyprlock}/bin/hyprlock || ${pkgs.hyprlock}/bin/hyprlock && ${pkgs.systemd}/bin/loginctl unlock-session";
+          unlock_cmd = message;
+          ignore_dbus_inhibit = false;
+          ignore_systemd_inhibit = false;
+          ignore_audio_inhibit = false;
+        };
+        timeouts = [
+          {
+            conditions = [
+              "on_battery"
+              { battery_level = "critical"; }
+              { battery_state = "discharging"; }
+            ];
+            timeout = 300;
+            on_timeout = "${pkgs.systemd}/bin/systemctl suspend";
+            on_resume = message;
+          }
+          {
+            conditions = [ "on_ac" ];
+            timeout = 300;
+            on_timeout = "${pkgs.systemd}/bin/loginctl lock-session";
+            on_resume = message;
+          }
+          {
+            conditions = [ "on_ac" ];
+            timeout = 900;
+            on_timeout = "${pkgs.systemd}/bin/systemctl suspend";
+            on_resume = "";
+          }
+        ];
       };
-      timeouts = [
-        {
-          timeout = 300;
-          on_timeout = "${pkgs.systemd}/bin/loginctl lock-session";
-          on_resume = "${pkgs.libnotify}/bin/notify-send 'Welcome back!'";
-        }
-        {
-          timeout = 1800;
-          on_timeout = "${pkgs.systemd}/bin/systemctl suspend";
-          on_resume = "${pkgs.libnotify}/bin/notify-send 'Welcome back!'";
-        }
-      ];
     };
-  };
 }

@@ -30,7 +30,10 @@
     };
   };
 
-  boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
+  boot.kernelParams = [
+    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+    "nvidia_drm.fbdev=1"
+  ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
 }

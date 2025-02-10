@@ -33,10 +33,7 @@
   };
 
   virtualisation = {
-    docker = {
-      enable = true;
-      rootless.enable = true;
-    };
+    docker.enable = true;
     enable = true;
     waydroid.enable = true;
     virt-manager.enable = true;
@@ -79,13 +76,7 @@
   };
 
   hardware = {
-    power-management = {
-      enable = true;
-      thresh = {
-        start = 40;
-        stop = 80;
-      };
-    };
+    power-management.enable = true;
     audio.enable = true;
     bluetooth.enable = true;
   };
@@ -98,7 +89,6 @@
   zramSwap.enable = true;
 
   services = {
-    upower.enable = true;
     protonvpn = {
       enable = false;
       interface = {

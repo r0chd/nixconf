@@ -171,7 +171,7 @@ in
           mode = "0664";
         }
       ] ++ cfg.persist.directories;
-      files = cfg.persist.files;
+      inherit (cfg.persist) files;
     };
   };
 }

@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   programs.kitty = {
     keybindings = {
       "alt+v" = "paste_from_clipboard";

@@ -5,16 +5,6 @@ in
 {
   options.hardware.power-management = {
     enable = lib.mkEnableOption "Enable power management";
-    thresh = {
-      start = lib.mkOption {
-        type = lib.types.int;
-        default = 40;
-      };
-      stop = lib.mkOption {
-        type = lib.types.int;
-        default = 80;
-      };
-    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -35,12 +25,8 @@ in
       '';
     };
 
-    hardware.openrazer.batteryNotifier = {
-      enable = true;
-      percentage = 20;
-    };
-
     services = {
+      upower.enable = true;
       tlp = {
         enable = true;
         settings = {
@@ -50,13 +36,16 @@ in
           CPU_BOOST_ON_AC = 1;
           CPU_BOOST_ON_BAT = 0;
 
-          START_CHARGE_THRESH_BAT0 = cfg.thresh.start;
-          STOP_CHARGE_THRESH_BAT0 = cfg.thresh.stop;
+          START_CHARGE_THRESH_BAT0 = 40;
+          STOP_CHARGE_THRESH_BAT0 = 80;
         };
       };
       thermald.enable = true;
     };
 
-    powerManagement.enable = true;
+    powerManagement = {
+      enable = true;
+      powertop.enable = false;
+    };
   };
 }

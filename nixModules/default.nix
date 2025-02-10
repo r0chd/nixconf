@@ -18,19 +18,6 @@
     inputs.nix-index-database.nixosModules.nix-index
   ];
 
-  options.specialisations = {
-    Wayland.enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable Wayland session";
-    };
-    X11.enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable X11 session";
-    };
-  };
-
   config = {
     nixpkgs.overlays = import ../overlays inputs config;
 
@@ -79,21 +66,6 @@
         ];
         trusted-users = [ "@wheel" ];
         allowed-users = [ "@wheel" ];
-      };
-    };
-
-    specialisation = {
-      Wayland.configuration = lib.mkIf config.specialisations.Wayland.enable {
-        environment = {
-          etc."specialisation".text = "Wayland";
-          session = "Wayland";
-        };
-      };
-      X11.configuration = lib.mkIf config.specialisations.Wayland.enable {
-        environment = {
-          etc."specialisation".text = "X11";
-          session = "X11";
-        };
       };
     };
 
