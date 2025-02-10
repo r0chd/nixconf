@@ -91,15 +91,15 @@ in
 
   config = mkIf cfg.enable {
     networking.wg-quick.interfaces."${cfg.interface.name}" = {
-      autostart = cfg.autostart;
+      inherit (cfg) autostart;
       dns = if cfg.interface.dns.enable then [ cfg.interface.dns.ip ] else [ ];
-      privateKeyFile = cfg.interface.privateKeyFile;
+      inherit (cfg.interface) privateKeyFile;
       address = [ cfg.interface.ip ];
       listenPort = cfg.interface.port;
 
       peers = [
         {
-          publicKey = cfg.endpoint.publicKey;
+          inherit (cfg.endpoint) publicKey;
           allowedIPs = [
             "0.0.0.0/0"
             "::/0"

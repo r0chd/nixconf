@@ -63,13 +63,13 @@ in
     };
 
     programs.niri.settings.outputs = lib.mapAttrs (name: value: {
-      scale = value.scale;
+      inherit (value) scale;
       mode = {
-        width = value.dimensions.width;
-        height = value.dimensions.height;
-        refresh = value.refresh;
+        inherit (value.dimensions) width;
+        inherit (value.dimensions) height;
+        inherit (value) refresh;
       };
-      position = value.position;
+      inherit (value) position;
     }) config.environment.outputs;
 
     home = {

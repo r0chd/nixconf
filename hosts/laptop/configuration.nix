@@ -12,13 +12,12 @@
     ./hardware-configuration.nix
   ];
 
-  nixpkgs.config.allowUnfreePredicate = (
+  nixpkgs.config.allowUnfreePredicate =
     pkgs:
     builtins.elem (lib.getName pkgs) [
       "nvidia-x11"
       "nvidia-settings"
-    ]
-  );
+    ];
 
   programs.nix-index.enable = true;
 

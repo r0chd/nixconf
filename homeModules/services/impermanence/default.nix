@@ -56,7 +56,7 @@ in
         ".local/state/nix/profiles"
         ".cache/nix-index"
       ] ++ config.home.persist.directories;
-      files = config.home.persist.files;
+      inherit (config.home.persist) files;
       allowOther = true;
     };
   };
