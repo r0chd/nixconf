@@ -6,10 +6,12 @@
   ...
 }:
 let
-  cfg = config.programs.browser;
+  cfg = config.programs.zen;
 in
 {
-  config = lib.mkIf (cfg.enable && cfg.variant == "zen") {
+  options.programs.zen.enable = lib.mkEnableOption "zen";
+
+  config = lib.mkIf cfg.enable {
     home = {
       packages = with pkgs; [ inputs.zen-browser.packages.${system}.default ];
       persist.directories = [

@@ -43,9 +43,6 @@ in
       thermald.enable = true;
     };
 
-    powerManagement = {
-      enable = true;
-      powertop.enable = false;
-    };
+    powerManagement.enable = true;
   };
 }

@@ -6,6 +6,5 @@
     ./status
     ./lockscreen
     ./launcher
-    ./wallpaper
   ];
 }

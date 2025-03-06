@@ -12,9 +12,8 @@
       "steam-unwrapped"
     ];
 
-  wayland.windowManager.sway.enable = false;
-
   programs = {
+    zen.enable = true;
     nix-index.enable = true;
     nh.enable = true;
     fastfetch.enable = true;
@@ -31,10 +30,6 @@
     btop.enable = true;
     obs-studio.enable = true;
     nixcord.enable = true;
-    browser = {
-      enable = true;
-      variant = "zen";
-    };
     keepassxc = {
       enable = true;
       database.files = [ "Passwords.kdbx" ];
@@ -103,11 +98,6 @@
       enable = true;
       program = "kitty";
     };
-    wallpaper = {
-      enable = true;
-      program = "ruin";
-      path = "nix";
-    };
   };
 
   services = {
@@ -146,8 +136,8 @@
       terminal = 0.0;
     };
     image = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nixos-wallpaper-catppuccin-mocha.png";
-      sha256 = "7e6285630da06006058cebf896bf089173ed65f135fbcf32290e2f8c471ac75b";
+      url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nix-wallpaper-nineish-catppuccin-mocha.png";
+      sha256 = "ce562a4a27794352f9b14ac072f47eeda3768c89a2ba847d832801464f31f56a";
     };
     base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-night-dark.yaml";
     polarity = "dark";
@@ -155,6 +145,7 @@
 
   home = {
     packages = with pkgs; [
+      renderdoc
       zathura
       mpv
       lazygit
@@ -164,6 +155,7 @@
       imagemagick
       wf-recorder
       libreoffice
+      cosmic-files
     ];
 
     persist = {

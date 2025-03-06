@@ -133,6 +133,12 @@
           "stop"
         ];
 
+        "Alt+D".action.spawn = [
+          "mox"
+          "notify"
+          "focus"
+        ];
+
         "Alt+0".action.focus-workspace = 10;
         "Alt+1".action.focus-workspace = 1;
         "Alt+2".action.focus-workspace = 2;

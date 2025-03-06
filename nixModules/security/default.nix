@@ -14,9 +14,6 @@
       enable = true;
       rules = [ "-a exit,always -F arch=b64 -S execve" ];
     };
-    pam.services = {
-      swaylock = { };
-      hyprlock = { };
-    };
+    pam.services.hyprlock = { };
   };
 }

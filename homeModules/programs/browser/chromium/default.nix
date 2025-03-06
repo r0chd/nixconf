@@ -1,16 +1,10 @@
 {
-  lib,
-  config,
   pkgs,
   ...
 }:
-let
-  cfg = config.programs.browser;
-in
 {
-  config = lib.mkIf (cfg.enable && cfg.variant == "chromium") {
+  config = {
     programs.chromium = {
-      enable = true;
       package = pkgs.ungoogled-chromium;
       extensions = [
         { id = "ocaahdebbfolfmndjeplogmgcagdmblk"; }

@@ -1,7 +1,4 @@
-{
-  config,
-  ...
-}:
+{ config, ... }:
 let
   publicKey = "/home/${config.home.username}/.ssh/id_ed25519";
 in
@@ -10,6 +7,13 @@ in
     enable = true;
     userName = config.home.username;
     userEmail = config.email;
+
+    signing = {
+      format = "ssh";
+      key = publicKey;
+      signByDefault = true;
+    };
+
     extraConfig = {
       init.defaultBranch = "main";
       url = {
@@ -20,12 +24,8 @@ in
           insteadOf = "https://gitlab.com";
         };
       };
-      signing = {
-        signByDefault = true;
-        key = publicKey;
-      };
       gpg.format = "ssh";
-      user.signing.key = publicKey;
+      user.signingkey = publicKey;
       safe.directory = [ "/var/lib/nixconf" ];
     };
   };

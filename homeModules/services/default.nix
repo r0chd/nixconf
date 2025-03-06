@@ -4,6 +4,6 @@
     ./impermanence
     ./yubikey-touch-detector
     ./moxidle
-    ./moxalert
+    ./moxnotify
   ];
 }

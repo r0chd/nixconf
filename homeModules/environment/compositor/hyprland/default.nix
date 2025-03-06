@@ -2,7 +2,6 @@
   pkgs,
   lib,
   config,
-  inputs,
   ...
 }:
 {
@@ -19,7 +18,6 @@
 
   wayland.windowManager.hyprland = {
     enable = lib.mkDefault true;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     settings = {
       input = {
         kb_layout = "us";

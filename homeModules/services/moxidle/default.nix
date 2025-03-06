@@ -50,7 +50,6 @@
             conditions = [ "on_ac" ];
             timeout = 900;
             on_timeout = "${pkgs.systemd}/bin/systemctl suspend";
-            on_resume = "";
           }
         ];
       };

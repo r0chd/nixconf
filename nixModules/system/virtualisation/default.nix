@@ -8,9 +8,7 @@ let
   cfg = config.virtualisation;
 in
 {
-  imports = [
-    ./distrobox
-  ];
+  imports = [ ];
 
   options.virtualisation = {
     enable = lib.mkEnableOption "Virtualisation";

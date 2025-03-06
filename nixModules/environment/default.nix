@@ -17,8 +17,40 @@
   environment = {
     systemPackages = [
       (pkgs.writeShellScriptBin "gamescope-session-uwsm" ''
-        #!/bin/bash
-        gamescope --mangoapp -e --force-grab-cursor -- steam -steamdeck -steamos3 &
+        #!/usr/bin/env bash
+        set -xeuo pipefail
+
+        mangoConfig=(
+            cpu_temp
+            gpu_temp
+            ram
+            vram
+        )
+        mangoVars=(
+            MANGOHUD=1
+            MANGOHUD_CONFIG="$(IFS=,; echo "''${mangoConfig[*]}")"
+        )
+
+        gamescopeArgs=(
+            --adaptive-sync 
+            --hdr-enabled    
+            --mangoapp        
+            --rt               
+            --steam             
+            --expose-wayland     
+            --force-grab-cursor   
+        )
+
+        steamArgs=(
+            -steamdeck
+            -steamos3
+            -pipewire-dmabuf      
+            -tenfoot               
+        )
+
+        export "''${mangoVars[@]}"
+
+        gamescope "''${gamescopeArgs[@]}" -- steam "''${steamArgs[@]}" &
         GAMESCOPE_PID=$!
 
         FINALIZED="I'm here" WAYLAND_DISPLAY=gamescope-0 uwsm finalize
@@ -39,14 +71,21 @@
     };
   };
 
-  xdg.portal = {
-    xdgOpenUsePortal = true;
-    wlr = {
-      enable = lib.mkForce true;
-      settings = {
-        screencast = {
-          chooser_cmd = "${inputs.seto.packages.${pkgs.system}.default}/bin/seto -f %o";
-          chooser_type = "simple";
+  xdg = {
+    mime.defaultApplications = {
+      "inode/directory" = "cosmic-files.desktop";
+    };
+    terminal-exec.enable = true;
+    portal = {
+      enable = true;
+      xdgOpenUsePortal = true;
+      wlr = {
+        enable = lib.mkForce true;
+        settings = {
+          screencast = {
+            chooser_cmd = "${inputs.seto.packages.${pkgs.system}.default}/bin/seto -f %o";
+            chooser_type = "simple";
+          };
         };
       };
     };

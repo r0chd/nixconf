@@ -27,9 +27,9 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = {
     home = {
-      #persist.directories = [ ".local/share/containers/storage" ];
+      persist.directories = [ ".local/share/containers/storage" ];
       packages = [ pkgs.distrobox ];
     };
 

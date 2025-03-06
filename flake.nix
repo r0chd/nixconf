@@ -142,7 +142,6 @@
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "github:hyprwm/Hyprland";
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
@@ -155,10 +154,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim.url = "github:unixpariah/nixvim";
-    waystatus = {
-      url = "git+https://github.com/unixpariah/waystatus?submodules=1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     ruin = {
       url = "git+https://github.com/unixpariah/ruin?submodules=1";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -167,8 +162,8 @@
       url = "github:unixpariah/moxidle";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    moxalert = {
-      url = "git+ssh://git@github.com/unixpariah/moxalert.git?ref=main";
+    moxnotify = {
+      url = "git+ssh://git@github.com/unixpariah/moxnotify.git?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

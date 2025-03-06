@@ -13,20 +13,24 @@ in
       settings = {
         general = {
           hide_cursor = true;
-          no_fade_in = false;
-          disable_loading_bar = true;
-          grace = 0;
+          grace = 2;
         };
         label = [
           {
             monitor = "";
             text = "$TIME";
-            font_size = 120;
+            font_size = 100;
             position = "0, 80";
             valign = "center";
             halign = "center";
           }
         ];
+
+        input-field = {
+          size = "50, 50";
+          dots_size = 0.33;
+          dots_spacing = 0.15;
+        };
       };
     };
   };
