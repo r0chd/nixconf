@@ -29,6 +29,8 @@
       nano.enable = lib.mkDefault false;
     };
 
+    services.udisks2.enable = true;
+
     users = {
       mutableUsers = false;
       users =
@@ -40,7 +42,7 @@
         }
         // lib.mapAttrs (name: value: {
           isNormalUser = true;
-          hashedPasswordFile = config.sops.secrets.${name}.path;
+          hashedPasswordFile = config.sops.secrets."${name}/password".path;
           extraGroups = lib.mkIf value.root.enable [ "wheel" ];
           shell = pkgs.${value.shell};
           createHome = true;
@@ -53,7 +55,7 @@
         experimental-features = [
           "nix-command"
           "flakes"
-          "pipe-operators"
+          "pipe-operator"
         ];
         auto-optimise-store = true;
         substituters = [

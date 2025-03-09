@@ -25,13 +25,27 @@ in
 
   sops = {
     secrets =
-      {
-        password.neededForUsers = true;
-      }
-      // lib.genAttrs (builtins.attrNames systemUsers) (user: {
-        neededForUsers = true;
-        sopsFile = ../../../hosts/${hostname}/users/${user}/secrets/secrets.yaml;
-      });
+      systemUsers
+      |> builtins.attrNames
+      |> builtins.concatMap (user: [
+        {
+          name = "${user}/password";
+          value = {
+            neededForUsers = true;
+            sopsFile = ../../../hosts/${hostname}/users/${user}/secrets/secrets.yaml;
+          };
+        }
+        {
+          name = "${user}/ssh";
+          value = {
+            owner = user;
+            path = "/home/${user}/.ssh/id_ed25519";
+            sopsFile = ../../../hosts/${hostname}/users/${user}/secrets/secrets.yaml;
+          };
+        }
+      ])
+      |> lib.listToAttrs;
+
     defaultSopsFile = ../../../hosts/${hostname}/secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     age = {

@@ -4,6 +4,10 @@
   outputs =
     {
       nixpkgs,
+      disko,
+      home-manager,
+      stylix,
+      lix-module,
       ...
     }@inputs:
     let
@@ -23,8 +27,9 @@
           };
           modules = [
             ./nixModules
-            inputs.disko.nixosModules.default
-            inputs.stylix.nixosModules.stylix
+            disko.nixosModules.default
+            stylix.nixosModules.stylix
+            lix-module.nixosModules.default
           ];
 
         };
@@ -36,7 +41,7 @@
           pkgs = import nixpkgs { inherit system; };
           shell = "${hosts.${hostname}.users.${username}.shell}";
         in
-        inputs.home-manager.lib.homeManagerConfiguration {
+        home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = {
             inherit
@@ -50,7 +55,7 @@
 
           modules = [
             ./homeModules
-            inputs.stylix.homeManagerModules.stylix
+            stylix.homeManagerModules.stylix
           ];
         };
 
@@ -101,6 +106,11 @@
   inputs = {
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nix-index-database = {
       url = "github:nix-community/nix-index-database";

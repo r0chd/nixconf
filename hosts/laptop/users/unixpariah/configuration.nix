@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }:
 {
@@ -11,6 +12,14 @@
       "steam"
       "steam-unwrapped"
     ];
+
+  sops.secrets = {
+    "yubico/u2f_keys".path = "/home/unixpariah/.config/Yubico/u2f_keys";
+    "ssh_keys/unixpariah-yubikey".path = "/home/unixpariah/.ssh/id_yubikey";
+    nixos-access-token-github = { };
+  };
+
+  nix.access-tokens = [ config.sops.placeholder.nixos-access-token-github ];
 
   programs = {
     zen.enable = true;
@@ -42,19 +51,6 @@
     heroic.enable = true;
     bottles.enable = true;
     minecraft.enable = true;
-  };
-
-  virtualisation.distrobox = {
-    enable = true;
-    images = {
-      archlinux = {
-        enable = true;
-      };
-    };
-  };
-
-  sops.secrets."yubico/u2f_keys" = {
-    path = "/home/unixpariah/.config/Yubico/u2f_keys";
   };
 
   environment = {

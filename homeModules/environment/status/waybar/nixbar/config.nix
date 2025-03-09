@@ -24,6 +24,7 @@ _: {
       "tray"
       "battery"
       "pulseaudio"
+      "backlight"
       "network"
       "clock"
     ];
@@ -179,6 +180,22 @@ _: {
       icon-size = 20;
       spacing = 8;
     };
+    backlight = {
+      format = "{icon} {percent}%";
+      format-icons = {
+        default = [
+          ""
+          ""
+          ""
+          ""
+          ""
+          ""
+          ""
+          ""
+          ""
+        ];
+      };
+    };
     pulseaudio = {
       format = "{icon} {volume}%";
       format-muted = "󰝟";
@@ -193,25 +210,6 @@ _: {
       # on-scroll-down= "bash ~/.scripts/volume down";
       scroll-step = 5;
       on-click = "pavucontrol";
-    };
-    "custom/randwall" = {
-      format = "󰏘";
-      # on-click= "bash $HOME/.config/hypr/randwall.sh";
-      # on-click-right= "bash $HOME/.config/hypr/wall.sh";
-    };
-    "custom/launcher" = {
-      format = "";
-      # on-click= "bash $HOME/.config/rofi/launcher.sh";
-      # on-click-right= "bash $HOME/.config/rofi/run.sh";
-      tooltip = "false";
-    };
-    "custom/notification" = {
-      exec = "~/.config/waybar/scripts/notification.sh";
-      on-click = "dunstctl set-paused toggle";
-      on-click-right = "wallpaper";
-      return-type = "json";
-      max-length = 50;
-      format = "{}";
     };
   };
 }

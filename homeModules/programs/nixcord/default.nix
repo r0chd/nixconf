@@ -7,6 +7,7 @@
   programs.nixcord = {
     discord.vencord.package = pkgs.vencord;
     vesktop.enable = true;
+    discord.enable = false;
     config = {
       frameless = true;
       plugins = {

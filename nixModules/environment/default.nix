@@ -12,7 +12,7 @@
     ./niri
   ];
 
-  nixpkgs.overlays = [ inputs.nixpkgs-wayland.overlay ];
+  #nixpkgs.overlays = [ inputs.nixpkgs-wayland.overlay ];
 
   environment = {
     systemPackages = [

@@ -15,7 +15,6 @@
     ./security
     ./network
     ./services
-    ./virtualisation
     ../hosts/laptop/users/${username}/configuration.nix
     inputs.nix-index-database.hmModules.nix-index
   ];
@@ -24,6 +23,8 @@
 
   config = {
     nixpkgs.overlays = import ../overlays inputs config;
+
+    services.udiskie.enable = true;
 
     programs.home-manager.enable = true;
     home = {

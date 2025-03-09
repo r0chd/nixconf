@@ -32,10 +32,10 @@
   };
 
   virtualisation = {
-    podman = {
-      enable = true;
-      dockerCompat = true;
-    };
+    #podman = {
+    #  enable = true;
+    #  dockerCompat = true;
+    #};
     enable = true;
     waydroid.enable = true;
     virt-manager.enable = true;
@@ -83,10 +83,7 @@
     bluetooth.enable = true;
   };
 
-  network = {
-    ssh.enable = true;
-    wireless.enable = true;
-  };
+  network.wireless.enable = true;
 
   zramSwap.enable = true;
 
@@ -109,18 +106,6 @@
     systemPackages = with pkgs; [
       inputs.nixvim.packages.${system}.default
     ];
-  };
-
-  sops.secrets = {
-    "ssh_keys/unixpariah" = {
-      owner = "unixpariah";
-      path = "/home/unixpariah/.ssh/id_ed25519";
-    };
-    "ssh_keys/unixpariah-yubikey" = {
-      owner = "unixpariah";
-      path = "/home/unixpariah/.ssh/id_yubikey";
-    };
-    wireguard-key = { };
   };
 
   time.timeZone = "Europe/Warsaw";
