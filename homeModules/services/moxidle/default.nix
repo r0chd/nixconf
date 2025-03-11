@@ -8,19 +8,12 @@
     inputs.moxidle.homeManagerModules.default
   ];
 
-  nixpkgs.overlays = [
-    (final: prev: {
-      moxidle = inputs.moxidle.packages.${prev.system}.default;
-    })
-  ];
-
   services.moxidle =
     let
       dbus_cmd = "${pkgs.dbus}/bin/dbus-send --session --dest=org.freedesktop.ScreenSaver --print-reply /org/freedesktop/ScreenSaver org.freedesktop.ScreenSaver.GetActiveTime";
       message = "${pkgs.libnotify}/bin/notify-send \"You've been inactive for $(${dbus_cmd} | ${pkgs.gawk}/bin/awk '/uint32/ {print $2}' | ${pkgs.gawk}/bin/awk '{h=int($1/3600); m=int(($1%3600)/60); s=$1%60; printf \"%02d:%02d:%02d\", h, m, s}')\"";
     in
     {
-      enable = true;
       settings = {
         general = {
           lock_cmd = "pidof ${pkgs.hyprlock}/bin/hyprlock || ${pkgs.hyprlock}/bin/hyprlock && ${pkgs.systemd}/bin/loginctl unlock-session";

@@ -24,9 +24,9 @@ in
     boot.lanzaboote = {
       enable = true;
       pkiBundle =
-        if config.system.impermanence.enable then "/persist/system/etc/secureboot" else "/etc/secureboot";
+        if config.services.impermanence.enable then "/persist/system/etc/secureboot" else "/etc/secureboot";
     };
 
-    system.impermanence.persist.directories = [ "/etc/secureboot" ];
+    environment.persist.directories = [ "/etc/secureboot" ];
   };
 }

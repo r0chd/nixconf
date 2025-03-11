@@ -168,12 +168,17 @@
       url = "git+https://github.com/unixpariah/ruin?submodules=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     moxidle = {
       url = "github:unixpariah/moxidle";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     moxnotify = {
-      url = "git+ssh://git@github.com/unixpariah/moxnotify.git?ref=main";
+      url = "github:unixpariah/moxnotify";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    moxctl = {
+      url = "github:unixpariah/moxctl";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -6,120 +6,124 @@
   ...
 }:
 let
-  cfg = config.system.impermanence;
+  cfg = config.services.impermanence;
 in
 {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
 
-  options.system = {
-    impermanence = {
+  options = {
+    services.impermanence = {
       enable = lib.mkEnableOption "Enable impermanence";
       device = lib.mkOption {
         type = lib.types.str;
         default = "cryptid";
       };
-      persist = {
-        directories = lib.mkOption {
-          type =
-            with lib.types;
-            listOf (
-              either str (submodule {
-                options = {
-                  directory = lib.mkOption {
-                    type = str;
-                    default = null;
-                    description = "The directory path to be linked.";
-                  };
-                  user = lib.mkOption {
-                    type = str;
-                    default = null;
-                    description = "User owning the directory";
-                  };
-                  group = lib.mkOption {
-                    type = str;
-                    default = null;
-                    description = "Group owning the directory";
-                  };
-                  mode = lib.mkOption {
-                    type = str;
-                    default = null;
-                    description = "Permissions";
-                  };
+    };
+
+    environment.persist = {
+      directories = lib.mkOption {
+        type =
+          with lib.types;
+          listOf (
+            either str (submodule {
+              options = {
+                directory = lib.mkOption {
+                  type = str;
+                  default = null;
+                  description = "The directory path to be linked.";
                 };
-              })
-            );
-          default = [ ];
-        };
-        files = lib.mkOption {
-          type =
-            with lib.types;
-            listOf (
-              either str (submodule {
-                options = {
-                  file = lib.mkOption {
-                    type = str;
-                    default = null;
-                    description = "The file path to be linked.";
-                  };
-                  user = lib.mkOption {
-                    type = str;
-                    default = "root";
-                    description = "User owning the file";
-                  };
-                  group = lib.mkOption {
-                    type = str;
-                    default = "root";
-                    description = "Group owning the file";
-                  };
-                  mode = lib.mkOption {
-                    type = str;
-                    default = "0755";
-                    description = "Permissions";
-                  };
+                user = lib.mkOption {
+                  type = str;
+                  default = null;
+                  description = "User owning the directory";
                 };
-              })
-            );
-          default = [ ];
-        };
+                group = lib.mkOption {
+                  type = str;
+                  default = null;
+                  description = "Group owning the directory";
+                };
+                mode = lib.mkOption {
+                  type = str;
+                  default = null;
+                  description = "Permissions";
+                };
+              };
+            })
+          );
+        default = [ ];
+      };
+      files = lib.mkOption {
+        type =
+          with lib.types;
+          listOf (
+            either str (submodule {
+              options = {
+                file = lib.mkOption {
+                  type = str;
+                  default = null;
+                  description = "The file path to be linked.";
+                };
+                user = lib.mkOption {
+                  type = str;
+                  default = "root";
+                  description = "User owning the file";
+                };
+                group = lib.mkOption {
+                  type = str;
+                  default = "root";
+                  description = "Group owning the file";
+                };
+                mode = lib.mkOption {
+                  type = str;
+                  default = "0755";
+                  description = "Permissions";
+                };
+              };
+            })
+          );
+        default = [ ];
       };
     };
   };
 
   config = lib.mkIf cfg.enable {
-    #boot.initrd.systemd.services.rollback = {
-    #  description = "Rollback BTRFS root subvolume";
-    #  wantedBy = [ "initrd.target" ];
-    #  after = [
-    #    "systemd-cryptsetup@${cfg.device}.service"
-    #    "initrd-root-device.target"
-    #  ];
-    #  before = [ "sysroot.mount" ];
-    #  unitConfig.DefaultDependencies = "no";
-    #  serviceConfig.Type = "oneshot";
-    #  script = ''
-    #    mkdir /btrfs_tmp
-    #    mount /dev/root_vg/root /btrfs_tmp
-    #    if [[ -e /btrfs_tmp/root ]]; then
-    #        mkdir -p /btrfs_tmp/old_roots
-    #        timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%d_%H:%M:%S")
-    #        mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
-    #    fi
+    #boot.initrd.systemd = {
+    #  enable = true;
+    #  services.rollback = {
+    #    description = "Rollback BTRFS root subvolume";
+    #    wantedBy = [ "initrd.target" ];
+    #    after = [
+    #      "systemd-cryptsetup@${cfg.device}.service"
+    #      "initrd-root-device.target"
+    #    ];
+    #    before = [ "sysroot.mount" ];
+    #    unitConfig.DefaultDependencies = "no";
+    #    serviceConfig.Type = "oneshot";
+    #    script = ''
+    #      mkdir /btrfs_tmp
+    #      mount /dev/root_vg/root /btrfs_tmp
+    #      if [[ -e /btrfs_tmp/root ]]; then
+    #          mkdir -p /btrfs_tmp/old_roots
+    #          timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%d_%H:%M:%S")
+    #          mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
+    #      fi
 
-    #    delete_subvolume_recursively() {
-    #        IFS=$'\n'
-    #        for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
-    #            delete_subvolume_recursively "/btrfs_tmp/$i"
-    #        done
-    #        btrfs subvolume delete "$1"
-    #    }
+    #      delete_subvolume_recursively() {
+    #          IFS=$'\n'
+    #          for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
+    #              delete_subvolume_recursively "/btrfs_tmp/$i"
+    #          done
+    #          btrfs subvolume delete "$1"
+    #      }
 
-    #    for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +${toString config.system.gc.interval}); do
-    #        delete_subvolume_recursively "$i"
-    #    done
+    #      for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +${toString config.system.gc.interval}); do
+    #          delete_subvolume_recursively "$i"
+    #      done
 
-    #    btrfs subvolume create /btrfs_tmp/root
-    #    umount /btrfs_tmp
-    #  '';
+    #      btrfs subvolume create /btrfs_tmp/root
+    #      umount /btrfs_tmp
+    #    '';
+    #  };
     #};
 
     boot.initrd.postDeviceCommands = lib.mkIf (config.system.fileSystem == "btrfs") (
@@ -152,14 +156,14 @@ in
     systemd.tmpfiles.rules =
       [ "d /persist/home 0777 root root -" ]
       ++ (
-        builtins.attrNames systemUsers
+        systemUsers
+        |> builtins.attrNames
         |> lib.concatMap (user: [ "d /persist/home/${user} 0700 ${user} users -" ])
       );
 
     fileSystems."/persist".neededForBoot = true;
 
     programs.fuse.userAllowOther = true;
-    security.sudo.extraConfig = "Defaults lecture=never";
 
     environment.persistence."/persist/system" = {
       hideMounts = true;
@@ -170,8 +174,8 @@ in
           group = "wheel";
           mode = "0664";
         }
-      ] ++ cfg.persist.directories;
-      inherit (cfg.persist) files;
+      ] ++ config.environment.persist.directories;
+      inherit (config.environment.persist) files;
     };
   };
 }

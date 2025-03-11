@@ -1,18 +1,15 @@
-{ inputs, config, ... }:
+{
+  inputs,
+  config,
+  ...
+}:
 {
   imports = [
     inputs.moxnotify.homeManagerModules.default
     inputs.moxnotify.homeManagerModules.stylix
   ];
 
-  nixpkgs.overlays = [
-    (final: prev: {
-      moxnotify = inputs.moxnotify.packages.${prev.system}.default;
-    })
-  ];
-
   services.moxnotify = {
-    enable = true;
     settings = {
       max_icon_size = 60;
       default_timeout = 5;

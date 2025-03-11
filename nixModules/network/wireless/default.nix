@@ -31,6 +31,6 @@ in
       inetutils
     ];
 
-    system.impermanence.persist.directories = [ "/var/lib/iwd" ];
+    environment.persist.directories = [ "/var/lib/iwd" ];
   };
 }

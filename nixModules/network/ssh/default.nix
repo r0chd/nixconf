@@ -39,7 +39,7 @@
     }
   );
 
-  system.impermanence.persist.directories = [
+  environment.persist.directories = [
     {
       directory = "/root/.ssh";
       user = "root";

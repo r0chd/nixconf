@@ -32,14 +32,13 @@
   };
 
   virtualisation = {
-    #podman = {
-    #  enable = true;
-    #  dockerCompat = true;
-    #};
     enable = true;
     waydroid.enable = true;
     virt-manager.enable = true;
   };
+
+  #boot.initrd.luks.devices."cryptid".device =
+  #  "/dev/disk/by-uuid/e1031d51-8bd7-4c53-9ebb-bf2d4fcaa234";
 
   system = {
     fileSystem = "btrfs";
@@ -51,16 +50,6 @@
     displayManager = {
       enable = true;
       variant = "greetd";
-    };
-    impermanence = {
-      enable = true;
-      persist = {
-        directories = [
-          "/var/log"
-          "/var/lib/nixos"
-        ];
-        files = [ ];
-      };
     };
     gc = {
       enable = true;
@@ -88,6 +77,9 @@
   zramSwap.enable = true;
 
   services = {
+    impermanence = {
+      enable = true;
+    };
     protonvpn = {
       enable = false;
       interface = {
@@ -102,6 +94,10 @@
   };
 
   environment = {
+    persist.directories = [
+      "/var/log"
+      "/var/lib/nixos"
+    ];
     variables.EDITOR = "nvim";
     systemPackages = with pkgs; [
       inputs.nixvim.packages.${system}.default

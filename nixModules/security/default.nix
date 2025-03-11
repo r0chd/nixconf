@@ -1,9 +1,9 @@
-{ ... }:
-{
+_: {
   imports = [
     ./root
     ./yubikey
     ./sops
+    ./tpm
   ];
 
   security = {

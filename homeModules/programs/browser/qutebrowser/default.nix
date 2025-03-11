@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   programs.qutebrowser = {
     searchEngines = {
       DEFAULT = "https://search.brave.com/search?q={}";

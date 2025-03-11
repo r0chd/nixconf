@@ -22,5 +22,6 @@
     ./ghostty
     ./foot
     ./nh
+    ./moxctl
   ];
 }

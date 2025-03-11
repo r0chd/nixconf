@@ -16,6 +16,7 @@ in
       execWheelOnly = true;
       extraConfig = ''
         Defaults timestamp_timeout=${toString cfg.timeout}
+        Defaults lecture=never
       '';
     };
   };

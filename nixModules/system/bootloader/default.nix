@@ -114,7 +114,6 @@ in
 
     users.groups.proc = { };
 
-    #boot.initrd.systemd.enable = true;
     systemd = {
       services.systemd-logind.serviceConfig.SupplementaryGroups = [ "proc" ];
       coredump.enable = false;

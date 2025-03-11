@@ -163,7 +163,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    system.impermanence.persist.directories = [ "/var/cache/tuigreet" ];
+    environment.persist.directories = [ "/var/cache/tuigreet" ];
 
     services.greetd.settings.default_session = {
       user = mkDefault "greeter";

@@ -14,6 +14,7 @@
     ./network
     ./security
     ./environment
+    ./services
     ../hosts/${hostname}/configuration.nix
     inputs.nix-index-database.nixosModules.nix-index
   ];
@@ -71,7 +72,7 @@
       };
     };
 
-    systemd.services.activate-home-manager = lib.mkIf config.system.impermanence.enable {
+    systemd.services.activate-home-manager = lib.mkIf config.services.impermanence.enable {
       enable = true;
       description = "Activate home manager";
       wantedBy = [ "default.target" ];

@@ -21,8 +21,16 @@
 
   nix.access-tokens = [ config.sops.placeholder.nixos-access-token-github ];
 
+  services = {
+    moxidle.enable = true;
+    moxnotify.enable = true;
+    impermanence.enable = true;
+    yubikey-touch-detector.enable = true;
+  };
+
   programs = {
     zen.enable = true;
+    qutebrowser.enable = true;
     nix-index.enable = true;
     nh.enable = true;
     fastfetch.enable = true;
@@ -94,11 +102,6 @@
       enable = true;
       program = "kitty";
     };
-  };
-
-  services = {
-    impermanence.enable = true;
-    yubikey-touch-detector.enable = true;
   };
 
   editor = "nvim";
