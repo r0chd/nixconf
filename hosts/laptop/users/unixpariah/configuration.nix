@@ -40,7 +40,6 @@
     man.enable = true;
     bat.enable = true;
     zoxide.enable = true;
-    lsd.enable = true;
     direnv.enable = true;
     seto.enable = true;
     tmux.enable = true;
@@ -144,6 +143,7 @@
 
   home = {
     packages = with pkgs; [
+      OVMF
       renderdoc
       zathura
       mpv
@@ -164,6 +164,7 @@
         "Videos"
         "Documents"
         "Iso"
+        ".yubico"
       ];
     };
   };

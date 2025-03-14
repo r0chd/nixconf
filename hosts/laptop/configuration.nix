@@ -35,10 +35,17 @@
     enable = true;
     waydroid.enable = true;
     virt-manager.enable = true;
+    docker = {
+      enable = true;
+      storageDriver = "btrfs";
+      rootless = {
+        enable = true;
+        setSocketVariable = true;
+      };
+    };
   };
 
-  #boot.initrd.luks.devices."cryptid".device =
-  #  "/dev/disk/by-uuid/e1031d51-8bd7-4c53-9ebb-bf2d4fcaa234";
+  users.users.unixpariah.extraGroups = [ "docker" ];
 
   system = {
     fileSystem = "btrfs";
@@ -61,6 +68,7 @@
     yubikey = {
       enable = true;
       rootAuth = true;
+      id = "31888351";
       unplug.enable = true;
     };
     root.timeout = 0;
@@ -77,9 +85,16 @@
   zramSwap.enable = true;
 
   services = {
-    impermanence = {
-      enable = true;
+    postgresql = {
+      enable = false;
+      ensureDatabases = [ "mydatabase" ];
+      authentication = pkgs.lib.mkOverride 10 ''
+        #type database  DBuser  auth-method
+        local all       all     trust
+      '';
     };
+
+    impermanence.enable = true;
     protonvpn = {
       enable = false;
       interface = {
@@ -101,6 +116,7 @@
     variables.EDITOR = "nvim";
     systemPackages = with pkgs; [
       inputs.nixvim.packages.${system}.default
+      distrobox
     ];
   };
 

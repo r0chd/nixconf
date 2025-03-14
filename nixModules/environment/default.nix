@@ -12,8 +12,6 @@
     ./niri
   ];
 
-  #nixpkgs.overlays = [ inputs.nixpkgs-wayland.overlay ];
-
   environment = {
     systemPackages = [
       (pkgs.writeShellScriptBin "gamescope-session-uwsm" ''

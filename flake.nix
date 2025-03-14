@@ -65,7 +65,7 @@
           users = {
             unixpariah = {
               root.enable = true;
-              shell = "zsh";
+              shell = "nushell";
             };
           };
         };
@@ -157,18 +157,23 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixcord.url = "github:kaylorben/nixcord";
+    nixcord = {
+      url = "github:kaylorben/nixcord";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixvim = {
+      url = "github:unixpariah/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     seto = {
       url = "github:unixpariah/seto";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixvim.url = "github:unixpariah/nixvim";
     ruin = {
       url = "git+https://github.com/unixpariah/ruin?submodules=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     moxidle = {
       url = "github:unixpariah/moxidle";
       inputs.nixpkgs.follows = "nixpkgs";

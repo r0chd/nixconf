@@ -54,6 +54,9 @@ in
       zsh.initExtra = lib.mkIf (shell == "zsh") ''
         tmux-init
       '';
+      nushell.extraLogin = ''
+        tmux-init
+      '';
       fish.interactiveShellInit = lib.mkIf (shell == "fish") ''
         if string match -q -- 'tmux*' $TERM
             set fish_cursor_insert line

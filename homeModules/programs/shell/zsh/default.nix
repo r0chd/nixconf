@@ -10,11 +10,12 @@ with config.stylix.fonts;
 {
   config = lib.mkIf (shell == "zsh") {
     home = {
+      shell.enableZshIntegration = true;
       packages = with pkgs; [ fzf ];
       persist = {
         directories = [
           ".zplug"
-          ".config/zsh"
+          ".cache/zsh"
         ];
       };
     };
@@ -24,7 +25,7 @@ with config.stylix.fonts;
       syntaxHighlighting.enable = true;
       history = {
         size = 10000;
-        path = "/home/${config.home.username}/.config/zsh/history";
+        path = "/home/${config.home.username}/.cache/zsh/history";
         ignoreSpace = true;
         ignoreAllDups = true;
         ignoreDups = true;

@@ -5,7 +5,10 @@
 }:
 {
   config = lib.mkIf (shell == "fish") {
-    home.persist.directories = [ ".local/share/fish" ];
+    home = {
+      persist.directories = [ ".local/share/fish" ];
+      shell.enableFishIntegration = true;
+    };
     programs.fish = {
       enable = true;
       functions = {

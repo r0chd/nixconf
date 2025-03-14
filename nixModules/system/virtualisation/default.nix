@@ -8,8 +8,6 @@ let
   cfg = config.virtualisation;
 in
 {
-  imports = [ ];
-
   options.virtualisation = {
     enable = lib.mkEnableOption "Virtualisation";
     virt-manager.enable = lib.mkEnableOption "Enable virt-manager";

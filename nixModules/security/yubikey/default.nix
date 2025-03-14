@@ -11,6 +11,10 @@ in
   options.security.yubikey = {
     enable = lib.mkEnableOption "yubikey";
     rootAuth = lib.mkEnableOption "root authentication";
+    id = lib.mkOption {
+      default = null;
+      type = lib.types.nullOr lib.types.str;
+    };
     unplug = {
       enable = lib.mkEnableOption "Action when unplugging";
       action = lib.mkOption {
@@ -21,8 +25,18 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    boot.initrd = {
+      luks.yubikeySupport = true;
+      kernelModules = [
+        "vfat"
+        "nls_cp437"
+        "nls_iso8859-1"
+        "usbhid"
+      ];
+    };
+
     environment.systemPackages = with pkgs; [
-      stable.yubioath-flutter
+      yubioath-flutter
       yubikey-manager
       pam_u2f
     ];
@@ -44,9 +58,15 @@ in
     };
 
     security.pam = {
+      yubico = {
+        enable = cfg.id != null;
+        debug = true;
+        mode = "challenge-response";
+        id = [ cfg.id ];
+      };
       sshAgentAuth.enable = true;
-      u2f = lib.mkIf cfg.rootAuth {
-        enable = true;
+      u2f = {
+        enable = cfg.rootAuth;
         settings = {
           cue = true;
           authFile = "/root/.config/Yubico/u2f_keys";

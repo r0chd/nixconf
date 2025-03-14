@@ -20,6 +20,10 @@
   ];
 
   config = {
+    environment.systemPackages = with pkgs; [
+      uutils-coreutils-noprefix
+    ];
+
     nixpkgs.overlays = import ../overlays inputs config;
 
     boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;

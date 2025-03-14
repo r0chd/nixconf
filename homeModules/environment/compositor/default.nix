@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   lib,
   config,
   ...
@@ -41,8 +40,6 @@ in
   };
 
   config = {
-    nixpkgs.overlays = [ inputs.nixpkgs-wayland.overlay ];
-
     wayland.windowManager = {
       hyprland.settings.input.monitor =
         cfg.outputs

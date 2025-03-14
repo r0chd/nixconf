@@ -8,6 +8,9 @@ in
       ".local/share/direnv"
       ".cache/nix"
     ];
-    programs.direnv.nix-direnv.enable = true;
+    programs.direnv = {
+      silent = true;
+      nix-direnv.enable = true;
+    };
   };
 }
