@@ -6,12 +6,13 @@
   ...
 }:
 let
-  cfg = config.programs.tmux;
+  cfg = config.programs.multiplexer;
 in
 {
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf (cfg.enable && cfg.variant == "tmux") {
     programs = {
       tmux = {
+        enable = true;
         aggressiveResize = true;
         baseIndex = 1;
         clock24 = true;
@@ -54,7 +55,7 @@ in
       zsh.initExtra = lib.mkIf (shell == "zsh") ''
         tmux-init
       '';
-      nushell.extraLogin = ''
+      nushell.loginFile.text = ''
         tmux-init
       '';
       fish.interactiveShellInit = lib.mkIf (shell == "fish") ''

@@ -7,7 +7,7 @@
     ./git
     ./shell
     ./editor
-    ./tmux
+    ./multiplexer
     ./zoxide
     ./lsd
     ./bat
@@ -23,5 +23,6 @@
     ./foot
     ./nh
     ./moxctl
+    ./fastfetch
   ];
 }

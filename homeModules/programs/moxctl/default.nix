@@ -4,8 +4,16 @@
   config,
   ...
 }:
+let
+  cfg = config.programs.moxctl;
+in
 {
-  config = lib.mkIf (config.services.moxidle.enable || config.services.moxnotify.enable) {
+  options.programs.moxctl.enable = lib.mkOption {
+    default = config.services.moxnotify.enable;
+    type = lib.types.bool;
+  };
+
+  config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [ moxctl ];
   };
 }

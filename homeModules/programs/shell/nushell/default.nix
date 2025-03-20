@@ -14,6 +14,7 @@
     programs = {
       nushell = {
         enable = true;
+        package = null;
         shellAliases = config.home.shellAliases;
         extraConfig = ''
           let carapace_completer = {|spans: list<string>|
@@ -64,7 +65,6 @@
             cursor_shape: {
               vi_insert: line
               vi_normal: block
-              emacs: underscore
             }
             keybindings: [
               {

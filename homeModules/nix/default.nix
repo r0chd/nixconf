@@ -1,3 +1,4 @@
-_: {
+{ ... }:
+{
   imports = [ ./access-tokens ];
 }

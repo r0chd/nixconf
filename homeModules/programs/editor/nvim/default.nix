@@ -21,11 +21,6 @@
         stylua
       ];
 
-      shellAliases = {
-        vi = "nvim";
-        vim = "nvim";
-      };
-
       persist.directories = [
         ".local/share/nvim"
         ".local/state/nvim"

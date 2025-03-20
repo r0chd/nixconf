@@ -30,7 +30,6 @@
 
   programs = {
     zen.enable = true;
-    qutebrowser.enable = true;
     nix-index.enable = true;
     nh.enable = true;
     fastfetch.enable = true;
@@ -42,13 +41,16 @@
     zoxide.enable = true;
     direnv.enable = true;
     seto.enable = true;
-    tmux.enable = true;
     btop.enable = true;
     obs-studio.enable = true;
     nixcord.enable = true;
     keepassxc = {
       enable = true;
       database.files = [ "Passwords.kdbx" ];
+    };
+    multiplexer = {
+      enable = true;
+      variant = "tmux";
     };
   };
 
@@ -103,7 +105,7 @@
     };
   };
 
-  editor = "nvim";
+  editor = "hx";
   email = "oskar.rochowiak@tutanota.com";
 
   stylix = {
@@ -143,7 +145,6 @@
 
   home = {
     packages = with pkgs; [
-      OVMF
       renderdoc
       zathura
       mpv
@@ -159,6 +160,7 @@
 
     persist = {
       directories = [
+        "Games/Nintendo"
         "workspace"
         "Images"
         "Videos"

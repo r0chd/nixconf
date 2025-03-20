@@ -146,6 +146,7 @@
           "$mainMod, q, exec, uwsm stop"
         ]
         ++ (lib.optional config.programs.seto.enable ", Print, exec, ${pkgs.grim}/bin/grim -g \"$(seto -r)\" - | ${pkgs.swappy}/bin/swappy -f -")
+        ++ (lib.optional config.programs.moxctl.enable "$mainMod, D, exec, mox notify focus")
         ++ (lib.optional config.programs.seto.enable "$mainMod, G, exec, click");
 
       bindm = [
