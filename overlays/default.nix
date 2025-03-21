@@ -10,5 +10,5 @@ inputs: config: [
     seto = inputs.seto.packages.${prev.system}.default;
   })
 
-  #inputs.nixpkgs-wayland.overlay
+  inputs.nixpkgs-wayland.overlay
 ]

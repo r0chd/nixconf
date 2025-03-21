@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  system_type,
   ...
 }:
 let
@@ -39,7 +40,7 @@ in
     };
   };
 
-  config = {
+  config = lib.mkIf (system_type == "desktop") {
     wayland.windowManager = {
       hyprland.settings.input.monitor =
         cfg.outputs
