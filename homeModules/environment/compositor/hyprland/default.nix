@@ -2,11 +2,12 @@
   pkgs,
   lib,
   config,
+  system_type,
   ...
 }:
 {
-  home.packages = with pkgs; [
-    (writeShellScriptBin "click" ''
+  home.packages = lib.mkIf config.wayland.windowManager.hyprland.enable [
+    (pkgs.writeShellScriptBin "click" ''
       cursorpos=$(hyprctl cursorpos)
       x=$(echo $cursorpos | cut -d "," -f 1)
       y=$(echo $cursorpos | cut -d "," -f 2)
@@ -17,7 +18,7 @@
   ];
 
   wayland.windowManager.hyprland = {
-    enable = lib.mkDefault true;
+    enable = lib.mkDefault (system_type == "desktop");
     settings = {
       input = {
         kb_layout = "us";

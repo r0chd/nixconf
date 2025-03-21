@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  system_type,
   inputs,
   ...
 }:
@@ -12,6 +13,7 @@
     ./niri
   ];
 
+  config = lib.mkIf (system_type == "desktop") {
   environment = {
     systemPackages = [
       (pkgs.writeShellScriptBin "gamescope-session-uwsm" ''
@@ -56,7 +58,7 @@
         wait $GAMESCOPE_PID
       '')
     ];
-    loginShellInit = lib.mkIf (!config.system.displayManager.enable || config.specialisation != { }) ''
+    loginShellInit = lib.mkIf (!config.system.displayManager.enable) ''
       if uwsm check may-start && uwsm select; then
           exec uwsm start default
       fi
@@ -116,5 +118,6 @@
         };
       };
     };
+  };
   };
 }

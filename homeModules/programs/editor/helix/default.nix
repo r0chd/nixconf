@@ -5,13 +5,9 @@
   ...
 }:
 {
-  config = lib.mkIf (config.editor == "hx") {
+  config = lib.mkIf (config.programs.editor == "hx") {
     home.packages = with pkgs; [
       adwaita-icon-theme
-      lua-language-server
-      alejandra
-      nixfmt-rfc-style
-      stylua
     ];
 
     programs.helix = {
@@ -40,6 +36,15 @@
               unit = "    ";
             };
             language-servers = [ "wgsl-analyzer" ];
+          }
+          {
+            name = "nix";
+            auto-format = true;
+            language-servers = [ { name = "nil"; } ];
+            formatter = {
+              command = lib.getExe pkgs.nixfmt-rfc-style;
+              args = [ "-s" ];
+            };
           }
         ];
       };

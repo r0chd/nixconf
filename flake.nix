@@ -11,6 +11,25 @@
       ...
     }@inputs:
     let
+      hosts = {
+        laptop = {
+          arch = "x86_64-linux";
+          type = "desktop";
+          users.unixpariah = {
+            root.enable = true;
+            shell = "nushell";
+          };
+        };
+        rpi = {
+          arch = "aarch64-linux";
+          type = "server";
+          users.unixpariah = {
+            root.enable = true;
+            shell = "nushell";
+          };
+        };
+      };
+
       mkHost =
         hostname: attrs:
         let
@@ -18,13 +37,11 @@
         in
         nixpkgs.lib.nixosSystem {
           specialArgs = {
-            inherit
-              inputs
-              hostname
-              systemUsers
-              ;
+            inherit inputs hostname systemUsers;
+            system_type = hosts.${hostname}.type;
             std = import ./std { inherit (nixpkgs) lib; };
           };
+
           modules = [
             ./nixModules
             disko.nixosModules.default
@@ -50,6 +67,7 @@
               hostname
               shell
               ;
+            system_type = hosts.${hostname}.type;
             std = import ./std { inherit (pkgs) lib; };
           };
 
@@ -58,18 +76,6 @@
             stylix.homeManagerModules.stylix
           ];
         };
-
-      hosts = {
-        laptop = {
-          arch = "x86_64-linux";
-          users = {
-            unixpariah = {
-              root.enable = true;
-              shell = "nushell";
-            };
-          };
-        };
-      };
     in
     with nixpkgs;
     {
@@ -87,20 +93,6 @@
         )
         |> builtins.concatLists
         |> builtins.listToAttrs;
-
-      devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ] (
-        system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-        in
-        {
-          default = pkgs.mkShell {
-            packages = [
-              pkgs.nixd
-            ];
-          };
-        }
-      );
     };
 
   inputs = {
@@ -137,6 +129,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
+    raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
 
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";

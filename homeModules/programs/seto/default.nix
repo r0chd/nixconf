@@ -8,12 +8,6 @@
     inputs.seto.homeManagerModules.stylix
   ];
 
-  nixpkgs.overlays = [
-    (final: prev: {
-      seto = inputs.seto.packages.${prev.system}.default;
-    })
-  ];
-
   programs.seto = {
     settings.keys.bindings = {
       z.move = [

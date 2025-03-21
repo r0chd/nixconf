@@ -7,6 +7,7 @@ inputs: config: [
     moxnotify = inputs.moxnotify.packages.${prev.system}.default;
     moxctl = inputs.moxctl.packages.${prev.system}.default;
     moxidle = inputs.moxidle.packages.${prev.system}.default;
+    seto = inputs.seto.packages.${prev.system}.default;
   })
 
   #inputs.nixpkgs-wayland.overlay

@@ -6,7 +6,7 @@
     ./helix
   ];
 
-  options.editor = lib.mkOption {
+  options.programs.editor = lib.mkOption {
     type = lib.types.enum [
       "nvim"
       "nano"
@@ -15,13 +15,13 @@
   };
 
   config.home = {
-    sessionVariables.EDITOR = config.editor;
+    sessionVariables.EDITOR = config.programs.editor;
     shellAliases = {
-      vi = config.editor;
-      vim = config.editor;
-      nvim = config.editor;
-      nano = config.editor;
-      hx = config.editor;
+      vi = config.programs.editor;
+      vim = config.programs.editor;
+      nvim = config.programs.editor;
+      nano = config.programs.editor;
+      hx = config.programs.editor;
     };
   };
 }

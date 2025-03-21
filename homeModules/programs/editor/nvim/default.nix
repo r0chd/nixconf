@@ -6,7 +6,7 @@
   ...
 }:
 {
-  config = lib.mkIf (config.editor == "nvim") {
+  config = lib.mkIf (config.programs.editor == "nvim") {
     home = {
       packages = with pkgs; [
         inputs.nixvim.packages.${system}.default
@@ -14,11 +14,6 @@
         tree-sitter
         fd
         adwaita-icon-theme
-        lua-language-server
-        alejandra
-        nixfmt-rfc-style
-        gcc
-        stylua
       ];
 
       persist.directories = [

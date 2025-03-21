@@ -29,6 +29,7 @@
   };
 
   programs = {
+    editor = "hx";
     zen.enable = true;
     nix-index.enable = true;
     nh.enable = true;
@@ -37,7 +38,6 @@
     kitty.enable = true;
     starship.enable = true;
     man.enable = true;
-    bat.enable = true;
     zoxide.enable = true;
     direnv.enable = true;
     seto.enable = true;
@@ -105,7 +105,6 @@
     };
   };
 
-  editor = "hx";
   email = "oskar.rochowiak@tutanota.com";
 
   stylix = {

@@ -9,7 +9,7 @@
     enable = true;
     allowSFTP = false;
     settings = {
-      PasswordAuthentication = false;
+      PasswordAuthentication = true;
       ChallengeResponseAuthentication = false;
     };
     extraConfig = ''
@@ -22,22 +22,22 @@
     '';
   };
 
-  users.users = lib.genAttrs (systemUsers |> builtins.attrNames) (
-    user:
-    let
-      keysDir = ../../../hosts/${hostname}/users/${user}/keys;
-      keysList =
-        if (builtins.pathExists keysDir) then
-          builtins.readDir keysDir
-          |> builtins.mapAttrs (fileName: fileType: (builtins.readFile "${keysDir}/${fileName}"))
-          |> builtins.attrValues
-        else
-          [ ];
-    in
-    {
-      openssh.authorizedKeys.keys = keysList;
-    }
-  );
+  #users.users = lib.genAttrs (systemUsers |> builtins.attrNames) (
+  #  user:
+  #  let
+  #    keysDir = ../../../hosts/${hostname}/users/${user}/keys;
+  #    keysList =
+  #      if (builtins.pathExists keysDir) then
+  #        builtins.readDir keysDir
+  #        |> builtins.mapAttrs (fileName: fileType: (builtins.readFile "${keysDir}/${fileName}"))
+  #        |> builtins.attrValues
+  #      else
+  #        [ ];
+  #  in
+  #  {
+  #    openssh.authorizedKeys.keys = keysList;
+  #  }
+  #);
 
   environment.persist.directories = [
     {

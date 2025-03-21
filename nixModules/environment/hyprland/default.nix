@@ -1,5 +1,6 @@
 {
   lib,
+  system_type,
   ...
 }:
 {
@@ -8,5 +9,5 @@
     trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
   };
 
-  programs.hyprland.enable = lib.mkDefault true;
+  programs.hyprland.enable = lib.mkDefault (system_type == "desktop");
 }

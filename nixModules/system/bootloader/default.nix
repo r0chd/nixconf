@@ -10,6 +10,7 @@ in
         "grub"
         "systemd-boot"
         "lanzaboote"
+        "none"
       ];
     };
   };

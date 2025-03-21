@@ -19,6 +19,8 @@
     inputs.nix-index-database.nixosModules.nix-index
   ];
 
+  options.system_type = lib.mkEnableOption "";
+
   config = {
     environment.systemPackages = with pkgs; [
       uutils-coreutils-noprefix

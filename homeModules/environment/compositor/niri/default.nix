@@ -2,14 +2,16 @@
   pkgs,
   inputs,
   lib,
+  system_type,
+  config,
   ...
 }:
 {
   imports = [ inputs.niri.homeModules.niri ];
 
-  home.packages = with pkgs; [ xwayland-satellite ];
+  home.packages = lib.mkIf config.programs.niri.enable [ pkgs.xwayland-satellite ];
   programs.niri = {
-    enable = lib.mkDefault true;
+    enable = lib.mkDefault (system_type == "desktop");
     settings = {
       input = {
         keyboard = {

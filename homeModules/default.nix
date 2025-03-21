@@ -4,6 +4,7 @@
   username,
   inputs,
   config,
+  hostname,
   ...
 }:
 {
@@ -15,7 +16,7 @@
     ./security
     ./network
     ./services
-    ../hosts/laptop/users/${username}/configuration.nix
+    ../hosts/${hostname}/users/${username}/configuration.nix
     inputs.nix-index-database.hmModules.nix-index
   ];
 

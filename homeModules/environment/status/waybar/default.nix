@@ -1,5 +1,7 @@
 {
   pkgs,
+  config,
+  lib,
   ...
 }:
 let
@@ -9,11 +11,10 @@ let
   background = "11111B";
 in
 {
-  home.packages = [ pkgs.playerctl ];
+  home.packages = lib.mkIf config.environment.statusBar.enable [ pkgs.playerctl ];
   programs.waybar = {
-    enable = true;
+    enable = config.environment.statusBar.enable;
     systemd.enable = true;
-    package = pkgs.waybar;
     settings.mainBar = {
       position = "top";
       layer = "top";
