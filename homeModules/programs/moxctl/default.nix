@@ -9,11 +9,9 @@ let
 in
 {
   options.programs.moxctl.enable = lib.mkOption {
-    default = config.services.moxnotify.enable;
+    default = config.environment.notify.enable;
     type = lib.types.bool;
   };
 
-  config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ moxctl ];
-  };
+  config = lib.mkIf cfg.enable { home.packages = with pkgs; [ moxctl ]; };
 }

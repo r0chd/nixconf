@@ -34,12 +34,18 @@
         hostname: attrs:
         let
           systemUsers = attrs.users;
+          system_type = hosts.${hostname}.type;
+          std = import ./std { inherit (nixpkgs) lib; };
         in
         nixpkgs.lib.nixosSystem {
           specialArgs = {
-            inherit inputs hostname systemUsers;
-            system_type = hosts.${hostname}.type;
-            std = import ./std { inherit (nixpkgs) lib; };
+            inherit
+              inputs
+              hostname
+              systemUsers
+              system_type
+              std
+              ;
           };
 
           modules = [

@@ -3,16 +3,30 @@
   config,
   pkgs,
   std,
+  system_type,
   ...
 }:
 let
   cfg = config.environment.terminal;
 in
 {
+  imports = [
+    ./kitty
+    ./foot
+    ./ghostty
+  ];
+
   options.environment.terminal = {
-    enable = lib.mkEnableOption "Enable terminal emulator";
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = system_type == "desktop";
+    };
     program = lib.mkOption {
-      type = lib.types.str;
+      type = lib.types.enum [
+        "kitty"
+        "foot"
+        "ghostty"
+      ];
     };
   };
 
@@ -24,9 +38,7 @@ in
       };
 
       sway.config = {
-        startup = [
-          { command = "sway workspace 1; uwsm app ${std.nameToPackage pkgs cfg.program}"; }
-        ];
+        startup = [ { command = "sway workspace 1; uwsm app ${std.nameToPackage pkgs cfg.program}"; } ];
         keybindings = {
           "Mod1+Shift+Return" = "exec uwsm app ${std.nameToPackage pkgs cfg.program}";
         };

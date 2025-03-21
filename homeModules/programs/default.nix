@@ -2,7 +2,6 @@
 {
   imports = [
     ./nixcord
-    ./fuzzel
     ./cachix
     ./git
     ./shell
@@ -18,9 +17,6 @@
     ./keepassxc
     ./browser
     ./starship
-    ./kitty
-    ./ghostty
-    ./foot
     ./nh
     ./moxctl
     ./fastfetch

@@ -3,29 +3,37 @@
   config,
   pkgs,
   std,
+  system_type,
   ...
 }:
 let
   cfg = config.environment.launcher;
 in
 {
-  options.environment.launcher = {
-    enable = lib.mkEnableOption "Enable launcher";
-    program = lib.mkOption { type = lib.types.enum [ "fuzzel" ]; };
+  options.environment.launcher.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = system_type == "desktop";
   };
 
   config = lib.mkIf cfg.enable {
     wayland.windowManager = {
-      hyprland.settings.bind = [ "$mainMod, S, exec, ${std.nameToPackage pkgs cfg.program}" ];
+      hyprland.settings.bind = [ "$mainMod, S, exec, fuzzel" ];
 
       sway.config.keybindings = {
-        "Mod1+S" = "exec uwsm app ${std.nameToPackage pkgs cfg.program}";
+        "Mod1+S" = "exec uwsm app fuzzel";
       };
     };
-    programs.niri.settings.binds."Alt+S".action.spawn = [
-      "uwsm"
-      "app"
-      "${std.nameToPackage pkgs cfg.program}"
-    ];
+
+    programs = {
+      fuzzel = {
+        enable = true;
+        settings.main.launch-prefix = "uwsm app -t service --";
+      };
+      niri.settings.binds."Alt+S".action.spawn = [
+        "uwsm"
+        "app"
+        "fuzzel"
+      ];
+    };
   };
 }

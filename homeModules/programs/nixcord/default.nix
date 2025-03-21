@@ -1,31 +1,42 @@
-{ pkgs, inputs, ... }:
 {
-  imports = [
-    inputs.nixcord.homeManagerModules.nixcord
-  ];
+  pkgs,
+  inputs,
+  lib,
+  config,
+  ...
+}:
+{
+  imports = [ inputs.nixcord.homeManagerModules.nixcord ];
 
-  programs.nixcord = {
-    discord.vencord.package = pkgs.vencord;
-    vesktop.enable = false;
-    discord.enable = false;
-    config = {
-      frameless = true;
-      plugins = {
-        alwaysAnimate.enable = true;
-        anonymiseFileNames = {
-          enable = true;
-          anonymiseByDefault = true;
-        };
-        fakeNitro.enable = true;
-        fakeProfileThemes.enable = true;
-        translate.enable = true;
-      };
-    };
+  options.programs = {
+    discord.enable = lib.mkEnableOption "discord";
+    vesktop.enable = lib.mkEnableOption "vesktop";
   };
 
-  home.persist.directories = [
-    ".config/Vencord"
-    ".config/vesktop"
-    ".config/discord"
-  ];
+  config = {
+    programs.nixcord = {
+      discord.vencord.package = pkgs.vencord;
+      vesktop.enable = config.programs.vesktop.enable;
+      discord.enable = config.programs.discord.enable;
+      config = {
+        frameless = true;
+        plugins = {
+          alwaysAnimate.enable = true;
+          anonymiseFileNames = {
+            enable = true;
+            anonymiseByDefault = true;
+          };
+          fakeNitro.enable = true;
+          fakeProfileThemes.enable = true;
+          translate.enable = true;
+        };
+      };
+    };
+
+    home.persist.directories = [
+      ".config/Vencord"
+      ".config/vesktop"
+      ".config/discord"
+    ];
+  };
 }

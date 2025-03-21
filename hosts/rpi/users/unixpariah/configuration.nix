@@ -20,7 +20,7 @@
   email = "oskar.rochowiak@tutanota.com";
 
   home.packages = with pkgs; [
-      lazygit
-      unzip
+    lazygit
+    unzip
   ];
 }

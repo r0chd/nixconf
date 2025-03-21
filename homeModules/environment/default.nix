@@ -6,5 +6,7 @@
     ./status
     ./lockscreen
     ./launcher
+    ./idle
+    ./notify
   ];
 }
