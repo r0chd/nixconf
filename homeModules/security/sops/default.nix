@@ -11,7 +11,7 @@
   imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
   sops = {
-    defaultSopsFile = ../../../hosts/laptop/users/${config.home.username}/secrets/secrets.yaml;
+    defaultSopsFile = ../../../hosts/${hostname}/users/${config.home.username}/secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     age = {
       sshKeyPaths = [ "/home/${config.home.username}/.ssh/id_ed25519" ];

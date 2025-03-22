@@ -5,7 +5,12 @@
   ...
 }:
 {
-  sops.secrets.nixos-access-token-github = { };
+  sops.secrets = {
+    nixos-access-token-github = { };
+    "klocki/jwt_secret" = { };
+    "klocki/master_password" = { };
+    "klocki/db_password" = { };
+  };
 
   programs = {
     nh.enable = true;

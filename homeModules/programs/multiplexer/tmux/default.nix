@@ -83,6 +83,7 @@ in
                     fi
                     ((i++))
                 else
+                    tmux set-option -g set-clipboard on
                     tmux new-session -d -s $session_name
                     tmux attach-session -d -t $session_name
                     break

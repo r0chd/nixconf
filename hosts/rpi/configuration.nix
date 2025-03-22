@@ -24,7 +24,8 @@
     };
   };
 
-  network.wireless.enable = true;
+  virtualisation.docker.enable = true;
+  users.users.unixpariah.extraGroups = [ "docker" ];
 
   environment = {
     persist.directories = [

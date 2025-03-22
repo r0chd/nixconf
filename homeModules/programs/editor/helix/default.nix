@@ -6,9 +6,7 @@
 }:
 {
   config = lib.mkIf (config.programs.editor == "hx") {
-    home.packages = with pkgs; [
-      adwaita-icon-theme
-    ];
+    home.packages = with pkgs; [ adwaita-icon-theme ];
 
     programs.helix = {
       enable = true;
@@ -19,14 +17,34 @@
             excludeDirs = [ "node_modules" ];
           };
           procMacro.enabled = true;
+          cargo.buildScripts.enable = true;
+          diagnostics.disabled = [ "unresolved-proc-macro" ];
+          check.command = "clippy";
+          cargo.features = "all";
           inlayHints = {
             maxLength = 25;
             discriminantHints.enable = true;
             closureReturnTypeHints.enable = true;
             closureCaptureHints.enable = true;
+            parameterHints = true;
+            typeHints = true;
+            expressionReturnTypeHints.enable = true;
           };
         };
         language = [
+          {
+            name = "rust";
+            auto-format = true;
+            formatter.command = "rustfmt";
+            injection-regex = "rsx";
+            language-servers = [ "rust-analyzer" ];
+            grammar = "rust";
+            scope = "source.rust";
+            file-types = [
+              "rs"
+              "rsx"
+            ];
+          }
           {
             name = "wgsl";
             auto-format = true;

@@ -11,8 +11,7 @@ in
   imports = [ inputs.impermanence.homeManagerModules.impermanence ];
 
   options = {
-    services.impermanence.enable = lib.mkEnableOption "Enable home persistance";
-
+    services.impermanence = lib.mkEnableOption "impermanence";
     home.persist = {
       directories = lib.mkOption {
         type =
@@ -50,7 +49,7 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf config.services.impermanence {
     home.persistence."/persist/home/${config.home.username}" = {
       directories = [
         ".local/state/nix/profiles"
