@@ -25,15 +25,15 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    boot.initrd = {
-      luks.yubikeySupport = true;
-      kernelModules = [
-        "vfat"
-        "nls_cp437"
-        "nls_iso8859-1"
-        "usbhid"
-      ];
-    };
+    #boot.initrd = {
+    #luks.yubikeySupport = true;
+    #kernelModules = [
+    #"vfat"
+    #"nls_cp437"
+    #"nls_iso8859-1"
+    #"usbhid"
+    #];
+    #};
 
     environment.systemPackages = with pkgs; [
       yubioath-flutter

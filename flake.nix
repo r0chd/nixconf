@@ -7,7 +7,6 @@
       disko,
       home-manager,
       stylix,
-      lix-module,
       ...
     }@inputs:
     let
@@ -52,7 +51,6 @@
             ./nixModules
             disko.nixosModules.default
             stylix.nixosModules.stylix
-            lix-module.nixosModules.default
           ];
 
         };
@@ -105,11 +103,6 @@
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -135,7 +128,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
-    raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
+    raspberry-pi-nix.url = "github:unixpariah/raspberry-pi-nix";
 
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";

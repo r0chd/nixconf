@@ -58,7 +58,7 @@
         experimental-features = [
           "nix-command"
           "flakes"
-          "pipe-operator"
+          "pipe-operators"
         ];
         auto-optimise-store = true;
         substituters = [

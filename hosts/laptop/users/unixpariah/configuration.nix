@@ -27,6 +27,7 @@
   };
 
   programs = {
+    chromium.enable = true;
     vesktop.enable = true;
     editor = "hx";
     zen.enable = true;

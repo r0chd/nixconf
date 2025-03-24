@@ -23,6 +23,7 @@ in
 
   config = {
     boot = {
+      initrd.systemd.enable = true;
       plymouth.enable = true;
       loader.systemd-boot.enable = lib.mkDefault false;
       supportedFilesystems = [ config.system.fileSystem ];
@@ -92,12 +93,9 @@ in
         "firewire-core"
       ];
 
-      loader = {
-        timeout = 255;
-        efi = {
-          canTouchEfiVariables = true;
-          efiSysMountPoint = "/boot";
-        };
+      loader.efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot";
       };
     };
 
@@ -115,10 +113,7 @@ in
 
     users.groups.proc = { };
 
-    systemd = {
-      services.systemd-logind.serviceConfig.SupplementaryGroups = [ "proc" ];
-      coredump.enable = false;
-    };
+    systemd.services.systemd-logind.serviceConfig.SupplementaryGroups = [ "proc" ];
     services = {
       journald.forwardToSyslog = true;
       syslogd = {

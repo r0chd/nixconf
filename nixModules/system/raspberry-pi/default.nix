@@ -14,6 +14,7 @@ in
 
   config = lib.mkIf cfg.enable {
     raspberry-pi-nix = {
+      enable = true;
       board = "bcm2712";
       uboot.enable = false;
       libcamera-overlay.enable = false;

@@ -94,7 +94,10 @@
       '';
     };
 
-    impermanence.enable = true;
+    impermanence = {
+      enable = true;
+      device = "crypted-main";
+    };
     protonvpn = {
       enable = false;
       interface = {
