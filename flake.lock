@@ -588,11 +588,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1742771635,
-        "narHash": "sha256-HQHzQPrg+g22tb3/K/4tgJjPzM+/5jbaujCZd8s2Mls=",
+        "lastModified": 1742825959,
+        "narHash": "sha256-wgnQZMrLLQJlZ+htTXzoQtoz9EzL15Z2crH3+OnRmMk=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "ad0614a1ec9cce3b13169e20ceb7e55dfaf2a818",
+        "rev": "908e055e157a0b35466faf4125d7e7410ff56160",
         "type": "github"
       },
       "original": {
@@ -798,11 +798,11 @@
         "wgsl_analyzer": "wgsl_analyzer_2"
       },
       "locked": {
-        "lastModified": 1742738500,
-        "narHash": "sha256-vQDKV68qJjdYnAddSelsd6W68JtPAOMMmYXLK1FExf0=",
+        "lastModified": 1742833895,
+        "narHash": "sha256-eRfmASLiUT7Ad03GG5FehKooE2h0Pw2EGwFZZsTI3dY=",
         "owner": "unixpariah",
         "repo": "moxnotify",
-        "rev": "4b56aeab2d743ae0267ba029d4222cf9d5819a9d",
+        "rev": "8b07293f1cb91eec85c3d204c14ea7eb73d69319",
         "type": "github"
       },
       "original": {
@@ -823,11 +823,11 @@
         "xwayland-satellite-unstable": "xwayland-satellite-unstable"
       },
       "locked": {
-        "lastModified": 1742723611,
-        "narHash": "sha256-Xy6+LQwqNkukjFUeOBKToNKhAffLnHWtEpx5hO3rdDs=",
+        "lastModified": 1742832363,
+        "narHash": "sha256-STJUQ7PVfjlWdHSuxXDH/UZNjrUVO1Up/x2AwhtJRio=",
         "owner": "sodiboo",
         "repo": "niri-flake",
-        "rev": "ea05bfe7a7c67c5e664769e77edd86c677b30acb",
+        "rev": "8720365191e3931cefd3fc9484dccba5e219b73d",
         "type": "github"
       },
       "original": {
@@ -1010,11 +1010,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1742781936,
-        "narHash": "sha256-VFuhUzJN9EaLgjmV8SOGyxOOnN95gfCq5BvgeWVduqk=",
+        "lastModified": 1742822971,
+        "narHash": "sha256-UE1JudaNpngMGn2Hw0qFQoBkIbHPHg/yudtS9XHV5yc=",
         "owner": "nix-community",
         "repo": "nixpkgs-wayland",
-        "rev": "d2849042a543960bb983ef297b5099a647260770",
+        "rev": "258b3478d0940a2ea56280187ffe3b24fab7c5fb",
         "type": "github"
       },
       "original": {
@@ -1204,11 +1204,11 @@
         "rpicam-apps-src": "rpicam-apps-src"
       },
       "locked": {
-        "lastModified": 1742822208,
+        "lastModified": 1742822676,
         "narHash": "sha256-5w6bj4p5OisPbMZ7gsd9WS0U/MMZYvljr2F5S+clW5Q=",
         "owner": "unixpariah",
         "repo": "raspberry-pi-nix",
-        "rev": "8175031e276d30c63e395650d1173ba2a78f9bf5",
+        "rev": "7459d3ff19bbc3685963cafe7bf9859ea34d0202",
         "type": "github"
       },
       "original": {

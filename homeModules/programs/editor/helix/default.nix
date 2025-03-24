@@ -12,23 +12,29 @@
       enable = true;
 
       languages = {
-        language-server.rust-analyzer.config = {
-          files = {
-            excludeDirs = [ "node_modules" ];
+        language-server = {
+          rust-analyzer.config = {
+            files = {
+              excludeDirs = [ "node_modules" ];
+            };
+            procMacro.enabled = true;
+            cargo.buildScripts.enable = true;
+            diagnostics.disabled = [ "unresolved-proc-macro" ];
+            check.command = "clippy";
+            cargo.features = "all";
+            inlayHints = {
+              maxLength = 25;
+              discriminantHints.enable = true;
+              closureReturnTypeHints.enable = true;
+              closureCaptureHints.enable = true;
+              parameterHints = true;
+              typeHints = true;
+              expressionReturnTypeHints.enable = true;
+            };
           };
-          procMacro.enabled = true;
-          cargo.buildScripts.enable = true;
-          diagnostics.disabled = [ "unresolved-proc-macro" ];
-          check.command = "clippy";
-          cargo.features = "all";
-          inlayHints = {
-            maxLength = 25;
-            discriminantHints.enable = true;
-            closureReturnTypeHints.enable = true;
-            closureCaptureHints.enable = true;
-            parameterHints = true;
-            typeHints = true;
-            expressionReturnTypeHints.enable = true;
+          tailwindcss = {
+            command = "tailwindcss-language-server";
+            args = [ "--stdio" ];
           };
         };
         language = [

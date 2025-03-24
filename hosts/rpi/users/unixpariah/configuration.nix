@@ -13,6 +13,7 @@
   };
 
   programs = {
+    fastfetch.enable = true;
     nh.enable = true;
     starship.enable = true;
     zoxide.enable = true;

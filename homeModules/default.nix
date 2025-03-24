@@ -5,6 +5,7 @@
   inputs,
   config,
   hostname,
+  system_type,
   ...
 }:
 {
@@ -25,7 +26,7 @@
   config = {
     nixpkgs.overlays = import ../overlays inputs config;
 
-    services.udiskie.enable = true;
+    services.udiskie.enable = system_type == "desktop";
 
     programs.home-manager.enable = true;
     home = {

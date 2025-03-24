@@ -5,6 +5,7 @@
   systemUsers,
   hostname,
   inputs,
+  system_type,
   ...
 }:
 {
@@ -24,7 +25,10 @@
   config = {
     nixpkgs.overlays = import ../overlays inputs config;
 
-    boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+    boot = {
+      kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+      initrd.systemd.tpm2.enable = lib.mkDefault false;
+    };
 
     programs = {
       fish.enable = lib.mkDefault true;
@@ -32,7 +36,7 @@
       nano.enable = lib.mkDefault false;
     };
 
-    services.udisks2.enable = true;
+    services.udisks2.enable = system_type == "desktop";
 
     users = {
       mutableUsers = false;

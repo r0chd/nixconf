@@ -1,12 +1,16 @@
-{ ... }:
+{ hostname, ... }:
 {
   imports = [
     ./wireless
     ./ssh
   ];
 
+  networking.hostName = "${hostname}";
+
+  services.tailscale.enable = true;
+
   boot.initrd = {
-    network.enable = true;
+    #network.enable = true;
     availableKernelModules = [ "alx" ];
     kernelModules = [
       "vfat"

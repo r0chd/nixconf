@@ -65,6 +65,7 @@
   };
 
   security = {
+    tpm2.enable = true;
     yubikey = {
       enable = true;
       rootAuth = true;
