@@ -102,6 +102,7 @@ _: {
 
                 "/persist" = {
                   mountOptions = [
+                    "compress=zstd"
                     "subvol=persist"
                     "noatime"
                   ];
@@ -110,6 +111,7 @@ _: {
 
                 "/nix" = {
                   mountOptions = [
+                    "compress=zstd"
                     "subvol=nix"
                     "noatime"
                   ];

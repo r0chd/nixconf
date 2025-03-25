@@ -36,7 +36,7 @@ in
           "/etc/tmpfiles.d/50-tailscale.conf".text = ''
             L /var/run - - - - /run
           '';
-          "/etc/hostname".source = config.environment.etc.hostname.source;
+          "/etc/hostname".source = lib.mkForce config.environment.etc.hostname.source;
         };
         network.networks."50-tailscale" = {
           matchConfig = {
@@ -53,8 +53,6 @@ in
         additionalUpstreamUnits = [ "systemd-resolved.service" ];
         users.systemd-resolve = { };
         groups.systemd-resolve = { };
-        contents."/etc/systemd/resolved.conf".source =
-          config.environment.etc."systemd/resolved.conf".source;
         storePaths = [ "${config.boot.initrd.systemd.package}/lib/systemd/systemd-resolved" ];
       };
 

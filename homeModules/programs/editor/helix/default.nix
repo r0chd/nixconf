@@ -6,7 +6,10 @@
 }:
 {
   config = lib.mkIf (config.programs.editor == "hx") {
-    home.packages = with pkgs; [ adwaita-icon-theme ];
+    home.packages = with pkgs; [
+      adwaita-icon-theme
+      nixd
+    ];
 
     programs.helix = {
       enable = true;

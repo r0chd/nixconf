@@ -18,6 +18,7 @@ in
         type = lib.types.str;
         default = "cryptid";
       };
+      vg = lib.mkOption { type = lib.types.str; };
     };
 
     environment.persist = {
@@ -87,19 +88,46 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    boot.initrd.systemd.services.rollback = {
-      description = "Rollback BTRFS root subvolume";
-      unitConfig.DefaultDependencies = "no";
-      wantedBy = [ "initrd.target" ];
-      after = [ "systemd-cryptsetup@${cfg.device}.service" ];
-      before = [ "sysroot.mount" ];
-      serviceConfig.Type = "oneshot";
+    #boot.initrd.systemd.services.rollback = {
+    #description = "Rollback BTRFS root subvolume";
+    #unitConfig.DefaultDependencies = "no";
+    #wantedBy = [ "initrd.target" ];
+    #after = [ "systemd-cryptsetup@${cfg.device}.service" ];
+    #before = [ "sysroot.mount" ];
+    #serviceConfig.Type = "oneshot";
 
-      script = lib.mkIf (config.system.fileSystem == "btrfs") ''
-        vgchange -ay pool
-        mkdir -p /btrfs_tmp
-        mount /dev/pool/root /btrfs_tmp
+    #script = lib.mkIf (config.system.fileSystem == "btrfs") ''
+    #vgchange -ay ${cfg.vg}
+    #mkdir -p /btrfs_tmp
+    #mount /dev/${cfg.vg}/root /btrfs_tmp
 
+    #if [[ -e /btrfs_tmp/root ]]; then
+    #mkdir -p /btrfs_tmp/old_roots
+    #timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
+    #mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
+    #fi
+
+    #delete_subvolume_recursively() {
+    #IFS=$'\n'
+    #for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
+    #delete_subvolume_recursively "/btrfs_tmp/$i"
+    #done
+    #btrfs subvolume delete "$1"
+    #}
+
+    #for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
+    #delete_subvolume_recursively "$i"
+    #done
+
+    #btrfs subvolume create /btrfs_tmp/root
+    #umount /btrfs_tmp
+    #'';
+    #};
+
+    boot.initrd.postDeviceCommands = lib.mkIf (config.system.fileSystem == "btrfs") (
+      lib.mkAfter ''
+        mkdir /btrfs_tmp
+        mount /dev/root_vg/root /btrfs_tmp
         if [[ -e /btrfs_tmp/root ]]; then
             mkdir -p /btrfs_tmp/old_roots
             timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
@@ -114,14 +142,14 @@ in
             btrfs subvolume delete "$1"
         }
 
-        for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
+        for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +${toString config.system.gc.interval}); do
             delete_subvolume_recursively "$i"
         done
 
         btrfs subvolume create /btrfs_tmp/root
         umount /btrfs_tmp
-      '';
-    };
+      ''
+    );
 
     systemd.tmpfiles.rules =
       [ "d /persist/home 0777 root root -" ]

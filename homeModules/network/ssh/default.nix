@@ -1,7 +1,11 @@
-{ username, config, ... }:
+{
+  username,
+  config,
+  lib,
+  ...
+}:
 {
   services.ssh-agent.enable = true;
-  sops.secrets."${username}/ssh" = { };
   programs.ssh = {
     enable = true;
 
@@ -19,7 +23,7 @@
         user = "git";
         forwardAgent = true;
         identitiesOnly = true;
-        identityFile = [ "~/.ssh/id_yubikey" ] ++ [ config.sops.secrets."${username}/ssh".path ];
+        identityFile = [ config.sops.secrets."${username}/ssh".path ];
       };
     };
   };

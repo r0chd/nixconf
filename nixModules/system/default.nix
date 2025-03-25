@@ -7,7 +7,6 @@
     ./ydotool
     ./gc
     ./displayManager
-    ./raspberry-pi
   ];
 
   options.system.fileSystem = lib.mkOption {

@@ -6,11 +6,6 @@
       content = {
         type = "gpt";
         partitions = {
-          boot = {
-            name = "boot";
-            size = "1M";
-            type = "EF00";
-          };
           ESP = {
             name = "ESP";
             size = "500M";
@@ -34,14 +29,10 @@
             content = {
               type = "luks";
               name = "crypted-main";
-              extraOpenArgs = [ ];
               passwordFile = "/tmp/secret.key";
               settings = {
                 allowDiscards = true;
-                crypttabExtraOpts = [
-                  "fido2-device=auto"
-                  "token-timeout=10"
-                ];
+                crypttabExtraOpts = [ "token-timeout=10" ];
               };
               content = {
                 type = "lvm_pv";
@@ -62,23 +53,26 @@
             content = {
               type = "btrfs";
               extraArgs = [ "-f" ];
-
               subvolumes = {
                 "/root" = {
                   mountpoint = "/";
+                  mountOptions = [
+                    "compress=zstd"
+                    "noatime"
+                  ];
                 };
-
                 "/persist" = {
                   mountOptions = [
                     "subvol=persist"
+                    "compress=zstd"
                     "noatime"
                   ];
                   mountpoint = "/persist";
                 };
-
                 "/nix" = {
                   mountOptions = [
                     "subvol=nix"
+                    "compress=zstd"
                     "noatime"
                   ];
                   mountpoint = "/nix";

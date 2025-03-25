@@ -2,15 +2,19 @@
   config,
   lib,
   inputs,
+  pkgs,
   ...
 }:
 let
-  cfg = config.system.rpi;
+  cfg = config.hardware.rpi;
 in
 {
-  options.system.rpi.enable = lib.mkEnableOption "raspberry pi";
+  options.hardware.rpi.enable = lib.mkEnableOption "raspberry pi";
 
-  imports = [ inputs.raspberry-pi-nix.nixosModules.raspberry-pi ];
+  imports = [
+    inputs.raspberry-pi-nix.nixosModules.raspberry-pi
+    ./sd-image
+  ];
 
   config = lib.mkIf cfg.enable {
     raspberry-pi-nix = {

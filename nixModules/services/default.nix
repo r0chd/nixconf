@@ -1,3 +1,6 @@
 _: {
-  imports = [ ./proton-vpn ];
+  imports = [
+    ./proton-vpn
+    ./tailscale
+  ];
 }

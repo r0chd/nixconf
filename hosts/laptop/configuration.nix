@@ -86,6 +86,7 @@
   zramSwap.enable = true;
 
   services = {
+    tailscale.enable = false;
     postgresql = {
       enable = false;
       ensureDatabases = [ "mydatabase" ];
@@ -98,6 +99,7 @@
     impermanence = {
       enable = true;
       device = "crypted-main";
+      vg = "root_vg";
     };
     protonvpn = {
       enable = false;

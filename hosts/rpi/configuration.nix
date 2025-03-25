@@ -11,8 +11,9 @@
     ./hardware-configuration.nix
   ];
 
+  hardware.rpi.enable = true;
+
   system = {
-    rpi.enable = true;
     fileSystem = "ext4";
     bootloader = {
       variant = "none";

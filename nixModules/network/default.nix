@@ -7,8 +7,6 @@
 
   networking.hostName = "${hostname}";
 
-  services.tailscale.enable = true;
-
   boot.initrd = {
     #network.enable = true;
     availableKernelModules = [ "alx" ];

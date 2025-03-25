@@ -10,6 +10,7 @@
   imports = [ inputs.niri.homeModules.niri ];
 
   home.packages = lib.mkIf config.programs.niri.enable [ pkgs.xwayland-satellite ];
+
   programs.niri = {
     enable = lib.mkDefault (system_type == "desktop");
     settings = {
