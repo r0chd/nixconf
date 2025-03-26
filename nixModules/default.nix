@@ -17,6 +17,7 @@
     ./environment
     ./services
     ../hosts/${hostname}/configuration.nix
+    ../theme
     inputs.nix-index-database.nixosModules.nix-index
   ];
 

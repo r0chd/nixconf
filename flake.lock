@@ -798,11 +798,11 @@
         "wgsl_analyzer": "wgsl_analyzer_2"
       },
       "locked": {
-        "lastModified": 1742978168,
-        "narHash": "sha256-LA7rE+aevEY0q1QNrmgBYtVw19U/GE6ZHeO8sJxrfdQ=",
+        "lastModified": 1742981912,
+        "narHash": "sha256-j0N/18ben4HQPTnvbjR2ij+xphsJ8U7LAsq9i16FFPA=",
         "owner": "unixpariah",
         "repo": "moxnotify",
-        "rev": "793965828b788d3092f2e04ee6405748600b9acd",
+        "rev": "32ccf893d2ce215765496e32ef7c6c3f3481a144",
         "type": "github"
       },
       "original": {

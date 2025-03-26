@@ -28,7 +28,6 @@
 
   programs = {
     vesktop.enable = true;
-    qutebrowser.enable = true;
     editor = "hx";
     zen.enable = true;
     nix-index.enable = true;
@@ -93,6 +92,7 @@
 
   stylix = {
     enable = true;
+    theme = "gruvbox";
     cursor = {
       name = "Bibata-Modern-Classic";
       package = pkgs.bibata-cursors;
@@ -118,12 +118,6 @@
     opacity = {
       terminal = 0.0;
     };
-    image = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/refs/heads/master/png/gruvbox-dark-blue.png";
-      sha256 = "1jrmdhlcnmqkrdzylpq6kv9m3qsl317af3g66wf9lm3mz6xd6dzs";
-    };
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-soft.yaml";
-    polarity = "dark";
   };
 
   home = {

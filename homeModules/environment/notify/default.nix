@@ -30,6 +30,29 @@ in
         xd.action = "dismiss_notification";
       };
 
+      next = {
+        font = {
+          color = "#FFFFFF";
+        };
+        border = {
+          size = 1;
+          radius = 0;
+        };
+        margin = 5;
+        padding = 5;
+      };
+      prev = {
+        font = {
+          color = "#FFFFFF";
+        };
+        border = {
+          size = 1;
+          radius = 0;
+        };
+        margin = 5;
+        padding = 5;
+      };
+
       styles = {
         default = {
           progress.border = {
@@ -60,6 +83,7 @@ in
                 margin = 0;
                 width = 20;
                 height = 20;
+                background = "#FFFFFF";
                 font = {
                   size = 10;
                   color = "#FFFFFF";
@@ -67,6 +91,7 @@ in
                 border = {
                   size = 0;
                   radius = 0;
+                  color = "#FFFFFF";
                 };
               };
             };

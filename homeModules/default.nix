@@ -18,6 +18,7 @@
     ./network
     ./services
     ../hosts/${hostname}/users/${username}/configuration.nix
+    ../theme
     inputs.nix-index-database.hmModules.nix-index
   ];
 

@@ -7,7 +7,10 @@
   ...
 }:
 {
-  imports = [ inputs.niri.homeModules.niri ];
+  imports = [
+    inputs.niri.homeModules.niri
+    inputs.niri.homeModules.stylix
+  ];
 
   home.packages = lib.mkIf config.programs.niri.enable [ pkgs.xwayland-satellite ];
 
@@ -58,7 +61,7 @@
       layout = {
         border = {
           enable = true;
-          width = 1;
+          width = 2;
         };
 
         preset-column-widths = [
