@@ -13,12 +13,13 @@ in
 
   imports = [
     inputs.raspberry-pi-nix.nixosModules.raspberry-pi
-    ./sd-image
+    inputs.raspberry-pi-nix.nixosModules.sd-image
   ];
 
-  config = lib.mkIf cfg.enable {
+  config = {
     raspberry-pi-nix = {
-      enable = true;
+      enable = cfg.enable;
+      kernel-build-system = "x86_64-linux";
       board = "bcm2712";
       uboot.enable = false;
       libcamera-overlay.enable = false;

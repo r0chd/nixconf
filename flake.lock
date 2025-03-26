@@ -588,11 +588,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1742926508,
-        "narHash": "sha256-wgfY302ZaOsBCXb8aZDTG3Zt2kg3jDDaRrmtUw8nz00=",
+        "lastModified": 1742946951,
+        "narHash": "sha256-us5DS0XGVpZBMbYs3TSQYn61bswEPmLpBOYITD4/bUE=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "8bef8b7a0a95d347018f09b291e2fa0a77abd23f",
+        "rev": "0ff53f6d336edb3ad81647dc931ad1c9c7f890ca",
         "type": "github"
       },
       "original": {
@@ -1188,11 +1188,11 @@
         "rpicam-apps-src": "rpicam-apps-src"
       },
       "locked": {
-        "lastModified": 1742822676,
-        "narHash": "sha256-5w6bj4p5OisPbMZ7gsd9WS0U/MMZYvljr2F5S+clW5Q=",
+        "lastModified": 1742946140,
+        "narHash": "sha256-YikdWWc87f+q3s3MpBJGGuQm2mu6q9bLzg5OK4DTQ5w=",
         "owner": "unixpariah",
         "repo": "raspberry-pi-nix",
-        "rev": "7459d3ff19bbc3685963cafe7bf9859ea34d0202",
+        "rev": "13dc95eaafbc3e078ed5a4a62fa14db61c5ebf24",
         "type": "github"
       },
       "original": {

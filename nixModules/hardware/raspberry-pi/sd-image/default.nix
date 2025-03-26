@@ -8,7 +8,7 @@
 {
   imports = [ ./sd-image.nix ];
 
-  config = lib.mkIf config.hardware.rpi.enable {
+  config = {
     boot.kernelParams = [
       # This is ugly and fragile, but the sdImage image has an msdos
       # table, so the partition table id is a 1-indexed hex

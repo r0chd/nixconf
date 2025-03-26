@@ -155,8 +155,8 @@ in
     };
   };
 
-  config = lib.mkIf config.hardware.rpi.enable {
-    fileSystems = {
+  config = {
+    fileSystems = lib.mkIf config.hardware.rpi.enable {
       "/boot/firmware" = {
         device = "/dev/disk/by-label/${config.raspberry-pi-nix.firmware-partition-label}";
         fsType = "vfat";
