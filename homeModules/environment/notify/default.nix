@@ -11,7 +11,7 @@ in
 {
   imports = [
     inputs.moxnotify.homeManagerModules.default
-    #inputs.moxnotify.homeManagerModules.stylix
+    inputs.moxnotify.homeManagerModules.stylix
   ];
 
   options.environment.notify = {
@@ -23,82 +23,92 @@ in
 
   config.services.moxnotify = {
     enable = cfg.enable;
-    #settings = {
-    #keymaps = {
-    #ge.action = "last_notification";
-    #d.action = "dismiss_notification";
-    #xd.action = "dismiss_notification";
-    #};
+    settings = {
+      keymaps = {
+        ge.action = "last_notification";
+        d.action = "dismiss_notification";
+        xd.action = "dismiss_notification";
+      };
 
-    #styles = {
-    #default = {
-    #progress.border = {
-    #size = 2;
-    #radius = 0;
-    #};
+      styles = {
+        default = {
+          progress.border = {
+            size = 2;
+            radius = 0;
+          };
 
-    #buttons = {
-    #dismiss = {
-    #default = {
-    #background = "#FFFFFF";
-    #width = 20;
-    #height = 20;
-    #border = {
-    #size = 2;
-    #radius = 0;
-    #};
-    #font.size = 10;
-    #};
-    #hover = {
-    #background = "#FFFFFF";
-    #width = 20;
-    #height = 20;
-    #font = {
-    #size = 10;
-    #};
-    #border = {
-    #size = 2;
-    #radius = 0;
-    #};
-    #};
-    #};
-    #action = {
-    #default = {
-    #background = "#FFFFFF";
-    #width = "auto";
-    #height = "auto";
-    #font.size = 10;
-    #border = {
-    #size = 2;
-    #radius = 0;
-    #color = "#FFFFFF";
-    #};
-    #};
-    #hover = {
-    #background = "#FFFFFF";
-    #width = "auto";
-    #height = "auto";
-    #font.size = 10;
-    #border = {
-    #size = 2;
-    #radius = 0;
-    #color = "#FFFFFF";
-    #};
-    #};
-    #};
-    #};
+          buttons = {
+            dismiss = {
+              default = {
+                padding = 0;
+                margin = 0;
+                background = "#FFFFFF";
+                width = 20;
+                height = 20;
+                border = {
+                  size = 0;
+                  radius = 50;
+                  color = "#000000";
+                };
+                font = {
+                  size = 10;
+                  color = "#000000";
+                };
+              };
+              hover = {
+                padding = 0;
+                margin = 0;
+                width = 20;
+                height = 20;
+                font = {
+                  size = 10;
+                  color = "#FFFFFF";
+                };
+                border = {
+                  size = 0;
+                  radius = 0;
+                };
+              };
+            };
 
-    #icon.border = {
-    #size = 2;
-    #radius = 0;
-    #};
+            action = {
+              default = {
+                padding = 0;
+                margin = 0;
+                width = "auto";
+                height = "auto";
+                font.size = 10;
+                border = {
+                  size = 2;
+                  radius = 0;
+                };
+              };
+              hover = {
+                padding = 0;
+                margin = 0;
+                width = "auto";
+                height = "auto";
+                font.size = 10;
+                border = {
+                  size = 2;
+                  radius = 0;
+                  color = "#FFFFFF";
+                };
+              };
+            };
+          };
 
-    #border = {
-    #size = 2;
-    #radius = 0;
-    #};
-    #};
-    #};
-    #};
+          icon.border = {
+            size = 0;
+            radius = 0;
+          };
+
+          border = {
+            size = 2;
+            radius = 0;
+          };
+        };
+      };
+    };
   };
 }

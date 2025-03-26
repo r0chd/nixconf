@@ -5,12 +5,8 @@
   system_type,
   ...
 }:
-let
-  primary_accent = "cba6f7";
-  secondary_accent = "89b4fa";
-  tertiary_accent = "f5f5f5";
-  background = "11111B";
-in
+with config.lib.stylix.colors.withHashtag;
+with config.stylix.fonts;
 {
   options.environment.statusBar.enable = lib.mkOption {
     type = lib.types.bool;
@@ -243,14 +239,14 @@ in
         }
 
         window#waybar {
-            background-color: rgba(0, 0, 0, 0.096);
+            background-color: ${base00};
         }
 
         #cava.left, #cava.right {
-            background: #${background};
+            background: ${base01};
             margin: 5px;
             padding: 8px 16px;
-            color: #${primary_accent};
+            color: ${base0E};
         }
         #cava.left {
             border-radius: 24px 10px 24px 10px;
@@ -259,24 +255,24 @@ in
             border-radius: 10px 24px 10px 24px;
         }
         #workspaces {
-            background: #${background};
+            background: ${base01};
             margin: 5px 5px;
             padding: 8px 5px;
             border-radius: 16px;
-            color: #${primary_accent}
+            color: ${base0E}
         }
         #workspaces button {
             padding: 0px 5px;
             margin: 0px 3px;
             border-radius: 16px;
             color: transparent;
-            background-color: #2f354a;
+            background-color: ${base01};
             transition: all 0.3s ease-in-out;
         }
 
         #workspaces button.active {
-            background-color: #${secondary_accent};
-            color: #${background};
+            background-color: ${base0B};
+            color: ${base01};
             border-radius: 16px;
             min-width: 50px;
             background-size: 400% 400%;
@@ -284,8 +280,8 @@ in
         }
 
         #workspaces button:hover {
-            background-color: #${tertiary_accent};
-            color: #${background};
+            background-color: ${base08};
+            color: ${base01};
             border-radius: 16px;
             min-width: 50px;
             background-size: 400% 400%;
@@ -293,19 +289,19 @@ in
 
         #custom-notification, #tray, #pulseaudio, #network, #battery, #backlight,
         #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward{
-            background: #${background};
+            background: ${base01};
             font-weight: bold;
             margin: 5px 0px;
         }
         #custom-notification, #tray, #pulseaudio, #network, #backlight, #battery{
-            color: #${primary_accent};
+            color: ${base0E};
             border-radius: 10px 24px 10px 24px;
             padding: 0 20px;
             margin-left: 7px;
         }
         #clock {
-            color: #${tertiary_accent};
-            background-color: #${background};
+            color: ${base08};
+            background-color: ${base01};
             border-radius: 0px 0px 0px 40px;
             padding: 10px 10px 15px 25px;
             margin-left: 7px;
@@ -313,8 +309,8 @@ in
             font-size: 16px;
         }
         #custom-launcher {
-            color: #${secondary_accent};
-            background-color: #${background};
+            color: ${base0B};
+            background-color: ${base01};
             border-radius: 0px 0px 40px 0px;
             margin: 0px;
             padding: 0px 35px 0px 15px;
@@ -322,38 +318,38 @@ in
         }
 
         #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward {
-            background: #${background};
+            background: ${base01};
             font-size: 22px;
         }
         #custom-playerctl.backward:hover, #custom-playerctl.play:hover, #custom-playerctl.foward:hover{
-            color: #${tertiary_accent};
+            color: ${base08};
         }
         #custom-playerctl.backward {
-            color: #${primary_accent};
+            color: ${base0E};
             border-radius: 24px 0px 0px 10px;
             padding-left: 16px;
             margin-left: 7px;
         }
         #custom-playerctl.play {
-            color: #${secondary_accent};
+            color: ${base0B};
             padding: 0 5px;
         }
         #custom-playerctl.foward {
-            color: #${primary_accent};
+            color: ${base0E};
             border-radius: 0px 10px 24px 0px;
             padding-right: 12px;
             margin-right: 7px
         }
         #custom-playerlabel {
-            background: #${background};
-            color: #${tertiary_accent};
+            background: ${base01};
+            color: ${base08};
             padding: 0 20px;
             border-radius: 24px 10px 24px 10px;
             margin: 5px 0;
             font-weight: bold;
         }
         #window{
-            background: #${background};
+            background: ${base01};
             padding-left: 15px;
             padding-right: 15px;
             border-radius: 16px;
