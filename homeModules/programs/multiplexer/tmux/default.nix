@@ -84,9 +84,9 @@ in
                     ((i++))
                 else
                     tmux set-option -g set-clipboard on
-                    tmux bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
                     tmux new-session -d -s $session_name
                     tmux attach-session -d -t $session_name
+                    tmux bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
                     break
                 fi
             done

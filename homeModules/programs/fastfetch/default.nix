@@ -108,8 +108,6 @@
           outputColor = "red";
         }
       ]
-      ++ builtins.fromJSON (
-        "[{\"format\":\"               \\u001b[90m  \\u001b[31m  \\u001b[32m  \\u001b[33m  \\u001b[34m  \\u001b[35m  \\u001b[36m  \\u001b[37m \",\"type\":\"custom\"}]"
-      );
+      ++ builtins.fromJSON "[{\"format\":\"               \\u001b[90m  \\u001b[31m  \\u001b[32m  \\u001b[33m  \\u001b[34m  \\u001b[35m  \\u001b[36m  \\u001b[37m \",\"type\":\"custom\"}]";
   };
 }

@@ -4,7 +4,7 @@ let
 in
 {
   programs.foot = {
-    enable = (cfg.enable && cfg.program == "foot");
+    enable = cfg.enable && cfg.program == "foot";
     settings = {
       main.term = "xterm-256color";
     };

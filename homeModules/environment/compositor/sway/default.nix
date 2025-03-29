@@ -74,7 +74,7 @@
           "${modifier}+q" = "exec uwsm stop";
         }
         // lib.optionalAttrs config.programs.seto.enable {
-          "Print" = "exec ${pkgs.grim}/bin/grim -g \"$(seto -r)\" - | ${pkgs.swappy}/bin/swappy -f -";
+          "Print" = "exec ${pkgs.grim}/bin/grim -c -g \"$(seto -r)\" - | ${pkgs.swappy}/bin/swappy -f -";
         }
         // lib.optionalAttrs config.programs.seto.enable {
           "${modifier}+g" =

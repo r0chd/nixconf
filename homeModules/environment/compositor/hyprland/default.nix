@@ -3,6 +3,7 @@
   lib,
   config,
   system_type,
+  inputs,
   ...
 }:
 {
@@ -19,6 +20,7 @@
 
   wayland.windowManager.hyprland = {
     enable = lib.mkDefault (system_type == "desktop");
+    package = inputs.hyprland.packages.${pkgs.system}.default;
     settings = {
       input = {
         kb_layout = "us";
@@ -146,7 +148,7 @@
 
           "$mainMod, q, exec, uwsm stop"
         ]
-        ++ (lib.optional config.programs.seto.enable ", Print, exec, ${pkgs.grim}/bin/grim -g \"$(seto -r)\" - | ${pkgs.swappy}/bin/swappy -f -")
+        ++ (lib.optional config.programs.seto.enable ", Print, exec, ${pkgs.grim}/bin/grim -c -g \"$(seto -r)\" - | ${pkgs.swappy}/bin/swappy -f -")
         ++ (lib.optional config.programs.moxctl.enable "$mainMod, D, exec, mox notify focus")
         ++ (lib.optional config.programs.seto.enable "$mainMod, G, exec, click");
 

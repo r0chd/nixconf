@@ -7,11 +7,16 @@
 }:
 {
   imports = [
-    #./disko.nix
     ./hardware-configuration.nix
     inputs.raspberry-pi-nix.nixosModules.raspberry-pi
     inputs.raspberry-pi-nix.nixosModules.sd-image
+    inputs.nix-minecraft.nixosModules.minecraft-servers
   ];
+
+  nixpkgs = {
+    overlays = [ inputs.nix-minecraft.overlay ];
+    config.allowUnfreePredicate = pkgs: builtins.elem (lib.getName pkgs) [ "minecraft-server" ];
+  };
 
   raspberry-pi-nix = {
     board = "bcm2712";
@@ -42,16 +47,120 @@
     };
   };
 
-  virtualisation.docker.enable = true;
-  users.users.unixpariah.extraGroups = [ "docker" ];
-
   environment = {
     persist.directories = [
       "/var/log"
       "/var/lib/nixos"
     ];
     variables.EDITOR = "nvim";
-    systemPackages = [ inputs.nixvim.packages.${pkgs.system}.default ];
+    systemPackages = with pkgs; [ inputs.nixvim.packages.${system}.default ];
+  };
+
+  networking.firewall.allowedTCPPorts = [
+    80
+    25565
+  ];
+
+  services = {
+    postgresql = {
+      enable = true;
+      ensureDatabases = [ "klocki" ];
+      ensureUsers = [
+        {
+          name = "klocki";
+          ensureDBOwnership = true;
+        }
+      ];
+      authentication = lib.mkOverride 10 ''
+        # Allow local connections
+        local   all   all               trust
+        host    all   all   127.0.0.1/32 trust
+        host    all   all   ::1/128      trust
+      '';
+      initialScript = pkgs.writeText "init.sql" ''
+        CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            email VARCHAR(255) UNIQUE NOT NULL CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
+            password_hash TEXT NOT NULL,
+            is_admin BOOLEAN NOT NULL DEFAULT FALSE,
+            created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );
+      '';
+    };
+
+    traefik = {
+      enable = true;
+
+      staticConfigOptions = {
+        entryPoints = {
+          http = {
+            address = ":80";
+            forwardedHeaders = {
+              trustedIPs = [
+                "127.0.0.1/32"
+                "10.0.0.0/8"
+                "192.168.0.0/16"
+              ];
+            };
+          };
+        };
+      };
+
+      dynamicConfigOptions = {
+        http = {
+          routers =
+            let
+              domain = "app.localhost";
+            in
+            {
+              website-router = {
+                entryPoints = [ "http" ];
+                rule = "Host(`app.localhost`) || Host(`192.168.30.190`)";
+                service = "website";
+              };
+              auth-router = {
+                entryPoints = [ "http" ];
+                rule = "Host(`auth.${domain}`)";
+                service = "auth";
+              };
+
+            };
+          services = {
+            website.loadBalancer.servers = [ { url = "http://localhost:3000"; } ];
+            auth.loadBalancer.servers = [ { url = "http://localhost:8000"; } ];
+          };
+        };
+      };
+    };
+
+    prometheus = {
+      enable = true;
+      scrapeConfigs = [
+        {
+          job_name = "traefik";
+          static_configs = [ { targets = [ "localhost:8082" ]; } ];
+        }
+      ];
+    };
+
+    minecraft-servers = {
+      enable = true;
+      eula = true;
+
+      servers = {
+        server1 = {
+          enable = true;
+          package = pkgs.vanillaServers.vanilla-1_21_5;
+          serverProperties = {
+            gamemode = "survival";
+            difficulty = "hard";
+          };
+          whitelist = {
+            unixpariah = "c2b6e93e-ee38-4d86-b443-1b3069e6f313";
+          };
+        };
+      };
+    };
   };
 
   time.timeZone = "Europe/Warsaw";

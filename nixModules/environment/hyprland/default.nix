@@ -1,8 +1,4 @@
-{
-  lib,
-  system_type,
-  ...
-}:
+{ lib, system_type, ... }:
 {
   nix.settings = {
     substituters = [ "https://hyprland.cachix.org" ];

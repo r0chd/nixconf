@@ -12,6 +12,13 @@
     ./hardware-configuration.nix
   ];
 
+  networking.hosts = {
+    "192.168.30.190" = [
+      "rpi"
+      "app.localhost"
+    ];
+  };
+
   nixpkgs.config.allowUnfreePredicate =
     pkgs:
     builtins.elem (lib.getName pkgs) [
@@ -20,6 +27,8 @@
     ];
 
   programs.nix-index.enable = true;
+
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   stylix = {
     enable = true;

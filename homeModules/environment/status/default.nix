@@ -7,6 +7,9 @@
 }:
 with config.lib.stylix.colors.withHashtag;
 with config.stylix.fonts;
+let
+  cfg = config.environment.statusBar;
+in
 {
   options.environment.statusBar.enable = lib.mkOption {
     type = lib.types.bool;
@@ -14,9 +17,9 @@ with config.stylix.fonts;
   };
 
   config = {
-    home.packages = lib.mkIf config.environment.statusBar.enable [ pkgs.playerctl ];
+    home.packages = lib.mkIf cfg.enable [ pkgs.playerctl ];
     programs.waybar = {
-      enable = config.environment.statusBar.enable;
+      inherit (cfg) enable;
       systemd.enable = true;
       settings.mainBar = {
         position = "top";

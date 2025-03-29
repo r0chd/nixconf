@@ -3,10 +3,12 @@
 
   outputs =
     {
+      self,
       nixpkgs,
       disko,
       home-manager,
       stylix,
+      deploy-rs,
       ...
     }@inputs:
     let
@@ -80,9 +82,54 @@
             stylix.homeManagerModules.stylix
           ];
         };
+
+      mkNode =
+        hostname: attrs:
+        let
+          system = hosts.${hostname}.arch;
+          pkgs = import nixpkgs { inherit system; };
+          deployPkgs = import nixpkgs {
+            inherit system;
+            overlays = [
+              deploy-rs.overlay
+              (self: super: {
+                deploy-rs = {
+                  inherit (pkgs) deploy-rs;
+                  inherit (super.deploy-rs) lib;
+                };
+              })
+            ];
+          };
+
+          hostUsers = hosts.${hostname}.users or { };
+          mkUserProfiles =
+            users:
+            users
+            |> builtins.attrNames
+            |> map (user: {
+              name = user;
+              value = {
+                inherit user;
+                profilePath = "/home/${user}/.local/state/nix/profiles/profile";
+                path = deployPkgs.deploy-rs.lib.activate.custom (mkHome hostname user).activationPackage "$PROFILE/activate";
+              };
+            })
+            |> builtins.listToAttrs;
+        in
+        {
+          inherit hostname;
+          profiles = {
+            system = {
+              user = "root";
+              interactiveSudo = true;
+              path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostname};
+            };
+          } // mkUserProfiles hostUsers;
+        };
     in
     with nixpkgs;
     {
+      deploy.nodes = hosts |> lib.mapAttrs (hostname: attrs: mkNode hostname attrs);
       nixosConfigurations = hosts |> lib.mapAttrs (hostname: attrs: mkHost hostname attrs);
       homeConfigurations =
         builtins.attrNames hosts
@@ -97,6 +144,8 @@
         )
         |> builtins.concatLists
         |> builtins.listToAttrs;
+
+      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     };
 
   inputs = {
@@ -158,6 +207,15 @@
     };
     nixvim = {
       url = "github:unixpariah/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprland.url = "github:hyprwm/Hyprland";
+    nix-minecraft = {
+      url = "github:Infinidoge/nix-minecraft";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

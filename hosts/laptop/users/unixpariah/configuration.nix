@@ -27,6 +27,7 @@
   };
 
   programs = {
+    chromium.enable = true;
     vesktop.enable = true;
     editor = "hx";
     zen.enable = true;
@@ -93,11 +94,7 @@
   stylix = {
     enable = true;
     theme = "gruvbox";
-    cursor = {
-      name = "Bibata-Modern-Classic";
-      package = pkgs.bibata-cursors;
-      size = 36;
-    };
+    cursor.size = 36;
     fonts = {
       sizes = {
         terminal = 9;

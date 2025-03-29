@@ -16,6 +16,7 @@
 
   programs.niri = {
     enable = lib.mkDefault (system_type == "desktop");
+    package = pkgs.niri;
     settings = {
       input = {
         keyboard = {
@@ -298,7 +299,7 @@
         "Print".action.spawn = [
           "bash"
           "-c"
-          "${pkgs.grim}/bin/grim -g \"$(seto -r)\" - | ${pkgs.swappy}/bin/swappy -f -"
+          "${pkgs.grim}/bin/grim -c -g \"$(seto -r)\" - | ${pkgs.swappy}/bin/swappy -f -"
         ];
 
         "Alt+G".action.spawn = [

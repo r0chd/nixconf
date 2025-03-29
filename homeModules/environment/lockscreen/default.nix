@@ -14,7 +14,7 @@ in
   };
 
   config.programs.hyprlock = {
-    enable = cfg.enable;
+    inherit (cfg) enable;
     settings = {
       general = {
         hide_cursor = true;

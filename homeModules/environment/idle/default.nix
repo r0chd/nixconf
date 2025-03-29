@@ -25,7 +25,7 @@ in
       message = "${pkgs.libnotify}/bin/notify-send \"You've been inactive for $(${dbus_cmd} | ${pkgs.gawk}/bin/awk '/uint32/ {print $2}' | ${pkgs.gawk}/bin/awk '{h=int($1/3600); m=int(($1%3600)/60); s=$1%60; printf \"%02d:%02d:%02d\", h, m, s}')\"";
     in
     {
-      enable = cfg.enable;
+      inherit (cfg) enable;
       settings = {
         general = {
           lock_cmd = "pidof ${pkgs.hyprlock}/bin/hyprlock || ${pkgs.hyprlock}/bin/hyprlock && ${pkgs.systemd}/bin/loginctl unlock-session";

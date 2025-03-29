@@ -15,7 +15,7 @@
       nushell = {
         enable = true;
         package = null;
-        shellAliases = config.home.shellAliases;
+        inherit (config.home) shellAliases;
         extraConfig = ''
           let carapace_completer = {|spans: list<string>|
               ${pkgs.carapace}/bin/carapace $spans.0 nushell ...$spans

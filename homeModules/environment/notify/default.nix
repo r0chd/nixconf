@@ -22,7 +22,7 @@ in
   };
 
   config.services.moxnotify = {
-    enable = cfg.enable;
+    inherit (cfg) enable;
     settings = {
       keymaps = {
         ge.action = "last_notification";
@@ -30,110 +30,16 @@ in
         xd.action = "dismiss_notification";
       };
 
-      next = {
-        font = {
-          color = "#FFFFFF";
-        };
-        border = {
-          size = 1;
-          radius = 0;
-        };
-        margin = 5;
-        padding = 5;
-      };
-      prev = {
-        font = {
-          color = "#FFFFFF";
-        };
-        border = {
-          size = 1;
-          radius = 0;
-        };
-        margin = 5;
-        padding = 5;
-      };
-
-      styles = {
-        default = {
-          progress.border = {
-            size = 2;
-            radius = 0;
-          };
-
-          buttons = {
-            dismiss = {
-              default = {
-                padding = 0;
-                margin = 0;
-                background = "#FFFFFF";
-                width = 20;
-                height = 20;
-                border = {
-                  size = 0;
-                  radius = 50;
-                  color = "#000000";
-                };
-                font = {
-                  size = 10;
-                  color = "#000000";
-                };
-              };
-              hover = {
-                padding = 0;
-                margin = 0;
-                width = 20;
-                height = 20;
-                background = "#FFFFFF";
-                font = {
-                  size = 10;
-                  color = "#FFFFFF";
-                };
-                border = {
-                  size = 0;
-                  radius = 0;
-                  color = "#FFFFFF";
-                };
-              };
-            };
-
-            action = {
-              default = {
-                padding = 0;
-                margin = 0;
-                width = "auto";
-                height = "auto";
-                font.size = 10;
-                border = {
-                  size = 2;
-                  radius = 0;
-                };
-              };
-              hover = {
-                padding = 0;
-                margin = 0;
-                width = "auto";
-                height = "auto";
-                font.size = 10;
-                border = {
-                  size = 2;
-                  radius = 0;
-                  color = "#FFFFFF";
-                };
-              };
-            };
-          };
-
-          icon.border = {
-            size = 0;
-            radius = 0;
-          };
-
-          border = {
-            size = 2;
-            radius = 0;
-          };
-        };
-      };
+      styles = [
+        {
+          selector = [
+            "notification"
+            "prev_counter"
+            "next_counter"
+          ];
+          style.border.radius = 5;
+        }
+      ];
     };
   };
 }
