@@ -12,12 +12,14 @@
     ./hardware-configuration.nix
   ];
 
-  networking.hosts = {
-    "192.168.30.190" = [
-      "rpi"
-      "app.localhost"
-    ];
+  networking = {
+    wireless.iwd.enable = true;
+    hosts = {
+      "100.123.153.127" = [ "rpi" ];
+    };
   };
+
+  documentation.enable = true;
 
   nixpkgs.config.allowUnfreePredicate =
     pkgs:
@@ -26,30 +28,22 @@
       "nvidia-settings"
     ];
 
-  programs.nix-index.enable = true;
-
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-
   stylix = {
     enable = true;
     theme = "gruvbox";
   };
 
-  virtualisation = {
-    enable = true;
-    waydroid.enable = true;
-    virt-manager.enable = true;
-    docker = {
-      enable = true;
-      storageDriver = "btrfs";
-      rootless = {
-        enable = true;
-        setSocketVariable = true;
-      };
-    };
+  programs = {
+    nix-index.enable = true;
+    wshowkeys.enable = true;
   };
 
-  users.users.unixpariah.extraGroups = [ "docker" ];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
+  virtualisation = {
+    enable = true;
+    virt-manager.enable = true;
+  };
 
   system = {
     fileSystem = "btrfs";
@@ -85,26 +79,13 @@
     bluetooth.enable = true;
   };
 
-  network.wireless.enable = true;
-
   zramSwap.enable = true;
 
-  services = {
-    tailscale.enable = false;
-    postgresql = {
-      enable = false;
-      ensureDatabases = [ "mydatabase" ];
-      authentication = pkgs.lib.mkOverride 10 ''
-        #type database  DBuser  auth-method
-        local all       all     trust
-      '';
-    };
+  sops.secrets.wireguard-key = { };
 
-    impermanence = {
-      enable = true;
-      device = "crypted-main";
-      vg = "root_vg";
-    };
+  services = {
+    tailscale.enable = true;
+    impermanence.enable = true;
     protonvpn = {
       enable = false;
       interface = {
@@ -119,15 +100,8 @@
   };
 
   environment = {
-    persist.directories = [
-      "/var/log"
-      "/var/lib/nixos"
-    ];
-    variables.EDITOR = "nvim";
-    systemPackages = with pkgs; [
-      inputs.nixvim.packages.${system}.default
-      distrobox
-    ];
+    variables.EDITOR = "hx";
+    systemPackages = [ pkgs.helix ];
   };
 
   time.timeZone = "Europe/Warsaw";

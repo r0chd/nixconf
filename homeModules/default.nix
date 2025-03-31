@@ -15,7 +15,7 @@
     ./environment
     ./programs
     ./security
-    ./network
+    ./networking
     ./services
     ../hosts/${hostname}/users/${username}/configuration.nix
     ../theme

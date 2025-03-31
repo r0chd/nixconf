@@ -168,6 +168,7 @@ in
       directories = [
         "/usr/systemd-placeholder"
         "/var/lib/systemd/coredump"
+        "/var/lib/nixos"
         {
           directory = "/var/lib/nixconf";
           user = "root";

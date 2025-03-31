@@ -27,7 +27,6 @@ in
       keymaps = {
         ge.action = "last_notification";
         d.action = "dismiss_notification";
-        xd.action = "dismiss_notification";
       };
 
       styles = [

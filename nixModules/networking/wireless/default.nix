@@ -6,18 +6,13 @@
   ...
 }:
 let
-  cfg = config.network.wireless;
+  cfg = config.networking.wireless.iwd;
 in
 {
-  options.network.wireless.enable = lib.mkEnableOption "Enable wireless wifi connection";
-
   config = lib.mkIf cfg.enable {
     networking = {
       firewall.enable = true;
 
-      wireless.iwd = {
-        enable = true;
-      };
       nameservers = [
         "1.1.1.1"
         "1.0.0.1"

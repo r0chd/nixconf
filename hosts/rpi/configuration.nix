@@ -48,20 +48,20 @@
   };
 
   environment = {
-    persist.directories = [
-      "/var/log"
-      "/var/lib/nixos"
-    ];
-    variables.EDITOR = "nvim";
-    systemPackages = with pkgs; [ inputs.nixvim.packages.${system}.default ];
+    variables.EDITOR = "hx";
+    systemPackages = [ pkgs.helix ];
   };
 
-  networking.firewall.allowedTCPPorts = [
-    80
-    25565
-  ];
+  networking = {
+    wireless.iwd.enable = true;
+    firewall.allowedTCPPorts = [
+      80
+      25565
+    ];
+  };
 
   services = {
+    tailscale.enable = true;
     postgresql = {
       enable = true;
       ensureDatabases = [ "klocki" ];
@@ -157,6 +157,8 @@
           };
           whitelist = {
             unixpariah = "c2b6e93e-ee38-4d86-b443-1b3069e6f313";
+            McKnur = "6551e853-3139-442e-8cc0-fa9fff682e95";
+            LiegtAnGomme = "1ec8cc84-1535-460c-86db-910d5dddc0b8";
           };
         };
       };

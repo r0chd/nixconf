@@ -21,6 +21,14 @@
             shell = "nushell";
           };
         };
+        laptop-lenovo = {
+          arch = "x86_64-linux";
+          type = "server";
+          users.unixpariah = {
+            root.enable = true;
+            shell = "nushell";
+          };
+        };
         rpi = {
           arch = "aarch64-linux";
           type = "server";
