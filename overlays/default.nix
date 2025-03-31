@@ -11,5 +11,5 @@ inputs: config: [
   })
 
   inputs.deploy-rs.overlay
-  #inputs.nixpkgs-wayland.overlay
+  inputs.nixpkgs-wayland.overlay
 ]

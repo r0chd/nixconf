@@ -18,10 +18,6 @@
     zoxide.enable = true;
     direnv.enable = true;
     editor = "hx";
-    multiplexer = {
-      enable = true;
-      variant = "tmux";
-    };
   };
 
   nix.access-tokens = [ config.sops.placeholder.nixos-access-token-github ];

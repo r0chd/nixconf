@@ -54,7 +54,6 @@ in
         mode = "challenge-response";
         id = [ cfg.id ];
       };
-      sshAgentAuth.enable = true;
       u2f = {
         enable = cfg.rootAuth;
         settings = {
@@ -66,13 +65,12 @@ in
         login.u2fAuth = true;
         sudo = {
           rules.auth.rssh = {
-            order = config.rules.auth.ssh_agent_auth.order - 1;
+            order = config.security.pam.services.sudo.rules.auth.ssh_agent_auth.order - 1;
             control = "sufficient";
             modulePath = "${pkgs.pam_rssh}/lib/libpam_rssh.so";
-            settings.authorized_keys_command = pkgs.writeShellScript "get-authorized-keys" "cat ~/etc/ssh/authorized_keys.d/$1";
+            settings.authorized_keys_command = pkgs.writeShellScript "get-authorized-keys" "cat /etc/ssh/authorized_keys.d/$1";
           };
           u2fAuth = true;
-          sshAgentAuth = true;
         };
       };
     };

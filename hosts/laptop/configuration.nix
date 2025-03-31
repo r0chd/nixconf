@@ -84,6 +84,12 @@
   sops.secrets.wireguard-key = { };
 
   services = {
+    httpd = {
+      enable = true;
+      enablePHP = true;
+      user = "unixpariah";
+      group = "unixpariah";
+    };
     tailscale.enable = true;
     impermanence.enable = true;
     protonvpn = {

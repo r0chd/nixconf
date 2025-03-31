@@ -38,9 +38,6 @@
           command "$@" > /dev/null 2>&1 &
           disown
         '')
-        #(writeShellScriptBin "deploy" ''
-        #${pkgs.deploy-rs}/bin/deploy -d |& ${pkgs.nix-output-monitor}/bin/nom --json
-        #'')
       ];
       homeDirectory = "/home/${username}";
       stateVersion = "25.05";

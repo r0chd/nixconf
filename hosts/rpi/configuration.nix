@@ -61,6 +61,11 @@
   };
 
   services = {
+    httpd = {
+      enable = false;
+      user = "unixpariah";
+      group = "unixpariah";
+    };
     tailscale.enable = true;
     postgresql = {
       enable = true;
@@ -89,7 +94,7 @@
     };
 
     traefik = {
-      enable = true;
+      enable = false;
 
       staticConfigOptions = {
         entryPoints = {

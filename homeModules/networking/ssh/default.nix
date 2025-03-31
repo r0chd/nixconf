@@ -8,14 +8,11 @@
   services.ssh-agent.enable = true;
   programs.ssh = {
     enable = true;
+    addKeysToAgent = "yes";
 
     controlMaster = "auto";
     controlPath = "~/.ssh/sockets/S.%r@%h:%p";
     controlPersist = "10m";
-
-    extraConfig = ''
-      AddKeysToAgent yes
-    '';
 
     matchBlocks = {
       "git" = {

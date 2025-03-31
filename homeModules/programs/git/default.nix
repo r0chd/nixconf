@@ -1,6 +1,6 @@
 { config, ... }:
 let
-  publicKey = "/home/${config.home.username}/.ssh/id_ed25519";
+  publicKey = "${config.home.homeDirectory}/.ssh/id_yubikey.pub";
 in
 {
   programs.git = {
@@ -16,16 +16,19 @@ in
 
     extraConfig = {
       init.defaultBranch = "main";
-      #url = {
-      #  "ssh://git@github.com" = {
-      #    insteadOf = "https://github.com";
-      #  };
-      #  "ssh://git@gitlab.com" = {
-      #    insteadOf = "https://gitlab.com";
-      #  };
-      #};
-      gpg.format = "ssh";
-      user.signingkey = publicKey;
+      url = {
+        "ssh://git@github.com" = {
+          insteadOf = "https://github.com";
+        };
+        "ssh://git@gitlab.com" = {
+          insteadOf = "https://gitlab.com";
+        };
+      };
+      gpg = {
+        format = "ssh";
+        ssh.allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
+      };
+      user.signing.key = publicKey;
       safe.directory = [ "/var/lib/nixconf" ];
     };
   };
