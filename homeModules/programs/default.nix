@@ -17,7 +17,6 @@
     ./keepassxc
     ./browser
     ./starship
-    ./nh
     ./fastfetch
   ];
 }

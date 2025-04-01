@@ -17,6 +17,7 @@
     ./environment
     ./services
     ./documentation
+    ./programs
     ../hosts/${hostname}/configuration.nix
     ../theme
   ];

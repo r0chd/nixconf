@@ -1,14 +1,14 @@
-{
-  lib,
-  config,
-  ...
-}:
+{ lib, config, ... }:
 let
   cfg = config.system.gc;
 in
 {
   options.system.gc = {
     enable = lib.mkEnableOption "Garbage collector";
+    keep = lib.mkOption {
+      type = lib.types.int;
+      default = 3;
+    };
     interval = lib.mkOption {
       type = lib.types.int;
       default = 7;
@@ -16,10 +16,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    nix.gc = {
-      automatic = true;
+    programs.nh.clean = {
+      enable = true;
       dates = "weekly";
-      options = "--delete-older-than ${toString config.system.gc.interval}d";
+      extraArgs = "--keep ${toString cfg.keep} --keep-since ${toString cfg.interval}d";
     };
   };
 }
