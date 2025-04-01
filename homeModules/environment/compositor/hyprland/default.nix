@@ -21,6 +21,8 @@
   wayland.windowManager.hyprland = {
     enable = lib.mkDefault (system_type == "desktop");
     package = inputs.hyprland.packages.${pkgs.system}.default;
+    portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
+
     plugins = [ pkgs.hyprlandPlugins.hyprscroller ];
     settings = {
       input = {

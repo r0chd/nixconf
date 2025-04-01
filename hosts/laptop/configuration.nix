@@ -16,6 +16,7 @@
     wireless.iwd.enable = true;
     hosts = {
       "100.123.153.127" = [ "rpi" ];
+      "100.65.94.104" = [ "laptop-lenovo" ];
     };
   };
 

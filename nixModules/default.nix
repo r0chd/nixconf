@@ -40,7 +40,10 @@
       nano.enable = lib.mkDefault false;
     };
 
-    services.udisks2.enable = system_type == "desktop";
+    services = {
+      udisks2.enable = system_type == "desktop";
+      gnome.gnome-keyring.enable = system_type == "desktop";
+    };
 
     users = {
       mutableUsers = false;

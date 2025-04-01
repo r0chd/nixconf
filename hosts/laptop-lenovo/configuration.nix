@@ -1,10 +1,4 @@
-{
-  pkgs,
-  inputs,
-  config,
-  lib,
-  ...
-}:
+{ config, pkgs, ... }:
 {
   imports = [
     ./disko.nix
@@ -13,6 +7,15 @@
 
   nixpkgs.config.allowUnfree = true;
   hardware.enableAllFirmware = true;
+
+  boot = {
+    kernelModules = [ "wl" ];
+    extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
+    blacklistedKernelModules = [
+      "b43"
+      "bcma"
+    ];
+  };
 
   system = {
     fileSystem = "btrfs";
@@ -24,11 +27,22 @@
       enable = true;
       interval = 3;
     };
+    activationScripts.rfkillUnblockWifi = {
+      text = ''
+        rfkill unblock wifi
+      '';
+      deps = [ ];
+    };
+  };
+
+  networking = {
+    wireless.iwd.enable = true;
+    interfaces.eth0.useDHCP = true;
   };
 
   environment = {
-    variables.EDITOR = "nvim";
-    systemPackages = with pkgs; [ inputs.nixvim.packages.${system}.default ];
+    variables.EDITOR = "hx";
+    systemPackages = [ pkgs.helix ];
   };
 
   services = {

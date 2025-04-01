@@ -27,6 +27,10 @@ in
           yank
           sensible
           vim-tmux-navigator
+          {
+            plugin = resurrect;
+            extraConfig = "set -g @resurrect-strategy-nvim 'session'";
+          }
         ];
         extraConfig = ''
           set -as terminal-features ",xterm-256color:RGB"
@@ -83,9 +87,9 @@ in
                     fi
                     ((i++))
                 else
-                    tmux set-option -g set-clipboard on
                     tmux new-session -d -s $session_name
                     tmux attach-session -d -t $session_name
+                    tmux set-option -g set-clipboard on
                     tmux bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
                     break
                 fi

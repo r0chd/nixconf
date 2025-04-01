@@ -13,6 +13,7 @@
     ./nix
     ./gaming
     ./environment
+    ./workspace
     ./programs
     ./security
     ./networking

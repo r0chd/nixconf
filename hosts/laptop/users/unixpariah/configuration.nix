@@ -39,7 +39,6 @@
     direnv.enable = true;
     seto.enable = true;
     btop.enable = true;
-    nixcord.enable = true;
     keepassxc = {
       enable = true;
       database.files = [ "Passwords.kdbx" ];

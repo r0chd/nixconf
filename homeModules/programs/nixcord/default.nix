@@ -15,7 +15,7 @@
 
   config = {
     programs.nixcord = {
-      discord.vencord.package = pkgs.vencord;
+      enable = config.programs.vesktop.enable || config.programs.discord.enable;
       vesktop.enable = config.programs.vesktop.enable;
       discord.enable = config.programs.discord.enable;
       config = {
@@ -33,10 +33,9 @@
       };
     };
 
-    home.persist.directories = [
-      ".config/Vencord"
-      ".config/vesktop"
-      ".config/discord"
-    ];
+    home.persist.directories =
+      [ ".config/Vencord" ]
+      ++ lib.optionals config.programs.vesktop.enable [ ".config/vesktop" ]
+      ++ lib.optionals config.programs.discord.enable [ ".config/discord" ];
   };
 }

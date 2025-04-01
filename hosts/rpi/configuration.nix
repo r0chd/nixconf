@@ -1,12 +1,12 @@
 {
   pkgs,
   inputs,
-  config,
   lib,
   ...
 }:
 {
   imports = [
+    ./php.nix
     ./hardware-configuration.nix
     inputs.raspberry-pi-nix.nixosModules.raspberry-pi
     inputs.raspberry-pi-nix.nixosModules.sd-image

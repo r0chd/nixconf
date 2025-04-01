@@ -31,14 +31,14 @@
             shell = "nushell";
           };
         };
-        #laptop-lenovo = {
-        #arch = "x86_64-linux";
-        #type = "server";
-        #users.unixpariah = {
-        #root.enable = true;
-        #shell = "nushell";
-        #};
-        #};
+        laptop-lenovo = {
+          arch = "x86_64-linux";
+          type = "server";
+          users.unixpariah = {
+            root.enable = true;
+            shell = "nushell";
+          };
+        };
       };
 
       mkHost =
@@ -169,7 +169,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
+    nixpkgs-wayland = {
+      url = "github:nix-community/nixpkgs-wayland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     stylix = {
       url = "github:danth/stylix";
@@ -225,7 +228,10 @@
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-minecraft = {
       url = "github:Infinidoge/nix-minecraft";
       inputs.nixpkgs.follows = "nixpkgs";
