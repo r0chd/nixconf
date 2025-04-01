@@ -19,13 +19,14 @@
     ./documentation
     ../hosts/${hostname}/configuration.nix
     ../theme
-    inputs.nix-index-database.nixosModules.nix-index
   ];
 
   options.system_type = lib.mkEnableOption "";
 
   config = {
     nixpkgs.overlays = import ../overlays inputs config;
+
+    environment.systemPackages = with pkgs; [ uutils-coreutils-noprefix ];
 
     boot = {
       kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;

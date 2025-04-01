@@ -15,7 +15,7 @@
 
   sops.secrets = {
     "yubico/u2f_keys".path = "/home/unixpariah/.config/Yubico/u2f_keys";
-    "ssh_keys/unixpariah-yubikey".path = "/home/unixpariah/.ssh/id_yubikey";
+    "ssh_keys/id_yubikey".path = "/home/unixpariah/.ssh/id_yubikey";
     nixos-access-token-github = { };
   };
 
@@ -27,7 +27,6 @@
   };
 
   programs = {
-    chromium.enable = true;
     vesktop.enable = true;
     editor = "hx";
     zen.enable = true;
@@ -36,7 +35,6 @@
     fastfetch.enable = true;
     fuzzel.enable = true;
     starship.enable = true;
-    man.enable = true;
     zoxide.enable = true;
     direnv.enable = true;
     seto.enable = true;

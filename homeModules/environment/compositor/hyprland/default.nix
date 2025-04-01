@@ -110,9 +110,10 @@
           ", XF86AudioLowerVolume, exec, pamixer -d 5"
 
           "$mainMod, q, exec, uwsm stop"
+
+          "$mainMod, D, exec, mox notify focus"
         ]
         ++ (lib.optional config.programs.seto.enable ", Print, exec, ${pkgs.grim}/bin/grim -c -g \"$(seto -r)\" - | ${pkgs.swappy}/bin/swappy -f -")
-        ++ (lib.optional config.programs.moxctl.enable "$mainMod, D, exec, mox notify focus")
         ++ (lib.optional config.programs.seto.enable "$mainMod, G, exec, click");
 
       bindm = [

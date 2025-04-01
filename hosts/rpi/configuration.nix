@@ -10,7 +10,6 @@
     ./hardware-configuration.nix
     inputs.raspberry-pi-nix.nixosModules.raspberry-pi
     inputs.raspberry-pi-nix.nixosModules.sd-image
-    inputs.nix-minecraft.nixosModules.minecraft-servers
   ];
 
   nixpkgs = {
@@ -61,11 +60,6 @@
   };
 
   services = {
-    httpd = {
-      enable = false;
-      user = "unixpariah";
-      group = "unixpariah";
-    };
     tailscale.enable = true;
     postgresql = {
       enable = true;
@@ -139,7 +133,7 @@
     };
 
     prometheus = {
-      enable = true;
+      enable = false;
       scrapeConfigs = [
         {
           job_name = "traefik";

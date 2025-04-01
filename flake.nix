@@ -9,6 +9,8 @@
       home-manager,
       stylix,
       deploy-rs,
+      nix-index-database,
+      nix-minecraft,
       ...
     }@inputs:
     let
@@ -16,6 +18,14 @@
         laptop = {
           arch = "x86_64-linux";
           type = "desktop";
+          users.unixpariah = {
+            root.enable = true;
+            shell = "nushell";
+          };
+        };
+        rpi = {
+          arch = "aarch64-linux";
+          type = "server";
           users.unixpariah = {
             root.enable = true;
             shell = "nushell";
@@ -29,14 +39,6 @@
         #shell = "nushell";
         #};
         #};
-        rpi = {
-          arch = "aarch64-linux";
-          type = "server";
-          users.unixpariah = {
-            root.enable = true;
-            shell = "nushell";
-          };
-        };
       };
 
       mkHost =
@@ -61,6 +63,8 @@
             ./nixModules
             disko.nixosModules.default
             stylix.nixosModules.stylix
+            nix-index-database.nixosModules.nix-index
+            nix-minecraft.nixosModules.minecraft-servers
           ];
 
         };
@@ -241,10 +245,6 @@
     };
     moxnotify = {
       url = "github:unixpariah/moxnotify";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    moxctl = {
-      url = "github:unixpariah/moxctl";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

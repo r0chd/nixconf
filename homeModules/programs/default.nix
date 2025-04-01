@@ -18,7 +18,6 @@
     ./browser
     ./starship
     ./nh
-    ./moxctl
     ./fastfetch
   ];
 }

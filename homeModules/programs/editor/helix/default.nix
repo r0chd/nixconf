@@ -67,7 +67,7 @@
           {
             name = "nix";
             auto-format = true;
-            language-servers = [ { name = "nil"; } ];
+            language-servers = [ { name = "nixd"; } ];
             formatter = {
               command = lib.getExe pkgs.nixfmt-rfc-style;
               args = [ "-s" ];

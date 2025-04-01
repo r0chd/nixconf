@@ -33,12 +33,7 @@
     theme = "gruvbox";
   };
 
-  programs = {
-    nix-index.enable = true;
-    wshowkeys.enable = true;
-  };
-
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  programs.nix-index.enable = true;
 
   virtualisation = {
     enable = true;
@@ -84,12 +79,6 @@
   sops.secrets.wireguard-key = { };
 
   services = {
-    httpd = {
-      enable = true;
-      enablePHP = true;
-      user = "unixpariah";
-      group = "unixpariah";
-    };
     tailscale.enable = true;
     impermanence.enable = true;
     protonvpn = {
