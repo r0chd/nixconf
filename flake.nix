@@ -241,10 +241,6 @@
       url = "github:unixpariah/seto";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ruin = {
-      url = "git+https://github.com/unixpariah/ruin?submodules=1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     moxidle = {
       url = "github:unixpariah/moxidle";
       inputs.nixpkgs.follows = "nixpkgs";
