@@ -35,6 +35,8 @@
 
   programs.nix-index.enable = true;
 
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
   virtualisation = {
     enable = true;
     virt-manager.enable = true;
