@@ -976,6 +976,22 @@
         "type": "github"
       }
     },
+    "hyprscroller": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1743200830,
+        "narHash": "sha256-e3AFZnfTqaqExi9eBGTcTDV7IghJ9fisJPKxgPG+h0g=",
+        "owner": "dawsers",
+        "repo": "hyprscroller",
+        "rev": "b14552ac3a62e24b059eb7569077c75547d5cc69",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dawsers",
+        "repo": "hyprscroller",
+        "type": "github"
+      }
+    },
     "hyprutils": {
       "inputs": {
         "nixpkgs": [
@@ -1631,6 +1647,7 @@
         "firefox-addons": "firefox-addons",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
+        "hyprscroller": "hyprscroller",
         "impermanence": "impermanence",
         "lanzaboote": "lanzaboote",
         "moxidle": "moxidle",

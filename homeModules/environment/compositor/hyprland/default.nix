@@ -23,7 +23,7 @@
     package = inputs.hyprland.packages.${pkgs.system}.default;
     portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
 
-    plugins = [ pkgs.hyprlandPlugins.hyprscroller ];
+    plugins = [ pkgs.hyprscroller ];
     settings = {
       input = {
         kb_layout = "us";
