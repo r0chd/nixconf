@@ -12,6 +12,19 @@
     ./hardware-configuration.nix
   ];
 
+  nixpkgs.config.allowUnfreePredicate =
+    pkgs:
+    builtins.elem (lib.getName pkgs) [
+      "nvidia-x11"
+      "nvidia-settings"
+      "cuda_cudart"
+      "cuda_cccl"
+      "libcublas"
+      "cuda_nvcc"
+    ];
+
+  nixpkgs.config.cudaSupport = true;
+
   networking = {
     wireless.iwd.enable = true;
     hosts = {
@@ -22,19 +35,16 @@
 
   documentation.enable = true;
 
-  nixpkgs.config.allowUnfreePredicate =
-    pkgs:
-    builtins.elem (lib.getName pkgs) [
-      "nvidia-x11"
-      "nvidia-settings"
-    ];
-
   stylix = {
     enable = true;
     theme = "gruvbox";
   };
 
-  programs.nix-index.enable = true;
+  programs = {
+    nix-index.enable = true;
+    sway.enable = true;
+    niri.enable = true;
+  };
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
@@ -82,6 +92,10 @@
   sops.secrets.wireguard-key = { };
 
   services = {
+    ollama = {
+      enable = true;
+      acceleration = "cuda";
+    };
     tailscale.enable = true;
     impermanence.enable = true;
     protonvpn = {
