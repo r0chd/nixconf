@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   config,
   lib,
   ...
@@ -23,13 +22,12 @@
       "cuda_nvcc"
     ];
 
-  nixpkgs.config.cudaSupport = true;
-
   networking = {
     wireless.iwd.enable = true;
     hosts = {
       "100.123.153.127" = [ "rpi" ];
       "100.65.94.104" = [ "laptop-lenovo" ];
+      "u0_a249@192.168.50.240:8022" = [ "xiaomi" ];
     };
   };
 
@@ -37,14 +35,17 @@
 
   stylix = {
     enable = true;
-    theme = "gruvbox";
+    theme = "catppuccin-mocha";
   };
 
   programs = {
+    adb.enable = true;
     nix-index.enable = true;
     sway.enable = true;
     niri.enable = true;
   };
+
+  users.users.unixpariah.extraGroups = [ "adbuser" ];
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
@@ -91,6 +92,8 @@
 
   sops.secrets.wireguard-key = { };
 
+  #environment.persist.directories = [ "/var/lib/ollama" ];
+
   services = {
     ollama = {
       enable = true;
@@ -113,7 +116,10 @@
 
   environment = {
     variables.EDITOR = "hx";
-    systemPackages = [ pkgs.helix ];
+    systemPackages = [
+      pkgs.helix
+      pkgs.jmtpfs
+    ];
   };
 
   time.timeZone = "Europe/Warsaw";

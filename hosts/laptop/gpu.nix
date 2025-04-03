@@ -1,5 +1,7 @@
 { config, ... }:
 {
+  nixpkgs.config.cudaSupport = true;
+
   hardware = {
     nvidia = {
       modesetting.enable = true;

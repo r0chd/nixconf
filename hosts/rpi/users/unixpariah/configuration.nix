@@ -12,8 +12,6 @@
     "klocki/db_password" = { };
   };
 
-  workspace.php.enable = true;
-
   programs = {
     fastfetch.enable = true;
     starship.enable = true;

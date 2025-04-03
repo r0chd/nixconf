@@ -6,7 +6,6 @@
 }:
 {
   imports = [
-    ./php.nix
     ./hardware-configuration.nix
     inputs.raspberry-pi-nix.nixosModules.raspberry-pi
     inputs.raspberry-pi-nix.nixosModules.sd-image
@@ -60,6 +59,10 @@
   };
 
   services = {
+    phpApp = {
+      test1 = { };
+      test2 = { };
+    };
     tailscale.enable = true;
     postgresql = {
       enable = true;

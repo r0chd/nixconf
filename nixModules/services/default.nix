@@ -3,5 +3,6 @@ _: {
     ./proton-vpn
     ./tailscale
     ./logind
+    ./phpApp
   ];
 }

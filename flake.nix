@@ -11,6 +11,7 @@
       deploy-rs,
       nix-index-database,
       nix-minecraft,
+      nix-on-droid,
       ...
     }@inputs:
     let
@@ -34,6 +35,14 @@
         laptop-lenovo = {
           arch = "x86_64-linux";
           type = "server";
+          users.unixpariah = {
+            root.enable = true;
+            shell = "nushell";
+          };
+        };
+        mi10lite = {
+          arch = "aarch64-linux";
+          type = "mobile";
           users.unixpariah = {
             root.enable = true;
             shell = "nushell";
@@ -66,7 +75,16 @@
             nix-index-database.nixosModules.nix-index
             nix-minecraft.nixosModules.minecraft-servers
           ];
+        };
 
+      mkDroid =
+        hostname: attrs:
+        let
+          system = hosts.${hostname}.arch;
+        in
+        nix-on-droid.lib.nixOnDroidConfiguration {
+          pkgs = import nixpkgs { inherit system; };
+          modules = [ ./hosts/${hostname} ];
         };
 
       mkHome =
@@ -141,10 +159,18 @@
     in
     with nixpkgs;
     {
-      deploy.nodes = hosts |> lib.mapAttrs (hostname: attrs: mkNode hostname attrs);
-      nixosConfigurations = hosts |> lib.mapAttrs (hostname: attrs: mkHost hostname attrs);
+      deploy.nodes =
+        hosts
+        |> lib.filterAttrs (_: attrs: attrs.type != "mobile")
+        |> lib.mapAttrs (hostname: attrs: mkNode hostname attrs);
+      nixosConfigurations =
+        hosts
+        |> lib.filterAttrs (_: attrs: attrs.type != "mobile")
+        |> lib.mapAttrs (hostname: attrs: mkHost hostname attrs);
       homeConfigurations =
-        builtins.attrNames hosts
+        hosts
+        |> lib.filterAttrs (_: attrs: attrs.type != "mobile")
+        |> builtins.attrNames
         |> builtins.map (
           host:
           hosts.${host}.users
@@ -156,6 +182,10 @@
         )
         |> builtins.concatLists
         |> builtins.listToAttrs;
+      nixOnDroidConfigurations =
+        hosts
+        |> lib.filterAttrs (_: attrs: attrs.type != "server" && attrs.type != "desktop")
+        |> lib.mapAttrs (hostname: attrs: mkDroid hostname attrs);
 
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     };
@@ -238,6 +268,10 @@
     };
     nix-minecraft = {
       url = "github:Infinidoge/nix-minecraft";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

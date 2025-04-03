@@ -28,17 +28,6 @@ in
         ge.action = "last_notification";
         d.action = "dismiss_notification";
       };
-
-      styles = [
-        {
-          selector = [
-            "notification"
-            "prev_counter"
-            "next_counter"
-          ];
-          style.border.radius = 5;
-        }
-      ];
     };
   };
 }

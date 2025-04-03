@@ -1,7 +1,6 @@
 { ... }:
 {
   imports = [
-    ./php
     ./zig
     ./rust
   ];
