@@ -30,10 +30,14 @@
 
     services.udiskie.enable = system_type == "desktop";
 
-    programs.home-manager.enable = true;
+    programs = {
+      home-manager.enable = true;
+      nushell.environmentVariables.HOME_MANAGER_BACKUP_EXT = "bak";
+    };
     home = {
       inherit username;
       sessionVariables.HOME_MANAGER_BACKUP_EXT = "bak";
+
       packages = with pkgs; [
         uutils-coreutils-noprefix
         (writeShellScriptBin "nb" ''

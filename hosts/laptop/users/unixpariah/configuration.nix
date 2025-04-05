@@ -11,6 +11,7 @@
       "discord"
       "steam"
       "steam-unwrapped"
+      "obsidian"
     ];
 
   sops.secrets = {
@@ -116,6 +117,7 @@
 
   home = {
     packages = with pkgs; [
+      obsidian
       renderdoc
       zathura
       mpv

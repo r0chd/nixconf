@@ -9,7 +9,7 @@
   config = lib.mkIf (shell == "nushell") {
     home = {
       shell.enableNushellIntegration = true;
-      persist.directories = [ ".config/carapace" ];
+      persist.files = [ ".config/nushell/history.txt" ];
     };
     programs = {
       nushell = {

@@ -13,7 +13,7 @@ in
 
   config = lib.mkIf cfg.enable {
     home = {
-      packages = with pkgs; [ inputs.zen-browser.packages.${system}.default ];
+      packages = with pkgs; [ inputs.zen-browser.packages.${system}.twilight-official ];
       persist.directories = [
         ".cache/zen"
         ".zen"
