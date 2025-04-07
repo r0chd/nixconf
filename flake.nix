@@ -110,6 +110,7 @@
           modules = [
             ./homeModules
             stylix.homeManagerModules.stylix
+            inputs.nix-index-database.hmModules.nix-index
           ];
         };
 

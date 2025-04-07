@@ -20,7 +20,6 @@
     ./services
     ../hosts/${hostname}/users/${username}/configuration.nix
     ../theme
-    inputs.nix-index-database.hmModules.nix-index
   ];
 
   options.email = lib.mkOption { type = lib.types.str; };

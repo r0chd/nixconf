@@ -43,14 +43,22 @@
     nix-index.enable = true;
     sway.enable = true;
     niri.enable = true;
+    wshowkeys.enable = true;
   };
 
-  users.users.unixpariah.extraGroups = [ "adbuser" ];
+  users.users.unixpariah.extraGroups = [
+    "adbuser"
+    "docker"
+  ];
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   virtualisation = {
     enable = true;
+    docker = {
+      enable = true;
+      storageDriver = "btrfs";
+    };
     virt-manager.enable = true;
   };
 
@@ -116,9 +124,10 @@
 
   environment = {
     variables.EDITOR = "hx";
-    systemPackages = [
-      pkgs.helix
-      pkgs.jmtpfs
+    systemPackages = with pkgs; [
+      helix
+      kdePackages.oxygen-sounds
+      deepin.deepin-sound-theme
     ];
   };
 

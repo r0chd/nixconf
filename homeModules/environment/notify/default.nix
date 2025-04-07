@@ -28,6 +28,8 @@ in
         ge.action = "last_notification";
         d.action = "dismiss_notification";
       };
+
+      default_sound_file = "/run/current-system/sw/share/sounds/freedesktop/stereo/message.oga";
     };
   };
 }

@@ -25,6 +25,8 @@
 
     plugins = [ pkgs.hyprscroller ];
     settings = {
+      layerrule = [ "noanim, moxnotify" ];
+
       input = {
         kb_layout = "us";
         kb_variant = "";
