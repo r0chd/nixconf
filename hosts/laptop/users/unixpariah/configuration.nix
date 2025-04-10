@@ -113,6 +113,7 @@
     opacity = {
       terminal = 0.0;
     };
+    targets.firefox.profileNames = [ config.home.username ];
   };
 
   home = {

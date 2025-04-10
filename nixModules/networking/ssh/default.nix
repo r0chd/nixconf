@@ -2,8 +2,6 @@
   lib,
   systemUsers,
   hostname,
-  pkgs,
-  config,
   ...
 }:
 {

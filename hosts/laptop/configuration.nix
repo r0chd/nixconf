@@ -39,6 +39,7 @@
   };
 
   programs = {
+    thunderbird.enable = true;
     adb.enable = true;
     nix-index.enable = true;
     sway.enable = true;
@@ -128,6 +129,7 @@
       helix
       kdePackages.oxygen-sounds
       deepin.deepin-sound-theme
+      nixos-icons
     ];
   };
 

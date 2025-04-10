@@ -21,15 +21,19 @@ in
     };
   };
 
-  config.services.moxnotify = {
-    inherit (cfg) enable;
-    settings = {
-      keymaps = {
-        ge.action = "last_notification";
-        d.action = "dismiss_notification";
-      };
+  config = {
+    home.persist.directories = [ ".local/share/moxnotify" ];
+    services.moxnotify = {
+      inherit (cfg) enable;
+      settings = {
+        margin.top = 50;
+        keymaps = {
+          ge.action = "last_notification";
+          d.action = "dismiss_notification";
+        };
 
-      default_sound_file = "/run/current-system/sw/share/sounds/freedesktop/stereo/message.oga";
+        default_sound_file = "/run/current-system/sw/share/sounds/freedesktop/stereo/message.oga";
+      };
     };
   };
 }

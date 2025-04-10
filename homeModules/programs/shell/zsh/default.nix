@@ -73,6 +73,8 @@ with config.stylix.fonts;
 
           bindkey '^[[A' history-search-backward
           bindkey '^[[B' history-search-forward
+
+          bindkey -v
         ''
         + lib.optionalString (
           config.programs.starship.enable && config.programs.starship.enableTransience

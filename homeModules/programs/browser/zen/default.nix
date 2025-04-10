@@ -14,9 +14,9 @@ in
   config = lib.mkIf cfg.enable {
     programs.firefox = {
       enable = true;
-      package = inputs.zen-browser.packages.${pkgs.system}.twilight-official;
+      package = inputs.zen-browser.packages.${pkgs.system}.default;
       profiles."${config.home.username}" = {
-        extensions = with inputs.firefox-addons.packages.${pkgs.system}; [
+        extensions.packages = with inputs.firefox-addons.packages.${pkgs.system}; [
           ublock-origin
           sponsorblock
           darkreader
