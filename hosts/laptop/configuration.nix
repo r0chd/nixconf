@@ -129,7 +129,6 @@
       helix
       kdePackages.oxygen-sounds
       deepin.deepin-sound-theme
-      nixos-icons
     ];
   };
 

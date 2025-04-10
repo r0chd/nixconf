@@ -14,6 +14,7 @@ inputs: config: [
       inherit (inputs.hyprland.packages.${prev.system}) hyprland;
       inherit (inputs) hyprscroller;
     };
+    nh = inputs.nh.packages.${prev.system}.default;
   })
 
   inputs.niri.overlays.niri

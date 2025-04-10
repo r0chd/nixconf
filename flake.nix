@@ -288,5 +288,9 @@
       url = "github:unixpariah/moxnotify";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nh = {
+      url = "github:unixpariah/nh";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 }

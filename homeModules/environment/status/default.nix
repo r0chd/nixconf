@@ -34,6 +34,7 @@ in
           "custom/playerctl#backward"
           "custom/playerctl#play"
           "custom/playerctl#foward"
+          "custom/moxnotify"
         ];
         modules-center = [
           "cava#left"
@@ -42,7 +43,6 @@ in
           "cava#right"
         ];
         modules-right = [
-          "custom/notification"
           "tray"
           "battery"
           "pulseaudio"
@@ -130,6 +130,7 @@ in
             "<span>█</span>"
           ];
         };
+        "custom/moxnotify" = { };
         "custom/playerctl#backward" = {
           format = "󰙣 ";
           on-click = "playerctl previous";
@@ -242,7 +243,7 @@ in
         }
 
         window#waybar {
-            background-color: ${base00};
+            background-color: rgba(0, 0, 0, 0);
         }
 
         #cava.left, #cava.right {
@@ -291,12 +292,12 @@ in
         }
 
         #custom-notification, #tray, #pulseaudio, #network, #battery, #backlight,
-        #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward{
+        #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward #custom-moxnotify {
             background: ${base01};
             font-weight: bold;
             margin: 5px 0px;
         }
-        #custom-notification, #tray, #pulseaudio, #network, #backlight, #battery{
+        #custom-notification, #tray, #pulseaudio, #network, #backlight, #battery, #custom-moxnotify  {
             color: ${base0E};
             border-radius: 10px 24px 10px 24px;
             padding: 0 20px;

@@ -84,7 +84,7 @@
       };
     };
 
-    terminal.program = "kitty";
+    terminal.program = "ghostty";
   };
 
   email = "oskar.rochowiak@tutanota.com";

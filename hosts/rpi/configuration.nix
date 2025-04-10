@@ -53,15 +53,17 @@
   networking = {
     wireless.iwd.enable = true;
     firewall.allowedTCPPorts = [
+      6443
       80
       25565
     ];
   };
 
   services = {
-    phpApp = {
-      test1 = { };
-      test2 = { };
+    k3s = {
+      enable = true;
+      clusterInit = true;
+      role = "server";
     };
     tailscale.enable = true;
     postgresql = {
