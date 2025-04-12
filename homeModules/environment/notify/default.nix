@@ -27,10 +27,19 @@ in
       inherit (cfg) enable;
       settings = {
         margin.top = 50;
-        keymaps = {
-          ge.action = "last_notification";
-          d.action = "dismiss_notification";
-        };
+
+        keymaps = [
+          {
+            mode = "n";
+            keys = "d";
+            action = "dismiss_notification";
+          }
+          {
+            mode = "n";
+            keys = "ge";
+            action = "last_notification";
+          }
+        ];
 
         default_sound_file = "/run/current-system/sw/share/sounds/freedesktop/stereo/message.oga";
       };

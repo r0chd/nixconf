@@ -15,9 +15,11 @@ inputs: config: [
       inherit (inputs) hyprscroller;
     };
     nh = inputs.nh.packages.${prev.system}.default;
+    bitz = prev.callPackage ./bitz { };
   })
 
   inputs.niri.overlays.niri
   inputs.deploy-rs.overlay
   inputs.nixpkgs-wayland.overlay
+  inputs.nix-minecraft.overlay
 ]

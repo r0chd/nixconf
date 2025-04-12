@@ -16,14 +16,14 @@ in
 
     extraConfig = {
       init.defaultBranch = "main";
-      url = {
-        "ssh://git@github.com" = {
-          insteadOf = "https://github.com";
-        };
-        "ssh://git@gitlab.com" = {
-          insteadOf = "https://gitlab.com";
-        };
-      };
+      #url = {
+      #"ssh://git@github.com" = {
+      #insteadOf = "https://github.com";
+      #};
+      #"ssh://git@gitlab.com" = {
+      #insteadOf = "https://gitlab.com";
+      #};
+      #};
       gpg = {
         format = "ssh";
         ssh.allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";

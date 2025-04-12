@@ -2,6 +2,7 @@
   pkgs,
   inputs,
   lib,
+  config,
   ...
 }:
 {
@@ -11,10 +12,11 @@
     inputs.raspberry-pi-nix.nixosModules.sd-image
   ];
 
-  nixpkgs = {
-    overlays = [ inputs.nix-minecraft.overlay ];
-    config.allowUnfreePredicate = pkgs: builtins.elem (lib.getName pkgs) [ "minecraft-server" ];
-  };
+  nixpkgs.config.allowUnfreePredicate = pkgs: builtins.elem (lib.getName pkgs) [ "minecraft-server" ];
+
+  sops.secrets.k3s = { };
+
+  boot.kernelParams = [ "cgroup_enable=memory" ];
 
   raspberry-pi-nix = {
     board = "bcm2712";
@@ -35,10 +37,7 @@
 
   system = {
     fileSystem = "ext4";
-    bootloader = {
-      variant = "none";
-      silent = true;
-    };
+    bootloader.variant = "none";
     gc = {
       enable = true;
       interval = 3;
@@ -47,16 +46,27 @@
 
   environment = {
     variables.EDITOR = "hx";
-    systemPackages = [ pkgs.helix ];
+    systemPackages = with pkgs; [
+      helix
+      k3s
+      podman-tui
+    ];
   };
 
   networking = {
     wireless.iwd.enable = true;
     firewall.allowedTCPPorts = [
       6443
-      80
       25565
     ];
+  };
+
+  virtualisation = {
+    containers.enable = true;
+    podman = {
+      enable = true;
+      dockerCompat = true;
+    };
   };
 
   services = {
@@ -66,89 +76,9 @@
       role = "server";
     };
     tailscale.enable = true;
-    postgresql = {
-      enable = true;
-      ensureDatabases = [ "klocki" ];
-      ensureUsers = [
-        {
-          name = "klocki";
-          ensureDBOwnership = true;
-        }
-      ];
-      authentication = lib.mkOverride 10 ''
-        # Allow local connections
-        local   all   all               trust
-        host    all   all   127.0.0.1/32 trust
-        host    all   all   ::1/128      trust
-      '';
-      initialScript = pkgs.writeText "init.sql" ''
-        CREATE TABLE IF NOT EXISTS users (
-            id SERIAL PRIMARY KEY,
-            email VARCHAR(255) UNIQUE NOT NULL CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
-            password_hash TEXT NOT NULL,
-            is_admin BOOLEAN NOT NULL DEFAULT FALSE,
-            created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
-        );
-      '';
-    };
-
-    traefik = {
-      enable = false;
-
-      staticConfigOptions = {
-        entryPoints = {
-          http = {
-            address = ":80";
-            forwardedHeaders = {
-              trustedIPs = [
-                "127.0.0.1/32"
-                "10.0.0.0/8"
-                "192.168.0.0/16"
-              ];
-            };
-          };
-        };
-      };
-
-      dynamicConfigOptions = {
-        http = {
-          routers =
-            let
-              domain = "app.localhost";
-            in
-            {
-              website-router = {
-                entryPoints = [ "http" ];
-                rule = "Host(`app.localhost`) || Host(`192.168.30.190`)";
-                service = "website";
-              };
-              auth-router = {
-                entryPoints = [ "http" ];
-                rule = "Host(`auth.${domain}`)";
-                service = "auth";
-              };
-
-            };
-          services = {
-            website.loadBalancer.servers = [ { url = "http://localhost:3000"; } ];
-            auth.loadBalancer.servers = [ { url = "http://localhost:8000"; } ];
-          };
-        };
-      };
-    };
-
-    prometheus = {
-      enable = false;
-      scrapeConfigs = [
-        {
-          job_name = "traefik";
-          static_configs = [ { targets = [ "localhost:8082" ]; } ];
-        }
-      ];
-    };
 
     minecraft-servers = {
-      enable = true;
+      enable = false;
       eula = true;
 
       servers = {
