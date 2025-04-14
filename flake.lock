@@ -1246,11 +1246,11 @@
         "wgsl_analyzer": "wgsl_analyzer_2"
       },
       "locked": {
-        "lastModified": 1744462635,
-        "narHash": "sha256-6qkwZ1zDCTstkZuPxNPi6yEtN7sfFVkw3VZ+pfEqBSs=",
+        "lastModified": 1744586254,
+        "narHash": "sha256-zeqmb1rQj4W27PT+M+B9KsP01EXEwLQO/N4ObIt+G6c=",
         "owner": "unixpariah",
         "repo": "moxnotify",
-        "rev": "e93586c9f85b2ea6225c45564459ebe02d6096b4",
+        "rev": "62a43381499c39a0e01e457a342d0302465e40b3",
         "type": "github"
       },
       "original": {

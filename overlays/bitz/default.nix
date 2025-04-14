@@ -7,13 +7,13 @@ rustPlatform.buildRustPackage {
   pname = "bitz";
   version = "0.1.0";
   src = fetchFromGitHub {
-    owner = "needmorebitz";
+    owner = "JustPandaEver";
     repo = "bitz-cli";
-    rev = "46f8c86d6255324c35fb61644a99bd40026dcf03";
-    sha256 = "sha256-gWn8IyhECSlrDcKoyAFDYEz/nlM8fUXUlcktOsCuvnQ=";
+    rev = "899cf277adf4c15a46b917154e0c953d3337b8b0";
+    sha256 = "sha256-OTioCpciaD+6IuC/Gg8siUJzFQT2d1oBjbuGc+oDdM0=";
   };
 
-  cargoHash = "sha256-3qm5/uLMZwIHQbmYG/GyeAtp7XGZdUiV6htTQT1B+SA=";
+  cargoHash = "sha256-ZU/+wxkpEPSaRafHR10q3Pp3haKmDimgMV8Rmr32L+w=";
 
   nativeBuildInputs = [ perl ];
 

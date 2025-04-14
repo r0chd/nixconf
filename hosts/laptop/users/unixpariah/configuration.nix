@@ -109,6 +109,10 @@
         package = pkgs.dejavu_fonts;
         name = "DejaVu Serif";
       };
+      emoji = {
+        package = pkgs.noto-fonts-emoji;
+        name = "Noto Color Emoji";
+      };
     };
     opacity = {
       terminal = 0.0;
@@ -118,6 +122,7 @@
 
   home = {
     packages = with pkgs; [
+      bitz
       obsidian
       renderdoc
       zathura

@@ -17,9 +17,13 @@
 
   nix.access-tokens = [ config.sops.placeholder.nixos-access-token-github ];
 
-  #systemd.user.services.eclipse = ''
-  #${pkgs.bitz}/bin/ore mine
-  #'';
+  systemd.user.services.eclipse = {
+    Service = {
+      ExecStart = "/home/unixpariah/.cargo/bin/bitz collect";
+      Restart = "on-failure";
+      RestartSec = "1sec";
+    };
+  };
 
   email = "oskar.rochowiak@tutanota.com";
 

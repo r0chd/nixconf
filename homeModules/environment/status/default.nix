@@ -1,74 +1,45 @@
+{ config, pkgs, ... }:
 {
-  pkgs,
-  config,
-  lib,
-  system_type,
-  ...
-}:
-with config.lib.stylix.colors.withHashtag;
-with config.stylix.fonts;
-let
-  cfg = config.environment.statusBar;
-in
-{
-  options.environment.statusBar.enable = lib.mkOption {
-    type = lib.types.bool;
-    default = system_type == "desktop";
-  };
-
-  config = {
-    home.packages = lib.mkIf cfg.enable [ pkgs.playerctl ];
-    programs.waybar = {
-      inherit (cfg) enable;
-      systemd.enable = true;
-      settings.mainBar = {
-        position = "top";
-        layer = "top";
-        margin-top = 0;
-        margin-bottom = 0;
-        margin-left = 0;
-        margin-right = 0;
-        modules-left = [
-          "custom/launcher"
-          "custom/playerlabel"
-          "custom/playerctl#backward"
-          "custom/playerctl#play"
-          "custom/playerctl#foward"
-          "custom/moxnotify"
-        ];
-        modules-center = [
-          "cava#left"
+  programs.waybar = {
+    enable = true;
+    systemd.enable = true;
+    settings = {
+      mainBar = {
+        "layer" = "top";
+        "position" = "top";
+        "modules-left" = [
+          "custom/nix"
           "hyprland/workspaces"
           "niri/workspaces"
-          "cava#right"
+          "custom/sep"
+          "cpu"
+          "memory"
         ];
-        modules-right = [
-          "tray"
-          "battery"
-          "pulseaudio"
-          "backlight"
+        "modules-center" = [ "clock" ];
+        "modules-right" = [
+          "mpris"
+          "custom/sep"
           "network"
-          "clock"
+          "pulseaudio"
+          "custom/sep"
+          "custom/moxnotify-inhibit"
+          "custom/moxnotify-history"
+          "custom/moxnotify-muted"
+          "custom/sep"
+          "tray"
         ];
-        clock = {
-          format = "󰥔  {:%a, %d %b, %I:%M %p}";
-          tooltip = "true";
-          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-          format-alt = "   {:%d/%m}";
-        };
         "hyprland/workspaces" = {
-          active-only = false;
-          all-outputs = false;
-          disable-scroll = false;
-          on-scroll-up = "hyprctl dispatch workspace e-1";
-          on-scroll-down = "hyprctl dispatch workspace e+1";
-          format = "{name}";
-          on-click = "activate";
+          disable-scroll = true;
+          sort-by-name = true;
+          format = "{icon}";
           format-icons = {
-            urgent = "";
-            active = "";
-            default = "";
-            sort-by-number = true;
+            empty = "";
+            active = "";
+            default = "";
+          };
+          icon-size = 9;
+          persistent-workspaces = {
+            "*" = 6;
           };
         };
         "niri/workspaces" = {
@@ -78,291 +49,85 @@ in
           disable-click = true;
           disable-markup = true;
         };
-        "cava#left" = {
-          framerate = 60;
-          autosens = 0;
-          sensitivity = 5;
-          bars = 16;
-          lower_cutoff_freq = 50;
-          higher_cutoff_freq = 10000;
-          method = "pipewire";
-          source = "auto";
-          stereo = true;
-          reverse = false;
-          bar_delimiter = 0;
-          monstercat = false;
-          waves = false;
-          input_delay = 2;
-          format-icons = [
-            "<span>▁</span>"
-            "<span>▂</span>"
-            "<span>▃</span>"
-            "<span>▄</span>"
-            "<span>▅</span>"
-            "<span>▆</span>"
-            "<span>▇</span>"
-            "<span>█</span>"
-          ];
-        };
-        "cava#right" = {
-          framerate = 60;
-          autosens = 0;
-          sensitivity = 5;
-          bars = 16;
-          lower_cutoff_freq = 50;
-          higher_cutoff_freq = 10000;
-          method = "pipewire";
-          source = "auto";
-          stereo = true;
-          reverse = false;
-          bar_delimiter = 0;
-          monstercat = false;
-          waves = false;
-          input_delay = 2;
-          format-icons = [
-            "<span>▁</span>"
-            "<span>▂</span>"
-            "<span>▃</span>"
-            "<span>▄</span>"
-            "<span>▅</span>"
-            "<span>▆</span>"
-            "<span>▇</span>"
-            "<span>█</span>"
-          ];
-        };
-        "custom/moxnotify" = { };
-        "custom/playerctl#backward" = {
-          format = "󰙣 ";
-          on-click = "playerctl previous";
-          on-scroll-up = "playerctl volume .05+";
-          on-scroll-down = "playerctl volume .05-";
-        };
-        "custom/playerctl#play" = {
-          format = "{icon}";
-          return-type = "json";
-          exec = "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F";
-          on-click = "playerctl play-pause";
-          on-scroll-up = "playerctl volume .05+";
-          on-scroll-down = "playerctl volume .05-";
-          format-icons = {
-            Playing = "<span>󰏥 </span>";
-            Paused = "<span> </span>";
-            Stopped = "<span> </span>";
-          };
-        };
-        "custom/playerctl#foward" = {
-          format = "󰙡 ";
-          on-click = "playerctl next";
-          on-scroll-up = "playerctl volume .05+";
-          on-scroll-down = "playerctl volume .05-";
-        };
-        "custom/playerlabel" = {
-          format = "<span>󰎈 {} 󰎈</span>";
-          return-type = "json";
-          max-length = 40;
-          exec = "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F";
-          on-click = "";
-        };
-        battery = {
-          states = {
-            good = 95;
-            warning = 30;
-            critical = 15;
-          };
-          format = "{icon}  {capacity}%";
-          format-charging = "  {capacity}%";
-          format-plugged = " {capacity}% ";
-          format-alt = "{icon} {time}";
-          format-icons = [
-            ""
-            ""
-            ""
-            ""
-            ""
-          ];
-        };
-
-        memory = {
-          format = "󰍛 {}%";
-          format-alt = "󰍛 {used}/{total} GiB";
-          interval = 5;
-        };
         cpu = {
-          format = "󰻠 {usage}%";
-          format-alt = "󰻠 {avg_frequency} GHz";
-          interval = 5;
+          interval = 1;
+          format = "  {usage}%";
+          max-length = 10;
         };
         network = {
-          format-wifi = "  {signalStrength}%";
-          format-ethernet = "󰈀 100% ";
-          tooltip-format = "Connected to {essid} {ifname} via {gwaddr}";
-          format-linked = "{ifname} (No IP)";
-          format-disconnected = "󰖪 0% ";
+          format-wifi = "  {bandwidthTotalBytes}";
+          format-ethernet = "eth {ipaddr}/{cidr}";
+          format-disconnected = "net none";
+          tooltip-format = "{ifname} via {gwaddr}";
+          tooltip-format-wifi = "Connected to: {essid} {frequency} - ({signalStrength}%)";
+          tooltip-format-ethernet = "{ifname}";
+          tooltip-format-disconnected = "Disconnected";
+          max-length = 50;
+          interval = 5;
         };
+        memory = {
+          interval = 2;
+          format = "  {used:0.2f}G";
+        };
+        hyprland.window.format = "{class}";
         tray = {
           icon-size = 20;
           spacing = 8;
         };
-        backlight = {
-          format = "{icon} {percent}%";
-          format-icons = {
-            default = [
-              ""
-              ""
-              ""
-              ""
-              ""
-              ""
-              ""
-              ""
-              ""
-            ];
-          };
+        "custom/sep".format = "|";
+
+        mpris = {
+          format = "  {title}";
+          max-length = 30;
         };
+
+        clock.format = "  {:%I:%M %p}";
+
+        "custom/nix".format = "<span size='large'> </span>";
+
+        "custom/moxnotify-inhibit" = {
+          interval = 1;
+          exec = pkgs.writeShellScript "mox notify status" ''
+            COUNT=$(mox notify waiting)
+            INHIBITED="<span size='large' color='${config.lib.stylix.colors.withHashtag.base0F}'>  $( [ $COUNT -gt 0 ] && echo "$COUNT" )</span>"
+            UNINHIBITED="<span size='large' color='${config.lib.stylix.colors.withHashtag.base0F}'>  </span>"
+
+            if mox notify inhibit state | grep -q "uninhibited" ; then echo $UNINHIBITED; else echo $INHIBITED; fi
+          '';
+
+          on-click = "mox notify inhibit toggle";
+        };
+
+        "custom/moxnotify-muted" = {
+          interval = 1;
+          exec = pkgs.writeShellScript "mox notify status" ''
+            MUTED="<span size='large' color='${config.lib.stylix.colors.withHashtag.base08}'>  </span>"       
+            UNMUTED="<span size='large' color='${config.lib.stylix.colors.withHashtag.base0B}'>  </span>"     
+
+            if mox notify mute state | grep -q "unmuted" ; then echo $UNMUTED; else echo $MUTED; fi
+          '';
+
+          on-click = "mox notify mute toggle";
+        };
+
+        "custom/moxnotify-history" = {
+          interval = 1;
+          exec = pkgs.writeShellScript "mox notify status" ''
+            HISTORY_SHOWN="<span size='large' color='${config.lib.stylix.colors.withHashtag.base0D}'>  </span>"   
+            HISTORY_HIDDEN="<span size='large' color='${config.lib.stylix.colors.withHashtag.base03}'>  </span>"  
+
+            if mox notify history state | grep -q "hidden" ; then echo $HISTORY_HIDDEN; else echo $HISTORY_SHOWN; fi
+          '';
+
+          on-click = "mox notify history toggle";
+        };
+
         pulseaudio = {
-          format = "{icon} {volume}%";
-          format-muted = "󰝟";
-          format-icons = {
-            default = [
-              "󰕿"
-              "󰖀"
-              "󰕾"
-            ];
-          };
-          # on-scroll-up= "bash ~/.scripts/volume up";
-          # on-scroll-down= "bash ~/.scripts/volume down";
-          scroll-step = 5;
-          on-click = "pavucontrol";
+          format = "<span size='large'>󰕾 </span> {volume}%";
+          format-muted = "  0%";
         };
       };
-      style = ''
-        * {
-            border: none;
-            border-radius: 0px;
-            min-height: 0;
-        }
-
-        window#waybar {
-            background-color: rgba(0, 0, 0, 0);
-        }
-
-        #cava.left, #cava.right {
-            background: ${base01};
-            margin: 5px;
-            padding: 8px 16px;
-            color: ${base0E};
-        }
-        #cava.left {
-            border-radius: 24px 10px 24px 10px;
-        }
-        #cava.right {
-            border-radius: 10px 24px 10px 24px;
-        }
-        #workspaces {
-            background: ${base01};
-            margin: 5px 5px;
-            padding: 8px 5px;
-            border-radius: 16px;
-            color: ${base0E}
-        }
-        #workspaces button {
-            padding: 0px 5px;
-            margin: 0px 3px;
-            border-radius: 16px;
-            color: transparent;
-            background-color: ${base01};
-            transition: all 0.3s ease-in-out;
-        }
-
-        #workspaces button.active {
-            background-color: ${base0B};
-            color: ${base01};
-            border-radius: 16px;
-            min-width: 50px;
-            background-size: 400% 400%;
-            transition: all 0.3s ease-in-out;
-        }
-
-        #workspaces button:hover {
-            background-color: ${base08};
-            color: ${base01};
-            border-radius: 16px;
-            min-width: 50px;
-            background-size: 400% 400%;
-        }
-
-        #custom-notification, #tray, #pulseaudio, #network, #battery, #backlight,
-        #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward #custom-moxnotify {
-            background: ${base01};
-            font-weight: bold;
-            margin: 5px 0px;
-        }
-        #custom-notification, #tray, #pulseaudio, #network, #backlight, #battery, #custom-moxnotify  {
-            color: ${base0E};
-            border-radius: 10px 24px 10px 24px;
-            padding: 0 20px;
-            margin-left: 7px;
-        }
-        #clock {
-            color: ${base08};
-            background-color: ${base01};
-            border-radius: 0px 0px 0px 40px;
-            padding: 10px 10px 15px 25px;
-            margin-left: 7px;
-            font-weight: bold;
-            font-size: 16px;
-        }
-        #custom-launcher {
-            color: ${base0B};
-            background-color: ${base01};
-            border-radius: 0px 0px 40px 0px;
-            margin: 0px;
-            padding: 0px 35px 0px 15px;
-            font-size: 28px;
-        }
-
-        #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward {
-            background: ${base01};
-            font-size: 22px;
-        }
-        #custom-playerctl.backward:hover, #custom-playerctl.play:hover, #custom-playerctl.foward:hover{
-            color: ${base08};
-        }
-        #custom-playerctl.backward {
-            color: ${base0E};
-            border-radius: 24px 0px 0px 10px;
-            padding-left: 16px;
-            margin-left: 7px;
-        }
-        #custom-playerctl.play {
-            color: ${base0B};
-            padding: 0 5px;
-        }
-        #custom-playerctl.foward {
-            color: ${base0E};
-            border-radius: 0px 10px 24px 0px;
-            padding-right: 12px;
-            margin-right: 7px
-        }
-        #custom-playerlabel {
-            background: ${base01};
-            color: ${base08};
-            padding: 0 20px;
-            border-radius: 24px 10px 24px 10px;
-            margin: 5px 0;
-            font-weight: bold;
-        }
-        #window{
-            background: ${base01};
-            padding-left: 15px;
-            padding-right: 15px;
-            border-radius: 16px;
-            margin-top: 5px;
-            margin-bottom: 5px;
-            font-weight: normal;
-            font-style: normal;
-        }
-      '';
     };
+    style = builtins.readFile ./style.css;
   };
 }
