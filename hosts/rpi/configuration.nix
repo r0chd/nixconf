@@ -14,8 +14,6 @@
 
   nixpkgs.config.allowUnfreePredicate = pkgs: builtins.elem (lib.getName pkgs) [ "minecraft-server" ];
 
-  sops.secrets.k3s = { };
-
   boot.kernelParams = [ "cgroup_enable=memory" ];
 
   raspberry-pi-nix = {
@@ -55,10 +53,7 @@
 
   networking = {
     wireless.iwd.enable = true;
-    firewall.allowedTCPPorts = [
-      6443
-      25565
-    ];
+    firewall.allowedTCPPorts = [ 80 ];
   };
 
   virtualisation = {
@@ -66,16 +61,24 @@
     podman = {
       enable = true;
       dockerCompat = true;
+      dockerSocket.enable = true;
+      defaultNetwork.settings.dns_enabled = true;
     };
   };
 
+  users.users.moxwiki.extraGroups = [ "podman" ];
+
   services = {
-    k3s = {
-      enable = true;
-      clusterInit = true;
-      role = "server";
-    };
     tailscale.enable = true;
+    nginx = {
+      enable = true;
+      virtualHosts."book.ts.net" = {
+        locations."/" = {
+          proxyPass = "http://localhost:3000";
+          proxyWebsockets = true;
+        };
+      };
+    };
 
     minecraft-servers = {
       enable = false;

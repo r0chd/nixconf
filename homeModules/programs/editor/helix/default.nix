@@ -6,10 +6,7 @@
 }:
 {
   config = lib.mkIf (config.programs.editor == "hx") {
-    home.packages = with pkgs; [
-      adwaita-icon-theme
-      nixd
-    ];
+    home.packages = with pkgs; [ adwaita-icon-theme ];
 
     programs.helix = {
       enable = true;
@@ -20,10 +17,23 @@
             checkOnSave.command = "clippy";
             cargo.allFeatures = true;
           };
+
           tailwindcss = {
             command = "tailwindcss-language-server";
             args = [ "--stdio" ];
+            settings = {
+              tailwindCSS = {
+                experimental = {
+                  classRegex = [ "class: \"(.*)\"" ];
+                };
+                includeLanguages = {
+                  rust = "html";
+                };
+              };
+            };
           };
+
+          wgsl-analyzer.command = "wgsl-analyzer";
         };
         language = [
           {
@@ -42,20 +52,27 @@
           {
             name = "wgsl";
             auto-format = true;
-            file-types = [ "wgsl" ];
-            indent = {
-              tab-width = 4;
-              unit = "    ";
-            };
-            language-servers = [ "wgsl-analyzer" ];
+            formatter.command = "wgslfmt";
           }
           {
             name = "nix";
             auto-format = true;
-            language-servers = [ { name = "nixd"; } ];
+            language-servers = [ "${pkgs.nixd}/bin/nixd" ];
             formatter = {
               command = lib.getExe pkgs.nixfmt-rfc-style;
               args = [ "-s" ];
+            };
+          }
+          {
+            name = "markdown";
+            auto-format = true;
+            formatter = {
+              command = "dprint";
+              args = [
+                "fmt"
+                "--stdin"
+                "md"
+              ];
             };
           }
         ];

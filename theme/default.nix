@@ -33,6 +33,19 @@ let
       };
       base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
     };
+
+    catppuccin-frappe = {
+      image = pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/zhichaoh/catppuccin-wallpapers/refs/heads/main/landscapes/evening-sky.png";
+        sha256 = "0kb87w736abdf794dk9fvqln56axzskxia1g6zdjrqzl7v539035";
+      };
+      cursor = {
+        package = pkgs.catppuccin-cursors.frappeMauve;
+        name = "catppuccin-frappe-mauve-cursors";
+        size = lib.mkDefault 36;
+      };
+      base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-frappe.yaml";
+    };
   };
 in
 {
@@ -41,6 +54,7 @@ in
       lib.types.enum [
         "gruvbox"
         "catppuccin-mocha"
+        "catppuccin-frappe"
       ]
     );
     default = null;

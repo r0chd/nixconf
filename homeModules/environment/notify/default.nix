@@ -26,7 +26,12 @@ in
     services.moxnotify = {
       inherit (cfg) enable;
       settings = {
-        margin.top = 50;
+
+        general = {
+          margin.top = 50;
+          history.size = 10000;
+          default_sound_file = "/run/current-system/sw/share/sounds/freedesktop/stereo/message.oga";
+        };
 
         keymaps = [
           {
@@ -39,9 +44,22 @@ in
             keys = "ge";
             action = "last_notification";
           }
+          {
+            mode = "n";
+            keys = "<C-g>";
+            action = "last_notification";
+          }
+          {
+            mode = "n";
+            keys = "gw";
+            action = "hint_mode";
+          }
+          {
+            mode = "n";
+            keys = "f";
+            action = "noop";
+          }
         ];
-
-        default_sound_file = "/run/current-system/sw/share/sounds/freedesktop/stereo/message.oga";
       };
     };
   };

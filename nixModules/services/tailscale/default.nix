@@ -9,10 +9,7 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    environment = {
-      systemPackages = [ pkgs.tailscale ];
-      persist.directories = [ "/var/lib/tailscale" ];
-    };
+    environment.systemPackages = [ pkgs.tailscale ];
 
     boot.initrd = {
       systemd = {

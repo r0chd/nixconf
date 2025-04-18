@@ -27,7 +27,10 @@
   config = {
     nixpkgs.overlays = import ../overlays inputs config;
 
-    environment.systemPackages = with pkgs; [ uutils-coreutils-noprefix ];
+    environment.systemPackages = with pkgs; [
+      uutils-coreutils-noprefix
+      (writeShellScriptBin "mkUser" (builtins.readFile ./mkUser.sh))
+    ];
 
     boot = {
       kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
@@ -100,8 +103,9 @@
       };
       script = lib.concatMapStrings (user: ''
         if [ ! -L "/persist/home/${user}/.local/state/nix/profiles/home-manager" ]; then
-          sudo -u ${user} nh home switch
-          continue
+          chown -R ${user}:users /home/${user}/.ssh
+          sudo -u ${user} home-manager switch --flake "/var/lib/nixconf#${user}@${hostname}" 
+          exit 0
         fi
         chown -R ${user}:users /home/${user}/.ssh
         HOME_MANAGER_BACKUP_EXT="bak" sudo -u ${user} /persist/home/${user}/.local/state/nix/profiles/home-manager/activate

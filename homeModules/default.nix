@@ -27,7 +27,10 @@
   config = {
     nixpkgs.overlays = import ../overlays inputs config;
 
-    services.udiskie.enable = system_type == "desktop";
+    services = {
+      udiskie.enable = system_type == "desktop";
+      #panotify.enable = system_type == "desktop";
+    };
 
     programs = {
       home-manager.enable = true;

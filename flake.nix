@@ -19,17 +19,25 @@
         laptop = {
           arch = "x86_64-linux";
           type = "desktop";
-          users.unixpariah = {
-            root.enable = true;
-            shell = "nushell";
+          users = {
+            unixpariah = {
+              root.enable = true;
+              shell = "nushell";
+            };
+            test = {
+              root.enable = true;
+              shell = "nushell";
+            };
           };
         };
         rpi = {
           arch = "aarch64-linux";
           type = "server";
-          users.unixpariah = {
-            root.enable = true;
-            shell = "nushell";
+          users = {
+            unixpariah = {
+              root.enable = true;
+              shell = "nushell";
+            };
           };
         };
         laptop-lenovo = {
@@ -290,6 +298,10 @@
     };
     nh = {
       url = "github:unixpariah/nh";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    panotify = {
+      url = "github:unixpariah/panotify";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

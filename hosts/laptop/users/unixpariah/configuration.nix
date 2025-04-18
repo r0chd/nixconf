@@ -28,11 +28,14 @@
   };
 
   programs = {
+    git.signingKey = {
+      enable = true;
+      file = "${config.home.homeDirectory}/.ssh/id_yubikey.pub";
+    };
     vesktop.enable = true;
     editor = "hx";
     zen.enable = true;
     nix-index.enable = true;
-    nh.enable = true;
     fastfetch.enable = true;
     fuzzel.enable = true;
     starship.enable = true;
@@ -94,16 +97,14 @@
     theme = "catppuccin-mocha";
     cursor.size = 36;
     fonts = {
-      sizes = {
-        terminal = 9;
-      };
+      sizes.terminal = 9;
       monospace = {
         package = pkgs.nerd-fonts.jetbrains-mono;
         name = "JetBrainsMono Nerd Font Mono";
       };
       sansSerif = {
-        package = pkgs.dejavu_fonts;
-        name = "DejaVu Sans";
+        package = pkgs.nerd-fonts.iosevka;
+        name = "Iosevka Nerd Font";
       };
       serif = {
         package = pkgs.dejavu_fonts;
@@ -117,12 +118,10 @@
     opacity = {
       terminal = 0.0;
     };
-    targets.firefox.profileNames = [ config.home.username ];
   };
 
   home = {
     packages = with pkgs; [
-      bitz
       obsidian
       renderdoc
       zathura

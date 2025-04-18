@@ -15,7 +15,8 @@ inputs: config: [
       inherit (inputs) hyprscroller;
     };
     nh = inputs.nh.packages.${prev.system}.default;
-    bitz = prev.callPackage ./bitz { };
+    panotify = inputs.panotify.packages.${prev.system}.default;
+    wgsl-formatter = prev.callPackage ./wgsl-formatter { };
   })
 
   inputs.niri.overlays.niri

@@ -5,8 +5,6 @@
   ...
 }:
 {
-  #stylix.target.firefox.profileNames = [ config.home.username ];
-
   programs.firefox = {
     profiles."${config.home.username}" = {
       extensions.packages = with inputs.firefox-addons.packages.${pkgs.system}; [

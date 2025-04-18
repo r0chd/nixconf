@@ -15,16 +15,14 @@ in
       default = pkgs.cachix;
       description = "The Cachix package to use";
     };
-    authToken = lib.mkOption {
-      type = lib.types.nullOr lib.types.str;
-    };
+    authToken = lib.mkOption { type = lib.types.nullOr lib.types.str; };
   };
 
   config = lib.mkIf cfg.enable {
     home.packages = [ cfg.package ];
 
     sops.templates."cachix.dhall" = {
-      path = "/home/unixpariah/.config/cachix/cachix.dhall";
+      path = "/home/${config.home.username}/.config/cachix/cachix.dhall";
       content = ''
         { authToken = ${cfg.authToken}
         , hostname = "https://cachix.org"

@@ -34,20 +34,20 @@
     };
   };
 
-  users.users = lib.genAttrs (systemUsers |> builtins.attrNames) (
-    user:
-    let
-      keysDir = ../../../hosts/${hostname}/users/${user}/keys;
-      keyFiles = if (builtins.pathExists keysDir) then builtins.readDir keysDir else [ ];
-      keysList =
-        keyFiles
-        |> builtins.mapAttrs (fileName: fileType: (builtins.readFile "${keysDir}/${fileName}"))
-        |> builtins.attrValues;
-    in
-    {
-      openssh.authorizedKeys.keys = keysList;
-    }
-  );
+  #users.users = lib.genAttrs (systemUsers |> builtins.attrNames) (
+  #user:
+  #let
+  #keysDir = ../../../hosts/${hostname}/users/${user}/keys;
+  #keyFiles = if (builtins.pathExists keysDir) then builtins.readDir keysDir else [ ];
+  #keysList =
+  #keyFiles
+  #|> builtins.mapAttrs (fileName: fileType: (builtins.readFile "${keysDir}/${fileName}"))
+  #|> builtins.attrValues;
+  #in
+  #{
+  #openssh.authorizedKeys.keys = keysList;
+  #}
+  #);
 
   environment.persist.directories = [
     {

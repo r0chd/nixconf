@@ -1,16 +1,21 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
-  publicKey = "${config.home.homeDirectory}/.ssh/id_yubikey.pub";
+  cfg = config.programs.git;
 in
 {
-  programs.git = {
+  options.programs.git.signingKey = {
+    enable = lib.mkEnableOption "signing key";
+    file = lib.mkOption { type = lib.types.str; };
+  };
+
+  config.programs.git = {
     enable = true;
     userName = config.home.username;
     userEmail = config.email;
 
-    signing = {
+    signing = lib.mkIf cfg.signingKey.enable {
+      key = cfg.signingKey.file;
       format = "ssh";
-      key = publicKey;
       signByDefault = true;
     };
 
@@ -28,7 +33,7 @@ in
         format = "ssh";
         ssh.allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
       };
-      user.signing.key = publicKey;
+      user.signing.key = lib.mkIf cfg.signingKey.enable cfg.signingKey.file;
       safe.directory = [ "/var/lib/nixconf" ];
     };
   };

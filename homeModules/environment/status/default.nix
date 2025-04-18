@@ -1,7 +1,14 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  system_type,
+  ...
+}:
+with config.lib.stylix.colors.withHashtag;
+with config.stylix.fonts;
 {
   programs.waybar = {
-    enable = true;
+    enable = system_type == "desktop";
     systemd.enable = true;
     settings = {
       mainBar = {
@@ -17,8 +24,7 @@
         ];
         "modules-center" = [ "clock" ];
         "modules-right" = [
-          "mpris"
-          "custom/sep"
+          "battery"
           "network"
           "pulseaudio"
           "custom/sep"
@@ -49,6 +55,24 @@
           disable-click = true;
           disable-markup = true;
         };
+        battery = {
+          states = {
+            good = 95;
+            warning = 30;
+            critical = 15;
+          };
+          format = "{icon}  {capacity}%";
+          format-charging = "  {capacity}%";
+          format-plugged = " {capacity}% ";
+          format-alt = "{icon} {time}";
+          format-icons = [
+            ""
+            ""
+            ""
+            ""
+            ""
+          ];
+        };
         cpu = {
           interval = 1;
           format = "  {usage}%";
@@ -75,11 +99,6 @@
           spacing = 8;
         };
         "custom/sep".format = "|";
-
-        mpris = {
-          format = "  {title}";
-          max-length = 30;
-        };
 
         clock.format = "  {:%I:%M %p}";
 
@@ -125,9 +144,131 @@
         pulseaudio = {
           format = "<span size='large'>󰕾 </span> {volume}%";
           format-muted = "  0%";
+          on-click = "pavucontrol";
         };
       };
     };
-    style = builtins.readFile ./style.css;
+    style = ''
+      @define-color base      ${base02};
+      @define-color crust     ${base01};
+      @define-color surface0  ${base03};
+      @define-color surface2  ${base04};
+      @define-color overlay0  ${base04};
+      @define-color blue      ${base0D};
+      @define-color lavender  ${base07};
+      @define-color sapphire  ${base0C};
+      @define-color teal      ${base0C};
+      @define-color green     ${base0B};
+      @define-color peach     ${base09};
+      @define-color red       ${base08};
+      @define-color mauve     ${base0E};
+      @define-color flamingo  ${base0F};
+      @define-color rosewater ${base06};
+
+      * {
+        border: none;
+        font-family: '${sansSerif.name}';
+        font-weight: 500;
+        min-height: 0;
+      }
+
+      #waybar {
+        background: @crust;
+        padding-left: 1.5px;
+        padding-right: 1.5px;
+      }
+
+      #custom-nix, #workspaces, #window, #pulseaudio, #cpu, #memory, #clock, #tray, #network, #custom-moxnotify-inhibit,
+      #custom-moxnotify-history,
+      #custom-moxnotify-muted, #battery {
+        margin: 7px;
+        padding: 5px;
+        padding-left: 8px;
+        padding-right: 8px;
+        border-radius: 4px;
+        background: @base;
+      }
+
+      #custom-moxnotify-inhibit,
+      #custom-moxnotify-history,
+      #custom-moxnotify-muted {
+        min-width: 30px; 
+      }
+
+      #workspaces {
+        margin: 7px;
+        padding: 4.5px;
+      }
+
+      #workspaces button {
+        padding: 0 2px;
+      }
+
+      #workspaces button:hover {
+        background: @base;
+        border: @crust;
+        padding: 0 3px;
+      }
+
+      #workspaces button.active {
+        color: @mauve;  /* Active workspace */
+      }
+
+      #workspaces button.empty {
+        color: @surface2;  /* Empty workspaces */
+      }
+
+      #workspaces button.default {
+        color: @overlay0;  /* Occupied but not active workspaces */
+      }
+
+      #workspaces button.special {
+        color: @sapphire;  /* Special workspaces */
+      }
+
+      #workspaces button.urgent {
+        color: @red;  /* Urgent workspaces */
+      }
+
+      #custom-sep {
+        color: @surface0;
+      }
+
+      #cpu {
+        color: @teal;
+      }
+
+      #memory {
+        color: @flamingo;
+      }
+
+      #clock {
+        color: @lavender;
+      }
+
+      #mpris {
+        color: @rosewater;
+      }
+
+      #network {
+        color: @sapphire;
+      }
+
+      #network.disconnected {
+        color: @peach;
+      }
+
+      #window {
+        color: @blue;
+      }
+
+      #custom-nix {
+        color: @blue;
+      }
+
+      #pulseaudio {
+        color: @green;
+      }
+    '';
   };
 }

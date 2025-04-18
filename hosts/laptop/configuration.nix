@@ -16,10 +16,6 @@
     builtins.elem (lib.getName pkgs) [
       "nvidia-x11"
       "nvidia-settings"
-      "cuda_cudart"
-      "cuda_cccl"
-      "libcublas"
-      "cuda_nvcc"
     ];
 
   networking = {
@@ -99,28 +95,19 @@
 
   zramSwap.enable = true;
 
-  sops.secrets.wireguard-key = { };
-
-  #environment.persist.directories = [ "/var/lib/ollama" ];
+  sops.secrets.tailscale = { };
 
   services = {
-    ollama = {
+    tailscale = {
       enable = true;
-      acceleration = "cuda";
+      authKeyFile = config.sops.secrets.tailscale.path;
+      extraDaemonFlags = [
+        "--state"
+        "mem:."
+      ];
     };
-    tailscale.enable = true;
     impermanence.enable = true;
-    protonvpn = {
-      enable = false;
-      interface = {
-        privateKeyFile = config.sops.secrets.wireguard-key.path;
-        ip = "10.2.0.2/32";
-      };
-      endpoint = {
-        publicKey = "dldo97jXTUvjEQqaAx3pHy4lKFSxcmZYDCGFvvDOIGQ=";
-        ip = "149.34.244.179";
-      };
-    };
+
   };
 
   environment = {
@@ -129,6 +116,7 @@
       helix
       kdePackages.oxygen-sounds
       deepin.deepin-sound-theme
+      papirus-icon-theme
     ];
   };
 

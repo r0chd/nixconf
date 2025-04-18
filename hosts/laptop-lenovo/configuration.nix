@@ -46,8 +46,15 @@
   };
 
   services = {
-    tailscale.enable = true;
     impermanence.enable = true;
+    tailscale = {
+      enable = true;
+      #authKeyFile = config.sops.secrets.tailscale.path;
+      #extraDaemonFlags = [
+      #"--state"
+      #"mem:."
+      #];
+    };
   };
 
   time.timeZone = "Europe/Warsaw";

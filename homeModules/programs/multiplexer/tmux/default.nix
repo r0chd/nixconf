@@ -49,6 +49,9 @@ in
           set-window-option -g window-status-current-format "#[bold]#I:#W#F"
           bind-key C-b run-shell "tmux rename-window "$(basename $(pwd))""
 
+          set-option -g set-clipboard on
+          bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
+
           run '~/.config/tmux/plugins/tpm/tpm'
         '';
       };
@@ -88,10 +91,6 @@ in
                     ((i++))
                 else
                     tmux new-session -d -s $session_name
-
-                    tmux set-option -g set-clipboard on
-                    tmux bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
-
                     tmux attach-session -d -t $session_name
                     break
                 fi
