@@ -18,13 +18,10 @@
       "nvidia-settings"
     ];
 
+  sops.secrets.tailscale = { };
+
   networking = {
     wireless.iwd.enable = true;
-    hosts = {
-      "100.123.153.127" = [ "rpi" ];
-      "100.72.6.73" = [ "laptop-lenovo" ];
-      "u0_a249@192.168.50.240:8022" = [ "xiaomi" ];
-    };
   };
 
   documentation.enable = true;
@@ -36,7 +33,6 @@
 
   programs = {
     thunderbird.enable = true;
-    adb.enable = true;
     nix-index.enable = true;
     sway.enable = true;
     niri.enable = true;
@@ -93,21 +89,7 @@
 
   zramSwap.enable = true;
 
-  sops.secrets.tailscale = { };
-
   services = {
-    k3s = {
-      enable = true;
-      role = "server";
-      token = "6I14EXRueEmPhuN0";
-      extraFlags = builtins.toString ([
-        "--write-kubeconfig-mode \"0644\""
-        "--cluster-init"
-        "--disable servicelb"
-        "--disable traefik"
-        "--disable localstorage"
-      ]);
-    };
     tailscale = {
       authKeyFile = config.sops.secrets.tailscale.path;
       extraDaemonFlags = [

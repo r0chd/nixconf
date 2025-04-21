@@ -5,6 +5,11 @@
     ./hardware-configuration.nix
   ];
 
+  sops.secrets = {
+    tailscale = { };
+    k3s = { };
+  };
+
   nixpkgs.config.allowUnfree = true;
   hardware.enableAllFirmware = true;
 
@@ -49,7 +54,7 @@
     k3s = {
       enable = true;
       role = "server";
-      token = "6I14EXRueEmPhuN0";
+      tokenFile = config.sops.secrets.k3s.path;
       extraFlags = builtins.toString ([
         "--write-kubeconfig-mode \"0644\""
         "--cluster-init"
@@ -61,11 +66,11 @@
 
     impermanence.enable = true;
     tailscale = {
-      #authKeyFile = config.sops.secrets.tailscale.path;
-      #extraDaemonFlags = [
-      #"--state"
-      #"mem:."
-      #];
+      authKeyFile = config.sops.secrets.tailscale.path;
+      extraDaemonFlags = [
+        "--state"
+        "mem:."
+      ];
     };
   };
 

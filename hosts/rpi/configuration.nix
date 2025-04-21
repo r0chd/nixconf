@@ -14,6 +14,11 @@
 
   nixpkgs.config.allowUnfreePredicate = pkgs: builtins.elem (lib.getName pkgs) [ "minecraft-server" ];
 
+  sops.secrets = {
+    k3s = { };
+    tailscale = { };
+  };
+
   boot.kernelParams = [ "cgroup_enable=memory" ];
 
   raspberry-pi-nix = {
@@ -103,10 +108,17 @@
   };
 
   services = {
+    tailscale = {
+      authKeyFile = config.sops.secrets.tailscale.path;
+      extraDaemonFlags = [
+        "--state"
+        "mem:."
+      ];
+    };
     k3s = {
       enable = true;
       role = "server";
-      token = "6I14EXRueEmPhuN0";
+      tokenFile = config.sops.secrets.k3s.path;
       extraFlags = builtins.toString ([
         "--write-kubeconfig-mode \"0644\""
         "--cluster-init"
