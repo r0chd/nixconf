@@ -22,7 +22,7 @@
     wireless.iwd.enable = true;
     hosts = {
       "100.123.153.127" = [ "rpi" ];
-      "100.65.94.104" = [ "laptop-lenovo" ];
+      "100.72.6.73" = [ "laptop-lenovo" ];
       "u0_a249@192.168.50.240:8022" = [ "xiaomi" ];
     };
   };
@@ -96,8 +96,19 @@
   sops.secrets.tailscale = { };
 
   services = {
-    tailscale = {
+    k3s = {
       enable = true;
+      role = "server";
+      token = "6I14EXRueEmPhuN0";
+      extraFlags = builtins.toString ([
+        "--write-kubeconfig-mode \"0644\""
+        "--cluster-init"
+        "--disable servicelb"
+        "--disable traefik"
+        "--disable localstorage"
+      ]);
+    };
+    tailscale = {
       authKeyFile = config.sops.secrets.tailscale.path;
       extraDaemonFlags = [
         "--state"
@@ -105,7 +116,6 @@
       ];
     };
     impermanence.enable = true;
-
   };
 
   environment = {

@@ -38,7 +38,6 @@
     home = {
       inherit username;
       packages = with pkgs; [
-        uutils-coreutils-noprefix
         (writeShellScriptBin "nb" ''
           command "$@" > /dev/null 2>&1 &
           disown

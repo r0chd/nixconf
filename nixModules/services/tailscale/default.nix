@@ -8,8 +8,10 @@ let
   cfg = config.services.tailscale;
 in
 {
-  config = lib.mkIf cfg.enable {
+  config = {
     environment.systemPackages = [ pkgs.tailscale ];
+
+    services.tailscale.enable = true;
 
     boot.initrd = {
       systemd = {

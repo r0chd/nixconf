@@ -33,7 +33,6 @@
       enable = true;
       file = "${config.home.homeDirectory}/.ssh/id_yubikey.pub";
     };
-    nixcord.vesktop.enable = true;
     editor = "hx";
     zen.enable = true;
     nix-index.enable = true;
@@ -130,11 +129,12 @@
       lazygit
       brightnessctl
       unzip
-      gimp
+      gimp3
       imagemagick
       wf-recorder
       libreoffice
       cosmic-files
+      discord
     ];
 
     persist = {

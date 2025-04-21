@@ -49,7 +49,10 @@
 
   networking = {
     wireless.iwd.enable = true;
-    firewall.allowedTCPPorts = [ 80 ];
+    firewall.allowedTCPPorts = [
+      80
+      6434
+    ];
   };
 
   virtualisation = {
@@ -100,7 +103,18 @@
   };
 
   services = {
-    tailscale.enable = true;
+    k3s = {
+      enable = true;
+      role = "server";
+      token = "6I14EXRueEmPhuN0";
+      extraFlags = builtins.toString ([
+        "--write-kubeconfig-mode \"0644\""
+        "--cluster-init"
+        "--disable servicelb"
+        "--disable traefik"
+        "--disable localstorage"
+      ]);
+    };
 
     minecraft-servers = {
       enable = false;

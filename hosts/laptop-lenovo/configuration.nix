@@ -46,9 +46,21 @@
   };
 
   services = {
+    k3s = {
+      enable = true;
+      role = "server";
+      token = "6I14EXRueEmPhuN0";
+      extraFlags = builtins.toString ([
+        "--write-kubeconfig-mode \"0644\""
+        "--cluster-init"
+        "--disable servicelb"
+        "--disable traefik"
+        "--disable localstorage"
+      ]);
+    };
+
     impermanence.enable = true;
     tailscale = {
-      enable = true;
       #authKeyFile = config.sops.secrets.tailscale.path;
       #extraDaemonFlags = [
       #"--state"
