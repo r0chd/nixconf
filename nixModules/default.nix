@@ -27,10 +27,13 @@
   config = {
     nixpkgs.overlays = import ../overlays inputs config;
 
-    environment.systemPackages = with pkgs; [
-      uutils-coreutils-noprefix
-      (writeShellScriptBin "mkUser" (builtins.readFile ./mkUser.sh))
-    ];
+    environment = {
+      systemPackages = with pkgs; [
+        uutils-coreutils-noprefix
+        (writeShellScriptBin "mkUser" (builtins.readFile ./mkUser.sh))
+      ];
+      variables.HOME_MANAGER_BACKUP_EXT = "bak";
+    };
 
     boot = {
       kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;

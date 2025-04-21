@@ -24,10 +24,10 @@
               root.enable = true;
               shell = "nushell";
             };
-            test = {
-              root.enable = true;
-              shell = "nushell";
-            };
+            #test = {
+            #root.enable = true;
+            #shell = "nushell";
+            #};
           };
         };
         rpi = {

@@ -23,5 +23,6 @@
   home.packages = with pkgs; [
     lazygit
     unzip
+    gh
   ];
 }

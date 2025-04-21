@@ -44,11 +44,7 @@
 
   environment = {
     variables.EDITOR = "hx";
-    systemPackages = with pkgs; [
-      helix
-      k3s
-      podman-tui
-    ];
+    systemPackages = with pkgs; [ helix ];
   };
 
   networking = {
@@ -66,19 +62,45 @@
     };
   };
 
-  users.users.moxwiki.extraGroups = [ "podman" ];
+  users.users.unixpariah.extraGroups = [ "podman" ];
 
-  services = {
-    tailscale.enable = true;
-    nginx = {
-      enable = true;
-      virtualHosts."book.ts.net" = {
-        locations."/" = {
-          proxyPass = "http://localhost:3000";
-          proxyWebsockets = true;
+  services.traefik = {
+    enable = true;
+    staticConfigOptions = {
+      entryPoints = {
+        web.address = ":80";
+      };
+    };
+    dynamicConfigOptions = {
+      http = {
+        routers = {
+          moxwiki = {
+            rule = "Host(`rpi.tail570bfd.ts.net`) && PathPrefix(`/moxwiki/`)";
+            entryPoints = [ "web" ];
+            middlewares = [ "strip-moxwiki-prefix" ];
+            service = "moxwiki-service";
+          };
+          portfolio = {
+            rule = "Host(`rpi.tail570bfd.ts.net`) && PathPrefix(`/portfolio/`)";
+            entryPoints = [ "web" ];
+            middlewares = [ "strip-portfolio-prefix" ];
+            service = "portfolio-service";
+          };
+        };
+        middlewares = {
+          "strip-moxwiki-prefix".stripPrefix.prefixes = [ "/moxwiki" ];
+          "strip-portfolio-prefix".stripPrefix.prefixes = [ "/portfolio" ];
+        };
+        services = {
+          "moxwiki-service".loadBalancer.servers = [ { url = "http://localhost:3000"; } ];
+          "portfolio-service".loadBalancer.servers = [ { url = "http://localhost:3001"; } ];
         };
       };
     };
+  };
+
+  services = {
+    tailscale.enable = true;
 
     minecraft-servers = {
       enable = false;

@@ -9,7 +9,6 @@ let
 in
 {
   options.programs.keepassxc = {
-    enable = lib.mkEnableOption "Enable keepassxc";
     database = {
       files = lib.mkOption {
         type = lib.types.listOf lib.types.str;

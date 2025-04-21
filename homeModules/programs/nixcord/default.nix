@@ -5,19 +5,16 @@
   config,
   ...
 }:
+let
+  cfg = config.programs.nixcord;
+in
 {
   imports = [ inputs.nixcord.homeManagerModules.nixcord ];
 
-  options.programs = {
-    discord.enable = lib.mkEnableOption "discord";
-    vesktop.enable = lib.mkEnableOption "vesktop";
-  };
-
   config = {
     programs.nixcord = {
-      enable = config.programs.vesktop.enable || config.programs.discord.enable;
-      vesktop.enable = config.programs.vesktop.enable;
-      discord.enable = config.programs.discord.enable;
+      enable = cfg.vesktop.enable || cfg.discord.enable;
+      discord.enable = lib.mkDefault false;
       config = {
         frameless = true;
         plugins = {
@@ -35,7 +32,7 @@
 
     home.persist.directories =
       [ ".config/Vencord" ]
-      ++ lib.optionals config.programs.vesktop.enable [ ".config/vesktop" ]
-      ++ lib.optionals config.programs.discord.enable [ ".config/discord" ];
+      ++ lib.optionals cfg.vesktop.enable [ ".config/vesktop" ]
+      ++ lib.optionals cfg.discord.enable [ ".config/discord" ];
   };
 }

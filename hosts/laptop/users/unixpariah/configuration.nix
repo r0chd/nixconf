@@ -18,6 +18,7 @@
     "yubico/u2f_keys".path = "/home/unixpariah/.config/Yubico/u2f_keys";
     "ssh_keys/id_yubikey".path = "/home/unixpariah/.ssh/id_yubikey";
     nixos-access-token-github = { };
+    github-api = { };
   };
 
   nix.access-tokens = [ config.sops.placeholder.nixos-access-token-github ];
@@ -32,7 +33,7 @@
       enable = true;
       file = "${config.home.homeDirectory}/.ssh/id_yubikey.pub";
     };
-    vesktop.enable = true;
+    nixcord.vesktop.enable = true;
     editor = "hx";
     zen.enable = true;
     nix-index.enable = true;

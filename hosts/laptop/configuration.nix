@@ -43,21 +43,19 @@
     wshowkeys.enable = true;
   };
 
-  users.users.unixpariah.extraGroups = [
-    "adbuser"
-    "docker"
-  ];
-
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   virtualisation = {
-    enable = true;
-    docker = {
+    containers.enable = true;
+    podman = {
       enable = true;
-      storageDriver = "btrfs";
+      dockerCompat = true;
+      dockerSocket.enable = true;
+      defaultNetwork.settings.dns_enabled = true;
     };
-    virt-manager.enable = true;
   };
+
+  users.users.unixpariah.extraGroups = [ "podman" ];
 
   system = {
     fileSystem = "btrfs";
@@ -112,12 +110,7 @@
 
   environment = {
     variables.EDITOR = "hx";
-    systemPackages = with pkgs; [
-      helix
-      kdePackages.oxygen-sounds
-      deepin.deepin-sound-theme
-      papirus-icon-theme
-    ];
+    systemPackages = with pkgs; [ helix ];
   };
 
   time.timeZone = "Europe/Warsaw";

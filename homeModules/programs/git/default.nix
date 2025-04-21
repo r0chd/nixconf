@@ -34,7 +34,6 @@ in
         ssh.allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
       };
       user.signing.key = lib.mkIf cfg.signingKey.enable cfg.signingKey.file;
-      safe.directory = [ "/var/lib/nixconf" ];
     };
   };
 }

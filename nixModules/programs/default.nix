@@ -1,4 +1,7 @@
 { ... }:
 {
-  imports = [ ./nh ];
+  imports = [
+    ./nh
+    ./git
+  ];
 }

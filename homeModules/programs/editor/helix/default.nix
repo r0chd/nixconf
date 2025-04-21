@@ -75,6 +75,51 @@
               ];
             };
           }
+          {
+            name = "javascript";
+            auto-format = true;
+            formatter = {
+              command = "prettierd";
+              args = [
+                "--stdin-filepath"
+                "file.js"
+              ];
+            };
+          }
+          {
+            name = "typescript";
+            auto-format = true;
+            formatter = {
+              command = "prettierd";
+              args = [
+                "--stdin-filepath"
+                "file.ts"
+              ];
+            };
+          }
+          {
+            name = "jsx";
+            auto-format = true;
+            formatter = {
+              command = "prettierd";
+              args = [
+                "--stdin-filepath"
+                "file.jsx"
+              ];
+            };
+          }
+          {
+            name = "tsx";
+            auto-format = true;
+            formatter = {
+              command = "prettierd";
+              args = [
+                "--stdin-filepath"
+                "file.tsx"
+              ];
+            };
+          }
+
         ];
       };
       settings = {

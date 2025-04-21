@@ -173,7 +173,7 @@ in
           directory = "/var/lib/nixconf";
           user = "root";
           group = "wheel";
-          mode = "0664";
+          mode = "0775";
         }
       ] ++ config.environment.persist.directories;
       inherit (config.environment.persist) files;

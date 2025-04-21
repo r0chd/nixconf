@@ -23,7 +23,7 @@
     package = inputs.hyprland.packages.${pkgs.system}.default;
     portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
 
-    plugins = [ pkgs.hyprscroller ];
+    #plugins = [ pkgs.hyprscroller ];
     settings = {
       layerrule = [ "noanim, moxnotify" ];
 
@@ -45,13 +45,13 @@
 
       general = {
         border_size = 1;
-        layout = "scroller";
+        #layout = "scroller";
       };
 
-      plugin.scroller = {
-        column_default_width = "one";
-        center_row_if_space_available = true;
-      };
+      #plugin.scroller = {
+      #column_default_width = "one";
+      #center_row_if_space_available = true;
+      #};
 
       decoration = {
         rounding = 16;
