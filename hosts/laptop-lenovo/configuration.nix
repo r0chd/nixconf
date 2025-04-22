@@ -43,6 +43,10 @@
   networking = {
     wireless.iwd.enable = true;
     interfaces.eth0.useDHCP = true;
+    firewall.allowedTCPPorts = [
+      80
+      6443
+    ];
   };
 
   environment = {
@@ -53,25 +57,14 @@
   services = {
     k3s = {
       enable = true;
-      role = "server";
+      role = "agent";
+      serverAddr = "https://rpi:6443";
       tokenFile = config.sops.secrets.k3s.path;
-      extraFlags = builtins.toString ([
-        "--write-kubeconfig-mode \"0644\""
-        "--cluster-init"
-        "--disable servicelb"
-        "--disable traefik"
-        "--disable localstorage"
-      ]);
+      extraFlags = builtins.toString ([ "--write-kubeconfig-mode \"0644\"" ]);
     };
 
     impermanence.enable = true;
-    tailscale = {
-      authKeyFile = config.sops.secrets.tailscale.path;
-      extraDaemonFlags = [
-        "--state"
-        "mem:."
-      ];
-    };
+    tailscale.authKeyFile = config.sops.secrets.tailscale.path;
   };
 
   time.timeZone = "Europe/Warsaw";

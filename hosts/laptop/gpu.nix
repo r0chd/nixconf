@@ -4,6 +4,7 @@
 
   hardware = {
     nvidia = {
+      nvidiaSettings = false;
       modesetting.enable = true;
       powerManagement = {
         enable = true;
@@ -14,7 +15,6 @@
       forceFullCompositionPipeline = true;
 
       open = true;
-      nvidiaSettings = true;
       prime = {
         offload = {
           enable = true;

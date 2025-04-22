@@ -11,14 +11,12 @@
     ./hardware-configuration.nix
   ];
 
-  nixpkgs.config.allowUnfreePredicate =
-    pkgs:
-    builtins.elem (lib.getName pkgs) [
-      "nvidia-x11"
-      "nvidia-settings"
-    ];
+  nixpkgs.config.allowUnfreePredicate = pkgs: builtins.elem (lib.getName pkgs) [ "nvidia-x11" ];
 
-  sops.secrets.tailscale = { };
+  sops.secrets = {
+    tailscale = { };
+    k3s = { };
+  };
 
   networking = {
     wireless.iwd.enable = true;
@@ -90,19 +88,16 @@
   zramSwap.enable = true;
 
   services = {
-    tailscale = {
-      authKeyFile = config.sops.secrets.tailscale.path;
-      extraDaemonFlags = [
-        "--state"
-        "mem:."
-      ];
-    };
+    tailscale.authKeyFile = config.sops.secrets.tailscale.path;
     impermanence.enable = true;
   };
 
   environment = {
     variables.EDITOR = "hx";
-    systemPackages = with pkgs; [ helix ];
+    systemPackages = with pkgs; [
+      helix
+      kubectl
+    ];
   };
 
   time.timeZone = "Europe/Warsaw";

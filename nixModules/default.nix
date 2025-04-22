@@ -27,6 +27,14 @@
   config = {
     nixpkgs.overlays = import ../overlays inputs config;
 
+    networking.hosts = {
+      "laptop.tail570bfd.ts.net" = [ "laptop" ];
+      "iphone-13-pro.tail570bfd.ts.net" = [ "iphone-13-pro" ];
+      "laptop-lenovo.tail570bfd.ts.net" = [ "laptop-lenovo" ];
+      "rpi.tail570bfd.ts.net" = [ "rpi" ];
+      "xiaomi-m2002j9g.tail570bfd.ts.net" = [ "xiaomi-m2002j9g" ];
+    };
+
     environment = {
       systemPackages = with pkgs; [
         uutils-coreutils-noprefix

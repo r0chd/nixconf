@@ -19,7 +19,11 @@
     tailscale = { };
   };
 
-  boot.kernelParams = [ "cgroup_enable=memory" ];
+  boot.kernelParams = [
+    "cgroup_enable=cpuset"
+    "cgroup_enable=memory"
+    "cgroup_memory=1"
+  ];
 
   raspberry-pi-nix = {
     board = "bcm2712";
@@ -56,7 +60,8 @@
     wireless.iwd.enable = true;
     firewall.allowedTCPPorts = [
       80
-      6434
+      6443
+      30080
     ];
   };
 
@@ -108,24 +113,12 @@
   };
 
   services = {
-    tailscale = {
-      authKeyFile = config.sops.secrets.tailscale.path;
-      extraDaemonFlags = [
-        "--state"
-        "mem:."
-      ];
-    };
+    tailscale.authKeyFile = config.sops.secrets.tailscale.path;
     k3s = {
       enable = true;
-      role = "server";
       tokenFile = config.sops.secrets.k3s.path;
-      extraFlags = builtins.toString ([
-        "--write-kubeconfig-mode \"0644\""
-        "--cluster-init"
-        "--disable servicelb"
-        "--disable traefik"
-        "--disable localstorage"
-      ]);
+      clusterInit = true;
+      extraFlags = builtins.toString ([ "--write-kubeconfig-mode \"0644\"" ]);
     };
 
     minecraft-servers = {

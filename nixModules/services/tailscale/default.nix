@@ -9,7 +9,10 @@ let
 in
 {
   config = {
-    environment.systemPackages = [ pkgs.tailscale ];
+    environment = {
+      systemPackages = [ pkgs.tailscale ];
+      persist.directories = [ "/var/lib/tailscale" ];
+    };
 
     services.tailscale.enable = true;
 
