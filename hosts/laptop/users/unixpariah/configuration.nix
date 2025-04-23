@@ -94,7 +94,7 @@
 
   stylix = {
     enable = true;
-    theme = "catppuccin-mocha";
+    theme = "gruvbox";
     cursor.size = 36;
     fonts = {
       sizes.terminal = 9;
@@ -114,9 +114,6 @@
         package = pkgs.noto-fonts-emoji;
         name = "Noto Color Emoji";
       };
-    };
-    opacity = {
-      terminal = 0.0;
     };
   };
 

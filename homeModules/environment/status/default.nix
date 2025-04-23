@@ -27,6 +27,7 @@ with config.stylix.fonts;
           "battery"
           "network"
           "pulseaudio"
+          "backlight"
           "custom/sep"
           "custom/moxnotify-inhibit"
           "custom/moxnotify-history"
@@ -146,6 +147,23 @@ with config.stylix.fonts;
           format-muted = "  0%";
           on-click = "pavucontrol";
         };
+
+        backlight = {
+          format = "{icon} {percent}%";
+          format-icons = {
+            default = [
+              ""
+              ""
+              ""
+              ""
+              ""
+              ""
+              ""
+              ""
+              ""
+            ];
+          };
+        };
       };
     };
     style = ''
@@ -180,7 +198,7 @@ with config.stylix.fonts;
 
       #custom-nix, #workspaces, #window, #pulseaudio, #cpu, #memory, #clock, #tray, #network, #custom-moxnotify-inhibit,
       #custom-moxnotify-history,
-      #custom-moxnotify-muted, #battery {
+      #custom-moxnotify-muted, #battery, #backlight {
         margin: 7px;
         padding: 5px;
         padding-left: 8px;
@@ -219,15 +237,15 @@ with config.stylix.fonts;
       }
 
       #workspaces button.default {
-        color: @overlay0;  /* Occupied but not active workspaces */
+        color: @overlay0;
       }
 
       #workspaces button.special {
-        color: @sapphire;  /* Special workspaces */
+        color: @sapphire;
       }
 
       #workspaces button.urgent {
-        color: @red;  /* Urgent workspaces */
+        color: @red;
       }
 
       #custom-sep {
@@ -269,6 +287,15 @@ with config.stylix.fonts;
       #pulseaudio {
         color: @green;
       }
+
+      #battery {
+        color: @peach;
+      }
+
+      #backlight {
+        color: @rosewater;
+      }
+
     '';
   };
 }

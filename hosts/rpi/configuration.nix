@@ -60,6 +60,7 @@
     wireless.iwd.enable = true;
     firewall.allowedTCPPorts = [
       80
+      443
       6443
       30080
     ];
@@ -77,48 +78,12 @@
 
   users.users.unixpariah.extraGroups = [ "podman" ];
 
-  services.traefik = {
-    enable = true;
-    staticConfigOptions = {
-      entryPoints = {
-        web.address = ":80";
-      };
-    };
-    dynamicConfigOptions = {
-      http = {
-        routers = {
-          moxwiki = {
-            rule = "Host(`rpi.tail570bfd.ts.net`) && PathPrefix(`/moxwiki/`)";
-            entryPoints = [ "web" ];
-            middlewares = [ "strip-moxwiki-prefix" ];
-            service = "moxwiki-service";
-          };
-          portfolio = {
-            rule = "Host(`rpi.tail570bfd.ts.net`) && PathPrefix(`/portfolio/`)";
-            entryPoints = [ "web" ];
-            middlewares = [ "strip-portfolio-prefix" ];
-            service = "portfolio-service";
-          };
-        };
-        middlewares = {
-          "strip-moxwiki-prefix".stripPrefix.prefixes = [ "/moxwiki" ];
-          "strip-portfolio-prefix".stripPrefix.prefixes = [ "/portfolio" ];
-        };
-        services = {
-          "moxwiki-service".loadBalancer.servers = [ { url = "http://localhost:3000"; } ];
-          "portfolio-service".loadBalancer.servers = [ { url = "http://localhost:3001"; } ];
-        };
-      };
-    };
-  };
-
   services = {
     tailscale.authKeyFile = config.sops.secrets.tailscale.path;
     k3s = {
       enable = true;
       tokenFile = config.sops.secrets.k3s.path;
       clusterInit = true;
-      extraFlags = builtins.toString ([ "--write-kubeconfig-mode \"0644\"" ]);
     };
 
     minecraft-servers = {

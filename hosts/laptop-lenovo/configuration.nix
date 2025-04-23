@@ -40,6 +40,18 @@
     };
   };
 
+  virtualisation = {
+    containers.enable = true;
+    podman = {
+      enable = true;
+      dockerCompat = true;
+      dockerSocket.enable = true;
+      defaultNetwork.settings.dns_enabled = true;
+    };
+  };
+
+  users.users.unixpariah.extraGroups = [ "podman" ];
+
   networking = {
     wireless.iwd.enable = true;
     interfaces.eth0.useDHCP = true;
@@ -60,7 +72,6 @@
       role = "agent";
       serverAddr = "https://rpi:6443";
       tokenFile = config.sops.secrets.k3s.path;
-      extraFlags = builtins.toString ([ "--write-kubeconfig-mode \"0644\"" ]);
     };
 
     impermanence.enable = true;
