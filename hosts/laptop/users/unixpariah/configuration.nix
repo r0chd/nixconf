@@ -19,6 +19,9 @@
     "ssh_keys/id_yubikey".path = "/home/unixpariah/.ssh/id_yubikey";
     nixos-access-token-github = { };
     github-api = { };
+    "klocki/jwt_secret" = { };
+    "klocki/master_password" = { };
+    "klocki/db_password" = { };
   };
 
   nix.access-tokens = [ config.sops.placeholder.nixos-access-token-github ];
@@ -33,6 +36,7 @@
       enable = true;
       file = "${config.home.homeDirectory}/.ssh/id_yubikey.pub";
     };
+    nixcord.vesktop.enable = true;
     editor = "hx";
     zen.enable = true;
     nix-index.enable = true;
@@ -94,7 +98,7 @@
 
   stylix = {
     enable = true;
-    theme = "gruvbox";
+    theme = "catppuccin-mocha";
     cursor.size = 36;
     fonts = {
       sizes.terminal = 9;
@@ -131,7 +135,6 @@
       wf-recorder
       libreoffice
       cosmic-files
-      discord
     ];
 
     persist = {

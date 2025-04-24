@@ -208,10 +208,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixpkgs-wayland = {
-      url = "github:nix-community/nixpkgs-wayland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
 
     stylix = {
       url = "github:danth/stylix";
@@ -246,10 +243,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    niri = {
-      url = "github:sodiboo/niri-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    niri.url = "github:sodiboo/niri-flake";
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
@@ -267,10 +261,7 @@
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    hyprland.url = "github:hyprwm/Hyprland";
     hyprscroller = {
       url = "github:dawsers/hyprscroller";
       flake = false;
@@ -284,18 +275,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    seto = {
-      url = "github:unixpariah/seto";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    moxidle = {
-      url = "github:unixpariah/moxidle";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    moxnotify = {
-      url = "github:unixpariah/moxnotify";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    seto.url = "github:unixpariah/seto";
+    moxidle.url = "github:unixpariah/moxidle";
+    moxnotify.url = "github:unixpariah/moxnotify";
     nh = {
       url = "github:unixpariah/nh";
       inputs.nixpkgs.follows = "nixpkgs";

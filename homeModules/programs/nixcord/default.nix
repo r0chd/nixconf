@@ -9,7 +9,7 @@ let
   cfg = config.programs.nixcord;
 in
 {
-  imports = [ inputs.nixcord.homeManagerModules.nixcord ];
+  imports = [ inputs.nixcord.homeModules.nixcord ];
 
   config = {
     programs.nixcord = {
@@ -31,7 +31,8 @@ in
     };
 
     home.persist.directories =
-      [ ".config/Vencord" ]
+      [ ]
+      ++ lib.optionals cfg.enable [ ".config/Vencord" ]
       ++ lib.optionals cfg.vesktop.enable [ ".config/vesktop" ]
       ++ lib.optionals cfg.discord.enable [ ".config/discord" ];
   };
