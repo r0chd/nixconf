@@ -8,7 +8,6 @@
     ./editor
     ./multiplexer
     ./zoxide
-    ./lsd
     ./bat
     ./direnv
     ./seto

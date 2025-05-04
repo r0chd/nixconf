@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
   imports = [
-    inputs.panotify.homeManagerModules.default
+    inputs.sysnotifier.homeManagerModules.default
     ./impermanence
     ./yubikey-touch-detector
     ./ngrok

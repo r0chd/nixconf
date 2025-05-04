@@ -282,8 +282,8 @@
       url = "github:unixpariah/nh";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    panotify = {
-      url = "github:unixpariah/panotify";
+    sysnotifier = {
+      url = "github:unixpariah/SysNotifier";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

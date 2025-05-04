@@ -1,7 +1,9 @@
 {
   lib,
+  pkgs,
   config,
   inputs,
+  hostname,
   systemUsers,
   ...
 }:
@@ -159,7 +161,18 @@ in
         |> lib.concatMap (user: [ "d /persist/home/${user} 0700 ${user} users -" ])
       );
 
-    fileSystems."/persist".neededForBoot = true;
+    fileSystems = {
+      "/persist".neededForBoot = true;
+      "/" = lib.mkIf (config.system.fileSystem == "ext4") {
+        device = "none";
+        fsType = "tmpfs";
+        options = [
+          "defaults"
+          "size=25%"
+          "mode=755"
+        ];
+      };
+    };
 
     programs.fuse.userAllowOther = true;
 
@@ -177,6 +190,30 @@ in
         }
       ] ++ config.environment.persist.directories;
       inherit (config.environment.persist) files;
+    };
+
+    systemd.services.activate-home-manager = lib.mkIf config.services.impermanence.enable {
+      enable = true;
+      description = "Activate home manager";
+      wantedBy = [ "default.target" ];
+      requiredBy = [ "systemd-user-sessions.service" ];
+      before = [ "systemd-user-sessions.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+      };
+      environment = {
+        PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}/bin:${pkgs.sudo}/bin:${pkgs.coreutils}/bin:$PATH";
+        NH_FLAKE = "/var/lib/nixconf";
+      };
+      script = lib.concatMapStrings (user: ''
+        if [ ! -L "/persist/home/${user}/.local/state/nix/profiles/home-manager" ]; then
+          chown -R ${user}:users /home/${user}/.ssh
+          sudo -u ${user} home-manager switch --flake "/var/lib/nixconf#${user}@${hostname}" --no-write-lock-file 
+          exit 0
+        fi
+        chown -R ${user}:users /home/${user}/.ssh
+        HOME_MANAGER_BACKUP_EXT="bak" sudo -u ${user} /persist/home/${user}/.local/state/nix/profiles/home-manager/activate
+      '') (lib.attrNames systemUsers);
     };
   };
 }

@@ -296,6 +296,10 @@
           "-d"
           "5"
         ];
+        "XF86AudioMute".action.spawn = [
+          "pamixer"
+          "-t"
+        ];
         "Print".action.spawn = [
           "bash"
           "-c"

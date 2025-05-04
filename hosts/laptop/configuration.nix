@@ -26,7 +26,7 @@
 
   stylix = {
     enable = true;
-    theme = "catppuccin-mocha";
+    theme = "gruvbox";
   };
 
   programs = {
@@ -97,6 +97,7 @@
     systemPackages = with pkgs; [
       helix
       kubectl
+      cosmic-icons
     ];
   };
 

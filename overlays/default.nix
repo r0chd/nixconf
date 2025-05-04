@@ -10,12 +10,8 @@ inputs: config: [
     linuxPackages_latest = prev.linuxPackages_latest.extend (
       self: super: { broadcom_sta = self.callPackage ./broadcom-sta { }; }
     );
-    #hyprscroller = prev.callPackage ./hyprscroller {
-    #inherit (inputs.hyprland.packages.${prev.system}) hyprland;
-    #inherit (inputs) hyprscroller;
-    #};
     nh = inputs.nh.packages.${prev.system}.default;
-    panotify = inputs.panotify.packages.${prev.system}.default;
+    sysnotifier = inputs.sysnotifier.packages.${prev.system}.default;
     wgsl-formatter = prev.callPackage ./wgsl-formatter { };
   })
 

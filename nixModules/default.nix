@@ -39,6 +39,9 @@
       systemPackages = with pkgs; [
         uutils-coreutils-noprefix
         (writeShellScriptBin "mkUser" (builtins.readFile ./mkUser.sh))
+        (writeShellScriptBin "shell" ''nix shell /var/lib/nixconf#nixosConfigurations.${hostname}.pkgs.$1'')
+        (writeShellScriptBin "run" ''nix run /var/lib/nixconf#nixosConfigurations.${hostname}.pkgs.$1'')
+        glib
       ];
       variables.HOME_MANAGER_BACKUP_EXT = "bak";
     };
@@ -77,8 +80,18 @@
         }) systemUsers;
     };
 
+    # Fully disable channels
     nix = {
       channel.enable = false;
+      registry = (lib.mapAttrs (_: flake: { inherit flake; }) inputs);
+      nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") inputs;
+      settings = {
+        nix-path = lib.mapAttrsToList (n: _: "${n}=flake:${n}") inputs;
+        flake-registry = "";
+      };
+    };
+
+    nix = {
       settings = {
         experimental-features = [
           "nix-command"
@@ -97,30 +110,6 @@
           "@wheel"
         ];
       };
-    };
-
-    systemd.services.activate-home-manager = lib.mkIf config.services.impermanence.enable {
-      enable = true;
-      description = "Activate home manager";
-      wantedBy = [ "default.target" ];
-      requiredBy = [ "systemd-user-sessions.service" ];
-      before = [ "systemd-user-sessions.service" ];
-      serviceConfig = {
-        Type = "oneshot";
-      };
-      environment = {
-        PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}/bin:${pkgs.sudo}/bin:${pkgs.coreutils}/bin:$PATH";
-        NH_FLAKE = "/var/lib/nixconf";
-      };
-      script = lib.concatMapStrings (user: ''
-        if [ ! -L "/persist/home/${user}/.local/state/nix/profiles/home-manager" ]; then
-          chown -R ${user}:users /home/${user}/.ssh
-          sudo -u ${user} home-manager switch --flake "/var/lib/nixconf#${user}@${hostname}" 
-          exit 0
-        fi
-        chown -R ${user}:users /home/${user}/.ssh
-        HOME_MANAGER_BACKUP_EXT="bak" sudo -u ${user} /persist/home/${user}/.local/state/nix/profiles/home-manager/activate
-      '') (lib.attrNames systemUsers);
     };
 
     system.stateVersion = "25.05";

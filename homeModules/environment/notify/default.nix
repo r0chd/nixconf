@@ -29,9 +29,13 @@ in
 
         general = {
           margin.top = 50;
-          history.size = 10000;
+          history.size = 1000;
+          #anchor = "top-right";
           default_sound_file = "/run/current-system/sw/share/sounds/freedesktop/stereo/message.oga";
+          theme = "Cosmic";
         };
+
+        styles = [ ];
 
         keymaps = [
           {

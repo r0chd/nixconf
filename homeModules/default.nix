@@ -29,7 +29,7 @@
 
     services = {
       udiskie.enable = system_type == "desktop";
-      #panotify.enable = system_type == "desktop";
+      sysnotifier.enable = system_type == "desktop";
     };
 
     programs = {
@@ -42,6 +42,8 @@
           command "$@" > /dev/null 2>&1 &
           disown
         '')
+        (writeShellScriptBin "shell" ''nix shell /var/lib/nixconf#homeConfigurations.${username}@${hostname}.pkgs.$1'')
+        (writeShellScriptBin "run" ''nix run /var/lib/nixconf#homeConfigurations.${username}@${hostname}.pkgs.$1'')
       ];
       homeDirectory = "/home/${username}";
       stateVersion = "25.05";

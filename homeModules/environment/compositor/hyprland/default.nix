@@ -2,13 +2,12 @@
   pkgs,
   lib,
   config,
-  system_type,
   inputs,
   ...
 }:
 {
-  home.packages = lib.mkIf config.wayland.windowManager.hyprland.enable [
-    (pkgs.writeShellScriptBin "click" ''
+  home.packages = with pkgs; [
+    (writeShellScriptBin "click" ''
       cursorpos=$(hyprctl cursorpos)
       x=$(echo $cursorpos | cut -d "," -f 1)
       y=$(echo $cursorpos | cut -d "," -f 2)
@@ -19,14 +18,10 @@
   ];
 
   wayland.windowManager.hyprland = {
-    enable = lib.mkDefault (system_type == "desktop");
-    package = inputs.hyprland.packages.${pkgs.system}.default;
+    enable = lib.mkDefault true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
-
-    #plugins = [ pkgs.hyprscroller ];
     settings = {
-      layerrule = [ "noanim, moxnotify" ];
-
       input = {
         kb_layout = "us";
         kb_variant = "";
@@ -43,23 +38,17 @@
 
       };
 
+      ecosystem.no_update_news = true;
+
       general = {
         border_size = 1;
-        #layout = "scroller";
       };
-
-      #plugin.scroller = {
-      #column_default_width = "one";
-      #center_row_if_space_available = true;
-      #};
 
       decoration = {
         rounding = 16;
 
         blur.enabled = false;
       };
-
-      ecosystem.no_update_news = true;
 
       debug.disable_logs = false;
 
@@ -82,42 +71,48 @@
         ];
       };
 
-      gestures.workspace_swipe = false;
+      dwindle = {
+        pseudotile = "yes";
+        preserve_split = "yes";
+      };
+
+      gestures = {
+        workspace_swipe = "off";
+      };
 
       misc = {
         force_default_wallpaper = "0";
         vfr = "true";
       };
 
-      "$mainMod" = "ALT";
+      "$mainMod" = "ALT"; # Mod key
 
       bind =
         [
+          # Brightness
           ", XF86MonBrightnessUp, exec, brightnessctl set +5%"
           ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
 
+          # Manage workspace
           "$mainMod SHIFT, C, killactive,"
           "$mainMod, F, togglefloating,"
-
           "$mainMod, H, focusmonitor, -1"
           "$mainMod, L, focusmonitor, +1"
 
           "$mainMod SHIFT, H, movewindow, mon:-1"
           "$mainMod SHIFT, L, movewindow, mon:+1"
 
-          "$mainMod, N, movefocus, l"
-          "$mainMod, M, movefocus, r"
+          "$mainMod, left, movefocus, l"
+          "$mainMod, up, movefocus, u"
+          "$mainMod, right, movefocus, r"
+          "$mainMod, down, movefocus, d"
 
-          "$mainMod SHIFT, N, movewindow, l"
-          "$mainMod SHIFT, M, movewindow, r"
+          "$mainMod SHIFT, left, movewindow, l"
+          "$mainMod SHIFT, up, movewindow, u"
+          "$mainMod SHIFT, right, movewindow, r"
+          "$mainMod SHIFT, down, movewindow, d"
 
-          ", XF86AudioRaiseVolume, exec, pamixer -i 5"
-          ", XF86AudioLowerVolume, exec, pamixer -d 5"
-
-          "$mainMod, Q, exec, uwsm stop"
-
-          "$mainMod, D, exec, mox notify focus"
-
+          # Switch workspaces with mainMod + [0-9]
           "$mainMod, 1, workspace, 1"
           "$mainMod, 2, workspace, 2"
           "$mainMod, 3, workspace, 3"
@@ -129,6 +124,15 @@
           "$mainMod, 9, workspace, 9"
           "$mainMod, 0, workspace, 10"
 
+          # Move to next workspace with mainMod + [M/N]
+          "$mainMod, N, workspace, m-1"
+          "$mainMod, M, workspace, m+1"
+
+          # Move active window to next workspace with mainMod + Shift + [M/N]
+          "$mainMod SHIFT, N, movetoworkspace, r-1"
+          "$mainMod SHIFT, M, movetoworkspace, r+1"
+
+          # Move active window to a workspace with mainMod + SHIFT + [0-9]
           "$mainMod SHIFT, 1, movetoworkspace, 1"
           "$mainMod SHIFT, 2, movetoworkspace, 2"
           "$mainMod SHIFT, 3, movetoworkspace, 3"
@@ -139,11 +143,19 @@
           "$mainMod SHIFT, 8, movetoworkspace, 8"
           "$mainMod SHIFT, 9, movetoworkspace, 9"
           "$mainMod SHIFT, 0, movetoworkspace, 10"
+
+          "$mainMod, D, exec, mox notify focus"
+
+          ", XF86AudioRaiseVolume, exec, pamixer -i 5"
+          ", XF86AudioLowerVolume, exec, pamixer -d 5"
+
+          "$mainMod, q, exec, uwsm stop"
         ]
-        ++ (lib.optional config.programs.seto.enable ", Print, exec, ${pkgs.grim}/bin/grim -c -g \"$(seto -r)\" - | ${pkgs.swappy}/bin/swappy -f -")
+        ++ (lib.optional config.programs.seto.enable ", Print, exec, ${pkgs.grim}/bin/grim -g \"$(seto -r)\" - | ${pkgs.swappy}/bin/swappy -f -")
         ++ (lib.optional config.programs.seto.enable "$mainMod, G, exec, click");
 
       bindm = [
+        # Move/resize windows with mainMod + LMB/RMB and dragging
         "$mainMod, mouse:272, movewindow"
         "$mainMod, mouse:273, resizewindow"
       ];

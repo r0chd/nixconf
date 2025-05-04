@@ -98,7 +98,7 @@
 
   stylix = {
     enable = true;
-    theme = "catppuccin-mocha";
+    theme = "gruvbox";
     cursor.size = 36;
     fonts = {
       sizes.terminal = 9;
