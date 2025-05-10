@@ -28,7 +28,7 @@ in
         ignore_systemd_inhibit = false;
         ignore_audio_inhibit = false;
       };
-      timeouts = [
+      listeners = [
         {
           conditions = [
             "on_battery"

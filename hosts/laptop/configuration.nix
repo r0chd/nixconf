@@ -11,7 +11,13 @@
     ./hardware-configuration.nix
   ];
 
-  nixpkgs.config.allowUnfreePredicate = pkgs: builtins.elem (lib.getName pkgs) [ "nvidia-x11" ];
+  nixpkgs.config.allowUnfreePredicate =
+    pkgs:
+    builtins.elem (lib.getName pkgs) [
+      "nvidia-x11"
+      "steam"
+      "steam-unwrapped"
+    ];
 
   sops.secrets = {
     tailscale = { };
@@ -35,6 +41,28 @@
     sway.enable = true;
     niri.enable = true;
     wshowkeys.enable = true;
+
+    gamescope.enable = true;
+    gamemode = {
+      enable = true;
+      settings = {
+        gpu = {
+          apply_gpu_optimizations = "accept-responsibility";
+          gpu_device = 0;
+        };
+      };
+    };
+    steam = {
+      enable = true;
+      platformOptimizations.enable = true;
+      protontricks.enable = true;
+      extest.enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+      localNetworkGameTransfers.openFirewall = true;
+      extraCompatPackages = with pkgs; [ proton-ge-bin ];
+    };
+
   };
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];

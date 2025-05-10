@@ -278,6 +278,7 @@
     seto.url = "github:unixpariah/seto";
     moxidle.url = "github:unixpariah/moxidle";
     moxnotify.url = "github:unixpariah/moxnotify";
+    moxpaper.url = "github:unixpariah/moxpaper";
     nh = {
       url = "github:unixpariah/nh";
       inputs.nixpkgs.follows = "nixpkgs";

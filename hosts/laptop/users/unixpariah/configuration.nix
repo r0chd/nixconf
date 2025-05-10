@@ -27,6 +27,7 @@
   nix.access-tokens = [ config.sops.placeholder.nixos-access-token-github ];
 
   services = {
+    moxpaper.enable = true;
     impermanence.enable = true;
     yubikey-touch-detector.enable = true;
   };
@@ -146,6 +147,7 @@
         "Documents"
         "Iso"
         ".yubico"
+        "wallpapers"
       ];
     };
   };

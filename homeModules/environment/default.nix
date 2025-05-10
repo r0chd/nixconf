@@ -1,9 +1,10 @@
 { ... }:
 {
   imports = [
+    ./wallpaper
     ./compositor
     ./terminal
-    ./status
+    ./status-bar
     ./lockscreen
     ./launcher
     ./idle
