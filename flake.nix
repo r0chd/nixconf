@@ -9,6 +9,7 @@
       home-manager,
       stylix,
       deploy-rs,
+      nix-gaming,
       nix-index-database,
       nix-minecraft,
       nix-on-droid,
@@ -78,6 +79,8 @@
 
           modules = [
             ./nixModules
+            nix-gaming.nixosModules.pipewireLowLatency
+            nix-gaming.nixosModules.platformOptimizations
             disko.nixosModules.default
             stylix.nixosModules.stylix
             nix-index-database.nixosModules.nix-index
@@ -274,6 +277,7 @@
       url = "github:nix-community/nix-on-droid";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-gaming.url = "github:fufexan/nix-gaming";
 
     seto.url = "github:unixpariah/seto";
     moxidle.url = "github:unixpariah/moxidle";

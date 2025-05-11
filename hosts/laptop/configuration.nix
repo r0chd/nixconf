@@ -82,7 +82,7 @@
   system = {
     fileSystem = "btrfs";
     bootloader = {
-      variant = "lanzaboote";
+      variant = "systemd-boot";
       silent = true;
     };
     ydotool.enable = true;

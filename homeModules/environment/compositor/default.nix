@@ -30,8 +30,8 @@ in
               height = lib.mkOption { type = lib.types.int; };
             };
             scale = lib.mkOption {
-              type = lib.types.int;
-              default = 1;
+              type = lib.types.float;
+              default = 1.0;
             };
           };
         }

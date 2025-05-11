@@ -9,11 +9,10 @@ let
 
   themeSettings = {
     gruvbox = {
-      #image = pkgs.fetchurl {
-      #  url = "https://gruvbox-wallpapers.pages.dev/wallpapers/minimalistic/finalizer.png";
-      #  sha256 = "0i8vcjcplacd7lj9fksb8bp1hxkazf3jrfg54hw3lvh8bjqkwn13";
-      #};
-      image = null;
+      image = pkgs.fetchurl {
+        url = "https://gruvbox-wallpapers.pages.dev/wallpapers/minimalistic/finalizer.png";
+        sha256 = "0i8vcjcplacd7lj9fksb8bp1hxkazf3jrfg54hw3lvh8bjqkwn13";
+      };
       cursor = {
         name = "Capitaine Cursors (Gruvbox)";
         package = pkgs.capitaine-cursors-themed;

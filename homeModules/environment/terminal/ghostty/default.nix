@@ -8,6 +8,7 @@ in
     settings = {
       window-decoration = false;
       confirm-close-surface = false;
+      background-blur = true;
     };
   };
 }

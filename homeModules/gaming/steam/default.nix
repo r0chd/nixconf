@@ -13,7 +13,6 @@ in
   config = lib.mkIf cfg.enable {
     home = {
       packages = with pkgs; [
-        steam
         (writeShellScriptBin "steamos-session-select" ''
           steam -shutdown
         '')
