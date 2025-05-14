@@ -27,10 +27,7 @@
   config = {
     nixpkgs.overlays = import ../overlays inputs config;
 
-    stylix.targets.hyprpaper.enable = false;
-
     services = {
-      hyprpaper.enable = lib.mkForce false;
       udiskie.enable = system_type == "desktop";
       sysnotifier.enable = system_type == "desktop";
     };

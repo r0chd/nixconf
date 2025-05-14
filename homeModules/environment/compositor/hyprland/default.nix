@@ -17,6 +17,8 @@
     '')
   ];
 
+  services.hyprpaper.enable = lib.mkForce false;
+
   wayland.windowManager.hyprland = {
     enable = lib.mkDefault true;
     package = inputs.hyprland.packages.${pkgs.system}.hyprland;
