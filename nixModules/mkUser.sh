@@ -72,7 +72,7 @@ cat <<EOF > "$CONFIG_PATH/configuration.nix"
 {
   environment.terminal.program = "kitty";
 
-  email = "oskar.rochowiak@tutanota.com";
+  email = "100892812+unixpariah@users.noreply.github.com";
 
   programs.editor = "hx";
 

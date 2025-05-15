@@ -12,7 +12,7 @@
 
   nix.access-tokens = [ config.sops.placeholder.nixos-access-token-github ];
 
-  email = "oskar.rochowiak@tutanota.com";
+  email = "100892812+unixpariah@users.noreply.github.com";
 
   services.impermanence.enable = true;
 

@@ -25,7 +25,12 @@ in
     inherit (cfg) enable;
 
     settings = {
-      default_transition_type = "spiral";
+      enabled_transition_types = [
+        "spiral"
+        "spiral_funky"
+        "bounce"
+      ];
+      default_transition_type = "random";
       bezier.overshot = [
         0.05
         0.9
@@ -50,11 +55,11 @@ in
           local center_y = 0.5 + distance * math.sin(angle)
 
           return {
-            clip = {
-              left = center_x - progress * 0.5,
-              top = center_y - progress * 0.5,
-              right = center_x + progress * 0.5,
-              bottom = center_y + progress * 0.5
+            extents = {
+              x = center_x - size * 0.5,
+              y = center_y - size * 0.5,
+              width = size,
+              height = size
             },
             radius = 0.5 * (1.0 - time_factor),
             rotation = progress * 3,
@@ -65,18 +70,17 @@ in
           local progress = params.progress
           local time_factor = params.time_factor
           local rand = params.rand
-
           local angle = time_factor * math.pi * 4.0
           local distance = (1.0 - progress) * 0.5
           local center_x = 0.5 + distance * math.cos(angle)
           local center_y = 0.5 + distance * math.sin(angle)
-
+          local size = progress
           return {
-            clip = {
-              left = center_x - progress * 0.5,
-              top = center_y - progress * 0.5,
-              right = center_x + progress * 0.5,
-              bottom = center_y + progress * 0.5
+            extents = {
+              x = center_x - size * 0.5,
+              y = center_y - size * 0.5,
+              width = size,
+              height = size
             },
             radius = 0.5 * (1.0 - time_factor),
             rotation = progress,
@@ -126,23 +130,19 @@ in
         transitions.bounce = function(params)
           local progress = params.progress
           local time_factor = params.time_factor
-
           local bounce_factor = math.sin(progress * math.pi * 4) * (1.0 - progress) * 0.2
           local effective_progress = progress + bounce_factor
           effective_progress = math.max(0.0, math.min(1.0, effective_progress))
-
           local center = 0.5
           local half_extent = 0.5 * effective_progress
-
           return {
-            clip = {
-              left = center - half_extent,
-              top = center - half_extent,
-              right = center + half_extent,
-              bottom = center + half_extent
+            extents = {
+              x = center - half_extent,
+              y = center - half_extent,
+              width = effective_progress,
+              height = effective_progress
             },
             radius = (1.0 - effective_progress) * 0.5,
-            opacity = progress
           }
         end
       '';

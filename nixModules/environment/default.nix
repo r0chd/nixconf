@@ -79,15 +79,7 @@
       portal = {
         enable = true;
         xdgOpenUsePortal = true;
-        wlr = {
-          enable = lib.mkForce true;
-          settings = {
-            screencast = {
-              chooser_cmd = "${inputs.seto.packages.${pkgs.system}.default}/bin/seto -f %o";
-              chooser_type = "simple";
-            };
-          };
-        };
+        extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
       };
     };
 

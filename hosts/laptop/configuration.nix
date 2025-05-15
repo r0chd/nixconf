@@ -36,10 +36,11 @@
   };
 
   programs = {
+    sway.enable = false;
+    hyprland.enable = false;
+
     thunderbird.enable = true;
     nix-index.enable = true;
-    sway.enable = true;
-    niri.enable = true;
     wshowkeys.enable = true;
 
     gamescope.enable = true;

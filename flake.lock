@@ -1300,11 +1300,11 @@
         "rust-overlay": "rust-overlay_6"
       },
       "locked": {
-        "lastModified": 1747228991,
-        "narHash": "sha256-TFXEdVSFhUup8b2fV7SGKTyN5urm5uVtkOuIoxvIB6M=",
+        "lastModified": 1747302884,
+        "narHash": "sha256-vfSorv/OKWK3y3M+NfiH3g+4yL1n8shc3n+lnHWcesg=",
         "owner": "unixpariah",
         "repo": "moxpaper",
-        "rev": "376f2add0d14e4612f822605de509a9dbf3595ce",
+        "rev": "fb20cc56f530bfda1eb89bdaadf9b25ec6f78ae4",
         "type": "github"
       },
       "original": {

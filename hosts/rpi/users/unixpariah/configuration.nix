@@ -16,7 +16,7 @@
     editor = "hx";
   };
 
-  email = "oskar.rochowiak@tutanota.com";
+  email = "100892812+unixpariah@users.noreply.github.com";
 
   home.packages = with pkgs; [
     lazygit

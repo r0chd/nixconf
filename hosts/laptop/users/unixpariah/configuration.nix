@@ -31,6 +31,11 @@
     yubikey-touch-detector.enable = true;
   };
 
+  wayland.windowManager = {
+    hyprland.enable = false;
+    sway.enable = false;
+  };
+
   programs = {
     git.signingKey = {
       enable = true;
@@ -94,7 +99,7 @@
     terminal.program = "ghostty";
   };
 
-  email = "oskar.rochowiak@tutanota.com";
+  email = "100892812+unixpariah@users.noreply.github.com";
 
   stylix = {
     enable = true;
