@@ -84,7 +84,7 @@
   services = {
     tailscale.authKeyFile = config.sops.secrets.tailscale.path;
     k3s = {
-      enable = true;
+      enable = false;
       tokenFile = config.sops.secrets.k3s.path;
       clusterInit = true;
     };

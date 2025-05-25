@@ -32,8 +32,9 @@
         enable = true;
         settings = {
           devices = {
-            laptop.id = "";
-            rpi.id = "";
+            laptop.id = "6MT4MX2-ON22DDI-KKF46LZ-XALOSVK-3ZFV55O-OACNX2G-UCNI5JI-EOMBKAR";
+            laptop-lenovo.id = "BNERVG4-7SCAOKG-FQBVLLE-GRBOSXA-DHUI2CL-U3LI3FE-FDJQHKP-362SJQD";
+            rpi.id = "GHWM5H6-XNTMGWE-BPB3LVW-ODDSP4M-GKVP5FX-AWC23Q2-H7F6WZB-KVY5FQ5";
           };
           folders = {
             "/var/lib/nixconf" = {
@@ -41,6 +42,7 @@
               devices = [
                 "laptop"
                 "rpi"
+                "laptop-lenovo"
               ];
             };
           };
