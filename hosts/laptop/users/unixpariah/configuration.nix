@@ -105,7 +105,7 @@
     enable = true;
     theme = "gruvbox";
     cursor.size = 36;
-    opacity.terminal = 0.9;
+    opacity.terminal = 0.4;
     fonts = {
       sizes.terminal = 9;
       monospace = {

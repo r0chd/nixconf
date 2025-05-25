@@ -1,4 +1,9 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  system_type,
+  ...
+}:
 let
   cfg = config.system.bootloader;
 in
@@ -28,7 +33,7 @@ in
       #network = config.systemd.network;
       #services.systemd-tmpfiles-setup.before = [ "sshd.service" ];
       #};
-      plymouth.enable = true;
+      plymouth.enable = system_type == "desktop";
       loader.systemd-boot.enable = lib.mkDefault false;
       supportedFilesystems = [ config.system.fileSystem ];
       kernelModules = [ "v4l2loopback" ];

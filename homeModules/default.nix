@@ -28,6 +28,24 @@
     nixpkgs.overlays = import ../overlays inputs config;
 
     services = {
+      syncthing = {
+        enable = true;
+        settings = {
+          devices = {
+            laptop.id = "";
+            rpi.id = "";
+          };
+          folders = {
+            "/var/lib/nixconf" = {
+              path = "/var/lib/nixconf";
+              devices = [
+                "laptop"
+                "rpi"
+              ];
+            };
+          };
+        };
+      };
       udiskie.enable = system_type == "desktop";
       sysnotifier.enable = system_type == "desktop";
     };
@@ -46,7 +64,7 @@
         (writeShellScriptBin "run" ''nix run /var/lib/nixconf#homeConfigurations.${username}@${hostname}.pkgs.$1'')
       ];
       homeDirectory = "/home/${username}";
-      stateVersion = "25.05";
+      stateVersion = "25.11";
     };
   };
 }

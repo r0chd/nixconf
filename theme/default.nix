@@ -27,8 +27,8 @@ let
         sha256 = "ce562a4a27794352f9b14ac072f47eeda3768c89a2ba847d832801464f31f56a";
       };
       cursor = {
-        package = pkgs.catppuccin-cursors.mochaMauve;
-        name = "catppuccin-mocha-mauve-cursors";
+        package = pkgs.catppuccin-cursors.mochaDark;
+        name = "catppuccin-mocha-dark-cursors";
         size = lib.mkDefault 36;
       };
       base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
@@ -40,8 +40,8 @@ let
         sha256 = "0kb87w736abdf794dk9fvqln56axzskxia1g6zdjrqzl7v539035";
       };
       cursor = {
-        package = pkgs.catppuccin-cursors.frappeMauve;
-        name = "catppuccin-frappe-mauve-cursors";
+        package = pkgs.catppuccin-cursors.frappeDark;
+        name = "catppuccin-frappe-dark-cursors";
         size = lib.mkDefault 36;
       };
       base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-frappe.yaml";

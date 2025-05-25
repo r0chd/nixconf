@@ -19,11 +19,14 @@
     tailscale = { };
   };
 
-  boot.kernelParams = [
-    "cgroup_enable=cpuset"
-    "cgroup_enable=memory"
-    "cgroup_memory=1"
-  ];
+  boot = {
+    kernelParams = [
+      "cgroup_enable=cpuset"
+      "cgroup_enable=memory"
+      "cgroup_memory=1"
+    ];
+    plymouth.enable = lib.mkForce false;
+  };
 
   raspberry-pi-nix = {
     board = "bcm2712";

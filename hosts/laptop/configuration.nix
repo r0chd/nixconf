@@ -117,6 +117,10 @@
   zramSwap.enable = true;
 
   services = {
+    k3s = {
+      enable = true;
+      tokenFile = config.sops.secrets.k3s.path;
+    };
     tailscale.authKeyFile = config.sops.secrets.tailscale.path;
     impermanence.enable = true;
   };

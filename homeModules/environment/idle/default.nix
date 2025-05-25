@@ -26,7 +26,7 @@ in
         lock_cmd = "pidof ${pkgs.hyprlock}/bin/hyprlock || ${pkgs.hyprlock}/bin/hyprlock && ${pkgs.systemd}/bin/loginctl unlock-session";
         ignore_dbus_inhibit = false;
         ignore_systemd_inhibit = false;
-        ignore_audio_inhibit = false;
+        ignore_audio_inhibit = true;
       };
       listeners = [
         {

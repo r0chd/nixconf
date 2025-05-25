@@ -25,10 +25,12 @@ in
     inherit (cfg) enable;
 
     settings = {
+      power_preference = "high_performance";
       enabled_transition_types = [
         "spiral"
-        "spiral_funky"
         "bounce"
+        "blur_fade"
+        "blur_spiral"
       ];
       default_transition_type = "random";
       bezier.overshot = [
@@ -39,34 +41,9 @@ in
       ];
     };
 
-    extraConfig =
-      # lua
-      ''
-        transitions = {}
-
-        transitions.spiral_funky = function(params)
-          local progress = params.progress
-          local time_factor = params.time_factor
-          local rand = params.rand
-
-          local angle = time_factor * math.pi * 32.0
-          local distance = (1.0 - progress) * 0.5
-          local center_x = 0.5 + distance * math.cos(angle)
-          local center_y = 0.5 + distance * math.sin(angle)
-
-          return {
-            extents = {
-              x = center_x - size * 0.5,
-              y = center_y - size * 0.5,
-              width = size,
-              height = size
-            },
-            radius = 0.5 * (1.0 - time_factor),
-            rotation = progress * 3,
-          }
-        end
-
-        transitions.spiral = function(params)
+    transitions = {
+      spiral = ''
+        function(params)
           local progress = params.progress
           local time_factor = params.time_factor
           local rand = params.rand
@@ -76,58 +53,100 @@ in
           local center_y = 0.5 + distance * math.sin(angle)
           local size = progress
           return {
-            extents = {
-              x = center_x - size * 0.5,
-              y = center_y - size * 0.5,
-              width = size,
-              height = size
+            transforms = {
+              translate = { center_x - size * 0.5, center_y - size * 0.5 },
+              scale_x = size,
+              scale_y = size
             },
             radius = 0.5 * (1.0 - time_factor),
-            rotation = progress,
+            rotation = progress * 360,
           }
         end
+      '';
 
-        transitions.slide_left = function(params)
+      blur_spiral = ''
+        function(params)
           local progress = params.progress
-
+          local time_factor = params.time_factor
+          local rand = params.rand
+          local angle = time_factor * math.pi * 4.0
+          local distance = (1.0 - progress) * 0.5
+          local center_x = 0.5 + distance * math.cos(angle)
+          local center_y = 0.5 + distance * math.sin(angle)
+          local size = progress
           return {
-            extents = {
-              x = 1 - progress,
+            transforms = {
+              translate = { center_x - size * 0.5, center_y - size * 0.5 },
+              scale_x = size,
+              scale_y = size
+            },
+            radius = 0.5 * (1.0 - time_factor),
+            rotation = progress * 360,
+            filters = {
+              blur = progress * 15,
             },
           }
         end
+      '';
 
-        transitions.slide_right = function(params)
+      slide_left = ''
+        function(params)
           local progress = params.progress
 
           return {
-            extents = {
-              x = progress - 1,
+            transforms = {
+              translate = { 1 - progress, 0 }, -- Assuming y remains 0 for horizontal slide
+              scale_x = 1, -- Assuming width remains 1
+              scale_y = 1  -- Assuming height remains 1
             },
           }
         end
+      '';
 
-        transitions.slide_top = function(params)
+      slide_right = ''
+        function(params)
           local progress = params.progress
 
           return {
-            extents = {
-              y = 1 - progress,
+            transforms = {
+              translate = { progress - 1, 0 }, -- Assuming y remains 0 for horizontal slide
+              scale_x = 1, -- Assuming width remains 1
+              scale_y = 1  -- Assuming height remains 1
             },
           }
         end
+      '';
 
-        transitions.slide_bottom = function(params)
+      slide_top = ''
+        function(params)
           local progress = params.progress
 
           return {
-            extents = {
-              y = progress - 1,
+            transforms = {
+              translate = { 0, 1 - progress }, -- Assuming x remains 0 for vertical slide
+              scale_x = 1, -- Assuming width remains 1
+              scale_y = 1  -- Assuming height remains 1
             },
           }
         end
+      '';
 
-        transitions.bounce = function(params)
+      slide_bottom = ''
+        function(params)
+          local progress = params.progress
+
+          return {
+            transforms = {
+              translate = { 0, progress - 1 }, -- Assuming x remains 0 for vertical slide
+              scale_x = 1, -- Assuming width remains 1
+              scale_y = 1  -- Assuming height remains 1
+            },
+          }
+        end
+      '';
+
+      bounce = ''
+        function(params)
           local progress = params.progress
           local time_factor = params.time_factor
           local bounce_factor = math.sin(progress * math.pi * 4) * (1.0 - progress) * 0.2
@@ -136,16 +155,92 @@ in
           local center = 0.5
           local half_extent = 0.5 * effective_progress
           return {
-            extents = {
-              x = center - half_extent,
-              y = center - half_extent,
-              width = effective_progress,
-              height = effective_progress
+            transforms = {
+              translate = { center - half_extent, center - half_extent },
+              scale_x = effective_progress,
+              scale_y = effective_progress
             },
             radius = (1.0 - effective_progress) * 0.5,
           }
         end
       '';
-  };
 
+      blur_fade = ''
+        function(params)
+          local progress = params.progress
+          local time_factor = params.time_factor
+          
+          local opacity = progress
+          
+          return {
+            filters = {          
+              blur = 20,
+              opacity = opacity,
+            },
+          }
+        end
+      '';
+
+      full_filter_showcase = ''
+        function(params)
+          local progress = math.max(0.0, math.min(1.0, params.progress or 0))
+          local time_factor = params.time_factor or 0
+          local inv_progress = 1.0 - progress
+          local pulse = 0.5 + 0.5 * math.sin(time_factor * math.pi * 2)
+
+          -- Scale from 0 to 1.0 so it looks like it's getting closer and closer
+          local scale = progress
+          
+          -- Center the image: position = 0.5 - (scale * 0.5)
+          local center_offset = 0.5 - (scale * 0.5)
+
+          return {
+            transforms = {
+              translate = { center_offset, center_offset },
+              scale_x = scale,
+              scale_y = scale,
+            },
+            radius = 0.2 * inv_progress,
+            rotation = inv_progress * 360 * math.pi * 2,
+            filters = {
+              opacity = 0.2 + 0.8 * progress,
+              brightness = 0.5 * inv_progress,
+              contrast = 0.5 + 0.5 * progress,
+              saturation = 0.5 + 0.5 * progress,
+              hue_rotate = 180 * inv_progress,
+              sepia = 0.5 * inv_progress,
+              invert = 0.5 * inv_progress,
+              grayscale = 0.5 * inv_progress,
+              blur = 15 * inv_progress,
+              blur_color = {
+                0.3 * inv_progress,
+                0.1 * inv_progress,
+                0.2 * inv_progress,
+                1.0
+              },
+              skew = {
+                30 * inv_progress,
+                15 * math.sin(time_factor * math.pi)
+              },
+            },
+          }
+        end
+      '';
+
+      rotate = ''
+        function(params)
+          local progress = params.progress
+          local size = 0.6
+          return {
+            transforms = {
+              translate = { 0.5 - size * 0.5, 0.5 - size * 0.5 },
+              scale_x = size,
+              scale_y = size,
+            },
+            rotation = progress * 360,
+          }
+        end
+      '';
+    };
+  };
 }
