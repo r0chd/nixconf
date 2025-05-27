@@ -39,8 +39,8 @@
       systemPackages = with pkgs; [
         uutils-coreutils-noprefix
         (writeShellScriptBin "mkUser" (builtins.readFile ./mkUser.sh))
-        (writeShellScriptBin "shell" ''nix shell /var/lib/nixconf#nixosConfigurations.${hostname}.pkgs.$1'')
-        (writeShellScriptBin "run" ''nix run /var/lib/nixconf#nixosConfigurations.${hostname}.pkgs.$1'')
+        (writeShellScriptBin "shell" ''nix shell ''${NH_FLAKE}#nixosConfigurations.${hostname}.pkgs.$1'')
+        (writeShellScriptBin "run" ''nix run ''${NH_FLAKE}#nixosConfigurations.${hostname}.pkgs.$1'')
         glib
       ];
       variables.HOME_MANAGER_BACKUP_EXT = "bak";

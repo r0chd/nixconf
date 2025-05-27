@@ -32,8 +32,8 @@
         enable = true;
         settings = {
           devices = {
-            laptop.id = "6MT4MX2-ON22DDI-KKF46LZ-XALOSVK-3ZFV55O-OACNX2G-UCNI5JI-EOMBKAR";
-            laptop-lenovo.id = "BNERVG4-7SCAOKG-FQBVLLE-GRBOSXA-DHUI2CL-U3LI3FE-FDJQHKP-362SJQD";
+            laptop.id = "RCRE2U4-2IJVC3Q-UQFV2CG-BRVTZV6-YHNCBPP-5RC4LHS-KNDGUCW-TBCRZQ7";
+            laptop-lenovo.id = "Q2FHUUI-DZ6YABO-TJ2F45Y-VYXKAZT-X3UN5R4-CY6LP4K-VEBZYMD-XFKTEAZ";
             rpi.id = "GHWM5H6-XNTMGWE-BPB3LVW-ODDSP4M-GKVP5FX-AWC23Q2-H7F6WZB-KVY5FQ5";
           };
           folders = {
@@ -62,8 +62,8 @@
           command "$@" > /dev/null 2>&1 &
           disown
         '')
-        (writeShellScriptBin "shell" ''nix shell /var/lib/nixconf#homeConfigurations.${username}@${hostname}.pkgs.$1'')
-        (writeShellScriptBin "run" ''nix run /var/lib/nixconf#homeConfigurations.${username}@${hostname}.pkgs.$1'')
+        (writeShellScriptBin "shell" ''nix shell ''${NH_FLAKE}#homeConfigurations.${username}@${hostname}.pkgs.$1'')
+        (writeShellScriptBin "run" ''nix run ''${NH_FLAKE}#homeConfigurations.${username}@${hostname}.pkgs.$1'')
       ];
       homeDirectory = "/home/${username}";
       stateVersion = "25.11";

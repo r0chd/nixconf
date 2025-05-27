@@ -1,0 +1,8 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: k3s-nuc-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.30.100-192.168.30.150

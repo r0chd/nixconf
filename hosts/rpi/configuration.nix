@@ -65,6 +65,7 @@
       80
       443
       6443
+      3000
       30080
     ];
   };
@@ -84,9 +85,13 @@
   services = {
     tailscale.authKeyFile = config.sops.secrets.tailscale.path;
     k3s = {
-      enable = false;
+      enable = true;
       tokenFile = config.sops.secrets.k3s.path;
       clusterInit = true;
+      extraFlags = [
+        "--disable traefik"
+        "--disable servicelb"
+      ];
     };
 
     minecraft-servers = {

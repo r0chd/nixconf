@@ -168,6 +168,20 @@
             };
           } // mkUserProfiles hostUsers;
         };
+
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
+      forAllSystems =
+        function:
+        nixpkgs.lib.genAttrs systems (
+          system:
+          let
+            pkgs = import nixpkgs { inherit system; };
+          in
+          function pkgs
+        );
     in
     with nixpkgs;
     {
@@ -200,6 +214,10 @@
         |> lib.mapAttrs (hostname: attrs: mkDroid hostname attrs);
 
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+
+      devShells = forAllSystems (pkgs: {
+        default = pkgs.callPackage ./shell.nix { };
+      });
     };
 
   inputs = {
