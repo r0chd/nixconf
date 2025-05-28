@@ -1,9 +1,4 @@
-{
-  username,
-  config,
-  pkgs,
-  ...
-}:
+{ config, pkgs, ... }:
 {
   services.ssh-agent.enable = true;
   programs.ssh = {
@@ -22,7 +17,7 @@
         user = "git";
         forwardAgent = true;
         identitiesOnly = true;
-        identityFile = [ config.sops.secrets."${username}/ssh".path ];
+        identityFile = [ config.sops.secrets."${config.home.username}/ssh".path ];
       };
     };
   };

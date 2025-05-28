@@ -3,7 +3,7 @@
   lib,
   config,
   systemUsers,
-  hostname,
+  hostName,
   inputs,
   system_type,
   ...
@@ -18,7 +18,7 @@
     ./services
     ./documentation
     ./programs
-    ../hosts/${hostname}/configuration.nix
+    ../hosts/${hostName}/configuration.nix
     ../theme
   ];
 
@@ -27,16 +27,20 @@
   config = {
     nixpkgs.overlays = import ../overlays inputs config;
 
-    networking.hosts = {
-      "laptop.tail570bfd.ts.net" = [ "laptop" ];
-      "iphone-13-pro.tail570bfd.ts.net" = [ "iphone-13-pro" ];
-      "laptop-lenovo.tail570bfd.ts.net" = [ "laptop-lenovo" ];
-      "rpi.tail570bfd.ts.net" = [ "rpi" ];
-      "xiaomi-m2002j9g.tail570bfd.ts.net" = [ "xiaomi-m2002j9g" ];
+    networking = {
+      inherit hostName;
+      hosts = {
+        "laptop.tail570bfd.ts.net" = [ "laptop" ];
+        "iphone-13-pro.tail570bfd.ts.net" = [ "iphone-13-pro" ];
+        "laptop-lenovo.tail570bfd.ts.net" = [ "laptop-lenovo" ];
+        "rpi.tail570bfd.ts.net" = [ "rpi" ];
+        "xiaomi-m2002j9g.tail570bfd.ts.net" = [ "xiaomi-m2002j9g" ];
+      };
     };
 
     environment = {
       systemPackages = with pkgs; [
+        deploy-rs.deploy-rs
         uutils-coreutils-noprefix
         (writeShellScriptBin "mkUser" (builtins.readFile ./mkUser.sh))
         (writeShellScriptBin "shell" ''nix shell ''${NH_FLAKE}#nixosConfigurations.${hostname}.pkgs.$1'')

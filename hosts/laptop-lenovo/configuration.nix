@@ -75,7 +75,13 @@
     };
 
     impermanence.enable = true;
-    tailscale.authKeyFile = config.sops.secrets.tailscale.path;
+    tailscale = {
+      authKeyFile = config.sops.secrets.tailscale.path;
+      funnel = {
+        enable = true;
+        port = 8080;
+      };
+    };
   };
 
   time.timeZone = "Europe/Warsaw";

@@ -1,11 +1,9 @@
-{ pkgs, hostname, ... }:
+{ pkgs, ... }:
 {
   imports = [
     ./wireless
     ./ssh
   ];
-
-  networking.hostName = hostname;
 
   boot.initrd = {
     #network.enable = true;

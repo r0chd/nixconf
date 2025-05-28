@@ -5,7 +5,6 @@
   config,
   lib,
   systemUsers,
-  hostname,
   ...
 }:
 let
@@ -32,7 +31,7 @@ in
           name = "${user}/password";
           value = {
             neededForUsers = true;
-            sopsFile = ../../../hosts/${hostname}/users/${user}/secrets/secrets.yaml;
+            sopsFile = ../../../hosts/${config.networking.hostName}/users/${user}/secrets/secrets.yaml;
           };
         }
         {
@@ -40,13 +39,13 @@ in
           value = {
             owner = user;
             path = "/home/${user}/.ssh/id_ed25519";
-            sopsFile = ../../../hosts/${hostname}/users/${user}/secrets/secrets.yaml;
+            sopsFile = ../../../hosts/${config.networking.hostName}/users/${user}/secrets/secrets.yaml;
           };
         }
       ])
       |> lib.listToAttrs;
 
-    defaultSopsFile = ../../../hosts/${hostname}/secrets/secrets.yaml;
+    defaultSopsFile = ../../../hosts/${config.networking.hostName}/secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     age = {
       sshKeyPaths = [ "${root}/.ssh/id_ed25519" ];
@@ -56,7 +55,7 @@ in
 
   environment = {
     systemPackages = with pkgs; [ sops ];
-    shellAliases.opensops = "SOPS_AGE_KEY_FILE=\"${config.sops.age.keyFile}\" sops ${std.dirs.config}/hosts/${hostname}/secrets/secrets.yaml";
+    shellAliases.opensops = "SOPS_AGE_KEY_FILE=\"${config.sops.age.keyFile}\" sops ${std.dirs.config}/hosts/${config.networking.hostName}/secrets/secrets.yaml";
   };
 
   system.activationScripts.sopsGenerateKey =

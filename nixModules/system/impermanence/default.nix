@@ -3,7 +3,6 @@
   pkgs,
   config,
   inputs,
-  hostname,
   systemUsers,
   ...
 }:
@@ -192,8 +191,8 @@ in
       inherit (config.environment.persist) files;
     };
 
-    systemd.services.activate-home-manager = lib.mkIf config.services.impermanence.enable {
-      enable = true;
+    systemd.services.activate-home-manager = {
+      inherit (config.services.impermanence) enable;
       description = "Activate home manager";
       wantedBy = [ "default.target" ];
       requiredBy = [ "systemd-user-sessions.service" ];
@@ -208,7 +207,7 @@ in
       script = lib.concatMapStrings (user: ''
         if [ ! -L "/persist/home/${user}/.local/state/nix/profiles/home-manager" ]; then
           chown -R ${user}:users /home/${user}/.ssh
-          sudo -u ${user} home-manager switch --flake "/var/lib/nixconf#${user}@${hostname}" --no-write-lock-file 
+          sudo -u ${user} home-manager switch --flake "/var/lib/nixconf#${user}@${config.networking.hostName}" --no-write-lock-file 
           exit 0
         fi
         chown -R ${user}:users /home/${user}/.ssh

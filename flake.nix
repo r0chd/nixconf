@@ -60,17 +60,17 @@
       };
 
       mkHost =
-        hostname: attrs:
+        hostName: attrs:
         let
           systemUsers = attrs.users;
-          system_type = hosts.${hostname}.type;
+          system_type = hosts.${hostName}.type;
           std = import ./std { inherit (nixpkgs) lib; };
         in
         nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit
               inputs
-              hostname
+              hostName
               systemUsers
               system_type
               std
@@ -89,21 +89,21 @@
         };
 
       mkDroid =
-        hostname: attrs:
+        hostName: attrs:
         let
-          system = hosts.${hostname}.arch;
+          system = hosts.${hostName}.arch;
         in
         nix-on-droid.lib.nixOnDroidConfiguration {
           pkgs = import nixpkgs { inherit system; };
-          modules = [ ./hosts/${hostname} ];
+          modules = [ ./hosts/${hostName} ];
         };
 
       mkHome =
-        hostname: username:
+        hostName: username:
         let
-          system = hosts.${hostname}.arch;
+          system = hosts.${hostName}.arch;
           pkgs = import nixpkgs { inherit system; };
-          shell = "${hosts.${hostname}.users.${username}.shell}";
+          shell = "${hosts.${hostName}.users.${username}.shell}";
         in
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
@@ -111,10 +111,10 @@
             inherit
               inputs
               username
-              hostname
+              hostName
               shell
               ;
-            system_type = hosts.${hostname}.type;
+            system_type = hosts.${hostName}.type;
             std = import ./std { inherit (pkgs) lib; };
           };
 
@@ -126,9 +126,9 @@
         };
 
       mkNode =
-        hostname: attrs:
+        hostName: attrs:
         let
-          system = hosts.${hostname}.arch;
+          system = hosts.${hostName}.arch;
           pkgs = import nixpkgs { inherit system; };
           deployPkgs = import nixpkgs {
             inherit system;
@@ -143,7 +143,7 @@
             ];
           };
 
-          hostUsers = hosts.${hostname}.users or { };
+          hostUsers = hosts.${hostName}.users or { };
           mkUserProfiles =
             users:
             users
@@ -153,18 +153,18 @@
               value = {
                 inherit user;
                 profilePath = "/home/${user}/.local/state/nix/profiles/profile";
-                path = deployPkgs.deploy-rs.lib.activate.custom (mkHome hostname user).activationPackage "$PROFILE/activate";
+                path = deployPkgs.deploy-rs.lib.activate.custom (mkHome hostName user).activationPackage "$PROFILE/activate";
               };
             })
             |> builtins.listToAttrs;
         in
         {
-          inherit hostname;
+          hostname = hostName;
           profiles = {
             system = {
               user = "root";
               interactiveSudo = true;
-              path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostname};
+              path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostName};
             };
           } // mkUserProfiles hostUsers;
         };
@@ -188,11 +188,11 @@
       deploy.nodes =
         hosts
         |> lib.filterAttrs (_: attrs: attrs.type != "mobile")
-        |> lib.mapAttrs (hostname: attrs: mkNode hostname attrs);
+        |> lib.mapAttrs (hostName: attrs: mkNode hostName attrs);
       nixosConfigurations =
         hosts
         |> lib.filterAttrs (_: attrs: attrs.type != "mobile")
-        |> lib.mapAttrs (hostname: attrs: mkHost hostname attrs);
+        |> lib.mapAttrs (hostName: attrs: mkHost hostName attrs);
       homeConfigurations =
         hosts
         |> lib.filterAttrs (_: attrs: attrs.type != "mobile")
@@ -211,12 +211,12 @@
       nixOnDroidConfigurations =
         hosts
         |> lib.filterAttrs (_: attrs: attrs.type != "server" && attrs.type != "desktop")
-        |> lib.mapAttrs (hostname: attrs: mkDroid hostname attrs);
+        |> lib.mapAttrs (hostName: attrs: mkDroid hostName attrs);
 
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 
       devShells = forAllSystems (pkgs: {
-        default = pkgs.callPackage ./shell.nix { };
+        default = import ./shell.nix { inherit pkgs; };
       });
     };
 

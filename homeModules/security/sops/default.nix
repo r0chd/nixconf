@@ -3,9 +3,8 @@
   config,
   std,
   lib,
-  hostname,
+  hostName,
   inputs,
-  username,
   ...
 }:
 {
@@ -13,28 +12,28 @@
 
   sops = {
     secrets = {
-      "${username}/ssh" = { };
-      "${username}/password" = { };
+      "${config.home.username}/ssh" = { };
+      "${config.home.username}/password" = { };
     };
-    defaultSopsFile = ../../../hosts/${hostname}/users/${config.home.username}/secrets/secrets.yaml;
+    defaultSopsFile = ../../../hosts/${hostName}/users/${config.home.username}/secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     age = {
-      sshKeyPaths = [ "/home/${username}/.ssh/id_ed25519" ];
-      keyFile = "/home/${username}/.config/sops/age/keys.txt";
+      sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
+      keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
     };
   };
   home = {
     activation.sopsGenerateKey =
       let
-        escapedKeyFile = lib.escapeShellArg "/home/${username}/.config/sops/age/keys.txt";
-        sshKeyPath = "/home/${username}/.ssh/id_ed25519";
+        escapedKeyFile = lib.escapeShellArg "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+        sshKeyPath = "${config.home.homeDirectory}/.ssh/id_ed25519";
       in
       ''
         mkdir -p $(dirname ${escapedKeyFile})
         ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
       '';
 
-    shellAliases.opensops = "sops ${std.dirs.config}/hosts/${hostname}/users/${username}/secrets/secrets.yaml";
+    shellAliases.opensops = "sops ${std.dirs.config}/hosts/${hostName}/users/${config.home.username}/secrets/secrets.yaml";
     packages = with pkgs; [ sops ];
   };
 }

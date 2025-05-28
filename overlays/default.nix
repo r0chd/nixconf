@@ -17,7 +17,7 @@ inputs: config: [
   })
 
   inputs.niri.overlays.niri
-  inputs.deploy-rs.overlay
+  inputs.deploy-rs.overlays.default
   inputs.nixpkgs-wayland.overlay
   inputs.nix-minecraft.overlay
 ]

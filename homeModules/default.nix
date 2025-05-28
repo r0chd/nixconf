@@ -4,7 +4,7 @@
   username,
   inputs,
   config,
-  hostname,
+  hostName,
   system_type,
   ...
 }:
@@ -18,7 +18,7 @@
     ./security
     ./networking
     ./services
-    ../hosts/${hostname}/users/${username}/configuration.nix
+    ../hosts/${hostName}/users/${username}/configuration.nix
     ../theme
   ];
 
@@ -32,8 +32,8 @@
         enable = true;
         settings = {
           devices = {
-            laptop.id = "RCRE2U4-2IJVC3Q-UQFV2CG-BRVTZV6-YHNCBPP-5RC4LHS-KNDGUCW-TBCRZQ7";
-            laptop-lenovo.id = "Q2FHUUI-DZ6YABO-TJ2F45Y-VYXKAZT-X3UN5R4-CY6LP4K-VEBZYMD-XFKTEAZ";
+            laptop.id = "LEAMXII-NKCVKIN-E57LYGM-BH4LU2M-DYVNWIQ-VU4QGGN-UYMGRRN-D6Q44AI";
+            laptop-lenovo.id = "WDQSKWW-TUA4E3I-PJOAPWK-LBXAWWC-7AJHLWN-ILXXBSQ-J72XNQE-RIAO7QV";
             rpi.id = "GHWM5H6-XNTMGWE-BPB3LVW-ODDSP4M-GKVP5FX-AWC23Q2-H7F6WZB-KVY5FQ5";
           };
           folders = {
@@ -56,14 +56,15 @@
       home-manager.enable = true;
     };
     home = {
+      persist.directories = [ ".local/state/syncthing" ];
       inherit username;
       packages = with pkgs; [
         (writeShellScriptBin "nb" ''
           command "$@" > /dev/null 2>&1 &
           disown
         '')
-        (writeShellScriptBin "shell" ''nix shell ''${NH_FLAKE}#homeConfigurations.${username}@${hostname}.pkgs.$1'')
-        (writeShellScriptBin "run" ''nix run ''${NH_FLAKE}#homeConfigurations.${username}@${hostname}.pkgs.$1'')
+        (writeShellScriptBin "shell" ''nix shell ''${NH_FLAKE}#homeConfigurations.${username}@${hostName}.pkgs.$1'')
+        (writeShellScriptBin "run" ''nix run ''${NH_FLAKE}#homeConfigurations.${username}@${hostName}.pkgs.$1'')
       ];
       homeDirectory = "/home/${username}";
       stateVersion = "25.11";

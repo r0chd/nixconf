@@ -1,7 +1,7 @@
 {
   lib,
   systemUsers,
-  hostname,
+  config,
   ...
 }:
 {
@@ -37,7 +37,7 @@
   users.users = lib.genAttrs (systemUsers |> builtins.attrNames) (
     user:
     let
-      keysDir = ../../../hosts/${hostname}/users/${user}/keys;
+      keysDir = ../../../hosts/${config.networking.hostName}/users/${user}/keys;
       keyFiles = if (builtins.pathExists keysDir) then builtins.readDir keysDir else { };
       keysList =
         if keyFiles == { } then
