@@ -4,6 +4,11 @@ mkShell {
   buildInputs = [
     helm-ls
     helmfile
+    terraform-ls
+    (terraform.withPlugins (p: [
+      p.null
+      p.external
+    ]))
     (wrapHelm kubernetes-helm {
       plugins = [
         kubernetes-helmPlugins.helm-diff

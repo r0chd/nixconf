@@ -73,7 +73,8 @@
         {
           root = {
             isNormalUser = false;
-            hashedPassword = "*";
+            initialPassword = "pass";
+            #hashedPassword = "*";
           };
         }
         // lib.mapAttrs (name: value: {

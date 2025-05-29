@@ -68,7 +68,6 @@
         let
           systemUsers = attrs.users;
           system_type = hosts.${hostName}.type;
-          std = import ./std { inherit (nixpkgs) lib; };
         in
         nixpkgs.lib.nixosSystem {
           specialArgs = {
@@ -77,7 +76,6 @@
               hostName
               systemUsers
               system_type
-              std
               ;
           };
 
@@ -119,7 +117,6 @@
               shell
               ;
             system_type = hosts.${hostName}.type;
-            std = import ./std { inherit (pkgs) lib; };
           };
 
           modules = [

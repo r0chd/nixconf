@@ -21,6 +21,11 @@ cat <<EOF > "$BASE_CONFIG_PATH/configuration.nix"
 {
   imports = [ ./hardware-configuration.nix ];
 
+  system = {
+    bootloader.variant = "systemd-boot";
+    fileSystem = "btrfs";
+  };
+
   time.timeZone = "$TIMEZONE";
   i18n.defaultLocale = "$LOCALE";
 }

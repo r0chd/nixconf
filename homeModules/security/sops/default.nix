@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  std,
   lib,
   hostName,
   inputs,
@@ -33,7 +32,7 @@
         ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
       '';
 
-    shellAliases.opensops = "sops ${std.dirs.config}/hosts/${hostName}/users/${config.home.username}/secrets/secrets.yaml";
+    shellAliases.opensops = "sops /var/lib/nixconf/hosts/${hostName}/users/${config.home.username}/secrets/secrets.yaml";
     packages = with pkgs; [ sops ];
   };
 }

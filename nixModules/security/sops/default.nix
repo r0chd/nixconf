@@ -1,7 +1,6 @@
 {
   inputs,
   pkgs,
-  std,
   config,
   lib,
   systemUsers,
@@ -55,7 +54,7 @@ in
 
   environment = {
     systemPackages = with pkgs; [ sops ];
-    shellAliases.opensops = "SOPS_AGE_KEY_FILE=\"${config.sops.age.keyFile}\" sops ${std.dirs.config}/hosts/${config.networking.hostName}/secrets/secrets.yaml";
+    shellAliases.opensops = "SOPS_AGE_KEY_FILE=\"${config.sops.age.keyFile}\" sops /var/lib/nixconf/hosts/${config.networking.hostName}/secrets/secrets.yaml";
   };
 
   system.activationScripts.sopsGenerateKey =
