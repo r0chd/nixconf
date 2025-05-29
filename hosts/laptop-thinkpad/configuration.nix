@@ -1,12 +1,21 @@
-{ ... }:
+{ config, ... }:
 {
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
   ];
 
+  sops.secrets = {
+    tailscale = { };
+  };
+
+  services.tailscale.authKeyFile = config.sops.secrets.tailscale.path;
+
   system = {
-    bootloader.variant = "systemd-boot";
+    bootloader = {
+      variant = "grub";
+      legacy = true;
+    };
     fileSystem = "btrfs";
   };
 

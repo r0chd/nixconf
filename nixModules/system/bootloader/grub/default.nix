@@ -5,8 +5,8 @@ in
 {
   boot.loader.grub = lib.mkIf (cfg.variant == "grub") {
     enable = true;
-    device = "nodev";
-    efiSupport = true;
+    device = lib.mkIf (!cfg.legacy) "nodev";
+    efiSupport = !cfg.legacy;
     useOSProber = true;
   };
 }

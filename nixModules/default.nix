@@ -33,6 +33,7 @@
         "laptop.tail570bfd.ts.net" = [ "laptop" ];
         "iphone-13-pro.tail570bfd.ts.net" = [ "iphone-13-pro" ];
         "laptop-lenovo.tail570bfd.ts.net" = [ "laptop-lenovo" ];
+        "laptop-thinkpad.tail570bfd.ts.net" = [ "laptop-lenovo" ];
         "rpi.tail570bfd.ts.net" = [ "rpi" ];
         "xiaomi-m2002j9g.tail570bfd.ts.net" = [ "xiaomi-m2002j9g" ];
       };
@@ -73,8 +74,7 @@
         {
           root = {
             isNormalUser = false;
-            initialPassword = "pass";
-            #hashedPassword = "*";
+            hashedPassword = "*";
           };
         }
         // lib.mapAttrs (name: value: {

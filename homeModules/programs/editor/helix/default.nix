@@ -124,6 +124,7 @@
       };
       settings = {
         editor = {
+          file-picker.hidden = true;
           true-color = true;
           color-modes = true;
           auto-pairs = true;

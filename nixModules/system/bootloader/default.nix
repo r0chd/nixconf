@@ -9,7 +9,7 @@ let
 in
 {
   options.system.bootloader = {
-    silent = lib.mkEnableOption "Enable silent boot";
+    silent = lib.mkEnableOption "silent boot";
     variant = lib.mkOption {
       type = lib.types.enum [
         "grub"
@@ -18,6 +18,7 @@ in
         "none"
       ];
     };
+    legacy = lib.mkEnableOption "legacy boot";
   };
 
   imports = [
@@ -102,7 +103,7 @@ in
         "firewire-core"
       ];
 
-      loader.efi = {
+      loader.efi = lib.mkIf (!cfg.legacy) {
         canTouchEfiVariables = true;
         efiSysMountPoint = "/boot";
       };

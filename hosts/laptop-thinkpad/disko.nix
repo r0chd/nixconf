@@ -9,17 +9,16 @@
           boot = {
             name = "boot";
             size = "1M";
-            type = "EF00";
+            type = "EF02";
           };
-          ESP = {
-            name = "ESP";
+          root = {
+            name = "root";
             size = "500M";
-            type = "EF00";
+            type = "8300";
             content = {
               type = "filesystem";
-              format = "vfat";
+              format = "ext4";
               mountpoint = "/boot";
-              mountOptions = [ "umask=0077" ];
             };
           };
           swap = {
@@ -41,7 +40,6 @@
         };
       };
     };
-
     lvm_vg = {
       root_vg = {
         type = "lvm_vg";
