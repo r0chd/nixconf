@@ -200,10 +200,7 @@ in
       serviceConfig = {
         Type = "oneshot";
       };
-      environment = {
-        PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}/bin:${pkgs.sudo}/bin:${pkgs.coreutils}/bin:$PATH";
-        NH_FLAKE = "/var/lib/nixconf";
-      };
+      environment.PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}/bin:${pkgs.sudo}/bin:${pkgs.coreutils}/bin:$PATH";
       script = lib.concatMapStrings (user: ''
         if [ ! -L "/persist/home/${user}/.local/state/nix/profiles/home-manager" ]; then
           chown -R ${user}:users /home/${user}/.ssh

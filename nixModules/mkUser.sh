@@ -1,6 +1,8 @@
 #!/bin/sh
 
-HOST=$(hostname)
+echo -n "Enter hostname: "
+read HOST
+
 if [ -z "$HOST" ]; then
   echo "Error: Could not determine hostname"
   exit 1
@@ -59,7 +61,23 @@ if [ ${#PASSWORD} -lt 8 ]; then
   fi
 fi
 
-PASSWORD=$(mkpasswd $PASSWORD)
+PASSWORD=$(mkpasswd "$PASSWORD")
+
+echo -n "Enter email: "
+read EMAIL
+
+if [ -z "$EMAIL" ]; then
+  echo "Error: Email cannot be empty"
+  exit 1
+fi
+
+echo -n "Enter preferred editor (e.g. hx, nvim, vim): "
+read EDITOR
+
+if [ -z "$EDITOR" ]; then
+  echo "Error: Editor cannot be empty"
+  exit 1
+fi
 
 mkdir -p "$CONFIG_PATH"/{secrets,keys}
 if [ $? -ne 0 ]; then
@@ -70,18 +88,9 @@ fi
 cat <<EOF > "$CONFIG_PATH/configuration.nix"
 { ... }:
 {
-  environment.terminal.program = "kitty";
-
-  email = "100892812+unixpariah@users.noreply.github.com";
-
-  programs.editor = "hx";
-
-  stylix = {
-    enable = true;
-    theme = "catppuccin-mocha";
-  };
+  email = "$EMAIL";
+  programs.editor = "$EDITOR";
 }
-
 EOF
 
 echo "Generating SSH and Age keys..."
@@ -104,13 +113,7 @@ if [ $? -ne 0 ] || [ -z "$AGE_PUBLIC_KEY" ]; then
   exit 1
 fi
 
-ROOT_AGE_KEY_PATH="/root/.config/sops/age/keys.txt"
-if [ ! -f "$ROOT_AGE_KEY_PATH" ]; then
-  echo "Error: Root Age key not found at $ROOT_AGE_KEY_PATH"
-  exit 1
-fi
-
-ROOT_AGE_PUBLIC_KEY=$(cat "$ROOT_AGE_KEY_PATH" | nix shell nixpkgs#age -c age-keygen -y -)
+ROOT_AGE_PUBLIC_KEY=$(sed -n 's/.*&root \(age1[a-z0-9]*\).*/\1/p' "$BASE_CONFIG_PATH/.sops.yaml")
 if [ $? -ne 0 ] || [ -z "$ROOT_AGE_PUBLIC_KEY" ]; then
   echo "Error: Failed to read root's Age public key"
   exit 1

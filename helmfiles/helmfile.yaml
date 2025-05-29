@@ -1,31 +1,14 @@
-repositories:
-  - name: ingress-nginx
-    url: https://kubernetes.github.io/ingress-nginx
-  - name: metallb
-    url: https://metallb.github.io/metallb
-  - name: strrl.dev
-    url: https://helm.strrl.dev
+helmfiles:
+  - path: global/repositories.yaml
+  - path: components/metallb/helmfile.yaml
+  - path: components/ingress-nginx/helmfile.yaml
+  - path: components/flannel/helmfile.yaml
 
-releases:
-  - name: metallb
-    namespace: metallb-system
-    createNamespace: true
-    chart: metallb/metallb
-    version: 0.14.5
-
-  - name: ingress-nginx
-    namespace: ingress-nginx
-    createNamespace: true
-    chart: ingress-nginx/ingress-nginx
-
-  - name: cloudflare-tunnel-ingress-controller
-    namespace: cloudflare-tunnel-ingress-controller
-    createNamespace: true
-    chart: strrl.dev/cloudflare-tunnel-ingress-controller
-    secrets:
-      - secrets/cloudflare-values.yaml
-    values:
-      - cloudflare:
-          apiToken: {{ .cloudflare.apiToken }}
-          accountId: {{ .cloudflare.accountId }}
-          tunnelName: {{ .cloudflare.tunnelName }}
+#releases:
+  #- name: prometheus
+    #namespace: monitoring
+    #createNamespace: true
+    #chart: prometheus-community/kube-prometheus-stack
+    #values:
+      #- ./values.yaml
+      #

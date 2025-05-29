@@ -1,0 +1,8 @@
+releases:
+  - name: flannel
+    namespace: kube-system
+    chart: flannel/flannel
+    installed: true
+    set:
+      - name: podCidr
+        value: "10.42.0.0/16"

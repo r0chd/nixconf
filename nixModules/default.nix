@@ -43,6 +43,7 @@
         deploy-rs.deploy-rs
         uutils-coreutils-noprefix
         (writeShellScriptBin "mkUser" (builtins.readFile ./mkUser.sh))
+        (writeShellScriptBin "mkHost" (builtins.readFile ./mkHost.sh))
         (writeShellScriptBin "shell" ''nix shell ''${NH_FLAKE}#nixosConfigurations.${hostname}.pkgs.$1'')
         (writeShellScriptBin "run" ''nix run ''${NH_FLAKE}#nixosConfigurations.${hostname}.pkgs.$1'')
         glib
