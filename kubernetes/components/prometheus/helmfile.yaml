@@ -1,0 +1,7 @@
+releases:
+  - name: prometheus
+    namespace: monitoring
+    createNamespace: true
+    chart: prometheus-community/kube-prometheus-stack
+    values:
+      - ./values.yaml

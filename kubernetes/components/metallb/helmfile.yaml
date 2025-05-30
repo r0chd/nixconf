@@ -1,15 +1,9 @@
-repositories:
-  - name: metallb
-    url: https://metallb.github.io/metallb
-
 releases:
   - name: metallb
     namespace: metallb-system
     createNamespace: true
     chart: metallb/metallb
     version: 0.14.5
-    hooks:
-      - events: ["postsync"]
-        showlogs: true
-        command: "kubectl"
-        args: ["apply", "-f", "IPAddressPool.yaml", "-f", "L2Advertisement.yaml", "-n", "metallb-system"]
+    values:
+      - webhook:
+          enabled: true

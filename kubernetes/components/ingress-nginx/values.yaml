@@ -5,4 +5,9 @@ controller:
     default: true
     controllerValue: "k8s.io/ingress.nginx"
     parameters: {}
+  admissionWebhooks:
+    enabled: false
+    patch:
+      enabled: false
 ingressClass: ingress-nginx
+

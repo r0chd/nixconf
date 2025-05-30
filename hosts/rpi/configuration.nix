@@ -25,7 +25,6 @@
       "cgroup_enable=memory"
       "cgroup_memory=1"
     ];
-    plymouth.enable = lib.mkForce false;
   };
 
   raspberry-pi-nix = {

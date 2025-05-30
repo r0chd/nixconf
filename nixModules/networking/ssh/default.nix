@@ -30,6 +30,8 @@
         AllowStreamLocalForwarding no
         AuthenticationMethods publickey
         PermitRootLogin no
+        AcceptEnv *
+        PermitUserEnvironment yes
       '';
     };
   };

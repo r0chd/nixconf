@@ -32,9 +32,10 @@
         enable = true;
         settings = {
           devices = {
-            laptop.id = "LEAMXII-NKCVKIN-E57LYGM-BH4LU2M-DYVNWIQ-VU4QGGN-UYMGRRN-D6Q44AI";
-            laptop-lenovo.id = "WDQSKWW-TUA4E3I-PJOAPWK-LBXAWWC-7AJHLWN-ILXXBSQ-J72XNQE-RIAO7QV";
+            laptop.id = "F265KCD-YJPGOI2-SZJT5TH-FNDPNGU-S7CZGD6-75VIYU4-KN4OPOP-TVGCCQM";
+            laptop-lenovo.id = "C5GUBSH-TR5VRA4-F33RW3V-3GOA7KC-R2CKVNS-2BT7EJW-44CBERS-OELDGAJ";
             rpi.id = "GHWM5H6-XNTMGWE-BPB3LVW-ODDSP4M-GKVP5FX-AWC23Q2-H7F6WZB-KVY5FQ5";
+            laptop-thinkpad.id = "4G25JBC-D5FCDQR-TAVZASY-SS5Y2UV-JHCGHIJ-FIE4AXO-WJOQP6C-MKDKKAV";
           };
           folders = {
             "/var/lib/nixconf" = {
@@ -43,6 +44,7 @@
                 "laptop"
                 "rpi"
                 "laptop-lenovo"
+                "laptop-thinkpad"
               ];
             };
           };

@@ -3,12 +3,5 @@ helmfiles:
   - path: components/metallb/helmfile.yaml
   - path: components/ingress-nginx/helmfile.yaml
   - path: components/flannel/helmfile.yaml
-
-#releases:
-  #- name: prometheus
-    #namespace: monitoring
-    #createNamespace: true
-    #chart: prometheus-community/kube-prometheus-stack
-    #values:
-      #- ./values.yaml
-      #
+  - path: components/longhorn/helmfile.yaml
+  - path: components/prometheus/helmfile.yaml

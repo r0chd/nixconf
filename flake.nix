@@ -27,22 +27,22 @@
             };
           };
         };
-        rpi = {
-          arch = "aarch64-linux";
-          type = "server";
-          users = {
-            unixpariah = {
-              root.enable = true;
-              shell = "nushell";
-            };
-          };
-        };
+        #rpi = {
+        #arch = "aarch64-linux";
+        #type = "server";
+        #users = {
+        #unixpariah = {
+        #root.enable = true;
+        #shell = "nushell";
+        #};
+        #};
+        #};
         laptop-lenovo = {
           arch = "x86_64-linux";
           type = "server";
           users.unixpariah = {
             root.enable = true;
-            shell = "nushell";
+            shell = "bash";
           };
         };
         laptop-thinkpad = {
@@ -50,7 +50,7 @@
           type = "server";
           users.unixpariah = {
             root.enable = true;
-            shell = "nushell";
+            shell = "bash";
           };
         };
         mi10lite = {
@@ -58,7 +58,7 @@
           type = "mobile";
           users.unixpariah = {
             root.enable = true;
-            shell = "nushell";
+            shell = "bash";
           };
         };
       };

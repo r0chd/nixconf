@@ -57,6 +57,7 @@
     interfaces.eth0.useDHCP = true;
     firewall.allowedTCPPorts = [
       80
+      443
       6443
     ];
   };
@@ -69,19 +70,23 @@
   services = {
     k3s = {
       enable = true;
-      role = "agent";
-      serverAddr = "https://rpi:6443";
       tokenFile = config.sops.secrets.k3s.path;
+      clusterInit = true;
+      extraFlags = [
+        "--disable traefik"
+        "--disable servicelb"
+        "--write-kubeconfig-mode \"0644\""
+        "--disable local-storage"
+        "--kube-controller-manager-arg bind-address=0.0.0.0"
+        "--kube-proxy-arg metrics-bind-address=0.0.0.0"
+        "--kube-scheduler-arg bind-address=0.0.0.0"
+        "--etcd-expose-metrics true"
+        "--kubelet-arg containerd=/run/k3s/containerd/containerd.sock"
+      ];
     };
 
     impermanence.enable = true;
-    tailscale = {
-      authKeyFile = config.sops.secrets.tailscale.path;
-      funnel = {
-        enable = true;
-        port = 8080;
-      };
-    };
+    tailscale.authKeyFile = config.sops.secrets.tailscale.path;
   };
 
   time.timeZone = "Europe/Warsaw";

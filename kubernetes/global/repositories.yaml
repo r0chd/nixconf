@@ -7,3 +7,7 @@ repositories:
     url: https://flannel-io.github.io/flannel/
   - name: prometheus-community
     url: https://prometheus-community.github.io/helm-charts
+  - name: longhorn
+    url: https://charts.longhorn.io
+  - name: mojo2600
+    url: https://mojo2600.github.io/pihole-kubernetes
