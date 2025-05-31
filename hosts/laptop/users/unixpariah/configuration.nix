@@ -37,10 +37,7 @@
   };
 
   programs = {
-    git.signingKey = {
-      enable = true;
-      file = "${config.home.homeDirectory}/.ssh/id_yubikey.pub";
-    };
+    git.signingKeyFile = "${config.home.homeDirectory}/.ssh/id_yubikey.pub";
     nixcord.vesktop.enable = true;
     editor = "hx";
     zen.enable = true;

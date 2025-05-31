@@ -6,10 +6,7 @@
 
   programs = {
     tmux.enable = true;
-    git.signingKey = {
-      enable = true;
-      file = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
-    };
+    git.signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
     starship.enable = true;
     zoxide.enable = true;
     direnv.enable = true;
