@@ -22,8 +22,6 @@
     ../theme
   ];
 
-  options.email = lib.mkOption { type = lib.types.str; };
-
   config = {
     nixpkgs.overlays = import ../overlays inputs config;
 

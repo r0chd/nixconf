@@ -3,13 +3,16 @@ let
   cfg = config.programs.git;
 in
 {
-  options.programs.git.signingKeyFile = lib.mkOption { type = lib.types.nullOr lib.types.str; };
+  options.programs.git = {
+    signingKeyFile = lib.mkOption { type = lib.types.nullOr lib.types.str; };
+    email = lib.mkOption { type = lib.types.nullOr lib.types.str; };
+  };
 
   config = {
     programs.git = {
       enable = true;
       userName = config.home.username;
-      userEmail = config.email;
+      userEmail = cfg.email;
 
       signing = lib.mkIf (cfg.signingKeyFile != null) {
         key = cfg.signingKeyFile;
@@ -41,7 +44,7 @@ in
         ui.paginate = "never";
         user = {
           name = config.home.username;
-          email = config.email;
+          inherit (cfg) email;
         };
         signing = {
           behavior = "own";

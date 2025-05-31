@@ -37,7 +37,10 @@
   };
 
   programs = {
-    git.signingKeyFile = "${config.home.homeDirectory}/.ssh/id_yubikey.pub";
+    git = {
+      signingKeyFile = "${config.home.homeDirectory}/.ssh/id_yubikey.pub";
+      email = "100892812+unixpariah@users.noreply.github.com";
+    };
     nixcord.vesktop.enable = true;
     editor = "hx";
     zen.enable = true;
@@ -49,10 +52,7 @@
     direnv.enable = true;
     seto.enable = true;
     btop.enable = true;
-    keepassxc = {
-      enable = true;
-      database.files = [ "Passwords.kdbx" ];
-    };
+    keepassxc.enable = true;
     multiplexer = {
       enable = true;
       variant = "tmux";
@@ -95,8 +95,6 @@
 
     terminal.program = "ghostty";
   };
-
-  email = "100892812+unixpariah@users.noreply.github.com";
 
   stylix = {
     enable = true;
@@ -151,6 +149,7 @@
         ".yubico"
         "wallpapers"
       ];
+      files = [ "Passwords.kdbx" ];
     };
   };
 }

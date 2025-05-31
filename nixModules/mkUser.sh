@@ -88,8 +88,10 @@ fi
 cat <<EOF > "$CONFIG_PATH/configuration.nix"
 { ... }:
 {
-  email = "$EMAIL";
-  programs.editor = "$EDITOR";
+  programs = {
+    editor = "$EDITOR";
+    git.email = "$EMAIL";
+  };
 }
 EOF
 
