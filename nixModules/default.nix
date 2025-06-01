@@ -6,6 +6,7 @@
   hostName,
   inputs,
   system_type,
+  arch,
   ...
 }:
 {
@@ -25,7 +26,10 @@
   options.system_type = lib.mkEnableOption "";
 
   config = {
-    nixpkgs.overlays = import ../overlays inputs config;
+    nixpkgs = {
+      overlays = import ../overlays inputs config;
+      hostPlatform = arch;
+    };
 
     networking = {
       inherit hostName;
@@ -60,7 +64,11 @@
     };
 
     boot = {
-      kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+      kernelPackages =
+        if config.system.fileSystem == "zfs" then
+          lib.mkDefault pkgs.linuxPackages
+        else
+          lib.mkDefault pkgs.linuxPackages_latest;
       initrd.systemd.tpm2.enable = lib.mkDefault false;
     };
 
@@ -81,7 +89,8 @@
         {
           root = {
             isNormalUser = false;
-            hashedPassword = "*";
+            initialPassword = "pass";
+            #hashedPassword = "*";
           };
         }
         // lib.mapAttrs (name: value: {

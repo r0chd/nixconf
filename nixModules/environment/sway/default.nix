@@ -19,9 +19,7 @@
       enable = lib.mkForce true;
       settings = {
         screencast = {
-          chooser_cmd = lib.mkIf config.programs.seto.enable "${
-            inputs.seto.packages.${pkgs.system}.default
-          }/bin/seto -f %o";
+          chooser_cmd = "${inputs.seto.packages.${pkgs.system}.default}/bin/seto -f %o";
           chooser_type = "simple";
         };
       };

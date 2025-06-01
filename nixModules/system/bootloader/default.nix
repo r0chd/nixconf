@@ -34,7 +34,7 @@ in
       #network = config.systemd.network;
       #services.systemd-tmpfiles-setup.before = [ "sshd.service" ];
       #};
-      plymouth.enable = system_type == "desktop";
+      plymouth.enable = (system_type == "desktop" && config.stylix.enable);
       loader.systemd-boot.enable = lib.mkDefault false;
       supportedFilesystems = [ config.system.fileSystem ];
       kernelModules = [ "v4l2loopback" ];

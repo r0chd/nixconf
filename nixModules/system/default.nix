@@ -13,6 +13,7 @@
     type = lib.types.enum [
       "btrfs"
       "ext4"
+      "zfs"
     ];
   };
 }

@@ -27,6 +27,14 @@
             };
           };
         };
+        laptop-huawei = {
+          arch = "x86_64-linux";
+          type = "desktop";
+          users.unixpariah = {
+            root.enable = true;
+            shell = "nushell";
+          };
+        };
         #rpi = {
         #arch = "aarch64-linux";
         #type = "server";
@@ -68,6 +76,7 @@
         let
           systemUsers = attrs.users;
           system_type = hosts.${hostName}.type;
+          arch = hosts.${hostName}.arch;
         in
         nixpkgs.lib.nixosSystem {
           specialArgs = {
@@ -76,6 +85,7 @@
               hostName
               systemUsers
               system_type
+              arch
               ;
           };
 
