@@ -46,7 +46,6 @@
     zen.enable = true;
     nix-index.enable = true;
     fastfetch.enable = true;
-    fuzzel.enable = true;
     starship.enable = true;
     zoxide.enable = true;
     direnv.enable = true;

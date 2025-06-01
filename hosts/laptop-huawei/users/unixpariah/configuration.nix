@@ -3,10 +3,32 @@
   programs = {
     git.email = "100892812+unixpariah@users.noreply.github.com";
     editor = "hx";
+    multiplexer = {
+      enable = true;
+      variant = "tmux";
+    };
+    zen.enable = true;
+    nix-index.enable = true;
+    fastfetch.enable = true;
+    starship.enable = true;
+    zoxide.enable = true;
+    direnv.enable = true;
+    seto.enable = true;
+    btop.enable = true;
+    keepassxc.enable = true;
   };
 
   environment = {
     terminal.program = "ghostty";
+  };
+
+  services = {
+    impermanence.enable = false;
+  };
+
+  wayland.windowManager = {
+    hyprland.enable = false;
+    sway.enable = false;
   };
 
   stylix = {

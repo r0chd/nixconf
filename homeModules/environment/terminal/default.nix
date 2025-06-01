@@ -7,7 +7,7 @@
 }:
 let
   cfg = config.environment.terminal;
-  programBin = "${lib.getBin (pkgs.${cfg.program})}/${cfg.program}";
+  programExe = "${lib.getExe (pkgs.${cfg.program})}";
 in
 {
   imports = [
@@ -33,14 +33,14 @@ in
   config = lib.mkIf cfg.enable {
     wayland.windowManager = {
       hyprland.settings = {
-        exec-once = [ "uwsm app ${programBin}" ];
-        bind = [ "$mainMod+Shift, RETURN, exec, uwsm app ${programBin}" ];
+        exec-once = [ "uwsm app ${programExe}" ];
+        bind = [ "$mainMod+Shift, RETURN, exec, uwsm app ${programExe}" ];
       };
 
       sway.config = {
-        startup = [ { command = "sway workspace 1; uwsm app ${programBin}"; } ];
+        startup = [ { command = "sway workspace 1; uwsm app ${programExe}"; } ];
         keybindings = {
-          "Mod1+Shift+Return" = "exec uwsm app ${programBin}";
+          "Mod1+Shift+Return" = "exec uwsm app ${programExe}";
         };
       };
     };
@@ -50,7 +50,7 @@ in
           command = [
             "uwsm"
             "app"
-            "${programBin}"
+            "${programExe}"
           ];
         }
       ];
@@ -58,7 +58,7 @@ in
       binds."Alt+Shift+Return".action.spawn = [
         "uwsm"
         "app"
-        "${programBin}"
+        "${programExe}"
       ];
     };
   };

@@ -65,17 +65,17 @@ in
     ''
       mkdir -p $(dirname ${escapedKeyFile})
       ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
-    '';
-  #++ lib.concatMapStrings (
-  #user:
-  #let
-  #escapedKeyFile = lib.escapeShellArg "/home/${user}/.config/sops/age/keys.txt";
-  #sshKeyPath = "/home/${user}/.ssh/id_ed25519";
-  #in
-  #''
-  #mkdir -p $(dirname ${escapedKeyFile})
-  #${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
-  #chown -R ${user}:users /home/${user}/.config
-  #''
-  #) (lib.attrNames systemUsers);
+    ''
+    + lib.concatMapStrings (
+      user:
+      let
+        escapedUserKeyFile = lib.escapeShellArg "/home/${user}/.config/sops/age/keys.txt";
+        sshUserKeyPath = "/home/${user}/.ssh/id_ed25519";
+      in
+      ''
+        mkdir -p $(dirname ${escapedUserKeyFile})
+        ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshUserKeyPath} > ${escapedUserKeyFile}
+        chown -R ${user}:users /home/${user}/.config
+      ''
+    ) (lib.attrNames systemUsers);
 }

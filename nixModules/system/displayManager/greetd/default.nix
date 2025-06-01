@@ -1,15 +1,11 @@
-{
-  lib,
-  config,
-  ...
-}:
+{ lib, config, ... }:
 let
   cfg = config.system.displayManager;
 in
 {
   imports = [ ./tuigreet ];
 
-  config = lib.mkIf (cfg.enable && cfg.variant == "greetd") {
+  config = lib.mkIf cfg.enable {
     services.greetd.enable = true;
 
     programs.tuigreet = {

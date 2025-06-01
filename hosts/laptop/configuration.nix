@@ -63,7 +63,6 @@
       localNetworkGameTransfers.openFirewall = true;
       extraCompatPackages = with pkgs; [ proton-ge-bin ];
     };
-
   };
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -87,10 +86,6 @@
       silent = true;
     };
     ydotool.enable = true;
-    displayManager = {
-      enable = true;
-      variant = "greetd";
-    };
     gc = {
       enable = true;
       interval = 3;
