@@ -1,0 +1,8 @@
+repositories:
+  - name: nextcloud
+    url: https://nextcloud.github.io/helm/
+
+releases:
+  - name: nextcloud
+    namespace: nextcloud
+    chart: nextcloud/nextcloud

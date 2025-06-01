@@ -1,0 +1,11 @@
+repositories:
+  - name: rubxkube
+    url: https://rubxkube.github.io/charts/
+
+releases:
+  - name: glance
+    namespace: monitoring
+    chart: rubxkube/glance
+    version: 0.0.9
+    values:
+      - values.yaml

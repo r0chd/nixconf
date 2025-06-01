@@ -1,0 +1,16 @@
+repositories:
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
+
+releases:
+  - name: immich
+    namespace: immich
+    createNamespace: true
+    chart: immich/immich
+    version: 0.9.3
+    values:
+      - ./values.yaml
+
+  - name: immich-pvc
+    namespace: immich
+    chart: ./kustomize

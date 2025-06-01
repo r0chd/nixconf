@@ -6,6 +6,8 @@ mkShell {
     helmfile
     terraform-ls
     jq
+    kustomize
+    kustomize-sops
     #(terraform.withPlugins (p: [
     #p.null
     #p.external
