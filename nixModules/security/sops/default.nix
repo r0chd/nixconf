@@ -57,7 +57,7 @@ in
     shellAliases.opensops = "SOPS_AGE_KEY_FILE=\"${config.sops.age.keyFile}\" sops /var/lib/nixconf/hosts/${config.networking.hostName}/secrets/secrets.yaml";
   };
 
-  system.activationScripts.sopsGenerateKey =
+  system.activationScripts.sopsGenerateKeys =
     let
       escapedKeyFile = lib.escapeShellArg "${root}/.config/sops/age/keys.txt";
       sshKeyPath = "${root}/.ssh/id_ed25519";
@@ -66,4 +66,16 @@ in
       mkdir -p $(dirname ${escapedKeyFile})
       ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
     '';
+  #++ lib.concatMapStrings (
+  #user:
+  #let
+  #escapedKeyFile = lib.escapeShellArg "/home/${user}/.config/sops/age/keys.txt";
+  #sshKeyPath = "/home/${user}/.ssh/id_ed25519";
+  #in
+  #''
+  #mkdir -p $(dirname ${escapedKeyFile})
+  #${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
+  #chown -R ${user}:users /home/${user}/.config
+  #''
+  #) (lib.attrNames systemUsers);
 }
