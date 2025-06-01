@@ -4,7 +4,10 @@ let
 in
 {
   options.programs.git = {
-    signingKeyFile = lib.mkOption { type = lib.types.nullOr lib.types.str; };
+    signingKeyFile = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+    };
     email = lib.mkOption { type = lib.types.nullOr lib.types.str; };
   };
 

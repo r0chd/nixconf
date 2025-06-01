@@ -8,10 +8,10 @@ mkShell {
     jq
     kustomize
     kustomize-sops
-    (terraform.withPlugins (p: [
-      p.null
-      p.external
-    ]))
+    #(terraform.withPlugins (p: [
+    #  p.null
+    #  p.external
+    #]))
     (wrapHelm kubernetes-helm {
       plugins = [
         kubernetes-helmPlugins.helm-diff

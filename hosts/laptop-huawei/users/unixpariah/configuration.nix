@@ -1,8 +1,12 @@
-{ ... }:
+{ pkgs, ... }:
 {
-  email = "100892812+unixpariah@users.noreply.github.com";
   programs = {
+    git.email = "100892812+unixpariah@users.noreply.github.com";
     editor = "hx";
+  };
+
+  environment = {
+    terminal.program = "ghostty";
   };
 
   stylix = {
