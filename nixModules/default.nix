@@ -43,15 +43,8 @@
       };
     };
 
-    # Necessary to run longhorn
-    services.openiscsi = {
-      enable = true;
-      name = "${config.networking.hostName}-initiatorhost";
-    };
-
     environment = {
       systemPackages = with pkgs; [
-        nfs-utils
         deploy-rs.deploy-rs
         uutils-coreutils-noprefix
         (writeShellScriptBin "mkUser" (builtins.readFile ./mkUser.sh))

@@ -23,6 +23,9 @@
     tailscale = { };
   };
 
+  boot.supportedFilesystems = [ "nfs" ];
+  services.rpcbind.enable = true;
+
   system = {
     bootloader = {
       variant = "systemd-boot";
@@ -44,6 +47,7 @@
   environment = {
     variables.EDITOR = "hx";
     systemPackages = with pkgs; [
+      nfs-utils
       helix
       kubectl
       cosmic-icons
@@ -96,8 +100,27 @@
     ];
   };
 
+  systemd = {
+    tmpfiles.rules = [ "L+ /usr/local/bin - - - - /run/current-system/sw/bin/" ];
+    mounts = [
+      {
+        what = "/dev/zvol/zdata/longhorn-ext4";
+        type = "ext4";
+        where = "/var/lib/longhorn";
+        wantedBy = [ "kubernetes.target" ];
+        requiredBy = [ "kubernetes.target" ];
+        options = "noatime,discard";
+      }
+    ];
+  };
+  virtualisation.docker.logDriver = "json-file";
+
   services = {
-    impermanence.enable = false;
+    openiscsi = {
+      enable = true;
+      name = "${config.networking.hostName}-initiatorhost";
+    };
+    impermanence.enable = true;
     tailscale.authKeyFile = config.sops.secrets.tailscale.path;
     k3s = {
       enable = true;
@@ -106,6 +129,13 @@
       extraFlags = [
         "--disable traefik"
         "--disable servicelb"
+        "--write-kubeconfig-mode \"0644\""
+        "--disable local-storage"
+        "--kube-controller-manager-arg bind-address=0.0.0.0"
+        "--kube-proxy-arg metrics-bind-address=0.0.0.0"
+        "--kube-scheduler-arg bind-address=0.0.0.0"
+        "--etcd-expose-metrics true"
+        "--kubelet-arg containerd=/run/k3s/containerd/containerd.sock"
       ];
     };
   };

@@ -23,7 +23,7 @@
   };
 
   services = {
-    impermanence.enable = false;
+    impermanence.enable = true;
   };
 
   wayland.windowManager = {

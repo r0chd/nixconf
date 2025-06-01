@@ -7,17 +7,10 @@
 
   sops.secrets = {
     tailscale = { };
-    k3s = { };
   };
 
   services = {
     tailscale.authKeyFile = config.sops.secrets.tailscale.path;
-    k3s = {
-      enable = true;
-      role = "agent";
-      serverAddr = "https://laptop-lenovo:6443";
-      tokenFile = config.sops.secrets.k3s.path;
-    };
   };
 
   system = {

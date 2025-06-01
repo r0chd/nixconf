@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, config, ... }:
 {
   imports = [
     ./bootloader
@@ -15,5 +15,10 @@
       "ext4"
       "zfs"
     ];
+  };
+
+  config.services = {
+    zfs.autoScrub.enable = lib.mkDefault (config.system.fileSystem == "zfs");
+    zfs.autoSnapshot.enable = lib.mkDefault (config.system.fileSystem == "zfs");
   };
 }
