@@ -21,6 +21,7 @@
     ./programs
     ../hosts/${hostName}/configuration.nix
     ../theme
+    ../common/nixos
   ];
 
   options.system_type = lib.mkEnableOption "";
@@ -31,17 +32,7 @@
       hostPlatform = arch;
     };
 
-    networking = {
-      inherit hostName;
-      hosts = {
-        "laptop.tail570bfd.ts.net" = [ "laptop" ];
-        "iphone-13-pro.tail570bfd.ts.net" = [ "iphone-13-pro" ];
-        "laptop-lenovo.tail570bfd.ts.net" = [ "laptop-lenovo" ];
-        "laptop-thinkpad.tail570bfd.ts.net" = [ "laptop-lenovo" ];
-        "rpi.tail570bfd.ts.net" = [ "rpi" ];
-        "xiaomi-m2002j9g.tail570bfd.ts.net" = [ "xiaomi-m2002j9g" ];
-      };
-    };
+    networking = { inherit hostName; };
 
     environment = {
       systemPackages = with pkgs; [
@@ -126,6 +117,12 @@
       };
     };
 
-    system.stateVersion = "25.11";
+    system = {
+      #activationScripts.setPermissions = ''
+      #setfacl -R -m g:wheel:rwX /var/lib/nixconf
+      #find /var/lib/nixconf -type d | xargs setfacl -R -m d:g:wheel:rwX
+      #'';
+      stateVersion = "25.11";
+    };
   };
 }

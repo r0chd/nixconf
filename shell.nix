@@ -9,8 +9,8 @@ mkShell {
     kustomize
     kustomize-sops
     #(terraform.withPlugins (p: [
-    #  p.null
-    #  p.external
+    #p.null
+    #p.external
     #]))
     (wrapHelm kubernetes-helm {
       plugins = [

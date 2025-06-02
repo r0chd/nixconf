@@ -26,4 +26,5 @@ module "install" {
   nixos_partitioner          = module.disko.result.out
   target_host                = local.ipv4
   nixos_generate_config_path = "../hosts/${var.machine_name}/hardware-configuration.nix"
+  #extra_files_script = "${path.module}/extra"
 }

@@ -18,10 +18,10 @@
       "steam-unwrapped"
     ];
 
-  #sops.secrets = {
-  #k3s = { };
-  #tailscale = { };
-  #};
+  sops.secrets = {
+    k3s = { };
+    tailscale = { };
+  };
 
   boot.supportedFilesystems = [ "nfs" ];
   services.rpcbind.enable = true;
@@ -120,24 +120,24 @@
       enable = true;
       name = "${config.networking.hostName}-initiatorhost";
     };
-    impermanence.enable = true;
-    #tailscale.authKeyFile = config.sops.secrets.tailscale.path;
-    #k3s = {
-    #enable = true;
-    #tokenFile = config.sops.secrets.k3s.path;
-    #clusterInit = true;
-    #extraFlags = [
-    #"--disable traefik"
-    #"--disable servicelb"
-    #"--write-kubeconfig-mode \"0644\""
-    #"--disable local-storage"
-    #"--kube-controller-manager-arg bind-address=0.0.0.0"
-    #"--kube-proxy-arg metrics-bind-address=0.0.0.0"
-    #"--kube-scheduler-arg bind-address=0.0.0.0"
-    #"--etcd-expose-metrics true"
-    #"--kubelet-arg containerd=/run/k3s/containerd/containerd.sock"
-    #];
-    #};
+    impermanence.enable = false;
+    tailscale.authKeyFile = config.sops.secrets.tailscale.path;
+    k3s = {
+      enable = true;
+      tokenFile = config.sops.secrets.k3s.path;
+      clusterInit = true;
+      extraFlags = [
+        "--disable traefik"
+        "--disable servicelb"
+        "--write-kubeconfig-mode \"0644\""
+        "--disable local-storage"
+        "--kube-controller-manager-arg bind-address=0.0.0.0"
+        "--kube-proxy-arg metrics-bind-address=0.0.0.0"
+        "--kube-scheduler-arg bind-address=0.0.0.0"
+        "--etcd-expose-metrics true"
+        "--kubelet-arg containerd=/run/k3s/containerd/containerd.sock"
+      ];
+    };
   };
 
   time.timeZone = "Europe/Warsaw";

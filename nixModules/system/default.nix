@@ -16,9 +16,4 @@
       "zfs"
     ];
   };
-
-  config.services = {
-    zfs.autoScrub.enable = lib.mkDefault (config.system.fileSystem == "zfs");
-    zfs.autoSnapshot.enable = lib.mkDefault (config.system.fileSystem == "zfs");
-  };
 }
