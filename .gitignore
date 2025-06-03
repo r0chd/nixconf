@@ -1,4 +1,5 @@
 .cache
 .direnv
 infra/*terraform*
+**/*sync-conflict-*
 

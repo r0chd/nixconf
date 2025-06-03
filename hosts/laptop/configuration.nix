@@ -22,6 +22,11 @@
   sops.secrets = {
     tailscale = { };
     k3s = { };
+    deploy-rs = {
+      owner = "deploy-rs";
+      group = "nogroup";
+      mode = "0400";
+    };
     "wireless/SaltoraUp" = { };
     "wireless/Saltora" = { };
   };
@@ -42,6 +47,7 @@
   };
 
   programs = {
+    deploy-rs.sshKeyFile = config.sops.secrets.deploy-rs.path;
     sway.enable = false;
     hyprland.enable = false;
 

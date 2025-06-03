@@ -37,7 +37,6 @@
 
     environment = {
       systemPackages = with pkgs; [
-        deploy-rs.deploy-rs
         uutils-coreutils-noprefix
         (writeShellScriptBin "mkUser" (builtins.readFile ./mkUser.sh))
         (writeShellScriptBin "mkHost" (builtins.readFile ./mkHost.sh))
@@ -74,8 +73,7 @@
         {
           root = {
             isNormalUser = false;
-            #hashedPassword = "*";
-            initialPassword = "pass";
+            hashedPassword = null;
           };
         }
         // lib.mapAttrs (name: value: {

@@ -171,10 +171,10 @@
         in
         {
           hostname = hostName;
+          sshUser = "deploy-rs";
           profiles = {
             system = {
               user = "root";
-              interactiveSudo = true;
               path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostName};
             };
           } // mkUserProfiles hostUsers;
