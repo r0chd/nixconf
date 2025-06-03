@@ -20,34 +20,13 @@
     ./services
     ../hosts/${hostName}/users/${username}/configuration.nix
     ../theme
+    ../common/home
   ];
 
   config = {
     nixpkgs.overlays = import ../overlays inputs config;
 
     services = {
-      syncthing = {
-        enable = true;
-        settings = {
-          devices = {
-            laptop.id = "F265KCD-YJPGOI2-SZJT5TH-FNDPNGU-S7CZGD6-75VIYU4-KN4OPOP-TVGCCQM";
-            laptop-huawei.id = "UCQTXNG-4346HG3-MREX53Y-CTDAU5P-4TYBRP4-YV4364F-JM5CXTP-JVIJ6QE";
-            laptop-lenovo.id = "C5GUBSH-TR5VRA4-F33RW3V-3GOA7KC-R2CKVNS-2BT7EJW-44CBERS-OELDGAJ";
-            laptop-thinkpad.id = "4G25JBC-D5FCDQR-TAVZASY-SS5Y2UV-JHCGHIJ-FIE4AXO-WJOQP6C-MKDKKAV";
-          };
-          folders = {
-            "/var/lib/nixconf" = {
-              path = "/var/lib/nixconf";
-              devices = [
-                "laptop"
-                "laptop-lenovo"
-                "laptop-huawei"
-                "laptop-thinkpad"
-              ];
-            };
-          };
-        };
-      };
       udiskie.enable = system_type == "desktop";
       sysnotifier.enable = system_type == "desktop";
     };

@@ -16,6 +16,7 @@
       "nvidia-x11"
       "steam"
       "steam-unwrapped"
+      "libfprint-2-tod1-goodix"
     ];
 
   #sops.secrets = {
@@ -24,7 +25,14 @@
   #};
 
   boot.supportedFilesystems = [ "nfs" ];
-  services.rpcbind.enable = true;
+  services = {
+    rpcbind.enable = true;
+    fprintd.enable = true;
+    fprintd.tod = {
+      enable = true;
+      driver = pkgs.libfprint-2-tod1-goodix;
+    };
+  };
 
   system = {
     bootloader = {

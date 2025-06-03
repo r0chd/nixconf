@@ -154,7 +154,7 @@ in
           '')
         else if (config.system.fileSystem == "zfs") then
           (lib.mkAfter ''
-            zfs rollback -r rpool/local/root@blank
+            zfs rollback -r zroot/local/root@blank
           '')
         else
           "";
@@ -212,7 +212,7 @@ in
       script = lib.concatMapStrings (user: ''
         if [ ! -L "/persist/home/${user}/.local/state/nix/profiles/home-manager" ]; then
           chown -R ${user}:users /home/${user}/.ssh
-          sudo -u ${user} home-manager switch --flake "/var/lib/nixconf#${user}@${config.networking.hostName}" --no-write-lock-file 
+          HOME_MANAGER_BACKUP_EXT="bak" sudo -u ${user} home-manager switch --flake "/var/lib/nixconf#${user}@${config.networking.hostName}" --no-write-lock-file 
           exit 0
         fi
         chown -R ${user}:users /home/${user}/.ssh
