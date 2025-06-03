@@ -18,7 +18,6 @@ in
 
   config = lib.mkIf cfg.enable {
     home = {
-      packages = [ (cfg.package.override { extraPkgs = pkgs: [ ]; }) ];
       persist.directories = [
         ".local/share/lutris"
         "Games/Lutris"

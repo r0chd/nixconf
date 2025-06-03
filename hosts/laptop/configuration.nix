@@ -22,10 +22,16 @@
   sops.secrets = {
     tailscale = { };
     k3s = { };
+    "wireless/SaltoraUp" = { };
+    "wireless/Saltora" = { };
   };
 
-  networking = {
-    wireless.iwd.enable = true;
+  networking.wireless.iwd = {
+    enable = true;
+    networks = {
+      SaltoraUp.psk = config.sops.secrets."wireless/SaltoraUp".path;
+      Saltora.psk = config.sops.secrets."wireless/Saltora".path;
+    };
   };
 
   documentation.enable = true;
@@ -42,27 +48,14 @@
     thunderbird.enable = true;
     nix-index.enable = true;
     wshowkeys.enable = true;
+  };
 
-    gamescope.enable = true;
-    gamemode = {
-      enable = true;
-      settings = {
-        gpu = {
-          apply_gpu_optimizations = "accept-responsibility";
-          gpu_device = 0;
-        };
-      };
-    };
-    steam = {
-      enable = true;
-      platformOptimizations.enable = true;
-      protontricks.enable = true;
-      extest.enable = true;
-      remotePlay.openFirewall = true;
-      dedicatedServer.openFirewall = true;
-      localNetworkGameTransfers.openFirewall = true;
-      extraCompatPackages = with pkgs; [ proton-ge-bin ];
-    };
+  gaming = {
+    steam.enable = true;
+    lutris.enable = true;
+    heroic.enable = true;
+    bottles.enable = true;
+    minecraft.enable = true;
   };
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];

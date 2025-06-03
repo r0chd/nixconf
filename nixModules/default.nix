@@ -18,6 +18,7 @@
     ./environment
     ./services
     ./documentation
+    ./gaming
     ./programs
     ../hosts/${hostName}/configuration.nix
     ../theme

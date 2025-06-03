@@ -12,11 +12,6 @@ in
 
   config = lib.mkIf cfg.enable {
     home = {
-      packages = with pkgs; [
-        (writeShellScriptBin "steamos-session-select" ''
-          steam -shutdown
-        '')
-      ];
       persist.directories = [
         {
           directory = ".steam";

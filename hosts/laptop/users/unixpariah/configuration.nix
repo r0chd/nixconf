@@ -19,9 +19,6 @@
     "ssh_keys/id_yubikey".path = "/home/unixpariah/.ssh/id_yubikey";
     nixos-access-token-github = { };
     github-api = { };
-    "klocki/jwt_secret" = { };
-    "klocki/master_password" = { };
-    "klocki/db_password" = { };
   };
 
   nix.access-tokens = [ config.sops.placeholder.nixos-access-token-github ];
@@ -62,7 +59,6 @@
     steam.enable = true;
     lutris.enable = true;
     heroic.enable = true;
-    bottles.enable = true;
     minecraft.enable = true;
   };
 

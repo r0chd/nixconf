@@ -19,10 +19,12 @@
       "libfprint-2-tod1-goodix"
     ];
 
-  #sops.secrets = {
-  #k3s = { };
-  #tailscale = { };
-  #};
+  sops.secrets = {
+    k3s = { };
+    tailscale = { };
+    "wireless/SaltoraUp" = { };
+    "wireless/Saltora" = { };
+  };
 
   boot.supportedFilesystems = [ "nfs" ];
   services = {
@@ -83,21 +85,22 @@
         };
       };
     };
-    steam = {
-      enable = true;
-      platformOptimizations.enable = true;
-      protontricks.enable = true;
-      extest.enable = true;
-      remotePlay.openFirewall = true;
-      dedicatedServer.openFirewall = true;
-      localNetworkGameTransfers.openFirewall = true;
-      extraCompatPackages = with pkgs; [ proton-ge-bin ];
-    };
+  };
+
+  gaming = {
+    steam.enable = true;
   };
 
   networking = {
+    wireless.iwd = {
+      enable = true;
+      networks = {
+        SaltoraUp.psk = config.sops.secrets."wireless/SaltoraUp".path;
+        Saltora.psk = config.sops.secrets."wireless/Saltora".path;
+      };
+    };
+
     hostId = "6add04c2";
-    wireless.iwd.enable = true;
     firewall.allowedTCPPorts = [
       80
       443

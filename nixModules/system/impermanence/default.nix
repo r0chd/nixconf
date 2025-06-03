@@ -210,12 +210,14 @@ in
       };
       environment.PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}/bin:${pkgs.sudo}/bin:${pkgs.coreutils}/bin:$PATH";
       script = lib.concatMapStrings (user: ''
+        chown -R root:wheel /var/lib/nixconf
+        chmod -R 775 /var/lib/nixconf
+
+        chown -R ${user}:users /home/${user}/.ssh
         if [ ! -L "/persist/home/${user}/.local/state/nix/profiles/home-manager" ]; then
-          chown -R ${user}:users /home/${user}/.ssh
           HOME_MANAGER_BACKUP_EXT="bak" sudo -u ${user} home-manager switch --flake "/var/lib/nixconf#${user}@${config.networking.hostName}" --no-write-lock-file 
           exit 0
         fi
-        chown -R ${user}:users /home/${user}/.ssh
         HOME_MANAGER_BACKUP_EXT="bak" sudo -u ${user} /persist/home/${user}/.local/state/nix/profiles/home-manager/activate
       '') (lib.attrNames systemUsers);
     };

@@ -8,6 +8,8 @@ let
   cfg = config.networking.wireless.iwd;
 in
 {
+  imports = [ ./iwd ];
+
   config = lib.mkIf cfg.enable {
     networking = {
       firewall.enable = true;
@@ -23,7 +25,5 @@ in
       traceroute
       inetutils
     ];
-
-    environment.persist.directories = [ "/var/lib/iwd" ];
   };
 }
