@@ -24,8 +24,8 @@
     k3s = { };
     deploy-rs = {
       owner = "deploy-rs";
-      group = "nogroup";
-      mode = "0400";
+      group = "wheel";
+      mode = "0440";
     };
     "wireless/SaltoraUp" = { };
     "wireless/Saltora" = { };
