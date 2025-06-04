@@ -1,4 +1,4 @@
-{ ... }:
+{ system_type, lib, ... }:
 {
   imports = [
     ./wallpaper
@@ -10,4 +10,12 @@
     ./idle
     ./notify
   ];
+
+  home.persist.directories = lib.mkIf (system_type == "desktop") [
+    "Documents"
+    "Music"
+    "Pictures"
+    "Videos"
+  ];
+
 }

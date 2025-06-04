@@ -55,26 +55,17 @@ in
           pkgs.iproute2
           cfg.package
         ];
-        services = {
-          tailscaled = {
-            wantedBy = [ "initrd.target" ];
-            serviceConfig.Environment = [
-              "PORT=${toString cfg.port}"
-              ''"FLAGS=--tun ${lib.escapeShellArg cfg.interfaceName}"''
-            ];
-          };
-          systemd-resolved = {
-            wantedBy = [ "initrd.target" ];
-            serviceConfig.ExecStartPre = "-+/bin/ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf";
-          };
+        services.tailscaled = {
+          wantedBy = [ "initrd.target" ];
+          serviceConfig.Environment = [
+            "PORT=${toString cfg.port}"
+            ''"FLAGS=--tun ${lib.escapeShellArg cfg.interfaceName}"''
+          ];
         };
 
-        contents = {
-          "/etc/tmpfiles.d/50-tailscale.conf".text = ''
-            L /var/run - - - - /run
-          '';
-          "/etc/hostname".source = lib.mkForce config.environment.etc.hostname.source;
-        };
+        tmpfiles.settings."50-tailscale"."/var/run".L.argument = "/run";
+
+        contents."/etc/hostname".source = lib.mkForce config.environment.etc.hostname.source;
         network.networks."50-tailscale" = {
           matchConfig = {
             Name = cfg.interfaceName;
@@ -86,11 +77,6 @@ in
         };
 
         extraBin.ping = "${pkgs.iputils}/bin/ping";
-
-        additionalUpstreamUnits = [ "systemd-resolved.service" ];
-        users.systemd-resolve = { };
-        groups.systemd-resolve = { };
-        storePaths = [ "${config.boot.initrd.systemd.package}/lib/systemd/systemd-resolved" ];
       };
 
       availableKernelModules = [

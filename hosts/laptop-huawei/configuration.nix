@@ -22,6 +22,11 @@
   sops.secrets = {
     k3s = { };
     tailscale = { };
+    deploy-rs = {
+      owner = "deploy-rs";
+      group = "wheel";
+      mode = "0440";
+    };
     "wireless/SaltoraUp" = { };
     "wireless/Saltora" = { };
   };
@@ -35,6 +40,8 @@
       driver = pkgs.libfprint-2-tod1-goodix;
     };
   };
+
+  documentation.enable = true;
 
   system = {
     bootloader = {
@@ -50,8 +57,6 @@
 
   hardware = {
     power-management.enable = true;
-    audio.enable = true;
-    bluetooth.enable = true;
   };
 
   environment = {
@@ -64,6 +69,16 @@
     ];
   };
 
+  security = {
+    yubikey = {
+      enable = true;
+      rootAuth = true;
+      id = "31888351";
+      unplug.enable = true;
+    };
+    root.timeout = 0;
+  };
+
   stylix = {
     enable = true;
     theme = "gruvbox";
@@ -73,18 +88,8 @@
     sway.enable = false;
     hyprland.enable = false;
 
+    deploy-rs.sshKeyFile = config.sops.secrets.deploy-rs.path;
     nix-index.enable = true;
-
-    gamescope.enable = true;
-    gamemode = {
-      enable = true;
-      settings = {
-        gpu = {
-          apply_gpu_optimizations = "accept-responsibility";
-          gpu_device = 0;
-        };
-      };
-    };
   };
 
   gaming = {
@@ -115,11 +120,11 @@
     tmpfiles.rules = [ "L+ /usr/local/bin - - - - /run/current-system/sw/bin/" ];
     mounts = [
       {
-        what = "/dev/zvol/zdata/longhorn-ext4";
+        what = "/dev/zvol/zroot/longhorn-ext4";
         type = "ext4";
         where = "/var/lib/longhorn";
-        wantedBy = [ "kubernetes.target" ];
-        requiredBy = [ "kubernetes.target" ];
+        wantedBy = [ "multi-user.target" ];
+        requiredBy = [ "multi-user.target" ];
         options = "noatime,discard";
       }
     ];
@@ -132,23 +137,23 @@
       name = "${config.networking.hostName}-initiatorhost";
     };
     impermanence.enable = true;
-    #tailscale.authKeyFile = config.sops.secrets.tailscale.path;
-    #k3s = {
-    #enable = true;
-    #tokenFile = config.sops.secrets.k3s.path;
-    #clusterInit = true;
-    #extraFlags = [
-    #"--disable traefik"
-    #"--disable servicelb"
-    #"--write-kubeconfig-mode \"0644\""
-    #"--disable local-storage"
-    #"--kube-controller-manager-arg bind-address=0.0.0.0"
-    #"--kube-proxy-arg metrics-bind-address=0.0.0.0"
-    #"--kube-scheduler-arg bind-address=0.0.0.0"
-    #"--etcd-expose-metrics true"
-    #"--kubelet-arg containerd=/run/k3s/containerd/containerd.sock"
-    #];
-    #};
+    tailscale.authKeyFile = config.sops.secrets.tailscale.path;
+    k3s = {
+      enable = true;
+      tokenFile = config.sops.secrets.k3s.path;
+      clusterInit = true;
+      extraFlags = [
+        "--disable traefik"
+        "--disable servicelb"
+        "--write-kubeconfig-mode \"0644\""
+        "--disable local-storage"
+        "--kube-controller-manager-arg bind-address=0.0.0.0"
+        "--kube-proxy-arg metrics-bind-address=0.0.0.0"
+        "--kube-scheduler-arg bind-address=0.0.0.0"
+        "--etcd-expose-metrics true"
+        "--kubelet-arg containerd=/run/k3s/containerd/containerd.sock"
+      ];
+    };
   };
 
   time.timeZone = "Europe/Warsaw";

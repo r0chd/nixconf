@@ -64,7 +64,7 @@ kubelet:
 kubeControllerManager:
   enabled: true
   endpoints: # ips of servers 
-    - 192.168.50.163
+    - 192.168.50.207
 
 coreDns:
   enabled: true
@@ -75,7 +75,7 @@ kubeDns:
 kubeEtcd:
   enabled: true
   endpoints: # ips of servers
-    - 192.168.50.163
+    - 192.168.50.207
   service:
     enabled: true
     port: 2381
@@ -84,12 +84,12 @@ kubeEtcd:
 kubeScheduler:
   enabled: true
   endpoints: # ips of servers
-    - 192.168.50.163
+    - 192.168.50.207
 
 kubeProxy:
   enabled: true
   endpoints: # ips of servers
-    - 192.168.50.163
+    - 192.168.50.207
 
 kubeStateMetrics:
   enabled: true

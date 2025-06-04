@@ -31,11 +31,18 @@
     "wireless/Saltora" = { };
   };
 
-  networking.wireless.iwd = {
-    enable = true;
-    networks = {
-      SaltoraUp.psk = config.sops.secrets."wireless/SaltoraUp".path;
-      Saltora.psk = config.sops.secrets."wireless/Saltora".path;
+  networking = {
+    extraHosts = ''
+      192.168.50.100 moxwiki.your-domain.com
+      192.168.50.100 portfolio.your-domain.com
+      192.168.50.100 glance.your-domain.com
+    '';
+    wireless.iwd = {
+      enable = true;
+      networks = {
+        SaltoraUp.psk = config.sops.secrets."wireless/SaltoraUp".path;
+        Saltora.psk = config.sops.secrets."wireless/Saltora".path;
+      };
     };
   };
 
@@ -103,11 +110,7 @@
 
   hardware = {
     power-management.enable = true;
-    audio.enable = true;
-    bluetooth.enable = true;
   };
-
-  zramSwap.enable = true;
 
   services = {
     k3s = {

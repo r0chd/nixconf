@@ -2,13 +2,17 @@
   pkgs,
   config,
   lib,
+  system_type,
   ...
 }:
 let
   cfg = config.hardware.audio;
 in
 {
-  options.hardware.audio.enable = lib.mkEnableOption "Enable audio";
+  options.hardware.audio.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = (system_type == "desktop");
+  };
 
   config = lib.mkIf cfg.enable {
     services = {

@@ -144,7 +144,7 @@
           deployPkgs = import nixpkgs {
             inherit system;
             overlays = [
-              deploy-rs.overlay
+              deploy-rs.overlays.default
               (self: super: {
                 deploy-rs = {
                   inherit (pkgs) deploy-rs;
@@ -179,20 +179,6 @@
             };
           } // mkUserProfiles hostUsers;
         };
-
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-      ];
-      forAllSystems =
-        function:
-        nixpkgs.lib.genAttrs systems (
-          system:
-          let
-            pkgs = import nixpkgs { inherit system; };
-          in
-          function pkgs
-        );
     in
     with nixpkgs;
     {
@@ -226,9 +212,28 @@
 
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 
-      devShells = forAllSystems (pkgs: {
-        default = import ./shell.nix { inherit pkgs; };
-      });
+      devShells =
+        let
+          systems = [
+            "x86_64-linux"
+            "aarch64-linux"
+          ];
+          forAllSystems =
+            function:
+            nixpkgs.lib.genAttrs systems (
+              system:
+              let
+                pkgs = import nixpkgs {
+                  inherit system;
+                  config.allowUnfree = true;
+                };
+              in
+              function pkgs
+            );
+        in
+        forAllSystems (pkgs: {
+          default = import ./shell.nix { inherit pkgs; };
+        });
     };
 
   inputs = {

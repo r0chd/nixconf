@@ -54,6 +54,10 @@
     }
   );
 
+  boot.initrd.network.ssh.authorizedKeys = lib.flatten (
+    lib.mapAttrsToList (user: userConfig: userConfig.openssh.authorizedKeys.keys) config.users.users
+  );
+
   environment.persist.directories = [
     {
       directory = "/root/.ssh";

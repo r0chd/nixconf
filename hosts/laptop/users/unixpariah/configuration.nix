@@ -137,14 +137,8 @@
       directories = [
         "Games/Nintendo"
         "workspace"
-        "Images"
-        "Videos"
-        "Documents"
-        "Iso"
         ".yubico"
-        "wallpapers"
       ];
-      files = [ "Passwords.kdbx" ];
     };
   };
 }

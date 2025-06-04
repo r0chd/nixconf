@@ -53,12 +53,22 @@
           "local/persist" = {
             type = "zfs_fs";
             mountpoint = "/persist";
-            options."com.sun:auto-snapshot" = "false";
+            options = {
+              "com.sun:auto-snapshot" = "false";
+              #encryption = "aes-256-gcm";
+              #keyformat = "passphrase";
+              #keylocation = "prompt";
+            };
           };
           "local/root" = {
             type = "zfs_fs";
+            options = {
+              "com.sun:auto-snapshot" = "false";
+              #encryption = "aes-256-gcm";
+              #keyformat = "passphrase";
+              #keylocation = "prompt";
+            };
             mountpoint = "/";
-            options."com.sun:auto-snapshot" = "false";
             postCreateHook = "zfs list -t snapshot -H -o name | grep -E '^zroot/local/root@blank$' || zfs snapshot zroot/local/root@blank";
           };
         };

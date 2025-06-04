@@ -19,6 +19,41 @@
             "laptop-thinkpad"
           ];
         };
+        "~/Documents" = {
+          path = "~/Documents";
+          devices = [
+            "laptop"
+            "laptop-huawei"
+          ];
+        };
+        "~/Pictures" = {
+          path = "~/Pictures";
+          devices = [
+            "laptop"
+            "laptop-huawei"
+          ];
+        };
+        "~/Videos" = {
+          path = "~/Videos";
+          devices = [
+            "laptop"
+            "laptop-huawei"
+          ];
+        };
+        "~/Music" = {
+          path = "~/Music";
+          devices = [
+            "laptop"
+            "laptop-huawei"
+          ];
+        };
+        "~/workspace" = {
+          path = "~/workspace";
+          devices = [
+            "laptop"
+            "laptop-huawei"
+          ];
+        };
       };
     };
   };

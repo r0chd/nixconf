@@ -48,7 +48,6 @@ in
     security.pam = {
       yubico = {
         enable = cfg.id != null;
-        debug = true;
         mode = "challenge-response";
         id = [ cfg.id ];
       };

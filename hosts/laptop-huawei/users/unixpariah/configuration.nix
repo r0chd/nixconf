@@ -1,12 +1,16 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   programs = {
-    git.email = "100892812+unixpariah@users.noreply.github.com";
+    git = {
+      signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
+      email = "100892812+unixpariah@users.noreply.github.com";
+    };
     editor = "hx";
     multiplexer = {
       enable = true;
       variant = "tmux";
     };
+    nixcord.vesktop.enable = true;
     zen.enable = true;
     nix-index.enable = true;
     fastfetch.enable = true;
@@ -22,8 +26,14 @@
     terminal.program = "ghostty";
   };
 
+  home.persist.directories = [
+    "workspace"
+    ".yubico"
+  ];
+
   services = {
     impermanence.enable = true;
+    yubikey-touch-detector.enable = true;
   };
 
   wayland.windowManager = {

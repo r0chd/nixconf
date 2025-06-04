@@ -29,11 +29,7 @@ in
 
   config = {
     boot = {
-      #initrd.systemd = {
-      #enable = true;
-      #network = config.systemd.network;
-      #services.systemd-tmpfiles-setup.before = [ "sshd.service" ];
-      #};
+      initrd.systemd.enable = true;
       plymouth.enable = (system_type == "desktop" && config.stylix.enable);
       loader.systemd-boot.enable = lib.mkDefault false;
       supportedFilesystems = [ config.system.fileSystem ];
