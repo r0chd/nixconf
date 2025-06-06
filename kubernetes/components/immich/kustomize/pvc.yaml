@@ -5,8 +5,8 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: longhorn
+  storageClassName: openebs-hostpath
   resources:
     requests:
-      storage: 100Gi
+      storage: 5G
 

@@ -11,8 +11,6 @@
     git.email = "100892812+unixpariah@users.noreply.github.com";
   };
 
-  nix.access-tokens = [ config.sops.placeholder.nixos-access-token-github ];
-
   services.impermanence.enable = true;
 
   home.packages = with pkgs; [

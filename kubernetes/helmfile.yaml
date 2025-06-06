@@ -2,10 +2,10 @@ helmfiles:
   - path: components/metallb/helmfile.yaml
   - path: components/ingress-nginx/helmfile.yaml
   - path: components/flannel/helmfile.yaml
-  - path: components/longhorn/helmfile.yaml
+  - path: components/openebs/helmfile.yaml
   - path: components/prometheus/helmfile.yaml
   - path: components/grafana/helmfile.yaml
   - path: components/glance/helmfile.yaml
-  #- path: components/pihole/helmfile.yaml
+  - path: components/pihole/helmfile.yaml
   #- path: components/immich/helmfile.yaml
   #- path: components/nextcloud/helmfile.yaml

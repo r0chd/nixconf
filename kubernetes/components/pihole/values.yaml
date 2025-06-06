@@ -1,12 +1,15 @@
+DNS1:
+  192.168.50.1
 persistentVolumeClaim:
   enabled: true
+  storageClass: "openebs-hostpath"
 serviceWeb:
-  loadBalancerIP: 192.168.1.250
+  loadBalancerIP: 192.168.50.103
   annotations:
     metallb.unfiverse.tf/allow-shared-ip: pihole-svc
   type: LoadBalancer
 serviceDns:
-  loadBalancerIP: 192.168.1.250
+  loadBalancerIP: 192.168.50.102
   annotations:
     metallb.universe.tf/allow-shared-ip: pihole-svc
   type: LoadBalancer

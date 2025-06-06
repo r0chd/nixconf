@@ -33,6 +33,13 @@
 
   boot.supportedFilesystems = [ "nfs" ];
   services = {
+    nfs.server = {
+      enable = true;
+      exports = ''
+        /tank/k8s-volumes 192.168.1.0/24(rw,no_subtree_check,no_root_squash,fsid=0)
+      '';
+    };
+
     rpcbind.enable = true;
     fprintd.enable = true;
     fprintd.tod = {
@@ -109,6 +116,7 @@
     firewall.allowedTCPPorts = [
       80
       443
+      2049
       6443
       8443
       3000
@@ -116,26 +124,7 @@
     ];
   };
 
-  systemd = {
-    tmpfiles.rules = [ "L+ /usr/local/bin - - - - /run/current-system/sw/bin/" ];
-    mounts = [
-      {
-        what = "/dev/zvol/zroot/longhorn-ext4";
-        type = "ext4";
-        where = "/var/lib/longhorn";
-        wantedBy = [ "multi-user.target" ];
-        requiredBy = [ "multi-user.target" ];
-        options = "noatime,discard";
-      }
-    ];
-  };
-  virtualisation.docker.logDriver = "json-file";
-
   services = {
-    openiscsi = {
-      enable = true;
-      name = "${config.networking.hostName}-initiatorhost";
-    };
     impermanence.enable = true;
     tailscale.authKeyFile = config.sops.secrets.tailscale.path;
     k3s = {

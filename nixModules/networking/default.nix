@@ -24,13 +24,23 @@
         matchConfig.Name = "wlan0";
         networkConfig = {
           DHCP = "yes";
+          #DNS = [ "192.168.50.102" ];
           IgnoreCarrierLoss = "3s";
         };
       };
     };
   };
 
-  services.resolved.enable = true;
+  services.resolved = {
+    enable = true;
+    dnssec = "true";
+    domains = [ "~." ];
+    fallbackDns = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
+    dnsovertls = "true";
+  };
 
   boot.initrd = {
     network.enable = true;
