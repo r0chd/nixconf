@@ -153,7 +153,7 @@
 
         CREATE TABLE education (
           id SERIAL PRIMARY KEY,
-        )
+        );
       '';
     };
 

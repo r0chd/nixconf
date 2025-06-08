@@ -8,6 +8,9 @@
   sops.secrets = {
     tailscale = { };
     k3s = { };
+    "grafana/username" = { };
+    "grafana/password" = { };
+    github-api = { };
   };
 
   system = {
@@ -48,6 +51,21 @@
         "--kube-scheduler-arg bind-address=0.0.0.0"
         "--etcd-expose-metrics true"
         "--kubelet-arg containerd=/run/k3s/containerd/containerd.sock"
+      ];
+      secrets = [
+        {
+          name = "grafana-admin-credentials";
+          namespace = "monitoring";
+          data = {
+            admin-user = config.sops.secrets."grafana/username".path;
+            admin-password = config.sops.secrets."grafana/password".path;
+          };
+        }
+        {
+          name = "github-api";
+          namespace = "portfolio";
+          data.github_api = config.sops.secrets.github-api.path;
+        }
       ];
     };
   };

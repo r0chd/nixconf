@@ -5,4 +5,4 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-  - 192.168.30.100-192.168.30.150
+  - 192.168.50.100-192.168.50.150
