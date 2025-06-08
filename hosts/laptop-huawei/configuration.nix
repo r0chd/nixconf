@@ -25,26 +25,20 @@
     deploy-rs = {
       owner = "deploy-rs";
       group = "wheel";
-      mode = "0440";
+      mode = "0400";
     };
     "wireless/SaltoraUp" = { };
     "wireless/Saltora" = { };
   };
 
-  boot.supportedFilesystems = [ "nfs" ];
   services = {
-    nfs.server = {
-      enable = true;
-      exports = ''
-        /tank/k8s-volumes 192.168.1.0/24(rw,no_subtree_check,no_root_squash,fsid=0)
-      '';
-    };
-
     rpcbind.enable = true;
-    fprintd.enable = true;
-    fprintd.tod = {
+    fprintd = {
       enable = true;
-      driver = pkgs.libfprint-2-tod1-goodix;
+      tod = {
+        enable = true;
+        driver = pkgs.libfprint-2-tod1-goodix;
+      };
     };
   };
 
@@ -69,7 +63,6 @@
   environment = {
     variables.EDITOR = "hx";
     systemPackages = with pkgs; [
-      nfs-utils
       helix
       kubectl
       cosmic-icons
@@ -127,22 +120,6 @@
   services = {
     impermanence.enable = true;
     tailscale.authKeyFile = config.sops.secrets.tailscale.path;
-    k3s = {
-      enable = true;
-      tokenFile = config.sops.secrets.k3s.path;
-      clusterInit = true;
-      extraFlags = [
-        "--disable traefik"
-        "--disable servicelb"
-        "--write-kubeconfig-mode \"0644\""
-        "--disable local-storage"
-        "--kube-controller-manager-arg bind-address=0.0.0.0"
-        "--kube-proxy-arg metrics-bind-address=0.0.0.0"
-        "--kube-scheduler-arg bind-address=0.0.0.0"
-        "--etcd-expose-metrics true"
-        "--kubelet-arg containerd=/run/k3s/containerd/containerd.sock"
-      ];
-    };
   };
 
   time.timeZone = "Europe/Warsaw";

@@ -19,6 +19,7 @@ in
       wirelesstools
       traceroute
       inetutils
+      bind
     ];
   };
 }

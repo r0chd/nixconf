@@ -35,17 +35,7 @@
             shell = "nushell";
           };
         };
-        #rpi = {
-        #arch = "aarch64-linux";
-        #type = "server";
-        #users = {
-        #unixpariah = {
-        #root.enable = true;
-        #shell = "nushell";
-        #};
-        #};
-        #};
-        laptop-lenovo = {
+        server-0 = {
           arch = "x86_64-linux";
           type = "server";
           users.unixpariah = {
@@ -53,7 +43,7 @@
             shell = "bash";
           };
         };
-        laptop-thinkpad = {
+        agent-0 = {
           arch = "x86_64-linux";
           type = "server";
           users.unixpariah = {

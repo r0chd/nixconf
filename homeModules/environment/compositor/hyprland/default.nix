@@ -3,6 +3,7 @@
   lib,
   config,
   inputs,
+  system_type,
   ...
 }:
 {
@@ -20,7 +21,7 @@
   services.hyprpaper.enable = lib.mkForce false;
 
   wayland.windowManager.hyprland = {
-    enable = lib.mkDefault true;
+    enable = lib.mkDefault (system_type == "desktop");
     package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
     settings = {

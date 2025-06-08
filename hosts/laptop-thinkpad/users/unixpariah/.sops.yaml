@@ -1,9 +1,0 @@
-keys:
-  - &unixpariah age1f7qwdmkg52ev68n4cjhtmd9lahk3e9n48z06luzqnpf4ngwpu4rsw7z6z8
-  - &root age1v4xads6nkcrgqqd0jfelt5twwp2c9mz9g5q43xjrakp6dj0sspqs2yac7y
-creation_rules:
-  - path_regex: secrets/secrets.yaml$
-    key_groups:
-      - age:
-        - *unixpariah
-        - *root

@@ -45,6 +45,7 @@ in
       Host * 
         Match user deploy-rs
           IdentityFile ${cfg.sshKeyFile}
+          IdentitiesOnly yes
     '';
   };
 }

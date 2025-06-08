@@ -1,6 +1,8 @@
 repositories:
   - name: ingress-nginx
     url: https://kubernetes.github.io/ingress-nginx
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
 
 releases:
   - name: ingress-nginx
@@ -9,4 +11,11 @@ releases:
     chart: ingress-nginx/ingress-nginx
     version: 4.10.1
     values:
-      - ./values.yaml
+      - ./values/nginx.values.yaml
+
+  - name: externaldns-pihole
+    namespace: pihole-system
+    chart: bitnami/external-dns
+    version: 8.0.1
+    values:
+      - ./values/externaldns.values.yaml

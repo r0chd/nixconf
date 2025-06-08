@@ -2,3 +2,5 @@ releases:
   - name: grafana-admin-credentials
     namespace: monitoring
     chart: ./kustomize
+    values:
+      - ./values.yaml

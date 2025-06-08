@@ -34,12 +34,9 @@ common:
                             cache: 1m
                             title: Services
                             sites:
-                              - title: Immich
-                                url: https://yourdomain.com/
-                                icon: si:immich
-                              - title: Grafana
-                                url: https://yourdomain.com/
-                                icon: si:grafana
+                              - title: Pi-hole
+                                url: http://192.168.30.103/admin
+                                icon: si:pihole
                           - type: bookmarks
                             groups:
                               - title: General

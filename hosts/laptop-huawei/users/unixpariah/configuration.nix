@@ -1,5 +1,9 @@
 { pkgs, config, ... }:
 {
+  sops.secrets = {
+    github-api = { };
+  };
+
   programs = {
     git = {
       signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";

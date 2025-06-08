@@ -8,5 +8,6 @@ in
     device = lib.mkIf (!cfg.legacy) "nodev";
     efiSupport = !cfg.legacy;
     useOSProber = true;
+    zfsSupport = (config.system.fileSystem == "zfs");
   };
 }
