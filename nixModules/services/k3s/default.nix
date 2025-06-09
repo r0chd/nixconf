@@ -40,6 +40,11 @@ in
           };
           environment.KUBECONFIG = "/etc/rancher/k3s/k3s.yaml";
           script = ''
+            ${lib.optionalString (secret.namespace != null) ''
+              ${pkgs.kubectl}/bin/kubectl get namespace ${secret.namespace} >/dev/null 2>&1 || \
+              ${pkgs.kubectl}/bin/kubectl create namespace ${secret.namespace}
+            ''}
+
             ${pkgs.kubectl}/bin/kubectl apply -f - <<EOF
             apiVersion: v1
             kind: Secret

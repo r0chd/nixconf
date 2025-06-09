@@ -4,7 +4,7 @@ repositories:
 
 releases:
   - name: glance
-    namespace: monitoring
+    namespace: glance
     chart: rubxkube/glance
     version: 0.0.9
     values:

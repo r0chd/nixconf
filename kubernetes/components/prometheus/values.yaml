@@ -38,6 +38,15 @@ alertmanager:
 grafana:
   enabled: true
   fullnameOverride: grafana
+  service:
+    port: 3000
+  ingress:
+    enabled: true
+    ingressClassName: ingress-nginx
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    hosts:
+      - grafana.home
   forceDeployDatasources: false
   forceDeployDashboards: false
   defaultDashboardsEnabled: true
@@ -64,7 +73,7 @@ kubelet:
 kubeControllerManager:
   enabled: true
   endpoints: # ips of servers 
-    - 192.168.30.148
+    - 192.168.30.143
 
 coreDns:
   enabled: true
@@ -75,7 +84,7 @@ kubeDns:
 kubeEtcd:
   enabled: true
   endpoints: # ips of servers
-    - 192.168.30.148
+    - 192.168.30.143
   service:
     enabled: true
     port: 2381
@@ -84,12 +93,12 @@ kubeEtcd:
 kubeScheduler:
   enabled: true
   endpoints: # ips of servers
-    - 192.168.30.148
+    - 192.168.30.143
 
 kubeProxy:
   enabled: true
   endpoints: # ips of servers
-    - 192.168.30.148
+    - 192.168.30.143
 
 kubeStateMetrics:
   enabled: true

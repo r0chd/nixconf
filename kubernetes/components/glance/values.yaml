@@ -21,87 +21,127 @@ common:
           - content:
               glance.yml: |
                 pages:
-                  - name: Startpage
+                  - name: Services Hub
                     width: slim
-                    hide-desktop-navigation: true
                     center-vertically: true
                     columns:
                       - size: full
                         widgets:
                           - type: search
                             autofocus: true
+                            search-engine: https://duckduckgo.com/?q={QUERY}
                           - type: monitor
-                            cache: 1m
-                            title: Services
+                            cache: 30s
+                            title: Core Services
                             sites:
-                              - title: Pi-hole
-                                url: http://192.168.30.103/admin
+                              - title: Pi-hole Admin
+                                url: http://pihole.home
                                 icon: si:pihole
+                              - title: Grafana Monitoring
+                                url: http://grafana.home
+                                icon: si:grafana
+                              - title: MoxWiki
+                                url: https://moxwiki.your-domain.com
+                                icon: si:gitbook
+                              - title: Portfolio Site
+                                url: https://portfolio.your-domain.com
+                                icon: si:internetexplorer
                           - type: bookmarks
                             groups:
-                              - title: General
+                              - title: Quick Access
                                 links:
-                                  - title: Gmail
-                                    url: https://mail.google.com/mail/u/0/
-                                  - title: Amazon
-                                    url: https://www.amazon.com/
-                                  - title: Github
+                                  - title: Kubernetes Dashboard
+                                    url: https://kubernetes.io/docs/
+                                    icon: si:kubernetes
+                                  - title: Docker Hub
+                                    url: https://hub.docker.com/
+                                    icon: si:docker
+                                  - title: GitHub
                                     url: https://github.com/
-                  - name: Home
+                                    icon: si:github
+                              - title: Infrastructure
+                                links:
+                                  - title: Nginx Ingress Docs
+                                    url: https://kubernetes.github.io/ingress-nginx/
+                                  - title: Helm Charts
+                                    url: https://artifacthub.io/
+                                  - title: Cert Manager
+                                    url: https://cert-manager.io/docs/
+                          - type: monitor
+                            cache: 1m
+                            title: Network Status
+                            sites:
+                              - title: Router Gateway
+                                url: http://192.168.30.1
+                                icon: si:router
+                              - title: Ingress Controller
+                                url: http://192.168.30.100
+                                icon: si:nginx
+                  - name: Command Center
                     columns:
                       - size: small
                         widgets:
                           - type: calendar
-                          - type: rss
-                            limit: 10
-                            collapse-after: 3
-                            cache: 3h
-                            feeds:
-                              - url: https://justingarrison.com/index.xml
-                              - url: https://a-cup-of.coffee/index.xml
-                                title: a cup of coffee
-                              - url: https://samwho.dev/rss.xml
-                              - url: https://blog.stonegarden.dev/index.xml
-                              - url: https://ishadeed.com/feed.xml
-                                title: Ahmad Shadeed
-                          - type: twitch-channels
-                            channels:
-                              - cuistops
-                              - cohhcarnage
-                              - christitustech
-                              - blurbs
-                              - asmongold
-                              - jembawls
+                          - type: weather
+                            location: Poznań, Poland
+                          - type: markets
+                            markets:
+                              - symbol: BTC-USD
+                                name: Bitcoin
+                              - symbol: ETH-USD
+                                name: Ethereum
+                              - symbol: NVDA
+                                name: NVIDIA
+                              - symbol: GOOGL
+                                name: Google
+                              - symbol: MSFT
+                                name: Microsoft
                       - size: full
                         widgets:
                           - type: hacker-news
+                            limit: 8
+                            collapse-after: 4
                           - type: videos
                             channels:
                               - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
                               - UCv6J_jJa8GJqFwQNgNrMuww # ServeTheHome
                               - UCOk-gHyjcWZNj3Br4oxwh0A # Techno Tim
+                              - UCT-IhYrBZzVl7hLSEbdvSYQ # NetworkChuck
+                              - UC7YOGHUfC1Tb6E4pudI9STA # Mental Outlaw
                           - type: reddit
                             subreddit: selfhosted
+                            limit: 6
+                            collapse-after: 3
+                          - type: reddit
+                            subreddit: kubernetes
+                            limit: 4
+                            collapse-after: 2
                       - size: small
                         widgets:
-                          - type: weather
-                            location: Lyon, France
-                          - type: markets
-                            markets:
-                              - symbol: BTC-USD
-                                name: Bitcoin
-                              - symbol: NVDA
-                                name: NVIDIA
-                              - symbol: AAPL
-                                name: Apple
-                              - symbol: MSFT
-                                name: Microsoft
-                              - symbol: GOOGL
-                                name: Google
-                              - symbol: AMD
-                                name: AMD
-                              - symbol: RDDT
-                                name: Reddit
+                          - type: rss
+                            title: Tech News
+                            limit: 8
+                            collapse-after: 4
+                            cache: 2h
+                            feeds:
+                              - url: https://justingarrison.com/index.xml
+                                title: Justin Garrison
+                              - url: https://samwho.dev/rss.xml
+                                title: Sam Rose
+                              - url: https://blog.stonegarden.dev/index.xml
+                                title: Stone Garden
+                              - url: https://ishadeed.com/feed.xml
+                                title: Ahmad Shadeed
+                              - url: https://kubernetes.io/feed.xml
+                                title: Kubernetes Blog
+                          - type: twitch-channels
+                            title: Live Streams
+                            channels:
+                              - christitustech
+                              - cohhcarnage
+                              - asmongold
+                              - linus
+                              - techlinked
   startupProbeEnabled: false
   startupProbe: {}
   readinessProbeEnabled: false

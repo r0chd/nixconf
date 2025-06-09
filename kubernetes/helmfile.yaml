@@ -4,7 +4,6 @@ helmfiles:
   - path: components/flannel/helmfile.yaml
   - path: components/openebs/helmfile.yaml
   - path: components/prometheus/helmfile.yaml
-  - path: components/grafana/helmfile.yaml
   - path: components/glance/helmfile.yaml
   - path: components/pihole/helmfile.yaml
   #- path: components/immich/helmfile.yaml

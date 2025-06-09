@@ -48,7 +48,10 @@
     direnv.enable = true;
     seto.enable = true;
     btop.enable = true;
-    keepassxc.enable = true;
+    keepassxc = {
+      enable = true;
+      browser-integration.firefox.enable = true;
+    };
     multiplexer = {
       enable = true;
       variant = "tmux";

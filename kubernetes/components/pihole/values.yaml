@@ -18,3 +18,8 @@ serviceDns:
     metallb.universe.tf/allow-shared-ip: pihole-svc
   type: LoadBalancer
 replicaCount: 1
+admin:
+  enabled: true
+  existingSecret: "pihole-password"
+  passwordKey: "password"
+  annotaions:
