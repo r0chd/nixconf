@@ -20,128 +20,201 @@ common:
         data:
           - content:
               glance.yml: |
+                # Note: I installed this with the Proxmox Helper Script. So this config file is in /opt/glance. If you run with docker their may be multiple configuration files.
+                theme:
+                  background-color: 0 0 16
+                  primary-color: 43 59 81
+                  positive-color: 61 66 44
+                  negative-color: 6 96 59
                 pages:
-                  - name: Services Hub
+                  - name: Startpage
                     width: slim
+                    hide-desktop-navigation: false
                     center-vertically: true
                     columns:
+                
+                      - size: small
+                        widgets:
+                          - type: dns-stats
+                            service: pihole
+                            url: https://pihole.your-domain.com
+                            token: 12345abcdefghijk
+                          - type: custom-api
+                            title: Immich stats
+                            cache: 1d
+                            url: https://immich.hopki.net/api/server/statistics
+                            headers:
+                              x-api-key: 12345abcdefghijk
+                              Accept: application/json
+                            template: |
+                              <div class="flex justify-between text-center">
+                                <div>
+                                    <div class="color-highlight size-h3">{{ .JSON.Int "photos" | formatNumber }}</div>
+                                    <div class="size-h6">PHOTOS</div>
+                                </div>
+                                <div>
+                                    <div class="color-highlight size-h3">{{ .JSON.Int "videos" | formatNumber }}</div>
+                                    <div class="size-h6">VIDEOS</div>
+                                </div>
+                                <div>
+                                    <div class="color-highlight size-h3">{{ div (.JSON.Int "usage" | toFloat) 1073741824 | toInt | formatNumber }}GB</div>
+                                    <div class="size-h6">USAGE</div>
+                                </div>
+                              </div>
+                
+                          - type: repository
+                            repository: unixpariah/nixconf
+                            pull-requests-limit: 5
+                            issues-limit: 3
+                            commits-limit: 3
+                
                       - size: full
                         widgets:
                           - type: search
                             autofocus: true
-                            search-engine: https://duckduckgo.com/?q={QUERY}
-                          - type: monitor
-                            cache: 30s
-                            title: Core Services
-                            sites:
-                              - title: Pi-hole Admin
-                                url: http://pihole.home
-                                icon: si:pihole
-                              - title: Grafana Monitoring
-                                url: http://grafana.home
-                                icon: si:grafana
-                              - title: MoxWiki
-                                url: https://moxwiki.your-domain.com
-                                icon: si:gitbook
-                              - title: Portfolio Site
-                                url: https://portfolio.your-domain.com
-                                icon: si:internetexplorer
-                          - type: bookmarks
-                            groups:
-                              - title: Quick Access
-                                links:
-                                  - title: Kubernetes Dashboard
-                                    url: https://kubernetes.io/docs/
-                                    icon: si:kubernetes
-                                  - title: Docker Hub
-                                    url: https://hub.docker.com/
-                                    icon: si:docker
-                                  - title: GitHub
-                                    url: https://github.com/
-                                    icon: si:github
-                              - title: Infrastructure
-                                links:
-                                  - title: Nginx Ingress Docs
-                                    url: https://kubernetes.github.io/ingress-nginx/
-                                  - title: Helm Charts
-                                    url: https://artifacthub.io/
-                                  - title: Cert Manager
-                                    url: https://cert-manager.io/docs/
+                            search-engine: google
+                            new-tab: true
+                            bangs:
+                              - title: YouTube
+                                shortcut: "!yt"
+                                url: https://www.youtube.com/results?search_query={QUERY}
+                              - title: Github
+                                shortcut: "!gh"
+                                url: https://github.com/search?q={QUERY}&type=repositories
+                
                           - type: monitor
                             cache: 1m
-                            title: Network Status
+                            title: Services
                             sites:
-                              - title: Router Gateway
-                                url: http://192.168.30.1
-                                icon: si:router
-                              - title: Ingress Controller
-                                url: http://192.168.30.100
-                                icon: si:nginx
-                  - name: Command Center
+                              - title: Proxmox
+                                url: https://proxmox.hopki.net/
+                                check-url: https://10.0.0.80:8006
+                                allow-insecure: true
+                                icon: di:proxmox
+                              - title: Nextcloud
+                                url: https://cloud.hopki.net/
+                                check-url: http://10.0.0.104:11000
+                                icon: di:nextcloud
+                              - title: Immich
+                                url: https://immich.hopki.net/
+                                check-url: http://10.0.0.104:2283
+                                icon: di:immich
+                              - title: Pi-Hole
+                                url: https://pihole.your-domain.com/admin
+                                check-url: http://10.42.0.58:80/admin
+                                icon: di:pi-hole
+                              - title: Vaultwarden
+                                url: https://warden.hopki.net/
+                                check-url: http://10.0.0.109:8000
+                                icon: di:vaultwarden-light
+                              - title: NGINX Proxy Manager
+                                url: https://proxy.hopki.net/
+                                check-url: http://10.0.0.102:81
+                                icon: di:nginx
+                              - title: Jellyfin
+                                url: https://jellyfin.hopki.net/
+                                check-url: http://10.0.0.100:8096
+                                icon: di:jellyfin
+                              - title: Grafana
+                                url: https://grafana.your-domain.com/
+                                check-url: http://10.42.0.50:3000
+                                icon: di:grafana
+                
+                          - type: monitor
+                            cache: 1m
+                            title: Web apps
+                            sites:
+                              - title: Portfolio Site
+                                url: https://portfolio.your-domain.com
+                                check-url: http://10.42.0.28:3000
+                                icon: si:aboutdotme
+                              - title: MoxWiki
+                                url: https://moxwiki.your-domain.com
+                                check-url: http://10.42.0.25:3000
+                                icon: si:gitbook
+                
+                  - name: Home
+                    # Optionally, if you only have a single page you can hide the desktop navigation for a cleaner look
+                    # hide-desktop-navigation: true
                     columns:
                       - size: small
                         widgets:
                           - type: calendar
-                          - type: weather
-                            location: Poznań, Poland
-                          - type: markets
-                            markets:
-                              - symbol: BTC-USD
-                                name: Bitcoin
-                              - symbol: ETH-USD
-                                name: Ethereum
-                              - symbol: NVDA
-                                name: NVIDIA
-                              - symbol: GOOGL
-                                name: Google
-                              - symbol: MSFT
-                                name: Microsoft
+                            first-day-of-week: monday
+                
+                          - type: rss
+                            limit: 10
+                            collapse-after: 3
+                            cache: 12h
+                            feeds:
+                              - url: https://omgubuntu.co.uk/feed
+                                title: OmgUbuntu
+                                limit: 4
+                              - url: https://9to5linux.com/feed/atom
+                                title: 9to5Linux
+                                limit: 4
+                
+                          - type: twitch-channels
+                            channels:
+                              - technotim
+                              - piratesoftware
+                
                       - size: full
                         widgets:
-                          - type: hacker-news
-                            limit: 8
-                            collapse-after: 4
+                          - type: group
+                            widgets:
+                              - type: hacker-news
+                              - type: lobsters
+                
                           - type: videos
                             channels:
+                              - UCXuqSBlHAE6Xw-yeJA0Tunw # Linus Tech Tips
                               - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
-                              - UCv6J_jJa8GJqFwQNgNrMuww # ServeTheHome
-                              - UCOk-gHyjcWZNj3Br4oxwh0A # Techno Tim
-                              - UCT-IhYrBZzVl7hLSEbdvSYQ # NetworkChuck
-                              - UC7YOGHUfC1Tb6E4pudI9STA # Mental Outlaw
-                          - type: reddit
-                            subreddit: selfhosted
-                            limit: 6
-                            collapse-after: 3
-                          - type: reddit
-                            subreddit: kubernetes
-                            limit: 4
-                            collapse-after: 2
+                              - UCsBjURrPoezykLs9EqgamOA # Fireship
+                              - UCBJycsmduvYEL83R_U4JriQ # Marques Brownlee
+                
+                          - type: group
+                            widgets:
+                              - type: reddit
+                                subreddit: technology
+                                show-thumbnails: true
+                              - type: reddit
+                                subreddit: selfhosted
+                                show-thumbnails: true
+                
                       - size: small
                         widgets:
-                          - type: rss
-                            title: Tech News
-                            limit: 8
-                            collapse-after: 4
-                            cache: 2h
-                            feeds:
-                              - url: https://justingarrison.com/index.xml
-                                title: Justin Garrison
-                              - url: https://samwho.dev/rss.xml
-                                title: Sam Rose
-                              - url: https://blog.stonegarden.dev/index.xml
-                                title: Stone Garden
-                              - url: https://ishadeed.com/feed.xml
-                                title: Ahmad Shadeed
-                              - url: https://kubernetes.io/feed.xml
-                                title: Kubernetes Blog
-                          - type: twitch-channels
-                            title: Live Streams
-                            channels:
-                              - christitustech
-                              - cohhcarnage
-                              - asmongold
-                              - linus
-                              - techlinked
+                          - type: weather
+                            location: 98664
+                            units: imperial
+                            hour-format: 12h # alternatively "24h"
+                            # Optionally hide the location from being displayed in the widget
+                            # hide-location: true
+                
+                          - type: markets
+                            # The link to go to when clicking on the symbol in the UI,
+                            # {SYMBOL} will be substituded with the symbol for each market
+                            symbol-link-template: https://www.tradingview.com/symbols/{SYMBOL}/news
+                            markets:
+                              - symbol: LTC-USD
+                                name: Litecoin
+                              - symbol: XRP-USD
+                                name: Ripple
+                              - symbol: AAPL
+                                name: Apple
+                              - symbol: MSFT
+                                name: Microsoft
+                
+                          - type: releases
+                            cache: 1d
+                            # Without authentication the Github API allows for up to 60 requests per hour. You can create a
+                            # read-only token from your Github account settings and use it here to increase the limit.
+                            # token: ...
+                            repositories:
+                              - glanceapp/glance
+                              - unixpariah/nixconf
+                              - immich-app/immich
+                
   startupProbeEnabled: false
   startupProbe: {}
   readinessProbeEnabled: false

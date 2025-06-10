@@ -46,7 +46,7 @@ grafana:
     annotations:
       nginx.ingress.kubernetes.io/rewrite-target: /
     hosts:
-      - grafana.home
+      - grafana.your-domain.com
   forceDeployDatasources: false
   forceDeployDashboards: false
   defaultDashboardsEnabled: true

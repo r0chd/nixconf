@@ -43,6 +43,14 @@
             shell = "bash";
           };
         };
+        server-1 = {
+          arch = "aarch64-linux";
+          type = "server";
+          users.unixpariah = {
+            root.enable = true;
+            shell = "bash";
+          };
+        };
         agent-0 = {
           arch = "x86_64-linux";
           type = "server";
@@ -60,45 +68,6 @@
           };
         };
       };
-
-      mkHost =
-        hostName: attrs:
-        let
-          systemUsers = attrs.users;
-          system_type = hosts.${hostName}.type;
-          arch = hosts.${hostName}.arch;
-        in
-        nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit
-              inputs
-              hostName
-              systemUsers
-              system_type
-              arch
-              ;
-          };
-
-          modules = [
-            ./nixModules
-            nix-gaming.nixosModules.pipewireLowLatency
-            nix-gaming.nixosModules.platformOptimizations
-            disko.nixosModules.default
-            stylix.nixosModules.stylix
-            nix-index-database.nixosModules.nix-index
-            nix-minecraft.nixosModules.minecraft-servers
-          ];
-        };
-
-      mkDroid =
-        hostName: attrs:
-        let
-          system = hosts.${hostName}.arch;
-        in
-        nix-on-droid.lib.nixOnDroidConfiguration {
-          pkgs = import nixpkgs { inherit system; };
-          modules = [ ./hosts/${hostName} ];
-        };
 
       mkHome =
         hostName: username:
@@ -125,61 +94,94 @@
             inputs.nix-index-database.hmModules.nix-index
           ];
         };
-
-      mkNode =
-        hostName: attrs:
-        let
-          system = hosts.${hostName}.arch;
-          pkgs = import nixpkgs { inherit system; };
-          deployPkgs = import nixpkgs {
-            inherit system;
-            overlays = [
-              deploy-rs.overlays.default
-              (self: super: {
-                deploy-rs = {
-                  inherit (pkgs) deploy-rs;
-                  inherit (super.deploy-rs) lib;
-                };
-              })
-            ];
-          };
-
-          hostUsers = hosts.${hostName}.users or { };
-          mkUserProfiles =
-            users:
-            users
-            |> builtins.attrNames
-            |> map (user: {
-              name = user;
-              value = {
-                inherit user;
-                profilePath = "/home/${user}/.local/state/nix/profiles/profile";
-                path = deployPkgs.deploy-rs.lib.activate.custom (mkHome hostName user).activationPackage "$PROFILE/activate";
-              };
-            })
-            |> builtins.listToAttrs;
-        in
-        {
-          hostname = hostName;
-          sshUser = "deploy-rs";
-          profiles = {
-            system = {
-              user = "root";
-              path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostName};
-            };
-          } // mkUserProfiles hostUsers;
-        };
     in
     with nixpkgs;
     {
       deploy.nodes =
+        let
+          mkNode =
+            hostName: attrs:
+            let
+              system = hosts.${hostName}.arch;
+              pkgs = import nixpkgs { inherit system; };
+              deployPkgs = import nixpkgs {
+                inherit system;
+                overlays = [
+                  deploy-rs.overlays.default
+                  (self: super: {
+                    deploy-rs = {
+                      inherit (pkgs) deploy-rs;
+                      inherit (super.deploy-rs) lib;
+                    };
+                  })
+                ];
+              };
+
+              hostUsers = hosts.${hostName}.users or { };
+              mkUserProfiles =
+                users:
+                users
+                |> builtins.attrNames
+                |> map (user: {
+                  name = user;
+                  value = {
+                    inherit user;
+                    profilePath = "/home/${user}/.local/state/nix/profiles/profile";
+                    path = deployPkgs.deploy-rs.lib.activate.custom (mkHome hostName user).activationPackage "$PROFILE/activate";
+                  };
+                })
+                |> builtins.listToAttrs;
+            in
+            {
+              hostname = hostName;
+              sshUser = "deploy-rs";
+              profiles = {
+                system = {
+                  user = "root";
+                  path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostName};
+                };
+              } // mkUserProfiles hostUsers;
+            };
+        in
         hosts
         |> lib.filterAttrs (_: attrs: attrs.type != "mobile")
         |> lib.mapAttrs (hostName: attrs: mkNode hostName attrs);
+
       nixosConfigurations =
+        let
+          mkHost =
+            hostName: attrs:
+            let
+              systemUsers = attrs.users;
+              system_type = hosts.${hostName}.type;
+              arch = hosts.${hostName}.arch;
+            in
+            nixpkgs.lib.nixosSystem {
+              specialArgs = {
+                inherit
+                  inputs
+                  hostName
+                  systemUsers
+                  system_type
+                  arch
+                  ;
+              };
+
+              modules = [
+                ./nixModules
+                nix-gaming.nixosModules.pipewireLowLatency
+                nix-gaming.nixosModules.platformOptimizations
+                disko.nixosModules.default
+                stylix.nixosModules.stylix
+                nix-index-database.nixosModules.nix-index
+                nix-minecraft.nixosModules.minecraft-servers
+              ];
+            };
+        in
         hosts
         |> lib.filterAttrs (_: attrs: attrs.type != "mobile")
         |> lib.mapAttrs (hostName: attrs: mkHost hostName attrs);
+
       homeConfigurations =
         hosts
         |> lib.filterAttrs (_: attrs: attrs.type != "mobile")
@@ -195,7 +197,19 @@
         )
         |> builtins.concatLists
         |> builtins.listToAttrs;
+
       nixOnDroidConfigurations =
+        let
+          mkDroid =
+            hostName: attrs:
+            let
+              system = hosts.${hostName}.arch;
+            in
+            nix-on-droid.lib.nixOnDroidConfiguration {
+              pkgs = import nixpkgs { inherit system; };
+              modules = [ ./hosts/${hostName} ];
+            };
+        in
         hosts
         |> lib.filterAttrs (_: attrs: attrs.type != "server" && attrs.type != "desktop")
         |> lib.mapAttrs (hostName: attrs: mkDroid hostName attrs);
@@ -255,10 +269,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
-    raspberry-pi-nix = {
-      url = "github:nix-community/raspberry-pi-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";

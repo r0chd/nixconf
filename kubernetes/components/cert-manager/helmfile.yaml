@@ -1,0 +1,3 @@
+helmfiles:
+  - path: ./cert-manager.yaml
+  - path: ./kustomize.yaml

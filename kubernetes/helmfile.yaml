@@ -6,5 +6,6 @@ helmfiles:
   - path: components/prometheus/helmfile.yaml
   - path: components/glance/helmfile.yaml
   - path: components/pihole/helmfile.yaml
+  #- path: components/cert-manager/helmfile.yaml
   #- path: components/immich/helmfile.yaml
   #- path: components/nextcloud/helmfile.yaml
