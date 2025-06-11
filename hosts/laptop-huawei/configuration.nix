@@ -25,7 +25,7 @@
     deploy-rs = {
       owner = "deploy-rs";
       group = "wheel";
-      mode = "0400";
+      mode = "0440";
     };
     "wireless/SaltoraUp" = { };
     "wireless/Saltora" = { };

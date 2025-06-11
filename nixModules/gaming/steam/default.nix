@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  systemUsers,
   ...
 }:
 let
@@ -18,17 +19,11 @@ in
         '')
       ];
 
-      #persist.directories = [
-      #{
-      #directory = ".steam";
-      #method = "symlink";
-      #}
-      #{
-      #directory = ".local/share/Steam";
-      #method = "symlink";
-      #}
-      #"Games/Steam"
-      #];
+      persist.users.directories = [
+        ".steam"
+        "Games/Steam"
+        ".local/share/Steam"
+      ];
     };
 
     programs.steam = {

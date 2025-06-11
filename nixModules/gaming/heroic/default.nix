@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  systemUsers,
   ...
 }:
 let
@@ -19,10 +20,10 @@ in
   config = lib.mkIf cfg.enable {
     environment = {
       systemPackages = [ cfg.package ];
-      #persist.directories = [
-      #".config/heroic"
-      #"Games/Heroic"
-      #];
+      persist.users.directories = [
+        ".config/heroic"
+        "Games/Heroic"
+      ];
     };
   };
 }

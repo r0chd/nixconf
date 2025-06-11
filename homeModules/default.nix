@@ -11,7 +11,6 @@
 {
   imports = [
     ./nix
-    ./gaming
     ./environment
     ./workspace
     ./programs

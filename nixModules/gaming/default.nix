@@ -14,6 +14,7 @@ in
     ./lutris
     ./minecraft
     ./bottles
+    ./gamescope
   ];
 
   config =
@@ -26,16 +27,11 @@ in
         || cfg.bottles.enable
       )
       {
-        programs = {
-          gamescope.enable = true;
-          gamemode = {
-            enable = true;
-            settings = {
-              gpu = {
-                apply_gpu_optimizations = "accept-responsibility";
-                gpu_device = 0;
-              };
-            };
+        programs.gamemode = {
+          enable = true;
+          settings.gpu = {
+            apply_gpu_optimizations = "accept-responsibility";
+            gpu_device = 0;
           };
         };
       };

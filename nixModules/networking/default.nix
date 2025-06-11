@@ -20,31 +20,18 @@ in
 
   config = {
     networking.useDHCP = lib.mkForce false;
-    systemd.network = {
-      enable = true;
-      networks = {
-        "50-dhcp" = {
-          matchConfig.Name = "en*";
-          networkConfig.DHCP = "yes";
-          linkConfig.RequiredForOnline = "no";
-        };
-
-        "50-wireless" = {
-          matchConfig.Name = "wlan0";
-          networkConfig = {
-            DHCP = "yes";
-            DNS = cfg.nameservers;
-            IgnoreCarrierLoss = "3s";
+    systemd = {
+      services.systemd-networkd-wait-online.enable = lib.mkForce false;
+      network = {
+        enable = true;
+        networks = {
+          "50-dhcp" = {
+            matchConfig.Name = "en*";
+            networkConfig.DHCP = "yes";
+            linkConfig.RequiredForOnline = "no";
           };
         };
       };
-    };
-
-    services.resolved = {
-      enable = true;
-      dnssec = "true";
-      domains = [ "~." ];
-      dnsovertls = "false";
     };
 
     boot.initrd = {

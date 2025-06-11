@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  systemUsers,
   ...
 }:
 let
@@ -19,7 +20,7 @@ in
   config = lib.mkIf cfg.enable {
     environment = {
       systemPackages = [ cfg.package ];
-      #persist.directories = [ ".local/share/PrismLauncher" ];
+      persist.users.directories = [ ".local/share/PrismLauncher" ];
     };
   };
 }

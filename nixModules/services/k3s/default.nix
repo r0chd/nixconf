@@ -31,13 +31,13 @@ in
         value = {
           enable = true;
           description = "k3s secret for ${secret.name}";
-          wantedBy = [ "multi-user.target" ];
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = true;
             After = [ "k3s.service" ];
             Requires = [ "k3s.service" ];
           };
+          partOf = [ "k3s.service" ];
           environment.KUBECONFIG = "/etc/rancher/k3s/k3s.yaml";
           script = ''
             ${lib.optionalString (secret.namespace != null) ''

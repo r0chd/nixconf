@@ -43,14 +43,6 @@
             shell = "bash";
           };
         };
-        server-1 = {
-          arch = "aarch64-linux";
-          type = "server";
-          users.unixpariah = {
-            root.enable = true;
-            shell = "bash";
-          };
-        };
         agent-0 = {
           arch = "x86_64-linux";
           type = "server";

@@ -9,6 +9,8 @@
 let
   cfg = config.services.impermanence;
 in
+with lib;
+with lib.types;
 {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
 
@@ -27,6 +29,17 @@ in
     };
 
     environment.persist = {
+      users = {
+        files = mkOption {
+          type = listOf str;
+          default = [ ];
+        };
+
+        directories = mkOption {
+          type = listOf str;
+          default = [ ];
+        };
+      };
       directories = lib.mkOption {
         type =
           with lib.types;
@@ -59,34 +72,7 @@ in
         default = [ ];
       };
       files = lib.mkOption {
-        type =
-          with lib.types;
-          listOf (
-            either str (submodule {
-              options = {
-                file = lib.mkOption {
-                  type = str;
-                  default = null;
-                  description = "The file path to be linked.";
-                };
-                user = lib.mkOption {
-                  type = str;
-                  default = "root";
-                  description = "User owning the file";
-                };
-                group = lib.mkOption {
-                  type = str;
-                  default = "root";
-                  description = "Group owning the file";
-                };
-                mode = lib.mkOption {
-                  type = str;
-                  default = "0755";
-                  description = "Permissions";
-                };
-              };
-            })
-          );
+        type = lib.types.listOf lib.types.str;
         default = [ ];
       };
     };
@@ -190,6 +176,8 @@ in
         }
       ] ++ config.environment.persist.directories;
       inherit (config.environment.persist) files;
+
+      users = systemUsers |> lib.mapAttrs (name: value: config.environment.persist.users);
     };
 
     systemd.services.activate-home-manager = {

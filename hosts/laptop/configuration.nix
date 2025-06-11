@@ -64,6 +64,7 @@
     heroic.enable = true;
     bottles.enable = true;
     minecraft.enable = true;
+    gamescope.enable = true;
   };
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
