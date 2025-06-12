@@ -13,4 +13,10 @@ releases:
 
   - name: immich-pvc
     namespace: immich
-    chart: ./kustomize
+    hooks:
+     - events: ["postapply"]
+       command: sh
+       args:
+         - -c
+         - "kubectl apply -k ./kustomize"
+

@@ -31,20 +31,21 @@ in
         value = {
           enable = true;
           description = "k3s secret for ${secret.name}";
+          after = [ "k3s.service" ];
+          requires = [ "k3s.service" ];
+          partOf = [ "k3s.service" ];
+
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = true;
-            After = [ "k3s.service" ];
-            Requires = [ "k3s.service" ];
           };
-          partOf = [ "k3s.service" ];
+
           environment.KUBECONFIG = "/etc/rancher/k3s/k3s.yaml";
           script = ''
             ${lib.optionalString (secret.namespace != null) ''
               ${pkgs.kubectl}/bin/kubectl get namespace ${secret.namespace} >/dev/null 2>&1 || \
               ${pkgs.kubectl}/bin/kubectl create namespace ${secret.namespace}
             ''}
-
             ${pkgs.kubectl}/bin/kubectl apply -f - <<EOF
             apiVersion: v1
             kind: Secret

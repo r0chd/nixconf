@@ -101,11 +101,11 @@ common:
                                 icon: di:immich
                               - title: Pi-Hole
                                 url: https://pihole.your-domain.com/admin
-                                check-url: http://10.42.0.58:80/admin
+                                check-url: http://pihole-web.pihole-system.svc.cluster.local:80/admin
                                 icon: di:pi-hole
                               - title: Vaultwarden
-                                url: https://warden.hopki.net/
-                                check-url: http://10.0.0.109:8000
+                                url: https://warden.your-domain.com
+                                check-url: http://vaultwarden.vaultwarden.svc.cluster.local:80/
                                 icon: di:vaultwarden-light
                               - title: NGINX Proxy Manager
                                 url: https://proxy.hopki.net/
@@ -116,8 +116,8 @@ common:
                                 check-url: http://10.0.0.100:8096
                                 icon: di:jellyfin
                               - title: Grafana
-                                url: https://grafana.your-domain.com/
-                                check-url: http://10.42.0.50:3000
+                                url: https://grafana.your-domain.com
+                                check-url: http://grafana.monitoring.svc.cluster.local:3000
                                 icon: di:grafana
                 
                           - type: monitor
@@ -126,11 +126,11 @@ common:
                             sites:
                               - title: Portfolio Site
                                 url: https://portfolio.your-domain.com
-                                check-url: http://10.42.0.28:3000
+                                check-url: http://portfolio-client.portfolio.svc.cluster.local:80
                                 icon: si:aboutdotme
                               - title: MoxWiki
                                 url: https://moxwiki.your-domain.com
-                                check-url: http://10.42.0.25:3000
+                                check-url: http://moxwiki.moxwiki.svc.cluster.local:80
                                 icon: si:gitbook
                 
                   - name: Home
@@ -153,11 +153,6 @@ common:
                               - url: https://9to5linux.com/feed/atom
                                 title: 9to5Linux
                                 limit: 4
-                
-                          - type: twitch-channels
-                            channels:
-                              - technotim
-                              - piratesoftware
                 
                       - size: full
                         widgets:

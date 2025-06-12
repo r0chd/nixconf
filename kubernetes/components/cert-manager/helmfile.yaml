@@ -1,3 +1,19 @@
-helmfiles:
-  - path: ./cert-manager.yaml
-  - path: ./kustomize.yaml
+repositories:
+  - name: cert-manager
+    url: https://charts.jetstack.io
+
+releases:
+  - name: cert-manager
+    namespace: cert-manager
+    chart: cert-manager/cert-manager
+    version: 1.17.2
+    values:
+      - ./values.yaml
+    hooks:
+     - events: ["postapply"]
+       command: sh
+       args:
+         - -c
+         - "kubectl apply -k ./kustomize"
+
+

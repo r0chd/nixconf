@@ -1,4 +1,0 @@
-releases:
-  - name: metallb-kustomize
-    namespace: metallb-system
-    chart: ./kustomize

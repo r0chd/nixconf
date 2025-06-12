@@ -1,10 +1,17 @@
 apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-issuer
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: wildcard-cert
+  name: ssl-cert
   namespace: cert-manager
 spec:
-  secretName: wildcard-tls-secret
+  secretName: ssl-cert
   issuerRef:
     name: letsencrypt
     kind: ClusterIssuer

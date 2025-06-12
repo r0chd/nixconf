@@ -45,8 +45,13 @@ grafana:
     ingressClassName: ingress-nginx
     annotations:
       nginx.ingress.kubernetes.io/rewrite-target: /
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
     hosts:
       - grafana.your-domain.com
+    tls:
+      - secretName: ssl-cert
+        hosts:
+          - grafana.your-domain.com
   forceDeployDatasources: false
   forceDeployDashboards: false
   defaultDashboardsEnabled: true

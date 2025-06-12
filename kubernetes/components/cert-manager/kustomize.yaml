@@ -1,4 +1,0 @@
-releases:
-  - name: cert-manager-kustomize
-    namespace: cert-manager
-    chart: ./kustomize
