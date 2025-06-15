@@ -40,11 +40,35 @@
         uutils-coreutils-noprefix
         (writeShellScriptBin "mkUser" (builtins.readFile ./mkUser.sh))
         (writeShellScriptBin "mkHost" (builtins.readFile ./mkHost.sh))
-        (writeShellScriptBin "shell" ''nix shell ''${NH_FLAKE}#nixosConfigurations.${hostname}.pkgs.$1'')
-        (writeShellScriptBin "run" ''nix run ''${NH_FLAKE}#nixosConfigurations.${hostname}.pkgs.$1'')
-        glib
+
+        # `nix shell nixpkgs#package` using system nixpkgs
+        (writeShellScriptBin "shell" ''
+          if [ $# -eq 0 ]; then
+            echo "Error: At least one argument (package name) is required"
+            echo "Usage: shell <package> [additional-args...]"
+            exit 1
+          fi
+
+          package="$1"
+          shift
+          nix shell ''${NH_FLAKE}#nixosConfigurations.${hostName}.pkgs.$package "$@"
+        '')
+
+        # `nix run nixpkgs#package` using system nixpkgs
+        (writeShellScriptBin "run" ''
+          if [ $# -eq 0 ]; then
+            echo "Error: At least one argument (package name) is required"
+            echo "Usage: run <package> [additional-args...]"
+            exit 1
+          fi
+
+          package="$1"
+          shift
+          nix run ''${NH_FLAKE}#nixosConfigurations.${hostName}.pkgs.$package "$@"
+        '')
       ];
-      variables.HOME_MANAGER_BACKUP_EXT = "bak";
+      sessionVariables.HOME_MANAGER_BACKUP_EXT = "$(date +\"%Y%m%d%H%M%S\").bak";
+      variables.HOME_MANAGER_BACKUP_EXT = "$(date +\"%Y%m%d%H%M%S\").bak";
     };
 
     boot = {

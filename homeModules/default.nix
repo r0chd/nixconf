@@ -41,8 +41,33 @@
           command "$@" > /dev/null 2>&1 &
           disown
         '')
-        (writeShellScriptBin "shell" ''nix shell ''${NH_FLAKE}#homeConfigurations.${username}@${hostName}.pkgs.$1'')
-        (writeShellScriptBin "run" ''nix run ''${NH_FLAKE}#homeConfigurations.${username}@${hostName}.pkgs.$1'')
+
+        # `nix shell nixpkgs#package` using home manager nixpkgs
+        (writeShellScriptBin "shell" ''
+          if [ $# -eq 0 ]; then
+            echo "Error: At least one argument (package name) is required"
+            echo "Usage: shell <package> [additional-args...]"
+            exit 1
+          fi
+
+          package="$1"
+          shift
+          nix shell ''${NH_FLAKE}#homeConfigurations.${username}@${hostName}.pkgs.$package "$@"
+        '')
+
+        # `nix run nixpkgs#package` using home manager nixpkgs
+        (writeShellScriptBin "run" ''
+          if [ $# -eq 0 ]; then
+            echo "Error: At least one argument (package name) is required"
+            echo "Usage: run <package> [additional-args...]"
+            exit 1
+          fi
+
+          package="$1"
+          shift
+          nix run ''${NH_FLAKE}#homeConfigurations.${username}@${hostName}.pkgs.$package "$@"
+        '')
+
       ];
       homeDirectory = "/home/${username}";
       stateVersion = "25.11";
