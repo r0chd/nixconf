@@ -348,26 +348,42 @@
         "Alt+Shift+8".action.move-column-to-workspace = 8;
         "Alt+Shift+9".action.move-column-to-workspace = 9;
 
-        "Alt+N".action.focus-column-left = { };
-        "Alt+M".action.focus-column-right = { };
+        "Alt+Comma".action.consume-or-expel-window-left = { };
+        "Alt+Period".action.consume-or-expel-window-right = { };
 
-        "Alt+Shift+N".action.move-column-left = { };
-        "Alt+Shift+M".action.move-column-right = { };
+        "Alt+O".action.toggle-window-floating = { };
+        "Alt+Shift+O".action.switch-focus-between-floating-and-tiling = { };
 
-        "Alt+H".action.focus-monitor-left = { };
-        "Alt+L".action.focus-monitor-right = { };
+        "Alt+H".action.focus-column-left = { };
+        "Alt+J".action.focus-window-down = { };
+        "Alt+K".action.focus-window-up = { };
+        "Alt+L".action.focus-column-right = { };
 
-        "Alt+Shift+H".action.move-column-to-monitor-left = { };
-        "Alt+Shift+L".action.move-column-to-monitor-right = { };
+        "Alt+V".action.toggle-overview = { };
+
+        "Alt+Shift+H".action.move-column-left = { };
+        "Alt+Shift+J".action.move-window-down = { };
+        "Alt+Shift+K".action.move-window-up = { };
+        "Alt+Shift+L".action.move-column-right = { };
+
+        "Alt+N".action.focus-monitor-left = { };
+        "Alt+M".action.focus-monitor-right = { };
+
+        "Alt+Shift+N".action.move-column-to-monitor-left = { };
+        "Alt+Shift+M".action.move-column-to-monitor-right = { };
 
         "Alt+Shift+C".action.close-window = { };
 
         "Alt+R".action.switch-preset-column-width = { };
+        "Alt+Shift+R".action.switch-preset-column-width = { };
+
         "Alt+F".action.maximize-column = { };
+        "Alt+Shift+F".action.fullscreen-window = { };
+
         "Alt+C".action.center-column = { };
 
-        "Alt+Shift+K".action.set-column-width = "-10%";
-        "Alt+Shift+J".action.set-column-width = "+10%";
+        "Alt+Minus".action.set-column-width = "-10%";
+        "Alt+Equal".action.set-column-width = "+10%";
       };
     };
   };

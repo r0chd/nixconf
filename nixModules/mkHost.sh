@@ -38,7 +38,7 @@ cat <<EOF > "$BASE_CONFIG_PATH/hardware-configuration.nix"
 { ... }: { }
 EOF
 
-cat <<EOF > "$BASE_CONFIG_PATH/configuration.nix"
+cat <<EOF > "$BASE_CONFIG_PATH/default.nix"
 { ... }:
 {
   imports = [

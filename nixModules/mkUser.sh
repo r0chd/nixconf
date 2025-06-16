@@ -85,7 +85,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-cat <<EOF > "$CONFIG_PATH/configuration.nix"
+cat <<EOF > "$CONFIG_PATH/default.nix"
 { ... }:
 {
   programs = {

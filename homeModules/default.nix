@@ -17,7 +17,7 @@
     ./security
     ./networking
     ./services
-    ../hosts/${hostName}/users/${username}/configuration.nix
+    ../hosts/${hostName}/users/${username}
     ../theme
     ../common/home
   ];

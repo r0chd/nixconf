@@ -20,7 +20,7 @@
     ./documentation
     ./gaming
     ./programs
-    ../hosts/${hostName}/configuration.nix
+    ../hosts/${hostName}
     ../theme
     ../common/nixos
   ];
@@ -77,7 +77,6 @@
           lib.mkDefault pkgs.linuxPackages
         else
           lib.mkDefault pkgs.linuxPackages_latest;
-      initrd.systemd.tpm2.enable = lib.mkDefault false;
     };
 
     programs = {
@@ -100,13 +99,18 @@
             hashedPassword = null;
           };
         }
-        // lib.mapAttrs (name: value: {
-          isNormalUser = true;
-          hashedPasswordFile = config.sops.secrets."${name}/password".path;
-          extraGroups = lib.mkIf value.root.enable [ "wheel" ];
-          shell = pkgs.${value.shell};
-          createHome = true;
-        }) systemUsers;
+        // (
+          systemUsers
+          |> lib.mapAttrs (
+            name: value: {
+              isNormalUser = true;
+              hashedPasswordFile = config.sops.secrets."${name}/password".path;
+              extraGroups = lib.mkIf value.root.enable [ "wheel" ];
+              shell = pkgs.${value.shell};
+              createHome = true;
+            }
+          )
+        );
     };
 
     # Fully disable channels
