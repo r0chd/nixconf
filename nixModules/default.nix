@@ -11,6 +11,7 @@
 }:
 {
   imports = [
+    ./nix
     ./system
     ./hardware
     ./networking
@@ -145,12 +146,6 @@
       };
     };
 
-    system = {
-      #activationScripts.setPermissions = ''
-      #setfacl -R -m g:wheel:rwX /var/lib/nixconf
-      #find /var/lib/nixconf -type d | xargs setfacl -R -m d:g:wheel:rwX
-      #'';
-      stateVersion = "25.11";
-    };
+    system.stateVersion = "25.11";
   };
 }

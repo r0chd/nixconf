@@ -8,12 +8,9 @@ inputs: config: [
     moxidle = inputs.moxidle.packages.${prev.system}.default;
     moxpaper = inputs.moxpaper.packages.${prev.system}.default;
     seto = inputs.seto.packages.${prev.system}.default;
-    #linuxPackages_latest = prev.linuxPackages_latest.extend (
-    #self: super: { broadcom_sta = self.callPackage ./broadcom-sta { }; }
-    #);
     nh = inputs.nh.packages.${prev.system}.default;
     sysnotifier = inputs.sysnotifier.packages.${prev.system}.default;
-    wgsl-formatter = prev.callPackage ./wgsl-formatter { };
+    helix = prev.callPackage ./helix { };
   })
 
   inputs.niri.overlays.niri
