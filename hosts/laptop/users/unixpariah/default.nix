@@ -19,6 +19,7 @@
     "ssh_keys/id_yubikey".path = "/home/unixpariah/.ssh/id_yubikey";
     nixos-access-token-github = { };
     github-api = { };
+    atuin_key = { };
   };
 
   nix.access-tokens = [ config.sops.placeholder.nixos-access-token-github ];
@@ -28,12 +29,12 @@
     yubikey-touch-detector.enable = true;
   };
 
-  wayland.windowManager = {
-    hyprland.enable = false;
-    sway.enable = false;
-  };
-
   programs = {
+    atuin = {
+      enable = true;
+      settings.key_path = config.sops.secrets.atuin_key.path;
+    };
+
     git = {
       signingKeyFile = "${config.home.homeDirectory}/.ssh/id_yubikey.pub";
       email = "100892812+unixpariah@users.noreply.github.com";

@@ -131,6 +131,12 @@
   };
 
   networking = {
+    interfaces.enp3s0.ipv4.addresses = [
+      {
+        address = "192.168.30.142";
+        prefixLength = 24;
+      }
+    ];
     hostId = "830a5f18";
     firewall.allowedTCPPorts = [
       6443

@@ -33,8 +33,6 @@
           packages = with pkgs; [
             zig.packages.${system}."0.14.0"
             zls.packages.${system}.default
-            nixd
-            nixfmt-rfc-style
           ];
         };
       });

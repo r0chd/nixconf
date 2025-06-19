@@ -49,10 +49,8 @@
   };
 
   programs = {
+    ladybird.enable = true;
     deploy-rs.sshKeyFile = config.sops.secrets.deploy-rs.path;
-    sway.enable = false;
-    hyprland.enable = false;
-
     thunderbird.enable = true;
     nix-index.enable = true;
     wshowkeys.enable = true;

@@ -4,20 +4,15 @@ metadata:
   name: atuin-ingress
   namespace: atuin
 spec:
-  tls:
-  - hosts:
-      - atuin.your-domain.com
-    secretName: atuin-ssl-cert
   ingressClassName: ingress-nginx
   rules:
-    - host: atuin.your-domain.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: atuin
-                port:
-                  number: 80
-
+  - host: atuin.your-domain.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: atuin
+            port:
+              number: 8888

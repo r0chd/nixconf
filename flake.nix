@@ -300,6 +300,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-gaming.url = "github:fufexan/nix-gaming";
+    helix-steel = {
+      url = "github:mattwparas/helix/steel-event-system";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     seto.url = "github:unixpariah/seto";
     moxidle.url = "github:unixpariah/moxidle";

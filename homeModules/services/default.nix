@@ -5,5 +5,6 @@
     ./impermanence
     ./yubikey-touch-detector
     ./ngrok
+    ./cliphist
   ];
 }

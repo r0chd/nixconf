@@ -33,7 +33,6 @@
             buildInputs = [
               (rust-bin.selectLatestNightlyWith (toolchain: toolchain.default))
               rust-analyzer
-              nixd
             ];
           };
       });

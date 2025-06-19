@@ -10,7 +10,6 @@ inputs: config: [
     seto = inputs.seto.packages.${prev.system}.default;
     nh = inputs.nh.packages.${prev.system}.default;
     sysnotifier = inputs.sysnotifier.packages.${prev.system}.default;
-    helix = prev.callPackage ./helix { };
   })
 
   inputs.niri.overlays.niri

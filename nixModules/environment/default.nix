@@ -37,14 +37,9 @@
         enable = true;
         xdgOpenUsePortal = true;
         extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+        wlr.enable = true;
 
         config = {
-          common = {
-            default = [
-              "gnome"
-              "gtk"
-            ];
-          };
           niri = {
             default = [
               "gnome"
@@ -54,6 +49,18 @@
             "org.freedesktop.impl.portal.Notification" = [ "gtk" ];
             "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
             "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+          };
+          Hyprland = {
+            default = [
+              "hyprland"
+              "gtk"
+            ];
+          };
+          sway = {
+            default = lib.mkForce [
+              "wlr"
+              "gtk"
+            ];
           };
         };
       };

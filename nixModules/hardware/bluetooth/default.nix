@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   system_type,
   ...
 }:

@@ -159,7 +159,6 @@ common:
                           - type: group
                             widgets:
                               - type: hacker-news
-                              - type: lobsters
                 
                           - type: videos
                             channels:
@@ -167,16 +166,7 @@ common:
                               - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
                               - UCsBjURrPoezykLs9EqgamOA # Fireship
                               - UCBJycsmduvYEL83R_U4JriQ # Marques Brownlee
-                
-                          - type: group
-                            widgets:
-                              - type: reddit
-                                subreddit: technology
-                                show-thumbnails: true
-                              - type: reddit
-                                subreddit: selfhosted
-                                show-thumbnails: true
-                
+                              
                       - size: small
                         widgets:
                           - type: weather
@@ -191,14 +181,12 @@ common:
                             # {SYMBOL} will be substituded with the symbol for each market
                             symbol-link-template: https://www.tradingview.com/symbols/{SYMBOL}/news
                             markets:
-                              - symbol: LTC-USD
-                                name: Litecoin
-                              - symbol: XRP-USD
-                                name: Ripple
-                              - symbol: AAPL
-                                name: Apple
-                              - symbol: MSFT
-                                name: Microsoft
+                              - symbol: BTC-USD
+                                name: Bitcoin
+                              - symbol: ETH-USD
+                                name: Ethereum
+                              - symbol: SOL-USD
+                                name: Solana
                 
                           - type: releases
                             cache: 1d

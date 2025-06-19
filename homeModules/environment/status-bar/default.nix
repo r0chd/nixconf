@@ -196,9 +196,7 @@ with config.stylix.fonts;
         padding-right: 1.5px;
       }
 
-      #custom-nix, #workspaces, #window, #pulseaudio, #cpu, #memory, #clock, #tray, #network, #custom-moxnotify-inhibit,
-      #custom-moxnotify-history,
-      #custom-moxnotify-muted, #battery, #backlight {
+      #custom-nix, #workspaces, #window, #pulseaudio, #cpu, #memory, #clock, #tray, #network, #battery, #backlight {
         margin: 7px;
         padding: 5px;
         padding-left: 8px;
@@ -211,6 +209,11 @@ with config.stylix.fonts;
       #custom-moxnotify-history,
       #custom-moxnotify-muted {
         min-width: 30px; 
+        background: @base;
+        padding: 5px;
+        padding-left: 8px;
+        padding-right: 8px;
+        border-radius: 4px;
       }
 
       #workspaces {

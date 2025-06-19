@@ -13,7 +13,6 @@
         ripgrep
         tree-sitter
         fd
-        adwaita-icon-theme
       ];
 
       persist.directories = [

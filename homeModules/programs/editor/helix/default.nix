@@ -2,14 +2,14 @@
   lib,
   config,
   pkgs,
+  inputs,
   ...
 }:
 {
   config = lib.mkIf (config.programs.editor == "hx") {
-    home.packages = with pkgs; [ adwaita-icon-theme ];
-
     programs.helix = {
       enable = true;
+      package = inputs.helix-steel.packages.${pkgs.system}.default;
 
       languages = {
         language-server = {

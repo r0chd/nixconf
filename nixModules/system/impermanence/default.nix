@@ -84,7 +84,11 @@ with lib.types;
         btrfs-rollback = lib.mkIf (config.system.fileSystem == "btrfs") {
           description = "Rollback BTRFS root subvolume to a pristine state";
           wantedBy = [ "initrd.target" ];
-          after = [ "systemd-cryptsetup@crypted-main.service" ];
+          after = [
+            "systemd-cryptsetup@crypted-main.service"
+            "systemd-cryptsetup@crypted-extra.service"
+            "lvm2-activation-early.service"
+          ];
           before = [ "sysroot.mount" ];
           unitConfig.DefaultDependencies = "no";
           serviceConfig.Type = "oneshot";
@@ -92,7 +96,7 @@ with lib.types;
             mkdir -p /mnt
             # We first mount the btrfs root to /mnt
             # so we can manipulate btrfs subvolumes.
-            mount -o subvol=/ /dev/mapper/crypted-main /mnt
+            mount -t btrfs -o subvol=/ /dev/mapper/root_vg-root /mnt
             # While we're tempted to just delete /root and create
             # a new snapshot from /root-blank, /root is already
             # populated at this point with a number of subvolumes,

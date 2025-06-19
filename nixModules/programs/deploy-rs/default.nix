@@ -14,7 +14,7 @@ in
   };
 
   config = {
-    environment.systemPackages = [ pkgs.deploy-rs.deploy-rs ];
+    environment.systemPackages = lib.mkIf (cfg.sshKeyFile != null) [ pkgs.deploy-rs.deploy-rs ];
 
     security.sudo.extraRules = [
       {
@@ -42,10 +42,12 @@ in
     nix.settings.trusted-users = [ "deploy-rs" ];
 
     programs.ssh.extraConfig = lib.mkIf (cfg.sshKeyFile != null) ''
-      Host * 
-        Match user deploy-rs
+      Host *
+        Match User deploy-rs
           IdentityFile ${cfg.sshKeyFile}
           IdentitiesOnly yes
+          StrictHostKeyChecking no
+          UserKnownHostsFile /dev/null
     '';
   };
 }

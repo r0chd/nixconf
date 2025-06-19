@@ -4,9 +4,14 @@
     #"yubico/u2f_keys".path = "/home/unixpariah/.config/Yubico/u2f_keys";
     github-api = { };
     "ssh_keys/id_yubikey".path = "/home/unixpariah/.ssh/id_yubikey";
+    atuin_key = { };
   };
 
   programs = {
+    atuin = {
+      enable = true;
+      settings.key_path = config.sops.secrets.atuin_key.path;
+    };
     git = {
       signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
       email = "100892812+unixpariah@users.noreply.github.com";

@@ -85,6 +85,7 @@
   };
 
   programs = {
+    ladybird.enable = true;
     sway.enable = false;
     hyprland.enable = false;
 
