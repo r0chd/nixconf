@@ -38,7 +38,6 @@ in
       SSHAgent.Enabled = true;
     };
 
-    # CANT BE A SYMLINK
     home.file = {
       ".mozilla/native-messaging-hosts/org.keepassxc.keepassxc_browser.json" =
         lib.mkIf cfg.browser-integration.firefox.enable

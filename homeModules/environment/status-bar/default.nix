@@ -33,6 +33,8 @@ with config.stylix.fonts;
           "custom/moxnotify-history"
           "custom/moxnotify-muted"
           "custom/sep"
+          "custom/idle-inhibit"
+          "custom/sep"
           "tray"
         ];
         "hyprland/workspaces" = {
@@ -142,6 +144,40 @@ with config.stylix.fonts;
           on-click = "mox notify history toggle";
         };
 
+        "custom/idle-inhibit" = {
+          interval = 1;
+          exec = pkgs.writeShellScript "idle-inhibit" ''
+            LOCKFILE="/tmp/idle-inhibit.lock"
+            INHIBITED_ICON="<span size='large' color='${config.lib.stylix.colors.withHashtag.base0A}'>󱫞</span>"
+            UNINHIBITED_ICON="<span size='large' color='${config.lib.stylix.colors.withHashtag.base0D}'>󱎫</span>"
+
+            if [ -f "$LOCKFILE" ]; then
+                echo "$INHIBITED_ICON"
+            else
+                echo "$UNINHIBITED_ICON"
+            fi
+          '';
+
+          on-click =
+            #sh
+            ''
+              LOCKFILE="/tmp/idle-inhibit.lock"
+
+              if [ -f "$LOCKFILE" ]; then
+                rm "$LOCKFILE"
+              else 
+                touch "$LOCKFILE"
+                systemd-inhibit \
+                  --who="waybar" \
+                  --what=idle \
+                  --why="Prevent sleep while lockfile exists" \
+                  bash -c "${pkgs.inotify-tools}/bin/inotifywait -e delete \"$LOCKFILE\"" \
+                  &> /dev/null &
+              fi
+
+            '';
+        };
+
         pulseaudio = {
           format = "<span size='large'>󰕾 </span> {volume}%";
           format-muted = "  0%";
@@ -166,12 +202,8 @@ with config.stylix.fonts;
         };
       };
     };
+
     style = ''
-      @define-color base      ${base02};
-      @define-color crust     ${base01};
-      @define-color surface0  ${base03};
-      @define-color surface2  ${base04};
-      @define-color overlay0  ${base04};
       @define-color blue      ${base0D};
       @define-color lavender  ${base07};
       @define-color sapphire  ${base0C};
@@ -191,7 +223,7 @@ with config.stylix.fonts;
       }
 
       #waybar {
-        background: @crust;
+        background: ${base01};
         padding-left: 1.5px;
         padding-right: 1.5px;
       }
@@ -202,18 +234,41 @@ with config.stylix.fonts;
         padding-left: 8px;
         padding-right: 8px;
         border-radius: 4px;
-        background: @base;
+        background: ${base02};
+      }
+
+      #custom-idle-inhibit {
+        min-width: 30px; 
+        background: ${base02};
+        padding: 5px;
+        padding-left: 8px;
+        padding-right: 8px;
+        margin: 7px;
+        border-radius: 4px;
       }
 
       #custom-moxnotify-inhibit,
       #custom-moxnotify-history,
       #custom-moxnotify-muted {
         min-width: 30px; 
-        background: @base;
+        background: ${base02};
         padding: 5px;
+        margin-top: 7px;
+        margin-bottom: 7px;
+      }
+
+      #custom-moxnotify-inhibit {
+        margin-left: 7px;
+        border-radius: 4px 0 0 4px;
+        padding-right: 0;
         padding-left: 8px;
+      }
+
+      #custom-moxnotify-muted {
+        margin-right: 7px;
+        border-radius: 0 4px 4px 0;
+        padding-left: 0;
         padding-right: 8px;
-        border-radius: 4px;
       }
 
       #workspaces {
@@ -226,8 +281,8 @@ with config.stylix.fonts;
       }
 
       #workspaces button:hover {
-        background: @base;
-        border: @crust;
+        background: ${base02};
+        border: ${base01};
         padding: 0 3px;
       }
 
@@ -236,11 +291,11 @@ with config.stylix.fonts;
       }
 
       #workspaces button.empty {
-        color: @surface2;  /* Empty workspaces */
+        color: ${base04};  /* Empty workspaces */
       }
 
       #workspaces button.default {
-        color: @overlay0;
+        color: ${base04};
       }
 
       #workspaces button.special {
@@ -252,7 +307,7 @@ with config.stylix.fonts;
       }
 
       #custom-sep {
-        color: @surface0;
+        color: ${base03};
       }
 
       #cpu {
@@ -298,7 +353,6 @@ with config.stylix.fonts;
       #backlight {
         color: @rosewater;
       }
-
     '';
   };
 }

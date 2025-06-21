@@ -47,13 +47,6 @@
             "laptop-huawei"
           ];
         };
-        "~/workspace" = {
-          path = "~/workspace";
-          devices = [
-            "laptop"
-            "laptop-huawei"
-          ];
-        };
       };
     };
   };

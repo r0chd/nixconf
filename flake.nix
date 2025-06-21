@@ -11,7 +11,6 @@
       deploy-rs,
       nix-gaming,
       nix-index-database,
-      nix-minecraft,
       nix-on-droid,
       ...
     }@inputs:
@@ -166,7 +165,6 @@
                 disko.nixosModules.default
                 stylix.nixosModules.stylix
                 nix-index-database.nixosModules.nix-index
-                nix-minecraft.nixosModules.minecraft-servers
               ];
             };
         in
@@ -267,10 +265,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.4.2";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    #lanzaboote = {
+    #  url = "github:nix-community/lanzaboote/v0.4.2";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
 
     niri.url = "github:sodiboo/niri-flake";
 
@@ -291,10 +289,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland.url = "github:hyprwm/Hyprland";
-    nix-minecraft = {
-      url = "github:Infinidoge/nix-minecraft";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-on-droid = {
       url = "github:nix-community/nix-on-droid";
       inputs.nixpkgs.follows = "nixpkgs";

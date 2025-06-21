@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  networking.nameservers = [ "192.168.30.102" ];
+  networking.nameservers = [ "1.1.1.1" ];
 
   environment = {
     variables.EDITOR = "hx";

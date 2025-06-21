@@ -24,7 +24,7 @@ in
   imports = [
     ./systemd-boot
     ./grub
-    ./lanzaboote
+    #./lanzaboote
   ];
 
   config = {
