@@ -16,6 +16,16 @@
     }@inputs:
     let
       hosts = {
+        t851 = {
+          arch = "x86_64-linux";
+          type = "desktop";
+          users = {
+            os1 = {
+              root.enable = true;
+              shell = "nushell";
+            };
+          };
+        };
         laptop = {
           arch = "x86_64-linux";
           type = "desktop";
