@@ -35,6 +35,7 @@
     editor = "hx";
     git = {
       signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
+      identityFile = [ "${config.home.homeDirectory}/.ssh/id_ed25519.pub" ];
       email = "os1@qed.ai";
     };
     multiplexer = {

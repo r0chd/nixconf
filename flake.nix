@@ -19,6 +19,7 @@
         t851 = {
           arch = "x86_64-linux";
           type = "desktop";
+          nixos = false;
           users = {
             os1 = {
               root.enable = true;
@@ -29,6 +30,7 @@
         laptop = {
           arch = "x86_64-linux";
           type = "desktop";
+          nixos = true;
           users = {
             unixpariah = {
               root.enable = true;
@@ -39,6 +41,7 @@
         laptop-huawei = {
           arch = "x86_64-linux";
           type = "desktop";
+          nixos = true;
           users.unixpariah = {
             root.enable = true;
             shell = "nushell";
@@ -47,6 +50,7 @@
         server-0 = {
           arch = "x86_64-linux";
           type = "server";
+          nixos = true;
           users.unixpariah = {
             root.enable = true;
             shell = "bash";
@@ -55,6 +59,7 @@
         agent-0 = {
           arch = "x86_64-linux";
           type = "server";
+          nixos = true;
           users.unixpariah = {
             root.enable = true;
             shell = "bash";
@@ -63,6 +68,7 @@
         mi10lite = {
           arch = "aarch64-linux";
           type = "mobile";
+          nixos = true;
           users.unixpariah = {
             root.enable = true;
             shell = "bash";
@@ -179,7 +185,7 @@
             };
         in
         hosts
-        |> lib.filterAttrs (_: attrs: attrs.type != "mobile")
+        |> lib.filterAttrs (_: attrs: attrs.type != "mobile" && attrs.nixos)
         |> lib.mapAttrs (hostName: attrs: mkHost hostName attrs);
 
       homeConfigurations =

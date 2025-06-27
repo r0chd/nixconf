@@ -10,16 +10,6 @@
     controlMaster = "auto";
     controlPath = "~/.ssh/sockets/S.%r@%h:%p";
     controlPersist = "10m";
-
-    matchBlocks = {
-      "git" = {
-        host = "github.com";
-        user = "git";
-        forwardAgent = true;
-        identitiesOnly = true;
-        identityFile = [ config.programs.git.signingKeyFile ];
-      };
-    };
   };
 
   home = {

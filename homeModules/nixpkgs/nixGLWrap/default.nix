@@ -9,7 +9,9 @@
   ...
 }:
 let
-  cfg = config.nixpkgs.config.nixGLWrap;
+  # Not possible to set options for nixpkgs.config
+  # and I REALLY love this syntax so yeah
+  cfg = config.nixpkgs.config.nixGLWrap or [ ];
 in
 {
   nixGL.packages = inputs.nixGL.packages;
