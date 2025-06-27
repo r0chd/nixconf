@@ -31,11 +31,13 @@ let
   );
 in
 {
-  xdg.configFile."monitors.xml".text = lib.mkIf config.programs.gnome.enable ''
-    <monitors version="2">
-      <configuration>
-        ${xmlContent}
-      </configuration>
-    </monitors>
-  '';
+  config = lib.mkIf config.programs.gnome.enable {
+    xdg.configFile."monitors.xml".text = ''
+      <monitors version="2">
+        <configuration>
+          ${xmlContent}
+        </configuration>
+      </monitors>
+    '';
+  };
 }

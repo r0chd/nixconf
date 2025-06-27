@@ -15,73 +15,22 @@
       ...
     }@inputs:
     let
-      hosts = {
-        t851 = {
-          arch = "x86_64-linux";
-          type = "desktop";
-          nixos = false;
-          users = {
-            os1 = {
-              root.enable = true;
-              shell = "nushell";
-            };
-          };
-        };
-        laptop = {
-          arch = "x86_64-linux";
-          type = "desktop";
-          nixos = true;
-          users = {
-            unixpariah = {
-              root.enable = true;
-              shell = "nushell";
-            };
-          };
-        };
-        laptop-huawei = {
-          arch = "x86_64-linux";
-          type = "desktop";
-          nixos = true;
-          users.unixpariah = {
-            root.enable = true;
-            shell = "nushell";
-          };
-        };
-        server-0 = {
-          arch = "x86_64-linux";
-          type = "server";
-          nixos = true;
-          users.unixpariah = {
-            root.enable = true;
-            shell = "bash";
-          };
-        };
-        agent-0 = {
-          arch = "x86_64-linux";
-          type = "server";
-          nixos = true;
-          users.unixpariah = {
-            root.enable = true;
-            shell = "bash";
-          };
-        };
-        mi10lite = {
-          arch = "aarch64-linux";
-          type = "mobile";
-          nixos = true;
-          users.unixpariah = {
-            root.enable = true;
-            shell = "bash";
-          };
-        };
+      hostEval = nixpkgs.lib.evalModules {
+        modules = [
+          ./configuration.nix
+          ./options.nix
+        ];
+        args = { inherit inputs; };
       };
+
+      config = hostEval.config;
 
       mkHome =
         hostName: username:
         let
-          system = hosts.${hostName}.arch;
+          system = config.hosts.${hostName}.arch;
           pkgs = import nixpkgs { inherit system; };
-          shell = "${hosts.${hostName}.users.${username}.shell}";
+          shell = "${config.hosts.${hostName}.users.${username}.shell}";
         in
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
@@ -92,7 +41,7 @@
               hostName
               shell
               ;
-            system_type = hosts.${hostName}.type;
+            system_type = config.hosts.${hostName}.type;
           };
 
           modules = [
@@ -109,7 +58,7 @@
           mkNode =
             hostName: attrs:
             let
-              system = hosts.${hostName}.arch;
+              system = config.hosts.${hostName}.arch;
               pkgs = import nixpkgs { inherit system; };
               deployPkgs = import nixpkgs {
                 inherit system;
@@ -124,7 +73,7 @@
                 ];
               };
 
-              hostUsers = hosts.${hostName}.users or { };
+              hostUsers = config.hosts.${hostName}.users or { };
               mkUserProfiles =
                 users:
                 users
@@ -150,8 +99,8 @@
               } // mkUserProfiles hostUsers;
             };
         in
-        hosts
-        |> lib.filterAttrs (_: attrs: attrs.type != "mobile")
+        config.hosts
+        |> lib.filterAttrs (_: attrs: attrs.type != "mobile" && attrs.platform == "nixos")
         |> lib.mapAttrs (hostName: attrs: mkNode hostName attrs);
 
       nixosConfigurations =
@@ -160,8 +109,8 @@
             hostName: attrs:
             let
               systemUsers = attrs.users;
-              system_type = hosts.${hostName}.type;
-              arch = hosts.${hostName}.arch;
+              system_type = config.hosts.${hostName}.type;
+              arch = config.hosts.${hostName}.arch;
             in
             nixpkgs.lib.nixosSystem {
               specialArgs = {
@@ -184,17 +133,17 @@
               ];
             };
         in
-        hosts
-        |> lib.filterAttrs (_: attrs: attrs.type != "mobile" && attrs.nixos)
+        config.hosts
+        |> lib.filterAttrs (_: attrs: attrs.type != "mobile" && attrs.platform == "nixos")
         |> lib.mapAttrs (hostName: attrs: mkHost hostName attrs);
 
       homeConfigurations =
-        hosts
+        config.hosts
         |> lib.filterAttrs (_: attrs: attrs.type != "mobile")
         |> builtins.attrNames
         |> builtins.map (
           host:
-          hosts.${host}.users
+          config.hosts.${host}.users
           |> builtins.attrNames
           |> builtins.map (user: {
             name = "${user}@${host}";
@@ -209,14 +158,14 @@
           mkDroid =
             hostName: attrs:
             let
-              system = hosts.${hostName}.arch;
+              system = config.hosts.${hostName}.arch;
             in
             nix-on-droid.lib.nixOnDroidConfiguration {
               pkgs = import nixpkgs { inherit system; };
               modules = [ ./hosts/${hostName} ];
             };
         in
-        hosts
+        config.hosts
         |> lib.filterAttrs (_: attrs: attrs.type != "server" && attrs.type != "desktop")
         |> lib.mapAttrs (hostName: attrs: mkDroid hostName attrs);
 

@@ -28,9 +28,6 @@
 
     zen.enable = true;
     ghostty.settings.window-decoration = lib.mkForce true;
-    niri = {
-      package = lib.mkForce (config.lib.nixGL.wrap pkgs.niri-unstable);
-    };
 
     editor = "hx";
     git = {
@@ -47,12 +44,10 @@
     direnv.enable = true;
     keepassxc.enable = true;
 
-    ssh = {
-      matchBlocks = {
-        "gerrit.qed.ai" = {
-          host = "gerrit.qed.ai";
-          user = username;
-        };
+    ssh.matchBlocks = {
+      "gerrit.qed.ai" = {
+        host = "gerrit.qed.ai";
+        user = username;
       };
     };
 

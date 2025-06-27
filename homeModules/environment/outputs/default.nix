@@ -1,3 +1,9 @@
+# Cross compositor output configuration helper
+# supported compositors:
+# - niri
+# - hyprland
+# - sway
+# - mutter
 { lib, ... }:
 with lib;
 with lib.types;

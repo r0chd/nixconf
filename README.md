@@ -1,52 +1,81 @@
-# NixOS configuration
+# 🐧 Modular NixOS Configuration
 
-Modular NixOs config
+This repository uses a modular structure for managing NixOS and Home Manager configurations with support for multiple hosts and users.
 
-# Installation
+---
 
-### Create a New Host
+## 📁 Project Structure
 
-```
+* **`./configuration.nix`**
+  Main entrypoint for defining:
+
+  * Hosts and users
+  * Flake output generation
+  * Cross-cutting system & user settings (e.g. shells)
+
+* **`./hosts/${hostname}/default.nix`**
+  Host-specific NixOS system settings
+
+* **`./hosts/${hostname}/users/${username}/default.nix`**
+  User-specific settings under each host
+
+---
+
+## 🚀 Usage
+
+### 🖥️ Create a New Host
+
+```bash
 mkHost
 ```
 
-### Create a New User
+Creates a new host scaffold under `./hosts`.
 
-```
+---
+
+### 👤 Create a New User
+
+```bash
 mkUser
 ```
 
-### Configure the Host
+Adds a new user configuration under the given host directory.
 
-Edit flake.nix and add a new host in the let block:
+---
+
+### ⚙️ Configure a Host
+
+Edit your `configuration.nix` found at root level of repository and add a host
+definition:
 
 ```nix
-let
+{ ... }: {
   hosts.my_hostname = {
-    arch = "x86_64-linux"; # Architecture of your machine
-    type = "desktop";      # Type: desktop, server, or mobile
+    arch = "x86_64-linux";
+    type = "desktop";
+    platform = "nixos";
     users = {
       my_user = {
-        root.enable = true;  # Add to wheel group
-        shell = "zsh";       # Shell: bash, zsh, or nushell
+        root.enable = true;
+        shell = "zsh";
       };
     };
   };
-in
+}
 ```
 
+---
+
+## ☁️ Remote Installation (Terraform)
+
 <details>
-  <summary>Remote installation</summary>
+<summary>Deploy with Terraform</summary>
 
-  Initialize terraform
+Initialize and apply the Terraform setup for provisioning:
 
-  ```bash
-  terraform init
-  ```
+```bash
+terraform init
+terraform apply
+```
 
-  apply terraform
-
-  ```bash
-  terraform apply
-  ```
 </details>
