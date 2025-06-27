@@ -9,6 +9,7 @@
     ./launcher
     ./idle
     ./notify
+    ./outputs
   ];
 
   home.persist.directories = lib.mkIf (system_type == "desktop") [
@@ -17,5 +18,4 @@
     "Pictures"
     "Videos"
   ];
-
 }

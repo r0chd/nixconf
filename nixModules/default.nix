@@ -52,7 +52,7 @@
 
           package="$1"
           shift
-          nix shell ''${NH_FLAKE}#nixosConfigurations.${hostName}.pkgs.$package "$@"
+          nix shell ''${NH_FLAKE}#nixosConfigurations.${hostName}.pkgs.$package
         '')
 
         # `nix run nixpkgs#package` using system nixpkgs

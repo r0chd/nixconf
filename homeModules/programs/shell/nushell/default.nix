@@ -7,14 +7,10 @@
 }:
 {
   config = lib.mkIf (shell == "nushell") {
-    home = {
-      shell.enableNushellIntegration = true;
-      persist.files = [ ".config/nushell/history.txt" ];
-    };
+    home.persist.files = [ ".config/nushell/history.txt" ];
     programs = {
       nushell = {
         enable = true;
-        package = null;
         inherit (config.home) shellAliases;
         extraConfig = ''
           let carapace_completer = {|spans: list<string>|

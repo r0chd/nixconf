@@ -18,5 +18,7 @@
     ./starship
     ./fastfetch
     ./atuin
+    ./nh
+    ./gcloud
   ];
 }

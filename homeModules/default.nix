@@ -11,6 +11,7 @@
 {
   imports = [
     ./nix
+    ./nixpkgs
     ./environment
     ./workspace
     ./programs
@@ -23,6 +24,15 @@
   ];
 
   config = {
+    nix = {
+      package = pkgs.nix;
+      settings.experimental-features = [
+        "nix-command"
+        "flakes"
+        "pipe-operators"
+      ];
+    };
+
     nixpkgs.overlays = import ../overlays inputs config;
 
     services = {
@@ -52,7 +62,7 @@
 
           package="$1"
           shift
-          nix shell ''${NH_FLAKE}#homeConfigurations.${username}@${hostName}.pkgs.$package "$@"
+          nix shell ''${NH_FLAKE}#homeConfigurations.${username}@${hostName}.pkgs.$package
         '')
 
         # `nix run nixpkgs#package` using home manager nixpkgs

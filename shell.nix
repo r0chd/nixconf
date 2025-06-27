@@ -7,16 +7,13 @@ mkShell {
     terraform-ls
     jq
     kustomize
-    kustomize-sops
     (terraform.withPlugins (p: [
       p.null
       p.external
     ]))
-    (wrapHelm kubernetes-helm {
-      plugins = [
-        kubernetes-helmPlugins.helm-diff
-        kubernetes-helmPlugins.helm-secrets
-      ];
-    })
+    (wrapHelm kubernetes-helm { plugins = [ kubernetes-helmPlugins.helm-diff ]; })
+    helm-ls
+    yaml-language-server
+    prettier
   ];
 }

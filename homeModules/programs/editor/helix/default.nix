@@ -37,6 +37,17 @@
         };
         language = [
           {
+            name = "yaml";
+            auto-format = true;
+            formatter = {
+              command = "prettier";
+              args = [
+                "--parser"
+                "yaml"
+              ];
+            };
+          }
+          {
             name = "scheme";
             auto-format = true;
             language-servers = [ "steel-language-server" ];

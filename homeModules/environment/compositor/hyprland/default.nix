@@ -38,7 +38,6 @@
           disable_while_typing = "false";
           natural_scroll = "no";
         };
-
       };
 
       ecosystem.no_update_news = true;

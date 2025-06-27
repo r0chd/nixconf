@@ -12,6 +12,7 @@ inputs: config: [
       nh = inputs.nh.packages.${system}.default;
       sysnotifier = inputs.sysnotifier.packages.${system}.default;
       helix = inputs.helix-steel.packages.${system}.default;
+      nixGL = inputs.nixGL.overlay;
     }
   )
 

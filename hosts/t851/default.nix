@@ -1,16 +1,13 @@
 { ... }:
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./disko.nix
-  ];
+  #imports = [ ./hardware-configuration.nix ];
 
   system = {
     bootloader = {
-      variant = "systemd-boot";
+      variant = "grub";
       legacy = false;
     };
-    fileSystem = "btrfs";
+    fileSystem = "ext4";
   };
 
   time.timeZone = "Europe/Warsaw";

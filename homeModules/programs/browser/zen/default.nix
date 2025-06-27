@@ -38,7 +38,6 @@ in
           ];
 
           engines = {
-
             "brave" = {
               urls = [ { template = "https://search.brave.com/search?q={searchTerms}"; } ];
               definedAliases = [ "b" ];

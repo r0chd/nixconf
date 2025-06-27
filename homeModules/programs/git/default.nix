@@ -23,8 +23,12 @@ in
         signByDefault = true;
       };
 
+      aliases = {
+        rev = "review --no-rebase --reviewers ${cfg.userName}";
+      };
+
       extraConfig = {
-        init.defaultBranch = "main";
+        init.defaultBranch = "master";
         #url = {
         #"ssh://git@github.com" = {
         #insteadOf = "https://github.com";

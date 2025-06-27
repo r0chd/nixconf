@@ -308,6 +308,10 @@
       url = "github:mattwparas/helix/steel-event-system";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixGL = {
+      url = "github:nix-community/nixGL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     seto.url = "github:unixpariah/seto";
     moxidle.url = "github:unixpariah/moxidle";

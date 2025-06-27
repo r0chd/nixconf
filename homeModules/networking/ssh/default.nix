@@ -17,7 +17,7 @@
         user = "git";
         forwardAgent = true;
         identitiesOnly = true;
-        identityFile = [ config.sops.secrets."${config.home.username}/ssh".path ];
+        identityFile = [ config.programs.git.signingKeyFile ];
       };
     };
   };
