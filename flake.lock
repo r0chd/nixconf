@@ -1839,6 +1839,7 @@
         "sops-nix": "sops-nix",
         "stylix": "stylix",
         "sysnotifier": "sysnotifier",
+        "system-manager": "system-manager",
         "zen-browser": "zen-browser"
       }
     },
@@ -2102,6 +2103,26 @@
       "original": {
         "owner": "unixpariah",
         "repo": "SysNotifier",
+        "type": "github"
+      }
+    },
+    "system-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1748252092,
+        "narHash": "sha256-6nL55wvV7SthEXaXDiQo8xxkxQLAVcNBU21YJ7GJLm8=",
+        "owner": "numtide",
+        "repo": "system-manager",
+        "rev": "c6850451ef769fd03d0ad5474f928b916aa23775",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "system-manager",
         "type": "github"
       }
     },

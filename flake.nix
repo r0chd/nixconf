@@ -17,10 +17,10 @@
     let
       hostEval = nixpkgs.lib.evalModules {
         modules = [
+          { _module.args.inputs = inputs; }
           ./configuration.nix
           ./options.nix
         ];
-        args = { inherit inputs; };
       };
 
       config = hostEval.config;
@@ -135,6 +135,21 @@
         in
         config.hosts
         |> lib.filterAttrs (_: attrs: attrs.type != "mobile" && attrs.platform == "nixos")
+        |> lib.mapAttrs (hostName: attrs: mkHost hostName attrs);
+
+      systemConfigs =
+        let
+          mkHost =
+            hostname: attrs:
+            let
+              systemUsers = attrs.users;
+              system_type = config.hosts.${hostName}.type;
+              arch = config.hosts.${hostName}.arch;
+            in
+            system-manager.lib.makeSystemConfig { modules = [ ]; };
+        in
+        config.hosts
+        |> lib.filterAttrs (_: attrs: attrs.type != "mobile" && attrs.platform == "non-nixos")
         |> lib.mapAttrs (hostName: attrs: mkHost hostName attrs);
 
       homeConfigurations =
@@ -265,6 +280,10 @@
     };
     nixGL = {
       url = "github:nix-community/nixGL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    system-manager = {
+      url = "github:numtide/system-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
