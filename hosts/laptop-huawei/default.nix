@@ -94,6 +94,9 @@
   };
 
   networking = {
+    extraHosts = ''
+      192.168.50.159 t851
+    '';
     wireless.iwd = {
       enable = true;
       networks = {

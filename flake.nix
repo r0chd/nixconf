@@ -43,6 +43,7 @@
               shell
               ;
             system_type = config.hosts.${hostName}.type;
+            platform = config.hosts.${hostName}.platform;
           };
 
           modules = [
@@ -91,17 +92,22 @@
             in
             {
               hostname = hostName;
-              sshUser = "deploy-rs";
+              #sshUser = "deploy-rs";
               profiles = {
                 system = {
                   user = "root";
-                  path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostName};
+                  path =
+                    if config.hosts.${hostName}.platform == "nixos" then
+                      deployPkgs.deploy-rs.lib.activate.nixos (self.nixosConfigurations.${hostName})
+                    else
+                      deployPkgs.deploy-rs.lib.activate.custom self.systemConfigs.${hostName}
+                        "/nix/var/nix/profiles/system/activate";
                 };
               } // mkUserProfiles hostUsers;
             };
         in
         config.hosts
-        |> lib.filterAttrs (_: attrs: attrs.type != "mobile" && attrs.platform == "nixos")
+        |> lib.filterAttrs (_: attrs: attrs.type != "mobile")
         |> lib.mapAttrs (hostName: attrs: mkNode hostName attrs);
 
       nixosConfigurations =
@@ -257,10 +263,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    #lanzaboote = {
-    #  url = "github:nix-community/lanzaboote/v0.4.2";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.2";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     niri.url = "github:sodiboo/niri-flake";
 

@@ -6,6 +6,7 @@
   config,
   hostName,
   system_type,
+  platform,
   ...
 }:
 {
@@ -24,6 +25,12 @@
   ];
 
   config = {
+    xdg.configFile."environment.d/envvars.conf" = lib.mkIf (platform == "non-nixos") {
+      text = ''
+        PATH="${config.home.homeDirectory}/.nix-profile/bin:$PATH";
+      '';
+    };
+
     nix = {
       package = pkgs.nix;
       settings.experimental-features = [
@@ -40,9 +47,7 @@
       sysnotifier.enable = system_type == "desktop";
     };
 
-    programs = {
-      home-manager.enable = true;
-    };
+    programs.home-manager.enable = true;
     home = {
       persist.directories = [ ".local/state/syncthing" ];
       inherit username;
@@ -77,7 +82,6 @@
           shift
           nix run ''${NH_FLAKE}#homeConfigurations.${username}@${hostName}.pkgs.$package "$@"
         '')
-
       ];
       homeDirectory = "/home/${username}";
       stateVersion = "25.11";
