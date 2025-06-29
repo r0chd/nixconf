@@ -12,6 +12,7 @@
       nix-gaming,
       nix-index-database,
       nix-on-droid,
+      system-manager,
       ...
     }@inputs:
     let
@@ -140,13 +141,24 @@
       systemConfigs =
         let
           mkHost =
-            hostname: attrs:
+            hostName: attrs:
             let
               systemUsers = attrs.users;
               system_type = config.hosts.${hostName}.type;
               arch = config.hosts.${hostName}.arch;
             in
-            system-manager.lib.makeSystemConfig { modules = [ ]; };
+            system-manager.lib.makeSystemConfig {
+              modules = [ ./systemModules ];
+              extraSpecialArgs = {
+                inherit
+                  inputs
+                  hostName
+                  systemUsers
+                  system_type
+                  arch
+                  ;
+              };
+            };
         in
         config.hosts
         |> lib.filterAttrs (_: attrs: attrs.type != "mobile" && attrs.platform == "non-nixos")
@@ -286,6 +298,10 @@
       url = "github:numtide/system-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    userborn = {
+      url = "github:nikstur/userborn";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     seto.url = "github:unixpariah/seto";
     moxidle.url = "github:unixpariah/moxidle";
@@ -293,6 +309,10 @@
     moxpaper.url = "github:unixpariah/moxpaper";
     nh = {
       url = "github:unixpariah/nh";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nh-system = {
+      url = "github:unixpariah/nh/system-manager-support";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sysnotifier = {

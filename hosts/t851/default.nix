@@ -1,15 +1,31 @@
 { ... }:
 {
-  #imports = [ ./hardware-configuration.nix ];
+  #programs.niri.enable = true;
 
-  system = {
-    bootloader = {
-      variant = "grub";
-      legacy = false;
-    };
-    fileSystem = "ext4";
-  };
+  environment.etc."gdm3/custom.conf".text = ''
+    # GDM configuration storage
+    #
+    # See /usr/share/gdm/gdm.schemas for a list of available options.
 
-  time.timeZone = "Europe/Warsaw";
-  i18n.defaultLocale = "en_US.UTF-8";
+    # Enabling automatic login
+
+    # Enabling timed login
+    #  TimedLoginEnable = true
+    #  TimedLogin = user1
+    #  TimedLoginDelay = 10
+
+    [security]
+
+    [xdmcp]
+
+    [chooser]
+
+    [debug]
+    # Uncomment the line below to turn on debugging
+    # More verbose logs
+    # Additionally lets the X server dump core if it crashes
+    #Enable=true
+  '';
+
+  nixpkgs.hostPlatform = "x86_64-linux";
 }

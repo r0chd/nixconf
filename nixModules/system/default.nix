@@ -5,7 +5,6 @@
     ./virtualisation
     ./impermanence
     ./ydotool
-    ./gc
     ./displayManager
   ];
 

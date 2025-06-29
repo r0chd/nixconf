@@ -12,10 +12,10 @@ inputs: config: [
       nh = inputs.nh.packages.${system}.default;
       sysnotifier = inputs.sysnotifier.packages.${system}.default;
       helix = inputs.helix-steel.packages.${system}.default;
-      nixGL = inputs.nixGL.overlay;
     }
   )
 
+  inputs.nixGL.overlay
   inputs.niri.overlays.niri
   inputs.deploy-rs.overlays.default
   inputs.nixpkgs-wayland.overlay

@@ -7,11 +7,6 @@
   ...
 }:
 {
-  # /etc/udev/rules.d/yubikey.rules
-  # ACTION=="remove", ENV{SUBSYSTEM}=="usb", ENV{PRODUCT}=="1050/107/571", RUN+="/usr/bin/loginctl lock-sessions"
-  #
-  # sudo udevadm control --reload-rules
-
   nixpkgs.config = {
     allowUnfreePredicate = pkgs: builtins.elem (lib.getName pkgs) [ "slack" ];
     nixGLWrap = [
@@ -24,16 +19,18 @@
   targets.genericLinux.enable = true;
 
   programs = {
+    nh.package = inputs.nh-system.packages.${pkgs.system}.default;
     gnome.enable = true;
 
     zen.enable = true;
-    ghostty.settings.window-decoration = lib.mkForce true;
+    ghostty.settings.window-decoration = lib.mkForce false;
 
     editor = "hx";
     git = {
       signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
       identityFile = [ "${config.home.homeDirectory}/.ssh/id_ed25519.pub" ];
-      email = "os1@qed.ai";
+      email = "100892812+unixpariah@users.noreply.github.com";
+      #email = "os1@qed.ai";
     };
     multiplexer = {
       enable = true;
@@ -126,7 +123,13 @@
     };
   };
 
-  services.yubikey-touch-detector.enable = true;
+  services = {
+    yubikey-touch-detector.enable = true;
+    gc = {
+      enable = true;
+      interval = 3;
+    };
+  };
 
   home.packages = with pkgs; [
     git-review

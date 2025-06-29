@@ -6,5 +6,6 @@
     ./logind
     ./phpApp
     ./k3s
+    ./gc
   ];
 }

@@ -1,9 +1,9 @@
 { lib, config, ... }:
 let
-  cfg = config.system.gc;
+  cfg = config.services.gc;
 in
 {
-  options.system.gc = {
+  options.services.gc = {
     enable = lib.mkEnableOption "Garbage collector";
     keep = lib.mkOption {
       type = lib.types.int;
@@ -18,8 +18,8 @@ in
   config = lib.mkIf cfg.enable {
     programs.nh.clean = {
       enable = true;
-      dates = "weekly";
-      extraArgs = "--keep ${toString cfg.keep} --keep-since ${toString cfg.interval}d";
+      dates = "every ${toString cfg.interval} days";
+      extraArgs = "--keep ${toString cfg.keep}";
     };
   };
 }

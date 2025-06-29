@@ -32,10 +32,6 @@
   system = {
     bootloader.variant = "systemd-boot";
     fileSystem = "zfs";
-    gc = {
-      enable = true;
-      interval = 3;
-    };
   };
 
   virtualisation = {
@@ -51,6 +47,10 @@
   users.users.unixpariah.extraGroups = [ "podman" ];
 
   services = {
+    gc = {
+      enable = true;
+      interval = 3;
+    };
     #cloudflared = {
     #  enable = true;
     #  tunnels = {

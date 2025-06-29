@@ -50,10 +50,6 @@
       silent = true;
     };
     fileSystem = "zfs";
-    gc = {
-      enable = true;
-      interval = 3;
-    };
   };
 
   hardware = {
@@ -119,6 +115,10 @@
   };
 
   services = {
+    gc = {
+      enable = true;
+      interval = 3;
+    };
     impermanence.enable = true;
     tailscale.authKeyFile = config.sops.secrets.tailscale.path;
   };

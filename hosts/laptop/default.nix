@@ -86,10 +86,6 @@
       silent = true;
     };
     ydotool.enable = true;
-    gc = {
-      enable = true;
-      interval = 3;
-    };
   };
 
   security = {
@@ -107,6 +103,10 @@
   };
 
   services = {
+    gc = {
+      enable = true;
+      interval = 3;
+    };
     postgresql = {
       enable = true;
       ensureDatabases = [ "test" ];
