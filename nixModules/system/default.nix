@@ -15,4 +15,7 @@
       "zfs"
     ];
   };
+
+  # Immutable /etc
+  config.system.etc.overlay.mutable = false;
 }

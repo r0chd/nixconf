@@ -34,9 +34,7 @@ in
       description = "NixOS deployer";
       group = "wheel";
       hashedPassword = null;
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIBr2Qqn+YpNdvJ3VdSvtuEfTiVo0upJM2VGx6W9lhAD unixpariah@laptop"
-      ];
+      openssh.authorizedKeys.keys = [ ];
     };
 
     nix.settings.trusted-users = [ "deploy-rs" ];

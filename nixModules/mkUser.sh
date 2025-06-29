@@ -79,7 +79,7 @@ if [ -z "$EDITOR" ]; then
   exit 1
 fi
 
-mkdir -p "$CONFIG_PATH"/{secrets,keys}
+mkdir -p "$CONFIG_PATH"/secrets
 if [ $? -ne 0 ]; then
   echo "Error: Failed to create configuration directories"
   exit 1

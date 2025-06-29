@@ -92,7 +92,7 @@
             in
             {
               hostname = hostName;
-              #sshUser = "deploy-rs";
+              sshUser = "deploy-rs";
               profiles = {
                 system = {
                   user = "root";
