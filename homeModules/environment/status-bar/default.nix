@@ -1,14 +1,14 @@
 {
   config,
   pkgs,
-  system_type,
+  profile,
   ...
 }:
 with config.lib.stylix.colors.withHashtag;
 with config.stylix.fonts;
 {
   programs.waybar = {
-    enable = system_type == "desktop";
+    enable = profile == "desktop";
     systemd.enable = true;
     settings = {
       mainBar = {

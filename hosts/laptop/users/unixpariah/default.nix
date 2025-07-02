@@ -86,6 +86,7 @@
     };
 
     terminal.program = "ghostty";
+    idle.enable = false;
   };
 
   stylix = {

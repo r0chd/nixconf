@@ -13,12 +13,19 @@
       "niri-unstable"
       "ghostty"
       "zen"
+      "hyprland"
     ];
   };
 
   targets.genericLinux.enable = true;
 
+  wayland.windowManager.hyprland.package = config.lib.nixGL.wrap pkgs.hyprland;
+
   programs = {
+    thunderbird = {
+      enable = true;
+      profiles = { };
+    };
     nh.package = inputs.nh-system.packages.${pkgs.system}.default;
     gnome.enable = true;
 
@@ -29,8 +36,8 @@
     git = {
       signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
       identityFile = [ "${config.home.homeDirectory}/.ssh/id_ed25519.pub" ];
-      email = "100892812+unixpariah@users.noreply.github.com";
-      #email = "os1@qed.ai";
+      #email = "100892812+unixpariah@users.noreply.github.com";
+      email = "os1@qed.ai";
     };
     multiplexer = {
       enable = true;
@@ -101,7 +108,6 @@
     enable = true;
     theme = "catppuccin-mocha";
     cursor.size = 36;
-    opacity.terminal = 0.4;
     fonts = {
       sizes.terminal = 12;
       monospace = {
@@ -135,5 +141,6 @@
     git-review
     slack
     signal-desktop
+    google-cloud-sql-proxy
   ];
 }

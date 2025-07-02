@@ -12,7 +12,7 @@ in
 
   config = lib.mkIf cfg.enable {
     home = {
-      packages = with pkgs; [ ladybird ];
+      packages = [ pkgs.ladybird ];
       shellAliases.ladybird = "Ladybird";
     };
   };

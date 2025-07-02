@@ -2,8 +2,8 @@
 {
   hosts = {
     t851 = {
-      arch = "x86_64-linux";
-      type = "desktop";
+      system = "x86_64-linux";
+      profile = "desktop";
       platform = "non-nixos";
       users = {
         os1 = {
@@ -13,8 +13,8 @@
       };
     };
     laptop = {
-      arch = "x86_64-linux";
-      type = "desktop";
+      system = "x86_64-linux";
+      profile = "desktop";
       platform = "nixos";
       users = {
         unixpariah = {
@@ -24,8 +24,8 @@
       };
     };
     laptop-huawei = {
-      arch = "x86_64-linux";
-      type = "desktop";
+      system = "x86_64-linux";
+      profile = "desktop";
       platform = "nixos";
       users.unixpariah = {
         root.enable = true;
@@ -33,8 +33,8 @@
       };
     };
     server-0 = {
-      arch = "x86_64-linux";
-      type = "server";
+      system = "x86_64-linux";
+      profile = "server";
       platform = "nixos";
       users.unixpariah = {
         root.enable = true;
@@ -42,8 +42,8 @@
       };
     };
     agent-0 = {
-      arch = "x86_64-linux";
-      type = "server";
+      system = "x86_64-linux";
+      profile = "server";
       platform = "nixos";
       users.unixpariah = {
         root.enable = true;
@@ -51,8 +51,8 @@
       };
     };
     mi10lite = {
-      arch = "aarch64-linux";
-      type = "mobile";
+      system = "aarch64-linux";
+      profile = "mobile";
       platform = "non-nixos";
       users.unixpariah = {
         root.enable = true;

@@ -139,12 +139,10 @@ in
             passwordFiles
           ];
 
-          ExecStartPost = (
-            lib.map (
-              file:
-              "${pkgs.util-linux}/bin/mount --bind -o ro ${cfg.passwordFilesLocation}/${file} ${cfg.passwordFilesLocation}/${file}"
-            ) passwordFiles
-          );
+          ExecStartPost = lib.map (
+            file:
+            "${pkgs.util-linux}/bin/mount --bind -o ro ${cfg.passwordFilesLocation}/${file} ${cfg.passwordFilesLocation}/${file}"
+          ) passwordFiles;
         };
       };
     };

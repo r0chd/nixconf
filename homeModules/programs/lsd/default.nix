@@ -1,3 +1,1 @@
-_: {
-  programs.lsd.enableAliases = true;
-}
+_: { programs.lsd.enableAliases = true; }

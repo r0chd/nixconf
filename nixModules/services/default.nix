@@ -10,5 +10,5 @@
   ];
 
   # Replace users perl script with a RUST service
-  services.userborn.enable = true;
+  #services.userborn.enable = true;
 }

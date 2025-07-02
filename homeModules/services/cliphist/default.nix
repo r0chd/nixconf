@@ -1,6 +1,6 @@
-{ system_type, ... }:
+{ profile, ... }:
 {
   services.cliphist = {
-    enable = (system_type == "desktop");
+    enable = profile == "desktop";
   };
 }

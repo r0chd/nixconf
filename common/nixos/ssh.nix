@@ -8,7 +8,9 @@
 }:
 let
   keys = {
-    deploy-rs = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOBaG0f5JOYQn/JJuvKjH+29rWSuzlv+LUrhVlD7rDkb deploy-rs";
+    "deploy-rs" = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOBaG0f5JOYQn/JJuvKjH+29rWSuzlv+LUrhVlD7rDkb deploy-rs"
+    ];
     "unixpariah@laptop" =
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIt5tKaE1UZuWe22amvR0gpW0HMmvBY5W5E+Bpw6AswA unixpariah@laptop";
     "unixpariah@laptop-huawei" =
@@ -22,24 +24,21 @@ let
       "os1" = [
         keys."unixpariah@laptop"
         keys."unixpariah@laptop-huawei"
-        keys.deploy-rs
-      ];
+      ] ++ keys.deploy-rs;
     };
 
     "laptop" = {
       "unixpariah" = [
         keys."unixpariah@laptop-huawei"
         keys."os1@t851"
-        keys.deploy-rs
-      ];
+      ] ++ keys.deploy-rs;
     };
 
     "laptop-huawei" = {
       "unixpariah" = [
         keys."unixpariah@laptop"
         keys."os1@t851"
-        keys.deploy-rs
-      ];
+      ] ++ keys.deploy-rs;
     };
 
     "agent-0" = {
@@ -47,8 +46,7 @@ let
         keys."unixpariah@laptop"
         keys."unixpariah@laptop-huawei"
         keys."os1@t851"
-        keys.deploy-rs
-      ];
+      ] ++ keys.deploy-rs;
     };
 
     "server-0" = {
@@ -56,8 +54,7 @@ let
         keys."unixpariah@laptop"
         keys."unixpariah@laptop-huawei"
         keys."os1@t851"
-        keys.deploy-rs
-      ];
+      ] ++ keys.deploy-rs;
     };
   };
 in

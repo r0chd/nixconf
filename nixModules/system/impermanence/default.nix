@@ -9,8 +9,6 @@
 let
   cfg = config.services.impermanence;
 in
-with lib;
-with lib.types;
 {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
 
@@ -30,45 +28,45 @@ with lib.types;
 
     environment.persist = {
       users = {
-        files = mkOption {
-          type = listOf str;
+        files = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
           default = [ ];
         };
 
-        directories = mkOption {
-          type = listOf str;
+        directories = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
           default = [ ];
         };
       };
       directories = lib.mkOption {
-        type =
-          with lib.types;
-          listOf (
-            either str (submodule {
+        type = lib.types.listOf (
+          lib.types.either lib.types.str (
+            lib.types.submodule {
               options = {
                 directory = lib.mkOption {
-                  type = str;
+                  type = lib.types.str;
                   default = null;
                   description = "The directory path to be linked.";
                 };
                 user = lib.mkOption {
-                  type = str;
+                  type = lib.types.str;
                   default = null;
                   description = "User owning the directory";
                 };
                 group = lib.mkOption {
-                  type = str;
+                  type = lib.types.str;
                   default = null;
                   description = "Group owning the directory";
                 };
                 mode = lib.mkOption {
-                  type = str;
+                  type = lib.types.str;
                   default = null;
                   description = "Permissions";
                 };
               };
-            })
-          );
+            }
+          )
+        );
         default = [ ];
       };
       files = lib.mkOption {

@@ -6,6 +6,6 @@
 
   environment = {
     variables.EDITOR = "hx";
-    systemPackages = with pkgs; [ helix ];
+    systemPackages = [ pkgs.helix ];
   };
 }

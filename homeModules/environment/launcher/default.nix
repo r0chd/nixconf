@@ -2,7 +2,7 @@
   lib,
   config,
   pkgs,
-  system_type,
+  profile,
   ...
 }:
 let
@@ -11,7 +11,7 @@ in
 {
   options.environment.launcher.enable = lib.mkOption {
     type = lib.types.bool;
-    default = system_type == "desktop";
+    default = profile == "desktop";
   };
 
   config = lib.mkIf cfg.enable {

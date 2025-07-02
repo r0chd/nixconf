@@ -1,7 +1,7 @@
 {
   lib,
   config,
-  system_type,
+  profile,
   ...
 }:
 let
@@ -33,7 +33,7 @@ in
         systemd.enable = true;
         supportedFilesystems = [ config.system.fileSystem ];
       };
-      plymouth.enable = (system_type == "desktop" && config.stylix.enable);
+      plymouth.enable = profile == "desktop" && config.stylix.enable;
       loader.systemd-boot.enable = lib.mkDefault false;
       supportedFilesystems = [ config.system.fileSystem ];
       kernelModules = [ "v4l2loopback" ];

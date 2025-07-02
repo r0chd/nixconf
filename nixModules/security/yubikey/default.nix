@@ -25,14 +25,11 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      yubioath-flutter
-      yubikey-manager
-      pam_u2f
-    ];
+    environment.systemPackages = builtins.attrValues {
+      inherit (pkgs) yubioath-flutter yubikey-manager pam_u2f;
+    };
 
     services = {
-      pcscd.enable = true;
       udev = {
         extraRules = lib.mkIf cfg.unplug.enable ''
           ACTION=="remove",\
@@ -40,7 +37,7 @@ in
           ENV{PRODUCT}=="1050/407/571",\
           RUN+="${cfg.unplug.action}"
         '';
-        packages = with pkgs; [ yubikey-personalization ];
+        packages = [ pkgs.yubikey-personalization ];
       };
       yubikey-agent.enable = true;
     };

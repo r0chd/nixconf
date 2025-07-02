@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  system_type,
+  profile,
   inputs,
   ...
 }:
@@ -17,7 +17,7 @@ in
   options.environment.wallpaper = {
     enable = lib.mkOption {
       type = lib.types.bool;
-      default = system_type == "desktop";
+      default = profile == "desktop";
     };
   };
 

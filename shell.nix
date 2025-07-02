@@ -6,6 +6,8 @@ mkShell {
     helmfile
     terraform-ls
     jq
+    nixd
+    nixfmt-rfc-style
     kustomize
     (terraform.withPlugins (p: [
       p.null

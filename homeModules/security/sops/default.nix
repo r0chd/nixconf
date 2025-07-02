@@ -23,6 +23,6 @@
   };
   home = {
     shellAliases.opensops = "sops /var/lib/nixconf/hosts/${hostName}/users/${config.home.username}/secrets/secrets.yaml";
-    packages = with pkgs; [ sops ];
+    packages = [ pkgs.sops ];
   };
 }

@@ -11,7 +11,7 @@ with config.stylix.fonts;
   config = lib.mkIf (shell == "zsh") {
     home = {
       shell.enableZshIntegration = true;
-      packages = with pkgs; [ fzf ];
+      packages = [ pkgs.fzf ];
       persist = {
         directories = [
           ".zplug"

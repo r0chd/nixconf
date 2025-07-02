@@ -2,12 +2,12 @@
   lib,
   config,
   pkgs,
-  system_type,
+  profile,
   ...
 }:
 let
   cfg = config.environment.terminal;
-  programExe = "${lib.getExe (pkgs.${cfg.program})}";
+  programExe = "${lib.getExe pkgs.${cfg.program}}";
 in
 {
   imports = [
@@ -19,7 +19,7 @@ in
   options.environment.terminal = {
     enable = lib.mkOption {
       type = lib.types.bool;
-      default = system_type == "desktop";
+      default = profile == "desktop";
     };
     program = lib.mkOption {
       type = lib.types.enum [

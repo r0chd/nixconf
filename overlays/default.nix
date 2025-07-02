@@ -12,6 +12,8 @@ inputs: config: [
       nh = inputs.nh.packages.${system}.default;
       sysnotifier = inputs.sysnotifier.packages.${system}.default;
       helix = inputs.helix-steel.packages.${system}.default;
+      inherit (inputs.hyprland.packages.${system}) hyprland;
+      inherit (inputs.hyprland.packages.${system}) xdg-desktop-portal-hyprland;
     }
   )
 

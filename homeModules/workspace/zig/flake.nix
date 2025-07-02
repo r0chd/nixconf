@@ -30,10 +30,14 @@
     {
       devShells = forAllSystems (pkgs: {
         default = pkgs.mkShell {
-          packages = with pkgs; [
-            zig.packages.${system}."0.14.0"
-            zls.packages.${system}.default
-          ];
+          packages =
+            let
+              inherit (pkgs) system;
+            in
+            [
+              zig.packages.${system}."0.14.0"
+              zls.packages.${system}.default
+            ];
         };
       });
     };

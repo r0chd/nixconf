@@ -21,7 +21,5 @@ _: {
     };
   };
 
-  home.persist.directories = [
-    ".local/share/qutebrowser"
-  ];
+  home.persist.directories = [ ".local/share/qutebrowser" ];
 }

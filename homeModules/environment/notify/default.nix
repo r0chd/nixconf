@@ -2,7 +2,7 @@
   inputs,
   config,
   lib,
-  system_type,
+  profile,
   ...
 }:
 let
@@ -17,7 +17,7 @@ in
   options.environment.notify = {
     enable = lib.mkOption {
       type = lib.types.bool;
-      default = system_type == "desktop";
+      default = profile == "desktop";
     };
   };
 

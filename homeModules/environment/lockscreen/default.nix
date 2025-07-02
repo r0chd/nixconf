@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  system_type,
+  profile,
   ...
 }:
 let
@@ -10,7 +10,7 @@ in
 {
   options.environment.lockscreen.enable = lib.mkOption {
     type = lib.types.bool;
-    default = system_type == "desktop";
+    default = profile == "desktop";
   };
 
   config.programs.hyprlock = {

@@ -5,7 +5,5 @@
   ...
 }:
 {
-  config = lib.mkIf (config.programs.editor == "nano") {
-    home.packages = with pkgs; [ nano ];
-  };
+  config = lib.mkIf (config.programs.editor == "nano") { home.packages = [ pkgs.nano ]; };
 }

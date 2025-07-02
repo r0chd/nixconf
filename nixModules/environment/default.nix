@@ -2,7 +2,7 @@
   lib,
   config,
   pkgs,
-  system_type,
+  profile,
   inputs,
   ...
 }:
@@ -13,7 +13,7 @@
     ./niri
   ];
 
-  config = lib.mkIf (system_type == "desktop") {
+  config = lib.mkIf (profile == "desktop") {
     environment = {
       loginShellInit = lib.mkIf (!config.system.displayManager.enable) ''
         if uwsm check may-start && uwsm select; then

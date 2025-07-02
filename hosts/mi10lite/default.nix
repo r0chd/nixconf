@@ -37,26 +37,31 @@ in
     etcBackupExtension = ".nod-bak";
     motd = null;
 
-    packages = with pkgs; [
-      diffutils
-      findutils
-      gawk
-      gnugrep
-      gnused
-      gnutar
-      hostname
-      man
-      ncurses
-      procps
-      psmisc
+    packages =
+      [
+        (writeScriptBin "sshd-start" ''
+          #!${pkgs.runtimeShell}
 
-      (writeScriptBin "sshd-start" ''
-        #!${runtimeShell}
-
-        echo "Starting sshd in non-daemonized way on port 8022"
-        ${openssh}/bin/sshd -f "${sshdDirectory}/sshd_config" -D
-      '')
-    ];
+          echo "Starting sshd in non-daemonized way on port 8022"
+          ${pkgs.openssh}/bin/sshd -f "${sshdDirectory}/sshd_config" -D
+        '')
+      ]
+        builtins.attrValues
+        {
+          inherit (pkgs)
+            diffutils
+            findutils
+            gawk
+            gnugrep
+            gnused
+            gnutar
+            hostname
+            man
+            ncurses
+            procps
+            psmisc
+            ;
+        };
   };
 
   nix = { inherit (commonConfig.nix) package; };

@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  system_type,
+  profile,
   inputs,
   pkgs,
   ...
@@ -15,7 +15,7 @@ in
   options.environment.idle = {
     enable = lib.mkOption {
       type = lib.types.bool;
-      default = system_type == "desktop";
+      default = profile == "desktop";
     };
   };
 

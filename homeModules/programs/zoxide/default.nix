@@ -4,9 +4,7 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    home.persist.directories = [
-      ".local/share/zoxide"
-    ];
+    home.persist.directories = [ ".local/share/zoxide" ];
 
     programs.zoxide = {
       options = [ "--cmd cd" ];

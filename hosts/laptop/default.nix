@@ -29,6 +29,25 @@
     };
     "wireless/SaltoraUp" = { };
     "wireless/Saltora" = { };
+
+    #"grafana/username" = { };
+    #"grafana/password" = { };
+
+    #github-api = { };
+
+    #"pihole/password" = { };
+
+    #"immich-postgres-user/DB_USERNAME" = { };
+    #"immich-postgres-user/DB_DATABASE_NAME" = { };
+    #"immich-postgres-user/DB_PASSWORD" = { };
+    #"immich-postgres-user/username" = { };
+    #"immich-postgres-user/password" = { };
+
+    #"atuin/DB_USERNAME" = { };
+    #"atuin/DB_PASSWORD" = { };
+    #"atuin/DB_URI" = { };
+
+    #YUBI = { };
   };
 
   networking = {
@@ -159,18 +178,72 @@
     k3s = {
       enable = true;
       tokenFile = config.sops.secrets.k3s.path;
+      clusterInit = true;
+      #secrets = [
+      #  {
+      #    name = "grafana-admin-credentials";
+      #    namespace = "monitoring";
+      #    data = {
+      #      admin-user = config.sops.secrets."grafana/username".path;
+      #      admin-password = config.sops.secrets."grafana/password".path;
+      #    };
+      #  }
+      #  {
+      #    name = "github-api";
+      #    namespace = "portfolio";
+      #    data.github_api = config.sops.secrets.github-api.path;
+      #  }
+      #  {
+      #    name = "pihole-password";
+      #    namespace = "pihole-system";
+      #    data.password = config.sops.secrets."pihole/password".path;
+      #  }
+      #  {
+      #    name = "immich-postgres-user";
+      #    namespace = "immich";
+      #    data = {
+      #      DB_USERNAME = config.sops.secrets."immich-postgres-user/DB_USERNAME".path;
+      #      DB_DATABASE_NAME = config.sops.secrets."immich-postgres-user/DB_DATABASE_NAME".path;
+      #      DB_PASSWORD = config.sops.secrets."immich-postgres-user/DB_PASSWORD".path;
+      #      username = config.sops.secrets."immich-postgres-user/username".path;
+      #      password = config.sops.secrets."immich-postgres-user/password".path;
+      #    };
+      #  }
+      #  #{
+      #  #  name = "yubisecret";
+      #  #  namespace = "vaultwarden";
+      #  #data.YUBI = config.sops.secrets.YUBI.path;
+      #  #}
+      #  #{
+      #  #  name = "atuin-secrets";
+      #  #  namespace = "atuin";
+      #  #  data = {
+      #  #    ATUIN_DB_USERNAME = config.sops.secrets."atuin/DB_USERNAME".path;
+      #  #    ATUIN_DB_PASSWORD = config.sops.secrets."atuin/DB_PASSWORD".path;
+      #  #    ATUIN_DB_URI = config.sops.secrets."atuin/DB_URI".path;
+      #  #  };
+      #  #}
+      #];
+      extraFlags = [
+        "--disable traefik"
+        "--disable servicelb"
+        "--write-kubeconfig-mode \"0644\""
+        "--disable local-storage"
+        "--kube-controller-manager-arg bind-address=0.0.0.0"
+        "--kube-proxy-arg metrics-bind-address=0.0.0.0"
+        "--kube-scheduler-arg bind-address=0.0.0.0"
+        "--etcd-expose-metrics true"
+        "--kubelet-arg containerd=/run/k3s/containerd/containerd.sock"
+      ];
     };
+
     tailscale.authKeyFile = config.sops.secrets.tailscale.path;
     impermanence.enable = true;
   };
 
   environment = {
     variables.EDITOR = "hx";
-    systemPackages = with pkgs; [
-      helix
-      kubectl
-      cosmic-icons
-    ];
+    systemPackages = builtins.attrValues { inherit (pkgs) helix kubectl cosmic-icons; };
   };
 
   time.timeZone = "Europe/Warsaw";

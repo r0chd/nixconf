@@ -1,6 +1,6 @@
 {
   lib,
-  system_type,
+  profile,
   config,
   inputs,
   pkgs,
@@ -8,7 +8,7 @@
 }:
 {
   programs.sway = {
-    enable = lib.mkDefault (system_type == "desktop");
+    enable = lib.mkDefault (profile == "desktop");
     extraOptions = [ "--unsupported-gpu" ];
     extraPackages = [ ];
   };

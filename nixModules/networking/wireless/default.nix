@@ -27,11 +27,13 @@ in
       dnsovertls = "false";
     };
 
-    environment.systemPackages = with pkgs; [
-      wirelesstools
-      traceroute
-      inetutils
-      bind
-    ];
+    environment.systemPackages = builtins.attrValues {
+      inherit (pkgs)
+        wirelesstools
+        traceroute
+        inetutils
+        bind
+        ;
+    };
   };
 }

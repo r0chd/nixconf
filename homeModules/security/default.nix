@@ -1,6 +1,4 @@
 { ... }:
 {
-  imports = [
-    ./sops
-  ];
+  imports = [ ./sops ];
 }

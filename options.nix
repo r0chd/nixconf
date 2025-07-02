@@ -4,8 +4,8 @@
     type = lib.types.attrsOf (
       lib.types.submodule {
         options = {
-          arch = lib.mkOption { type = lib.types.enum [ "x86_64-linux" ]; };
-          type = lib.mkOption {
+          system = lib.mkOption { type = lib.types.enum [ "x86_64-linux" ]; };
+          profile = lib.mkOption {
             type = lib.types.enum [
               "desktop"
               "server"

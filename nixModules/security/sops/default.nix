@@ -53,7 +53,7 @@ in
   };
 
   environment = {
-    systemPackages = with pkgs; [ sops ];
+    systemPackages = [ pkgs.sops ];
     shellAliases.opensops = "SOPS_AGE_KEY_FILE=\"${config.sops.age.keyFile}\" sops /var/lib/nixconf/hosts/${config.networking.hostName}/secrets/secrets.yaml";
   };
 

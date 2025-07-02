@@ -1,11 +1,11 @@
-{ lib, system_type, ... }:
+{ lib, profile, ... }:
 {
   imports = [ ./greetd ];
 
   options.system.displayManager = {
     enable = lib.mkOption {
       type = lib.types.bool;
-      default = (system_type == "desktop");
+      default = profile == "desktop";
     };
   };
 }

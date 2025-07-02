@@ -2,14 +2,14 @@
 let
   # This is just so that monitorSpec values can be in
   # a single line (it looks prettier)
-  option = cond: val: lib.optionalString (cond) val;
+  option = cond: val: lib.optionalString cond val;
 
   toLogicalMonitor = name: cfg: ''
     <logicalmonitor>
       <x>${toString cfg.position.x}</x>
       <y>${toString cfg.position.y}</y>
       <scale>${toString cfg.scale}</scale>
-      ${if cfg.primary == true then "<primary>yes</primary>" else ""}
+      ${if cfg.primary then "<primary>yes</primary>" else ""}
       <monitor>
         <monitorspec>
           <connector>${name}</connector>

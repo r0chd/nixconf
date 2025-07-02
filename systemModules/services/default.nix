@@ -1,4 +1,9 @@
 { ... }:
 {
-  imports = [ ./userborn ];
+  imports = [
+    ./userborn
+    ./udev
+    ./pcscd
+    ./yubikey-agent
+  ];
 }

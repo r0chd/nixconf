@@ -24,7 +24,7 @@ in
         cfg
         |> lib.map (value: {
           name = value;
-          value = (config.lib.nixGL.wrap prev.${value});
+          value = config.lib.nixGL.wrap prev.${value};
         })
       )
     )

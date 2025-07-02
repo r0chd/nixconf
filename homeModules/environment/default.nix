@@ -1,4 +1,4 @@
-{ system_type, lib, ... }:
+{ profile, lib, ... }:
 {
   imports = [
     ./wallpaper
@@ -12,7 +12,7 @@
     ./outputs
   ];
 
-  home.persist.directories = lib.mkIf (system_type == "desktop") [
+  home.persist.directories = lib.mkIf (profile == "desktop") [
     "Documents"
     "Music"
     "Pictures"

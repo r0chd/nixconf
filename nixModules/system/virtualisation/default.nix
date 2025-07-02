@@ -22,13 +22,7 @@ in
 
     users.users =
       systemUsers
-      |> lib.mapAttrs (
-        user: value: {
-          extraGroups = lib.mkIf value.root.enable [
-            "libvirtd"
-          ];
-        }
-      );
+      |> lib.mapAttrs (user: value: { extraGroups = lib.mkIf value.root.enable [ "libvirtd" ]; });
 
     programs.virt-manager.enable = cfg.virt-manager.enable;
   };

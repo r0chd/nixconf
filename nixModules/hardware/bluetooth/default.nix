@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  system_type,
+  profile,
   ...
 }:
 let
@@ -10,7 +10,7 @@ let
 in
 {
   hardware.bluetooth = {
-    enable = lib.mkDefault (system_type == "desktop");
+    enable = lib.mkDefault (profile == "desktop");
     powerOnBoot = true;
     settings = {
       General = {

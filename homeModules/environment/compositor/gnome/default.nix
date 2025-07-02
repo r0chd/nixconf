@@ -24,7 +24,7 @@ with lib.hm.gvariant;
       ];
     };
 
-    home.packages = with pkgs; [ gnome-randr ];
+    home.packages = [ pkgs.gnome-randr ];
 
     ### EXTENSIONS ###
     dconf.settings = {
@@ -39,6 +39,42 @@ with lib.hm.gvariant;
           "paperwm@paperwm.github.com"
         ];
         welcome-dialog-last-shown-version = "46.0";
+      };
+
+      "org/gnome/shell/extensions/paperwm" = {
+        gesture-horizontal-fingers = 4;
+        last-used-display-server = "Wayland";
+        restore-attach-modal-dialogs = "true";
+        restore-edge-tiling = "false";
+        restore-keybinds = ''
+          {"move-to-monitor-right":{"bind":"[\\"<Shift><Alt>m\\"]","schema_id":"org.gnome.desktop.wm.keybindings"},"switch-to-workspace-left":{"bind":"[\\"<Alt>h\\"]","schema_id":"org.gnome.desktop.wm.keybindings"},"switch-to-workspace-right":{"bind":"[\\"<Alt>l\\"]","schema_id":"org.gnome.desktop.wm.keybindings"},"move-to-monitor-up":{"bind":"[\\"<Shift><Alt>k\\"]","schema_id":"org.gnome.desktop.wm.keybindings"},"maximize":{"bind":"[\\"<Alt>f\\"]","schema_id":"org.gnome.desktop.wm.keybindings"},"move-to-monitor-down":{"bind":"[\\"<Shift><Alt>j\\"]","schema_id":"org.gnome.desktop.wm.keybindings"},"move-to-workspace-left":{"bind":"[\\"<Shift><Alt>h\\"]","schema_id":"org.gnome.desktop.wm.keybindings"},"move-to-workspace-right":{"bind":"[\\"<Shift><Alt>l\\"]","schema_id":"org.gnome.desktop.wm.keybindings"},"move-to-monitor-left":{"bind":"[\\"<Shift><Alt>n\\"]","schema_id":"org.gnome.desktop.wm.keybindings"}}
+        '';
+        restore-workspaces-only-on-primary = "true";
+        show-workspace-indicator = false;
+        window-gap = 18;
+      };
+
+      "org/gnome/shell/extensions/paperwm/keybindings" = {
+        center = [ "<Alt>c" ];
+        move-down = [ "" ];
+        move-left = [ "<Shift><Alt>h" ];
+        move-monitor-above = [ "<Shift><Alt>k" ];
+        move-monitor-below = [ "<Shift><Alt>j" ];
+        move-monitor-left = [ "<Shift><Alt>n" ];
+        move-monitor-right = [ "<Shift><Alt>m" ];
+        move-right = [ "<Shift><Alt>l" ];
+        move-up = [ "" ];
+        switch-down = [ "" ];
+        switch-global-down = [ "<Alt>j" ];
+        switch-global-up = [ "<Alt>k" ];
+        switch-left = [ "<Alt>h" ];
+        switch-monitor-above = [ "<Alt>Up" ];
+        switch-monitor-below = [ "<Alt>Down" ];
+        switch-monitor-left = [ "<Alt>n" ];
+        switch-monitor-right = [ "<Alt>m" ];
+        switch-right = [ "<Alt>l" ];
+        switch-up = [ "" ];
+        toggle-maximize-width = [ "<Alt>f" ];
       };
 
       "org/gnome/shell/extensions/dash-to-dock" = {

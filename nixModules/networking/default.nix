@@ -2,6 +2,7 @@
   pkgs,
   config,
   lib,
+  hostName,
   ...
 }:
 let
@@ -13,7 +14,10 @@ in
     ./ssh
   ];
 
-  networking.useDHCP = lib.mkForce false;
+  networking = {
+    useDHCP = lib.mkForce false;
+    inherit hostName;
+  };
   systemd = {
     services.systemd-networkd-wait-online.enable = lib.mkForce false;
     network = {
@@ -31,7 +35,7 @@ in
   boot.initrd = {
     network.enable = true;
     systemd = {
-      network = config.systemd.network;
+      inherit (config.systemd) network;
       services.systemd-tmpfiles-setup.before = [ "sshd.service" ];
     };
     availableKernelModules = [ "alx" ];

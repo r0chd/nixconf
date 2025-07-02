@@ -7,13 +7,15 @@
 }:
 {
   config = lib.mkIf (config.programs.editor == "nvim") {
+    programs.neovim = {
+      withPython3 = false;
+      withRuby = false;
+    };
+
     home = {
-      packages = with pkgs; [
-        inputs.nixvim.packages.${system}.default
-        ripgrep
-        tree-sitter
-        fd
-      ];
+      packages = [
+        inputs.nixvim.packages.${pkgs.system}.default
+      ] ++ builtins.attrValues { inherit (pkgs) ripgrep tree-sitter fd; };
 
       persist.directories = [
         ".local/share/nvim"

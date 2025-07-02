@@ -13,9 +13,17 @@
       nix-index-database,
       nix-on-droid,
       system-manager,
+      treefmt,
       ...
     }@inputs:
     let
+      selfPath = ./.;
+
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
+
       hostEval = nixpkgs.lib.evalModules {
         modules = [
           { _module.args.inputs = inputs; }
@@ -24,12 +32,12 @@
         ];
       };
 
-      config = hostEval.config;
+      inherit (hostEval) config;
 
       mkHome =
         hostName: username:
         let
-          system = config.hosts.${hostName}.arch;
+          system = config.hosts.${hostName}.system;
           pkgs = import nixpkgs { inherit system; };
           shell = "${config.hosts.${hostName}.users.${username}.shell}";
         in
@@ -42,8 +50,7 @@
               hostName
               shell
               ;
-            system_type = config.hosts.${hostName}.type;
-            platform = config.hosts.${hostName}.platform;
+            inherit (config.hosts.${hostName}) platform profile;
           };
 
           modules = [
@@ -52,6 +59,16 @@
             inputs.nix-index-database.hmModules.nix-index
           ];
         };
+
+      forAllSystems =
+        function:
+        nixpkgs.lib.genAttrs systems (
+          system:
+          let
+            pkgs = import nixpkgs { inherit system; };
+          in
+          function pkgs
+        );
     in
     with nixpkgs;
     {
@@ -60,7 +77,7 @@
           mkNode =
             hostName: attrs:
             let
-              system = config.hosts.${hostName}.arch;
+              system = config.hosts.${hostName}.system;
               pkgs = import nixpkgs { inherit system; };
               deployPkgs = import nixpkgs {
                 inherit system;
@@ -98,7 +115,7 @@
                   user = "root";
                   path =
                     if config.hosts.${hostName}.platform == "nixos" then
-                      deployPkgs.deploy-rs.lib.activate.nixos (self.nixosConfigurations.${hostName})
+                      deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostName}
                     else
                       deployPkgs.deploy-rs.lib.activate.custom self.systemConfigs.${hostName}
                         "/nix/var/nix/profiles/system/activate";
@@ -107,7 +124,7 @@
             };
         in
         config.hosts
-        |> lib.filterAttrs (_: attrs: attrs.type != "mobile")
+        |> lib.filterAttrs (_: attrs: attrs.profile != "mobile")
         |> lib.mapAttrs (hostName: attrs: mkNode hostName attrs);
 
       nixosConfigurations =
@@ -116,18 +133,11 @@
             hostName: attrs:
             let
               systemUsers = attrs.users;
-              system_type = config.hosts.${hostName}.type;
-              arch = config.hosts.${hostName}.arch;
             in
             nixpkgs.lib.nixosSystem {
               specialArgs = {
-                inherit
-                  inputs
-                  hostName
-                  systemUsers
-                  system_type
-                  arch
-                  ;
+                inherit inputs hostName systemUsers;
+                inherit (config.hosts.${hostName}) system profile;
               };
 
               modules = [
@@ -141,7 +151,7 @@
             };
         in
         config.hosts
-        |> lib.filterAttrs (_: attrs: attrs.type != "mobile" && attrs.platform == "nixos")
+        |> lib.filterAttrs (_: attrs: attrs.profile != "mobile" && attrs.platform == "nixos")
         |> lib.mapAttrs (hostName: attrs: mkHost hostName attrs);
 
       systemConfigs =
@@ -150,8 +160,7 @@
             hostName: attrs:
             let
               systemUsers = attrs.users;
-              system_type = config.hosts.${hostName}.type;
-              arch = config.hosts.${hostName}.arch;
+              pkgs = import nixpkgs { inherit (attrs) system; };
             in
             system-manager.lib.makeSystemConfig {
               modules = [ ./systemModules ];
@@ -160,19 +169,19 @@
                   inputs
                   hostName
                   systemUsers
-                  system_type
-                  arch
+                  pkgs
                   ;
+                inherit (config.hosts.${hostName}) system profile;
               };
             };
         in
         config.hosts
-        |> lib.filterAttrs (_: attrs: attrs.type != "mobile" && attrs.platform == "non-nixos")
+        |> lib.filterAttrs (_: attrs: attrs.profile != "mobile" && attrs.platform == "non-nixos")
         |> lib.mapAttrs (hostName: attrs: mkHost hostName attrs);
 
       homeConfigurations =
         config.hosts
-        |> lib.filterAttrs (_: attrs: attrs.type != "mobile")
+        |> lib.filterAttrs (_: attrs: attrs.profile != "mobile")
         |> builtins.attrNames
         |> builtins.map (
           host:
@@ -191,7 +200,7 @@
           mkDroid =
             hostName: attrs:
             let
-              system = config.hosts.${hostName}.arch;
+              system = config.hosts.${hostName}.system;
             in
             nix-on-droid.lib.nixOnDroidConfiguration {
               pkgs = import nixpkgs { inherit system; };
@@ -199,17 +208,17 @@
             };
         in
         config.hosts
-        |> lib.filterAttrs (_: attrs: attrs.type != "server" && attrs.type != "desktop")
+        |> lib.filterAttrs (_: attrs: attrs.profile != "server" && attrs.profile != "desktop")
         |> lib.mapAttrs (hostName: attrs: mkDroid hostName attrs);
 
-      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+      checks = lib.lists.foldl' lib.attrsets.unionOfDisjoint { } [
+        (builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib)
+      ];
+
+      formatter = forAllSystems (pkgs: (treefmt.lib.evalModule pkgs ./treefmt.nix).config.build.wrapper);
 
       devShells =
         let
-          systems = [
-            "x86_64-linux"
-            "aarch64-linux"
-          ];
           forAllSystems =
             function:
             nixpkgs.lib.genAttrs systems (
@@ -217,7 +226,7 @@
               let
                 pkgs = import nixpkgs {
                   inherit system;
-                  config.allowUnfree = true;
+                  config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "terraform" ];
                 };
               in
               function pkgs
@@ -304,8 +313,8 @@
       url = "github:numtide/system-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    userborn = {
-      url = "github:nikstur/userborn";
+    treefmt = {
+      url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

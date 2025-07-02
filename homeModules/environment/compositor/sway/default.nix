@@ -2,12 +2,12 @@
   lib,
   config,
   pkgs,
-  system_type,
+  profile,
   ...
 }:
 {
   wayland.windowManager.sway = {
-    enable = lib.mkDefault (system_type == "desktop");
+    enable = lib.mkDefault (profile == "desktop");
     extraConfig = ''
       default_border pixel 2
     '';

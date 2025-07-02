@@ -1,8 +1,4 @@
-{
-  lib,
-  shell,
-  ...
-}:
+{ lib, shell, ... }:
 {
   config = lib.mkIf (shell == "fish") {
     home = {

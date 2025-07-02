@@ -27,14 +27,12 @@
     in
     {
       devShells = forAllSystems (pkgs: {
-        default =
-          with pkgs;
-          mkShell {
-            buildInputs = [
-              (rust-bin.selectLatestNightlyWith (toolchain: toolchain.default))
-              rust-analyzer
-            ];
-          };
+        default = pkgs.mkShell {
+          buildInputs = [
+            (pkgs.rust-bin.selectLatestNightlyWith (toolchain: toolchain.default))
+            pkgs.rust-analyzer
+          ];
+        };
       });
     };
 }

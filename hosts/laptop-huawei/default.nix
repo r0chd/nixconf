@@ -19,6 +19,15 @@
       "libfprint-2-tod1-goodix"
     ];
 
+  virtualisation.docker = {
+    enable = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
+  users.users.unixpariah.extraGroups = [ "docker" ];
+
   sops.secrets = {
     k3s = { };
     tailscale = { };
@@ -29,6 +38,7 @@
     };
     "wireless/SaltoraUp" = { };
     "wireless/Saltora" = { };
+    "wireless/T-Mobile_5G_HomeOffice_2.4GHz" = { };
   };
 
   services = {
@@ -94,27 +104,17 @@
   };
 
   networking = {
-    extraHosts = ''
-      192.168.50.159 t851
-    '';
     wireless.iwd = {
       enable = true;
       networks = {
         SaltoraUp.psk = config.sops.secrets."wireless/SaltoraUp".path;
         Saltora.psk = config.sops.secrets."wireless/Saltora".path;
+        "=542d4d6f62696c655f35475f486f6d654f66666963655f322e3447487a".psk =
+          config.sops.secrets."wireless/T-Mobile_5G_HomeOffice_2.4GHz".path;
       };
     };
 
     hostId = "6add04c2";
-    firewall.allowedTCPPorts = [
-      80
-      443
-      2049
-      6443
-      8443
-      3000
-      30080
-    ];
   };
 
   services = {
@@ -124,6 +124,11 @@
     };
     impermanence.enable = true;
     tailscale.authKeyFile = config.sops.secrets.tailscale.path;
+
+    k3s = {
+      enable = true;
+      tokenFile = config.sops.secrets.k3s.path;
+    };
   };
 
   time.timeZone = "Europe/Warsaw";

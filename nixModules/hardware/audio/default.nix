@@ -2,7 +2,7 @@
   pkgs,
   config,
   lib,
-  system_type,
+  profile,
   ...
 }:
 let
@@ -11,7 +11,7 @@ in
 {
   options.hardware.audio.enable = lib.mkOption {
     type = lib.types.bool;
-    default = (system_type == "desktop");
+    default = profile == "desktop";
   };
 
   config = lib.mkIf cfg.enable {
@@ -30,6 +30,6 @@ in
       };
     };
 
-    environment.systemPackages = with pkgs; [ pavucontrol ];
+    environment.systemPackages = [ pkgs.pavucontrol ];
   };
 }

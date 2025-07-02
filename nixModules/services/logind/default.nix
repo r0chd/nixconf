@@ -1,6 +1,6 @@
-{ system_type, lib, ... }:
+{ profile, lib, ... }:
 {
-  services.logind = lib.mkIf (system_type == "server") {
+  services.logind = lib.mkIf (profile == "server") {
     lidSwitch = "ignore";
     lidSwitchDocked = "ignore";
     lidSwitchExternalPower = "ignore";

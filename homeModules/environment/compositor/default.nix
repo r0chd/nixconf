@@ -2,7 +2,7 @@
   pkgs,
   lib,
   config,
-  system_type,
+  profile,
   ...
 }:
 let
@@ -16,12 +16,9 @@ in
     ./gnome
   ];
 
-  config = lib.mkIf (system_type == "desktop") {
+  config = lib.mkIf (profile == "desktop") {
     home = {
-      packages = with pkgs; [
-        wlr-randr
-        wl-clipboard
-      ];
+      packages = builtins.attrValues { inherit (pkgs) wlr-randr wl-clipboard; };
       sessionVariables = {
         NIXOS_OZONE_WL = "1";
         WLR_NO_HARDWARE_CURSORS = "1";

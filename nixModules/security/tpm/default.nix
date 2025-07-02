@@ -38,10 +38,7 @@
       tpm2-tss
       (writeShellApplication {
         name = "apply-tpm";
-        runtimeInputs = with pkgs; [
-          cryptsetup
-          systemd
-        ];
+        runtimeInputs = builtins.attrValues { inherit (pkgs) cryptsetup systemd; };
         text = ''
           #!/usr/bin/env bash
           ## Writes the LUKS key to the TPM with preset PCRs 0+2+7

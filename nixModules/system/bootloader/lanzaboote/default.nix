@@ -19,7 +19,7 @@ in
   imports = [ inputs.lanzaboote.nixosModules.lanzaboote ];
 
   config = lib.mkIf (cfg.variant == "lanzaboote") {
-    environment.systemPackages = with pkgs; [ sbctl ];
+    environment.systemPackages = [ pkgs.sbctl ];
 
     boot.lanzaboote = {
       enable = true;
