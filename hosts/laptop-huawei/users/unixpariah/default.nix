@@ -30,7 +30,7 @@
     zoxide.enable = true;
     direnv.enable = true;
     seto.enable = true;
-    btop.enable = true;
+    bottom.enable = true;
   };
 
   environment = {

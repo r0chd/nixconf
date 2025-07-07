@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ config, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -18,10 +18,7 @@
     fileSystem = "zfs";
   };
 
-  networking = {
-    hostId = "a62446e5";
-    wireless.iwd.enable = true;
-  };
+  networking.hostId = "a62446e5";
 
   services = {
     k3s = {

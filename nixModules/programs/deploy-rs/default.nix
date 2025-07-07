@@ -28,13 +28,16 @@ in
       }
     ];
 
-    users.users.deploy-rs = {
-      isSystemUser = true;
-      useDefaultShell = true;
-      description = "NixOS deployer";
-      group = "wheel";
-      hashedPassword = null;
-      openssh.authorizedKeys.keys = [ ];
+    users = {
+      users.deploy-rs = {
+        isSystemUser = true;
+        useDefaultShell = true;
+        description = "NixOS deployer";
+        group = "deploy-rs";
+        hashedPassword = null;
+        openssh.authorizedKeys.keys = [ ];
+      };
+      groups.deploy-rs = { };
     };
 
     nix.settings.trusted-users = [ "deploy-rs" ];

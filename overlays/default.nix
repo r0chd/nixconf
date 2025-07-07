@@ -1,6 +1,10 @@
 inputs: config: [
   (
-    final: prev: with prev; {
+    final: prev:
+    let
+      inherit (prev) system;
+    in
+    {
       stable = import inputs.nixpkgs-stable {
         inherit (final) system;
         inherit (config.nixpkgs) config;
@@ -12,6 +16,7 @@ inputs: config: [
       nh = inputs.nh.packages.${system}.default;
       sysnotifier = inputs.sysnotifier.packages.${system}.default;
       helix = inputs.helix-steel.packages.${system}.default;
+      waybar = inputs.waybar.packages.${system}.default;
       inherit (inputs.hyprland.packages.${system}) hyprland;
       inherit (inputs.hyprland.packages.${system}) xdg-desktop-portal-hyprland;
     }

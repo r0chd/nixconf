@@ -50,16 +50,6 @@
     #YUBI = { };
   };
 
-  networking = {
-    wireless.iwd = {
-      enable = true;
-      networks = {
-        SaltoraUp.psk = config.sops.secrets."wireless/SaltoraUp".path;
-        Saltora.psk = config.sops.secrets."wireless/Saltora".path;
-      };
-    };
-  };
-
   documentation.enable = true;
 
   stylix = {
@@ -112,7 +102,7 @@
       enable = true;
       rootAuth = true;
       id = "31888351";
-      unplug.enable = true;
+      actions.unplug.enable = true;
     };
     root.timeout = 0;
   };

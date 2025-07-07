@@ -8,6 +8,7 @@
 }:
 let
   cfg = config.environment.idle;
+  locker = "${pkgs.hyprlock}/bin/hyprlock";
 in
 {
   imports = [ inputs.moxidle.homeManagerModules.default ];
@@ -23,7 +24,8 @@ in
     inherit (cfg) enable;
     settings = {
       general = {
-        lock_cmd = "pidof ${pkgs.hyprlock}/bin/hyprlock || ${pkgs.hyprlock}/bin/hyprlock && ${pkgs.systemd}/bin/loginctl unlock-session";
+        lock_cmd = "pidof ${locker} || ${locker}";
+        unlock_cmd = "pkill -USR1 hyprlock";
         ignore_dbus_inhibit = false;
         ignore_systemd_inhibit = false;
         ignore_audio_inhibit = false;

@@ -1,17 +1,19 @@
 { pkgs, ... }:
 {
-  #programs.niri.enable = true;
   security.yubikey = {
     enable = true;
     rootAuth = true;
     id = "31888351";
-    unplug.enable = true;
+    actions.unplug.enable = true;
   };
 
-  #virtualisation.buildkitd = {
-  #  enable = true;
-  #  rootless = true;
-  #};
+  services.udev.extraRules = ''
+    ACTION=="add",\
+    ENV{SUBSYSTEM}=="usb",\
+    ENV{PRODUCT}=="1050/407/571",\
+    ATTR{serial}=="31888351",\
+    RUN+="${pkgs.systemd}/bin/loginctl unlock-sessions"
+  '';
 
   systemd.services.buildkitd = {
     wantedBy = [ "multi-user.target" ];

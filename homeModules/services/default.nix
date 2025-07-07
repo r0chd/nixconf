@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, profile, ... }:
 {
   imports = [
     inputs.sysnotifier.homeManagerModules.default
@@ -8,4 +8,9 @@
     ./cliphist
     ./gc
   ];
+
+  services = {
+    udiskie.enable = profile == "desktop";
+    sysnotifier.enable = profile == "desktop";
+  };
 }

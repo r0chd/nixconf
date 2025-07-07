@@ -11,6 +11,7 @@
     programs = {
       nushell = {
         enable = true;
+        package = pkgs.stable.nushell;
         inherit (config.home) shellAliases;
         extraConfig = ''
           let carapace_completer = {|spans: list<string>|

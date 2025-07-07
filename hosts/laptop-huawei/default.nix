@@ -26,19 +26,19 @@
       setSocketVariable = true;
     };
   };
-  users.users.unixpariah.extraGroups = [ "docker" ];
+  users.users.unixpariah.extraGroups = [
+    "docker"
+    "deploy-rs"
+  ];
 
   sops.secrets = {
     k3s = { };
     tailscale = { };
     deploy-rs = {
       owner = "deploy-rs";
-      group = "wheel";
+      group = "deploy-rs";
       mode = "0440";
     };
-    "wireless/SaltoraUp" = { };
-    "wireless/Saltora" = { };
-    "wireless/T-Mobile_5G_HomeOffice_2.4GHz" = { };
   };
 
   services = {
@@ -80,7 +80,10 @@
       enable = true;
       rootAuth = true;
       id = "31888351";
-      unplug.enable = true;
+      actions = {
+        unplug.enable = true;
+        plug.enable = true;
+      };
     };
     root.timeout = 0;
   };
@@ -104,15 +107,6 @@
   };
 
   networking = {
-    wireless.iwd = {
-      enable = true;
-      networks = {
-        SaltoraUp.psk = config.sops.secrets."wireless/SaltoraUp".path;
-        Saltora.psk = config.sops.secrets."wireless/Saltora".path;
-        "=542d4d6f62696c655f35475f486f6d654f66666963655f322e3447487a".psk =
-          config.sops.secrets."wireless/T-Mobile_5G_HomeOffice_2.4GHz".path;
-      };
-    };
 
     hostId = "6add04c2";
   };

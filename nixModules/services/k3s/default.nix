@@ -12,6 +12,10 @@ in
     type = lib.types.listOf (
       lib.types.submodule {
         options = {
+          enable = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+          };
           name = lib.mkOption { type = lib.types.str; };
           namespace = lib.mkOption { type = lib.types.nullOr lib.types.str; };
           data = lib.mkOption {
@@ -29,7 +33,7 @@ in
       lib.map (secret: {
         name = "k3s-secret-${secret.name}";
         value = {
-          enable = true;
+          inherit (secret) enable;
           description = "k3s secret for ${secret.name}";
           after = [ "k3s.service" ];
           requires = [ "k3s.service" ];

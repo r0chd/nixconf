@@ -33,12 +33,6 @@
 
     nixpkgs.overlays = import ../overlays inputs config;
 
-    services = {
-      udiskie.enable = profile == "desktop";
-      sysnotifier.enable = profile == "desktop";
-    };
-
-    programs.home-manager.enable = true;
     home = {
       persist.directories = [ ".local/state/syncthing" ];
       inherit username;

@@ -17,8 +17,6 @@
       ...
     }@inputs:
     let
-      selfPath = ./.;
-
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -315,6 +313,10 @@
     };
     treefmt = {
       url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    waybar = {
+      url = "github:Alexays/Waybar";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

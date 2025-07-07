@@ -12,11 +12,8 @@ in
 
   config = lib.mkIf cfg.enable {
     systemd.tmpfiles.rules = lib.mkIf (cfg.networks != { }) (
-      [ "R /var/lib/iwd/*.psk" ]
-      ++ (
-        cfg.networks
-        |> lib.mapAttrsToList (name: value: "C /var/lib/iwd/${name}.psk 0600 root root - ${value.psk}")
-      )
+      cfg.networks
+      |> lib.mapAttrsToList (name: value: "L /var/lib/iwd/${name}.psk 0600 root root - ${value.psk}")
     );
   };
 }

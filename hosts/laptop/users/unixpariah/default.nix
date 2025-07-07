@@ -48,7 +48,7 @@
     zoxide.enable = true;
     direnv.enable = true;
     seto.enable = true;
-    btop.enable = true;
+    bottom.enable = true;
     keepassxc = {
       enable = true;
       browser-integration.firefox.enable = true;
@@ -116,19 +116,21 @@
   };
 
   home = {
-    packages = with pkgs; [
-      obsidian
-      renderdoc
-      zathura
-      mpv
-      lazygit
-      unzip
-      gimp3
-      imagemagick
-      wf-recorder
-      libreoffice
-      cosmic-files
-    ];
+    packages = builtins.attrValues {
+      inherit (pkgs)
+        obsidian
+        renderdoc
+        zathura
+        mpv
+        lazygit
+        unzip
+        gimp3
+        imagemagick
+        wf-recorder
+        libreoffice
+        cosmic-files
+        ;
+    };
 
     persist = {
       directories = [

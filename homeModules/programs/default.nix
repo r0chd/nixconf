@@ -21,4 +21,6 @@
     ./nh
     ./gcloud
   ];
+
+  programs.home-manager.enable = true;
 }

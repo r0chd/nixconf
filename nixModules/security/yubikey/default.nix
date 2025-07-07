@@ -15,33 +15,39 @@ in
       default = null;
       type = lib.types.nullOr lib.types.str;
     };
-    unplug = {
-      enable = lib.mkEnableOption "Action when unplugging";
-      action = lib.mkOption {
-        type = lib.types.str;
-        default = "${pkgs.systemd}/bin/loginctl lock-sessions";
+    actions = {
+      unplug = {
+        enable = lib.mkEnableOption "Action when unplugging";
+        action = lib.mkOption {
+          type = lib.types.str;
+          default = "${pkgs.systemd}/bin/loginctl lock-session";
+        };
+      };
+      plug = {
+        enable = lib.mkEnableOption "Action when plugging in";
+        action = lib.mkOption {
+          type = lib.types.str;
+          default = "${pkgs.systemd}/bin/loginctl unlock-session";
+        };
       };
     };
   };
-
   config = lib.mkIf cfg.enable {
     environment.systemPackages = builtins.attrValues {
       inherit (pkgs) yubioath-flutter yubikey-manager pam_u2f;
     };
-
     services = {
       udev = {
-        extraRules = lib.mkIf cfg.unplug.enable ''
+        extraRules = lib.mkIf cfg.actions.unplug.enable ''
           ACTION=="remove",\
           ENV{SUBSYSTEM}=="usb",\
           ENV{PRODUCT}=="1050/407/571",\
-          RUN+="${cfg.unplug.action}"
+          RUN+="${cfg.actions.unplug.action}"
         '';
         packages = [ pkgs.yubikey-personalization ];
       };
       yubikey-agent.enable = true;
     };
-
     security.pam = {
       yubico = {
         enable = cfg.id != null;
