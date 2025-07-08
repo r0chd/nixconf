@@ -4,16 +4,11 @@
     enable = true;
     rootAuth = true;
     id = "31888351";
-    actions.unplug.enable = true;
+    actions = {
+      unplug.enable = true;
+      plug.enable = true;
+    };
   };
-
-  services.udev.extraRules = ''
-    ACTION=="add",\
-    ENV{SUBSYSTEM}=="usb",\
-    ENV{PRODUCT}=="1050/407/571",\
-    ATTR{serial}=="31888351",\
-    RUN+="${pkgs.systemd}/bin/loginctl unlock-sessions"
-  '';
 
   systemd.services.buildkitd = {
     wantedBy = [ "multi-user.target" ];
@@ -33,6 +28,8 @@
   };
 
   environment = {
+    systemPackages = builtins.attrValues { inherit (pkgs) pamtester; };
+
     etc = {
       "hosts".text = ''
         127.0.0.1 localhost
@@ -71,6 +68,4 @@
       '';
     };
   };
-
-  nixpkgs.hostPlatform = "x86_64-linux";
 }

@@ -14,6 +14,7 @@
       nix-on-droid,
       system-manager,
       treefmt,
+      nix-raspberrypi,
       ...
     }@inputs:
     let
@@ -52,9 +53,10 @@
           };
 
           modules = [
-            ./homeModules
+            ./modules/home
             stylix.homeModules.stylix
             inputs.nix-index-database.hmModules.nix-index
+            { home = { inherit username; }; }
           ];
         };
 
@@ -73,9 +75,9 @@
       deploy.nodes =
         let
           mkNode =
-            hostName: attrs:
+            hostname: attrs:
             let
-              system = config.hosts.${hostName}.system;
+              system = config.hosts.${hostname}.system;
               pkgs = import nixpkgs { inherit system; };
               deployPkgs = import nixpkgs {
                 inherit system;
@@ -90,7 +92,7 @@
                 ];
               };
 
-              hostUsers = config.hosts.${hostName}.users or { };
+              hostUsers = config.hosts.${hostname}.users or { };
               mkUserProfiles =
                 users:
                 users
@@ -100,56 +102,66 @@
                   value = {
                     inherit user;
                     profilePath = "/home/${user}/.local/state/nix/profiles/profile";
-                    path = deployPkgs.deploy-rs.lib.activate.custom (mkHome hostName user).activationPackage "$PROFILE/activate";
+                    path = deployPkgs.deploy-rs.lib.activate.custom (mkHome hostname user).activationPackage "$PROFILE/activate";
                   };
                 })
+                |> lib.filterAttrs (_: attrs.platform != "mobile")
                 |> builtins.listToAttrs;
             in
             {
-              hostname = hostName;
+              inherit hostname;
               sshUser = "deploy-rs";
               profiles = {
                 system = {
                   user = "root";
                   path =
-                    if config.hosts.${hostName}.platform == "nixos" then
-                      deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostName}
+                    if config.hosts.${hostname}.platform == "nixos" then
+                      deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostname}
+                    else if config.hosts.${hostname}.platform == "non-nixos" then
+                      deployPkgs.deploy-rs.lib.activate.custom self.systemConfigs.${hostname}
+                        "/nix/var/nix/profiles/system/activate"
                     else
-                      deployPkgs.deploy-rs.lib.activate.custom self.systemConfigs.${hostName}
+                      deployPkgs.deploy-rs.lib.activate.custom self.nixOnDroidConfigurations.${hostname}
                         "/nix/var/nix/profiles/system/activate";
                 };
               } // mkUserProfiles hostUsers;
             };
         in
-        config.hosts
-        |> lib.filterAttrs (_: attrs: attrs.profile != "mobile")
-        |> lib.mapAttrs (hostName: attrs: mkNode hostName attrs);
+        config.hosts |> lib.mapAttrs (hostname: attrs: mkNode hostname attrs);
 
       nixosConfigurations =
         let
           mkHost =
             hostName: attrs:
             let
-              systemUsers = attrs.users;
+              nixosSystem =
+                if attrs.platform == "rpi-nixos" then nix-raspberrypi.lib.nixosSystem else nixpkgs.lib.nixosSystem;
             in
-            nixpkgs.lib.nixosSystem {
+            nixosSystem {
               specialArgs = {
-                inherit inputs hostName systemUsers;
+                inherit inputs hostName;
+                systemUsers = attrs.users;
                 inherit (config.hosts.${hostName}) system profile;
               };
-
-              modules = [
-                ./nixModules
-                nix-gaming.nixosModules.pipewireLowLatency
-                nix-gaming.nixosModules.platformOptimizations
-                disko.nixosModules.default
-                stylix.nixosModules.stylix
-                nix-index-database.nixosModules.nix-index
-              ];
+              modules =
+                [
+                  ./modules/nixos
+                  nix-gaming.nixosModules.pipewireLowLatency
+                  nix-gaming.nixosModules.platformOptimizations
+                  disko.nixosModules.default
+                  stylix.nixosModules.stylix
+                  nix-index-database.nixosModules.nix-index
+                  { networking = { inherit hostName; }; }
+                ]
+                ++ lib.optionals (attrs.platform == "rpi-nixos") (
+                  builtins.attrValues {
+                    inherit (nixos-raspberrypi.nixosModules.raspberry-pi-5) base display-vc4 bluetooth;
+                  }
+                );
             };
         in
         config.hosts
-        |> lib.filterAttrs (_: attrs: attrs.profile != "mobile" && attrs.platform == "nixos")
+        |> lib.filterAttrs (_: attrs: attrs.platform == "nixos")
         |> lib.mapAttrs (hostName: attrs: mkHost hostName attrs);
 
       systemConfigs =
@@ -161,25 +173,22 @@
               pkgs = import nixpkgs { inherit (attrs) system; };
             in
             system-manager.lib.makeSystemConfig {
-              modules = [ ./systemModules ];
+              modules = [
+                ./modules/system
+                { networking = { inherit hostName; }; }
+              ];
               extraSpecialArgs = {
-                inherit
-                  inputs
-                  hostName
-                  systemUsers
-                  pkgs
-                  ;
+                inherit inputs systemUsers pkgs;
                 inherit (config.hosts.${hostName}) system profile;
               };
             };
         in
         config.hosts
-        |> lib.filterAttrs (_: attrs: attrs.profile != "mobile" && attrs.platform == "non-nixos")
+        |> lib.filterAttrs (_: attrs: attrs.platform == "non-nixos")
         |> lib.mapAttrs (hostName: attrs: mkHost hostName attrs);
 
       homeConfigurations =
         config.hosts
-        |> lib.filterAttrs (_: attrs: attrs.profile != "mobile")
         |> builtins.attrNames
         |> builtins.map (
           host:
@@ -202,15 +211,23 @@
             in
             nix-on-droid.lib.nixOnDroidConfiguration {
               pkgs = import nixpkgs { inherit system; };
-              modules = [ ./hosts/${hostName} ];
+              modules = [
+                ./hosts/${hostName}
+                ./modules/nixOnDroid
+              ];
             };
         in
         config.hosts
-        |> lib.filterAttrs (_: attrs: attrs.profile != "server" && attrs.profile != "desktop")
+        |> lib.filterAttrs (_: attrs: attrs.platform == "mobile")
         |> lib.mapAttrs (hostName: attrs: mkDroid hostName attrs);
 
       checks = lib.lists.foldl' lib.attrsets.unionOfDisjoint { } [
-        (builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib)
+        (deploy-rs.lib."x86_64-linux".deployChecks self.deploy)
+        {
+          treefmt-check = forAllSystems (
+            pkgs: (treefmt.lib.evalModule pkgs ./treefmt.nix).config.build.wrapper
+          );
+        }
       ];
 
       formatter = forAllSystems (pkgs: (treefmt.lib.evalModule pkgs ./treefmt.nix).config.build.wrapper);
@@ -297,6 +314,7 @@
     nix-on-droid = {
       url = "github:nix-community/nix-on-droid";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
     nix-gaming.url = "github:fufexan/nix-gaming";
     helix-steel = {
@@ -319,10 +337,15 @@
       url = "github:Alexays/Waybar";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-raspberrypi = {
+      url = "github:nvmd/nixos-raspberrypi";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     seto.url = "github:unixpariah/seto";
     moxidle.url = "github:unixpariah/moxidle";
     moxnotify.url = "github:unixpariah/moxnotify";
+    moxctl.url = "github:unixpariah/moxctl";
     moxpaper.url = "github:unixpariah/moxpaper";
     nh = {
       url = "github:unixpariah/nh";

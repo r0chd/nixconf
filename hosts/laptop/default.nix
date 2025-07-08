@@ -24,11 +24,9 @@
     k3s = { };
     deploy-rs = {
       owner = "deploy-rs";
-      group = "wheel";
+      group = "deploy-rs";
       mode = "0440";
     };
-    "wireless/SaltoraUp" = { };
-    "wireless/Saltora" = { };
 
     #"grafana/username" = { };
     #"grafana/password" = { };
@@ -80,13 +78,11 @@
     containers.enable = true;
     podman = {
       enable = true;
-      dockerCompat = true;
-      dockerSocket.enable = true;
       defaultNetwork.settings.dns_enabled = true;
     };
   };
 
-  users.users.unixpariah.extraGroups = [ "podman" ];
+  networking.wireless.mainInterface = "wlan0";
 
   system = {
     fileSystem = "btrfs";

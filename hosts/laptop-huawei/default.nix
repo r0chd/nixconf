@@ -26,10 +26,6 @@
       setSocketVariable = true;
     };
   };
-  users.users.unixpariah.extraGroups = [
-    "docker"
-    "deploy-rs"
-  ];
 
   sops.secrets = {
     k3s = { };
@@ -107,7 +103,7 @@
   };
 
   networking = {
-
+    wireless.mainInterface = "wlan0";
     hostId = "6add04c2";
   };
 

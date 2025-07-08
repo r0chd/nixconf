@@ -44,8 +44,6 @@
     };
   };
 
-  users.users.unixpariah.extraGroups = [ "podman" ];
-
   services = {
     gc = {
       enable = true;

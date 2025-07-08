@@ -41,7 +41,7 @@
     };
     nixcord.vesktop.enable = true;
     editor = "hx";
-    zen.enable = true;
+    zen-browser.enable = true;
     nix-index.enable = true;
     fastfetch.enable = true;
     starship.enable = true;

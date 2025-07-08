@@ -39,7 +39,7 @@ in
 
     packages =
       [
-        (writeScriptBin "sshd-start" ''
+        (pkgs.writeScriptBin "sshd-start" ''
           #!${pkgs.runtimeShell}
 
           echo "Starting sshd in non-daemonized way on port 8022"
@@ -66,7 +66,7 @@ in
 
   nix = { inherit (commonConfig.nix) package; };
 
-  system.stateVersion = "24.05";
+  system.stateVersion = "25.11";
 
   terminal.font =
     let

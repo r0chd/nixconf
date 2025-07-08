@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  username,
   inputs,
   config,
   ...
@@ -29,7 +28,7 @@
     nh.package = inputs.nh-system.packages.${pkgs.system}.default;
     gnome.enable = true;
 
-    zen.enable = true;
+    zen-browser.enable = true;
     ghostty.settings.window-decoration = lib.mkForce false;
 
     editor = "hx";
@@ -51,7 +50,7 @@
     ssh.matchBlocks = {
       "gerrit.qed.ai" = {
         host = "gerrit.qed.ai";
-        user = username;
+        user = config.home.username;
       };
     };
 
@@ -101,7 +100,6 @@
     };
 
     terminal.program = "ghostty";
-    wallpaper.enable = false;
   };
 
   stylix = {
