@@ -19,7 +19,7 @@
     ./security
     ./networking
     ./services
-    "${inputs.self}/hosts/${hostName}/users/${username}"
+    ../../hosts/${hostName}/users/${username}
     ../theme
     ../common/home
   ];
@@ -70,7 +70,6 @@
           nix run ''${NH_FLAKE}#homeConfigurations.${config.home.username}@${hostName}.pkgs.$package "$@"
         '')
       ];
-      homeDirectory = "/home/${config.home.username}";
       stateVersion = "25.11";
     };
   };

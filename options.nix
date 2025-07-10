@@ -1,23 +1,26 @@
 { lib, ... }:
+let
+  inherit (lib) types;
+in
 {
   options.hosts = lib.mkOption {
-    type = lib.types.attrsOf (
-      lib.types.submodule {
+    type = types.attrsOf (
+      types.submodule {
         options = {
           system = lib.mkOption {
-            type = lib.types.enum [
+            type = types.enum [
               "x86_64-linux"
               "aarch64-linux"
             ];
           };
           profile = lib.mkOption {
-            type = lib.types.enum [
+            type = types.enum [
               "desktop"
               "server"
             ];
           };
           platform = lib.mkOption {
-            type = lib.types.enum [
+            type = types.enum [
               "non-nixos"
               "nixos"
               "rpi-nixos"
@@ -26,20 +29,27 @@
             ];
           };
           users = lib.mkOption {
-            type = lib.types.attrsOf (
-              lib.types.submodule {
-                options = {
-                  root.enable = lib.mkEnableOption "root access";
-                  shell = lib.mkOption {
-                    type = lib.types.enum [
-                      "bash"
-                      "zsh"
-                      "fish"
-                      "nushell"
-                    ];
+            type = types.attrsOf (
+              types.submodule (
+                { name, ... }:
+                {
+                  options = {
+                    root.enable = lib.mkEnableOption "root access";
+                    home = lib.mkOption {
+                      type = types.str;
+                      default = "/home/${name}";
+                    };
+                    shell = lib.mkOption {
+                      type = types.enum [
+                        "bash"
+                        "zsh"
+                        "fish"
+                        "nushell"
+                      ];
+                    };
                   };
-                };
-              }
+                }
+              )
             );
           };
         };

@@ -30,7 +30,7 @@ in
           name = "${user}/password";
           value = {
             neededForUsers = true;
-            sopsFile = "${inputs.self}/hosts/${config.networking.hostName}/users/${user}/secrets/secrets.yaml";
+            sopsFile = ../../../../hosts/${config.networking.hostName}/users/${user}/secrets/secrets.yaml;
           };
         }
         {
@@ -38,13 +38,13 @@ in
           value = {
             owner = user;
             path = "/home/${user}/.ssh/id_ed25519";
-            sopsFile = "${inputs.self}/hosts/${config.networking.hostName}/users/${user}/secrets/secrets.yaml";
+            sopsFile = ../../../../hosts/${config.networking.hostName}/users/${user}/secrets/secrets.yaml;
           };
         }
       ])
       |> lib.listToAttrs;
 
-    defaultSopsFile = "${inputs.self}/hosts/${config.networking.hostName}/secrets/secrets.yaml";
+    defaultSopsFile = ../../../../hosts/${config.networking.hostName}/secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     age = {
       sshKeyPaths = [ "${root}/.ssh/id_ed25519" ];
@@ -57,25 +57,44 @@ in
     shellAliases.opensops = "SOPS_AGE_KEY_FILE=\"${config.sops.age.keyFile}\" sops /var/lib/nixconf/hosts/${config.networking.hostName}/secrets/secrets.yaml";
   };
 
-  system.activationScripts.sopsGenerateKeys =
-    let
-      escapedKeyFile = lib.escapeShellArg "${root}/.config/sops/age/keys.txt";
-      sshKeyPath = "${root}/.ssh/id_ed25519";
-    in
-    ''
-      mkdir -p $(dirname ${escapedKeyFile})
-      ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
-    ''
-    + lib.concatMapStrings (
-      user:
+  systemd.services.sops-generate-keys = {
+    description = "Generate SOPS age keys from SSH keys";
+
+    wantedBy = [ "sysinit.target" ];
+    after = [ "systemd-sysusers.service" ];
+    before = [ "sops-install-secrets.service" ];
+    unitConfig.DefaultDependencies = "no";
+
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      User = "root";
+    };
+
+    script =
       let
-        escapedUserKeyFile = lib.escapeShellArg "/home/${user}/.config/sops/age/keys.txt";
-        sshUserKeyPath = "/home/${user}/.ssh/id_ed25519";
+        escapedKeyFile = lib.escapeShellArg "${root}/.config/sops/age/keys.txt";
+        sshKeyPath = "${root}/.ssh/id_ed25519";
       in
       ''
-        mkdir -p $(dirname ${escapedUserKeyFile})
-        ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshUserKeyPath} > ${escapedUserKeyFile}
-        chown -R ${user}:users /home/${user}/.config
+        if [[ -f "${sshKeyPath}" ]]; then
+          mkdir -p "$(dirname ${escapedKeyFile})"
+          ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
+        fi
       ''
-    ) (lib.attrNames systemUsers);
+      + lib.concatMapStrings (
+        user:
+        let
+          escapedUserKeyFile = lib.escapeShellArg "/home/${user}/.config/sops/age/keys.txt";
+          sshUserKeyPath = "/home/${user}/.ssh/id_ed25519";
+        in
+        ''
+          if [[ -f "${sshUserKeyPath}" ]]; then
+            mkdir -p "$(dirname ${escapedUserKeyFile})"
+            ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshUserKeyPath} > ${escapedUserKeyFile}
+            chown -R ${user}:users /home/${user}/.config
+          fi
+        ''
+      ) (lib.attrNames systemUsers);
+  };
 }

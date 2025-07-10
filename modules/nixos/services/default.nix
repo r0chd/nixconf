@@ -12,6 +12,6 @@
   services = {
     udisks2.enable = profile == "desktop";
     gnome.gnome-keyring.enable = profile == "desktop";
-    userborn.enable = false;
+    userborn.enable = true;
   };
 }

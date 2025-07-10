@@ -5,7 +5,7 @@
     ./services
     ./security
     ./programs
-    "${inputs.self}/hosts/${config.networking.hostName}"
+    ../../hosts/${config.networking.hostName}
   ];
 
   environment.etc = {
@@ -15,6 +15,5 @@
     '';
   };
 
-  system.rebuild.enableNg = false;
   nixpkgs.hostPlatform = system;
 }

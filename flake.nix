@@ -56,7 +56,12 @@
             ./modules/home
             stylix.homeModules.stylix
             inputs.nix-index-database.hmModules.nix-index
-            { home = { inherit username; }; }
+            {
+              home = {
+                inherit username;
+                homeDirectory = config.hosts.${hostName}.users.${username}.home;
+              };
+            }
           ];
         };
 
@@ -69,8 +74,8 @@
           in
           function pkgs
         );
+      inherit (nixpkgs) lib;
     in
-    with nixpkgs;
     {
       deploy.nodes =
         let
@@ -155,7 +160,7 @@
                 ]
                 ++ lib.optionals (attrs.platform == "rpi-nixos") (
                   builtins.attrValues {
-                    inherit (nixos-raspberrypi.nixosModules.raspberry-pi-5) base display-vc4 bluetooth;
+                    inherit (nixpkgs.nixos-raspberrypi.nixosModules.raspberry-pi-5) base display-vc4 bluetooth;
                   }
                 );
             };

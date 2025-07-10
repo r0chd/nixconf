@@ -10,7 +10,7 @@
   programs = {
     keepassxc.enable = true;
     atuin = {
-      enable = true;
+      enable = false;
       settings.key_path = config.sops.secrets.atuin_key.path;
     };
     git = {
@@ -45,11 +45,6 @@
   services = {
     impermanence.enable = true;
     yubikey-touch-detector.enable = true;
-  };
-
-  wayland.windowManager = {
-    hyprland.enable = false;
-    sway.enable = false;
   };
 
   stylix = {

@@ -3,6 +3,7 @@
   config,
   lib,
   profile,
+  systemUsers,
   ...
 }:
 let
@@ -31,5 +32,7 @@ in
     };
 
     environment.systemPackages = [ pkgs.pavucontrol ];
+
+    users.users = systemUsers |> lib.mapAttrs (user: value: { extraGroups = [ "audio" ]; });
   };
 }

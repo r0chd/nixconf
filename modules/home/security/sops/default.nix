@@ -14,7 +14,7 @@
       "${config.home.username}/ssh" = { };
       "${config.home.username}/password" = { };
     };
-    defaultSopsFile = "${inputs.self}/hosts/${hostName}/users/${config.home.username}/secrets/secrets.yaml";
+    defaultSopsFile = ../../../../hosts/${hostName}/users/${config.home.username}/secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     age = {
       sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];

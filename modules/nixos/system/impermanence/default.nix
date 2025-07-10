@@ -176,6 +176,7 @@ in
       description = "Activate home manager";
       wantedBy = [ "default.target" ];
       requiredBy = [ "systemd-user-sessions.service" ];
+      after = [ "sops-install-secrets.service" ];
       before = [ "systemd-user-sessions.service" ];
       serviceConfig = {
         Type = "oneshot";

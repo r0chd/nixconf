@@ -64,11 +64,7 @@
 
   environment = {
     variables.EDITOR = "hx";
-    systemPackages = with pkgs; [
-      helix
-      kubectl
-      cosmic-icons
-    ];
+    systemPackages = builtins.attrValues { inherit (pkgs) helix kubectl cosmic-icons; };
   };
 
   security = {
@@ -90,10 +86,6 @@
   };
 
   programs = {
-    ladybird.enable = true;
-    sway.enable = false;
-    hyprland.enable = false;
-
     deploy-rs.sshKeyFile = config.sops.secrets.deploy-rs.path;
     nix-index.enable = true;
   };

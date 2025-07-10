@@ -13,8 +13,8 @@ in
 
   config = lib.mkIf cfg.enable {
     environment = {
-      systemPackages = with pkgs; [
-        (writeShellScriptBin "steamos-session-select" ''
+      systemPackages = [
+        (pkgs.writeShellScriptBin "steamos-session-select" ''
           steam -shutdown
         '')
       ];
@@ -34,7 +34,7 @@ in
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
-      extraCompatPackages = with pkgs; [ proton-ge-bin ];
+      extraCompatPackages = [ pkgs.proton-ge-bin ];
     };
   };
 }

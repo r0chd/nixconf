@@ -21,7 +21,7 @@
     ./gaming
     ./programs
     ./virtualisation
-    "${inputs.self}/hosts/${hostName}"
+    ../../hosts/${hostName}
     ../theme
     ../common/nixos
   ];
@@ -97,6 +97,7 @@
         |> lib.mapAttrs (
           name: value: {
             isNormalUser = true;
+            inherit (value) home;
             hashedPasswordFile = config.sops.secrets."${name}/password".path;
             extraGroups = lib.mkIf value.root.enable [ "wheel" ];
             shell = pkgs.${value.shell};

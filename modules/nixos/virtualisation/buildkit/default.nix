@@ -4,15 +4,15 @@
   pkgs,
   ...
 }:
-with lib;
 let
   cfg = config.virtualisation.buildkitd;
+  inherit (lib) types;
 in
 {
   options.virtualisation.buildkitd = {
-    enable = mkEnableOption "buildkit";
-    rootless = mkEnableOption "rootless-buildkit";
-    listenOptions = mkOption {
+    enable = lib.mkEnableOption "buildkit";
+    rootless = lib.mkEnableOption "rootless-buildkit";
+    listenOptions = lib.mkOption {
       type = types.listOf types.str;
       default = [ "/run/buildkitd/buildkitd.sock" ];
       description = ''
@@ -20,7 +20,7 @@ in
         ListenStream as described in systemd.socket(5).
       '';
     };
-    package = mkOption {
+    package = lib.mkOption {
       default = pkgs.buildkit;
       type = types.package;
       example = pkgs.buildkit;
@@ -28,7 +28,7 @@ in
         Buildkitd package to be used in the module
       '';
     };
-    packages = mkOption {
+    packages = lib.mkOption {
       type = types.listOf types.package;
       default = [
         pkgs.runc
@@ -36,7 +36,7 @@ in
       ];
       description = "List of packages to be added to buildkitd service path";
     };
-    extraOptions = mkOption {
+    extraOptions = lib.mkOption {
       type = types.separatedString " ";
       default = "";
       description = ''
@@ -46,10 +46,10 @@ in
     };
   };
 
-  config = mkMerge [
-    (mkIf cfg.enable { environment.systemPackages = [ cfg.package ]; })
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable { environment.systemPackages = [ cfg.package ]; })
 
-    (mkIf (cfg.enable && !cfg.rootless) {
+    (lib.mkIf (cfg.enable && !cfg.rootless) {
       users.groups = [
         {
           name = "buildkit";
@@ -84,7 +84,7 @@ in
       };
     })
 
-    (mkIf (cfg.enable && cfg.rootless) {
+    (lib.mkIf (cfg.enable && cfg.rootless) {
       users = {
         users.buildkit = {
           description = "buildkit user";
