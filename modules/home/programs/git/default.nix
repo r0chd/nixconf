@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.programs.git;
 in
@@ -43,15 +48,25 @@ in
         };
 
         extraConfig = {
+          #diff.tool = "kdiff3";
+          #merge.tool = "kdiff3";
+
+          #difftool."kdiff3".cmd = "${pkgs.kdiff3}/bin/kdiff3 \"$LOCAL\" \"$REMOTE\"";
+          #mergetool."kdiff3" = {
+          #  cmd = "${pkgs.kdiff3}/bin/kdiff3 \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"";
+          #  trustExitCode = true;
+          #  keepBackup = false;
+          #};
+
           init.defaultBranch = "master";
-          #url = {
-          #"ssh://git@github.com" = {
-          #insteadOf = "https://github.com";
-          #};
-          #"ssh://git@gitlab.com" = {
-          #insteadOf = "https://gitlab.com";
-          #};
-          #};
+          url = {
+            "ssh://git@github.com" = {
+              insteadOf = "https://github.com";
+            };
+            "ssh://git@gitlab.com" = {
+              insteadOf = "https://gitlab.com";
+            };
+          };
           gpg = {
             format = "ssh";
             ssh.allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
@@ -77,5 +92,7 @@ in
         };
       };
     };
+
+    home.packages = [ pkgs.git-review ];
   };
 }

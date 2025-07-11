@@ -194,6 +194,7 @@
 
       homeConfigurations =
         config.hosts
+        |> lib.filterAttrs (_: attrs: attrs.platform != "mobile")
         |> builtins.attrNames
         |> builtins.map (
           host:
@@ -346,6 +347,7 @@
       url = "github:nvmd/nixos-raspberrypi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-cue.url = "github:jmgilman/nix-cue";
 
     seto.url = "github:unixpariah/seto";
     moxidle.url = "github:unixpariah/moxidle";

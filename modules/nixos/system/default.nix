@@ -15,5 +15,8 @@
     ];
   };
 
-  config.system.stateVersion = "25.11";
+  config.system = {
+    includeBuildDependencies = true;
+    stateVersion = "25.11";
+  };
 }

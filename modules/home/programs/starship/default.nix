@@ -39,7 +39,6 @@ _: {
         "$perl"
         "$php"
         "$purescript"
-        "$python"
         "$red"
         "$ruby"
         "$rust"
@@ -123,7 +122,6 @@ _: {
       package.symbol = "󰏗 ";
       perl.symbol = " ";
       php.symbol = " ";
-      python.symbol = " ";
       ruby.symbol = " ";
       rust.symbol = " ";
       scala.symbol = " ";

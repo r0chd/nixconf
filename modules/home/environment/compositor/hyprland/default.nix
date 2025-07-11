@@ -6,6 +6,9 @@
   profile,
   ...
 }:
+let
+  cfg = config.wayland.windowManager.hyprland;
+in
 {
   home.packages = with pkgs; [
     (writeShellScriptBin "click" ''
@@ -17,8 +20,6 @@
       ydotool mousemove -a $(seto -f $'%x %y\\n') && ydotool click 0xC0 && ydotool mousemove -a $initial_cursorpos
     '')
   ];
-
-  services.hyprpaper.enable = lib.mkForce false;
 
   wayland.windowManager.hyprland = {
     enable = lib.mkDefault (profile == "desktop");
@@ -160,5 +161,11 @@
         "$mainMod, mouse:273, resizewindow"
       ];
     };
+  };
+
+  nix.settings = lib.mkIf cfg.enable {
+    substituters = [ "https://hyprland.cachix.org" ];
+    trusted-substituters = [ "https://hyprland.cachix.org" ];
+    trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
   };
 }

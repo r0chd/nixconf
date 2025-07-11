@@ -8,9 +8,10 @@
   };
 
   programs = {
+    gcloud.enable = true;
     keepassxc.enable = true;
     atuin = {
-      enable = false;
+      enable = true;
       settings.key_path = config.sops.secrets.atuin_key.path;
     };
     git = {
@@ -35,6 +36,30 @@
 
   environment = {
     terminal.program = "ghostty";
+    outputs = {
+      "eDP-1" = {
+        position = {
+          x = 0;
+          y = 1440;
+        };
+        refresh = 60.008;
+        dimensions = {
+          width = 1920;
+          height = 1080;
+        };
+      };
+      "HDMI-1" = {
+        position = {
+          x = 0;
+          y = 0;
+        };
+        refresh = 99.946;
+        dimensions = {
+          width = 2560;
+          height = 1440;
+        };
+      };
+    };
   };
 
   home.persist.directories = [

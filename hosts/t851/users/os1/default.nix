@@ -135,10 +135,5 @@
     };
   };
 
-  home.packages = with pkgs; [
-    git-review
-    slack
-    signal-desktop
-    google-cloud-sql-proxy
-  ];
+  home.packages = builtins.attrValues { inherit (pkgs) slack signal-desktop google-cloud-sql-proxy; };
 }

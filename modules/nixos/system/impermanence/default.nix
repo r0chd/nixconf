@@ -112,7 +112,7 @@ in
             # benign-looking errors from systemd-tmpfiles.
             btrfs subvolume list -o /mnt/root |
               cut -f9 -d' ' |
-              while read subvolume; do
+              while read -r subvolume; do
                 echo "deleting /$subvolume subvolume..."
                 btrfs subvolume delete "/mnt/$subvolume"
               done &&
@@ -184,7 +184,7 @@ in
       environment.PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}/bin:${pkgs.sudo}/bin:${pkgs.coreutils}/bin:$PATH";
       script = lib.concatMapStrings (user: ''
         if [ -L "${cfg.mountPoint}/home/${user}/.local/state/nix/profiles/home-manager" ]; then
-          chown -R ${user}:users /home/${user}/.ssh
+          chown -R ${user}:users /home/${user}
           HOME_MANAGER_BACKUP_EXT="bak" sudo -u ${user} ${cfg.mountPoint}/home/${user}/.local/state/nix/profiles/home-manager/activate
         fi
       '') (lib.attrNames systemUsers);

@@ -50,14 +50,14 @@
         shell = "bash";
       };
     };
-    mi10lite = {
-      system = "aarch64-linux";
-      profile = "mobile";
-      platform = "non-nixos";
-      users.unixpariah = {
-        root.enable = true;
-        shell = "bash";
-      };
-    };
+    #mi10lite = {
+    #  system = "aarch64-linux";
+    #  profile = "mobile";
+    #  platform = "non-nixos";
+    #  users.unixpariah = {
+    #    root.enable = true;
+    #    shell = "bash";
+    #  };
+    #};
   };
 }
