@@ -22,7 +22,7 @@ in
     home.packages = [ cfg.package ];
 
     sops.templates."cachix.dhall" = {
-      path = "/home/${config.home.username}/.config/cachix/cachix.dhall";
+      path = "${config.home.homeDirectory}/.config/cachix/cachix.dhall";
       content = ''
         { authToken = ${cfg.authToken}
         , hostname = "https://cachix.org"

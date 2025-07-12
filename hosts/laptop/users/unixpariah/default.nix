@@ -20,6 +20,7 @@
     nixos-access-token-github = { };
     github-api = { };
     atuin_key = { };
+    gcloud = { };
   };
 
   nix.access-tokens = [ config.sops.placeholder.nixos-access-token-github ];
@@ -30,18 +31,22 @@
   };
 
   programs = {
+    gcloud = {
+      enable = true;
+      #authFile = config.sops.secrets.gcloud.path;
+    };
     atuin = {
       enable = true;
       settings.key_path = config.sops.secrets.atuin_key.path;
     };
 
     git = {
-      signingKeyFile = "${config.home.homeDirectory}/.ssh/id_yubikey.pub";
+      signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
       email = "100892812+unixpariah@users.noreply.github.com";
     };
     nixcord.vesktop.enable = true;
     editor = "hx";
-    zen-browser.enable = true;
+    chromium.enable = true;
     nix-index.enable = true;
     fastfetch.enable = true;
     starship.enable = true;
@@ -64,7 +69,7 @@
       "eDP-1" = {
         position = {
           x = 0;
-          y = 0;
+          y = 1439;
         };
         refresh = 144.0;
         dimensions = {
@@ -74,26 +79,26 @@
       };
       "HDMI-A-1" = {
         position = {
-          x = 1920;
+          x = 0;
           y = 0;
         };
-        refresh = 60.0;
+        refresh = 180.0;
         dimensions = {
-          width = 1920;
-          height = 1080;
+          width = 2560;
+          height = 1440;
         };
+        scale = 1.25;
       };
     };
 
-    terminal.program = "ghostty";
-    idle.enable = false;
+    terminal.program = "foot";
   };
 
   stylix = {
     enable = true;
     theme = "gruvbox";
     cursor.size = 36;
-    opacity.terminal = 0.4;
+    opacity.terminal = 0.8;
     fonts = {
       sizes.terminal = 9;
       monospace = {

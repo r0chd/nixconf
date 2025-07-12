@@ -9,10 +9,10 @@ with lib;
 with lib.types;
 {
   imports = [
-    ./mutter
-    ./niri
-    ./hyprland
-    ./sway
+    ./mutter.nix
+    ./niri.nix
+    ./hyprland.nix
+    ./sway.nix
   ];
 
   options.environment.outputs = mkOption {

@@ -23,7 +23,14 @@ in
 
   wayland.windowManager.hyprland = {
     enable = lib.mkDefault (profile == "desktop");
+    plugins = [ pkgs.hyprlandPlugins.hyprscrolling ];
     settings = {
+      plugin.hyprscrolling = {
+        column_width = 0;
+        fullscreen_on_one_column = true;
+        explicit_column_widths = "0.333, 0.5, 0.667, 1.0";
+      };
+
       input = {
         kb_layout = "us";
         kb_variant = "";
@@ -73,8 +80,12 @@ in
       };
 
       dwindle = {
-        pseudotile = "yes";
-        preserve_split = "yes";
+        pseudotile = true;
+        preserve_split = true;
+      };
+
+      master = {
+        new_status = "master";
       };
 
       gestures = {
@@ -83,7 +94,7 @@ in
 
       misc = {
         force_default_wallpaper = "0";
-        vfr = "true";
+        vfr = true;
       };
 
       "$mainMod" = "ALT"; # Mod key
@@ -147,8 +158,8 @@ in
 
           "$mainMod, D, exec, mox notify focus"
 
-          ", XF86AudioRaiseVolume, exec, pamixer -i 5"
-          ", XF86AudioLowerVolume, exec, pamixer -d 5"
+          ", XF86AudioRaiseVolume, exec, ${pkgs.pamixer}/bin/pamixer -i 5"
+          ", XF86AudioLowerVolume, exec, ${pkgs.pamixer}/bin/pamixer -d 5"
 
           "$mainMod, q, exec, uwsm stop"
         ]

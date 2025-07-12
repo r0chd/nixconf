@@ -5,7 +5,7 @@
     enable = true;
     hashKnownHosts = true;
     addKeysToAgent = "yes";
-    userKnownHostsFile = "~/.ssh/known_hosts/default";
+    userKnownHostsFile = "~/.ssh/custom_known_hosts/known_hosts";
 
     controlMaster = "auto";
     controlPath = "~/.ssh/sockets/S.%r@%h:%p";
@@ -13,7 +13,7 @@
   };
 
   home = {
-    persist.directories = [ ".ssh/known_hosts" ];
+    persist.directories = [ ".ssh/custom_known_hosts" ];
     file = {
       ".ssh/config.d/.keep".text = "# Managed by Home Manager";
       ".ssh/sockets/.keep".text = "# Managed by Home Manager";

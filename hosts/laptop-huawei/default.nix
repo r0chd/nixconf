@@ -19,14 +19,6 @@
       "libfprint-2-tod1-goodix"
     ];
 
-  virtualisation.docker = {
-    enable = true;
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
-    };
-  };
-
   sops.secrets = {
     k3s = { };
     tailscale = { };
@@ -49,6 +41,8 @@
   };
 
   documentation.enable = true;
+
+  boot.tmp.useTmpfs = true;
 
   system = {
     bootloader = {

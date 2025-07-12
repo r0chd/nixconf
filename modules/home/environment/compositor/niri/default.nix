@@ -296,20 +296,7 @@
           "${pkgs.pamixer}/bin/pamixer"
           "-t"
         ];
-        "Print".action.spawn = [
-          "bash"
-          "-c"
-          "${pkgs.grim}/bin/grim -c -g \"$(seto -r)\" - | ${pkgs.swappy}/bin/swappy -f -"
-        ];
-
-        "Alt+G".action.spawn = [
-          "uwsm"
-          "app"
-          "--"
-          "bash"
-          "-c"
-          "ydotool mousemove -a $(seto -f $'%X %Y') && ydotool click 0xC0"
-        ];
+        "Print".action.screenshot = { };
 
         "Alt+Q".action.spawn = [
           "uwsm"
@@ -351,15 +338,15 @@
         "Alt+Shift+O".action.switch-focus-between-floating-and-tiling = { };
 
         "Alt+H".action.focus-column-left = { };
-        "Alt+J".action.focus-window-down = { };
-        "Alt+K".action.focus-window-up = { };
+        "Alt+J".action.focus-window-or-monitor-down = { };
+        "Alt+K".action.focus-window-or-monitor-up = { };
         "Alt+L".action.focus-column-right = { };
 
         "Alt+V".action.toggle-overview = { };
 
         "Alt+Shift+H".action.move-column-left = { };
-        "Alt+Shift+J".action.move-window-down = { };
-        "Alt+Shift+K".action.move-window-up = { };
+        "Alt+Shift+J".action.move-window-to-monitor-down = { };
+        "Alt+Shift+K".action.move-window-to-monitor-up = { };
         "Alt+Shift+L".action.move-column-right = { };
 
         "Alt+N".action.focus-monitor-left = { };

@@ -59,14 +59,6 @@ in
           #};
 
           init.defaultBranch = "master";
-          url = {
-            "ssh://git@github.com" = {
-              insteadOf = "https://github.com";
-            };
-            "ssh://git@gitlab.com" = {
-              insteadOf = "https://gitlab.com";
-            };
-          };
           gpg = {
             format = "ssh";
             ssh.allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
@@ -78,7 +70,6 @@ in
       jujutsu = {
         enable = true;
         settings = {
-          ui.paginate = "never";
           user = {
             name = config.home.username;
             inherit (cfg) email;
@@ -88,6 +79,34 @@ in
             backend = "ssh";
             key = lib.mkIf (cfg.signingKeyFile != null) cfg.signingKeyFile;
             backends.ssh.allow-singers = "${config.home.homeDirectory}/.ssh/allowed_signers";
+          };
+
+          templates = {
+            commit_trailers = ''
+              if(self.author().email() == "${cfg.email}" &&
+                !trailers.contains_key("Change-Id"),
+                format_gerrit_change_id_trailer(self)
+              )
+            '';
+          };
+
+          aliases = {
+            cl-up = [
+              "util"
+              "exec"
+              "--"
+              "bash"
+              "-c"
+              ''
+                set -euo pipefail
+                INPUT=''${1:-"@-"}
+                HASH=$(jj log -r "''${INPUT}" -T commit_id --no-graph)
+                HASHINFO=$(git log -n 1 ''${HASH} --oneline --color=always)
+                echo "Pushing from commit ''${HASHINFO}"
+                git push origin "''${HASH}":refs/for/main                  
+              ''
+              ""
+            ];
           };
         };
       };

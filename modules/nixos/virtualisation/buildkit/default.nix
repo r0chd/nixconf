@@ -14,7 +14,7 @@ in
     rootless = lib.mkEnableOption "rootless-buildkit";
     listenOptions = lib.mkOption {
       type = types.listOf types.str;
-      default = [ "/run/buildkitd/buildkitd.sock" ];
+      default = [ "/run/buildkit/buildkitd.sock" ];
       description = ''
         A list of unix and tcp buildkitd should listen to. The format follows
         ListenStream as described in systemd.socket(5).
@@ -47,39 +47,39 @@ in
   };
 
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable { environment.systemPackages = [ cfg.package ]; })
+    (lib.mkIf cfg.enable {
+      environment.systemPackages = [ cfg.package ];
 
-    (lib.mkIf (cfg.enable && !cfg.rootless) {
-      users.groups = [
-        {
-          name = "buildkit";
-          gid = 350;
-        }
-      ];
-      systemd.packages = [ cfg.package ];
-      systemd.services.buildkitd = {
-        wants = [ "containerd.service" ];
-        after = [ "containerd.service" ];
-        wantedBy = [ "multi-user.target" ];
-        serviceConfig = {
-          ExecStart = [
-            ""
-            ''
-              ${cfg.package}/bin/buildkitd \
-                ${cfg.extraOptions}
-            ''
-          ];
-        };
-        path = [ cfg.package ] ++ cfg.packages;
-      };
       systemd.sockets.buildkitd = {
         description = "Buildkitd Socket for the API";
         wantedBy = [ "sockets.target" ];
         socketConfig = {
           ListenStream = cfg.listenOptions;
           SocketMode = "0660";
-          SocketUser = "root";
+          SocketUser = "buildkit";
           SocketGroup = "buildkit";
+        };
+      };
+    })
+
+    (lib.mkIf (cfg.enable && !cfg.rootless) {
+      users.groups.buildkit.gid = 350;
+      systemd = {
+        packages = [ cfg.package ];
+        services.buildkitd = {
+          wants = [ "containerd.service" ];
+          after = [ "containerd.service" ];
+          wantedBy = [ "multi-user.target" ];
+          serviceConfig = {
+            ExecStart = [
+              ""
+              ''
+                ${cfg.package}/bin/buildkitd \
+                  ${cfg.extraOptions}
+              ''
+            ];
+          };
+          path = [ cfg.package ] ++ cfg.packages;
         };
       };
     })
@@ -94,10 +94,25 @@ in
         groups.buildkit = { };
       };
 
+      security.wrappers = {
+        newuidmap = {
+          source = "${pkgs.shadow}/bin/newuidmap";
+          setuid = true;
+        };
+        newgidmap = {
+          source = "${pkgs.shadow}/bin/newgidmap";
+          setuid = true;
+        };
+      };
+
       systemd.services.buildkitd = {
         wantedBy = [ "multi-user.target" ];
         after = [ "network.target" ];
         wants = [ "network.target" ];
+        path = [
+          (builtins.dirOf config.security.wrapperDir)
+          pkgs.runc
+        ];
 
         serviceConfig = {
           Type = "simple";
@@ -108,7 +123,6 @@ in
           Restart = "on-failure";
           RestartSec = "5s";
         };
-        path = builtins.attrValues { inherit (pkgs) shadow runc; };
       };
     })
   ];

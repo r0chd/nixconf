@@ -21,6 +21,7 @@
     ./gaming
     ./programs
     ./virtualisation
+    ./homelab
     ../../hosts/${hostName}
     ../theme
     ../common/nixos
@@ -72,7 +73,7 @@
           nix run ''${NH_FLAKE}#nixosConfigurations.${config.networking.hostName}.pkgs.$package "$@"
         '')
       ];
-    sessionVariables.HOME_MANAGER_BACKUP_EXT = "$(date +\"%Y%m%d%H%M%S\").bak";
+    sessionVariables.HOME_MANAGER_BACKUP_EXT = "bak";
   };
 
   boot = {

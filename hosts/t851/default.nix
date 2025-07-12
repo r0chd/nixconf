@@ -20,7 +20,7 @@
       User = "buildkit";
       StateDirectory = "buildkit";
       RuntimeDirectory = "buildkit";
-      ExecStart = "${pkgs.rootlesskit}/bin/rootlesskit ${pkgs.buildkit}/bin/buildkitd --rootless --addr unix:///run/buildkit/buildkitd.sock";
+      ExecStart = "${pkgs.rootlesskit}/bin/rootlesskit ${pkgs.buildkit}/bin/buildkitd --rootless";
       Restart = "on-failure";
       RestartSec = "5s";
     };

@@ -5,7 +5,7 @@
     ./services
     ./security
     ./programs
-    ../../hosts/${config.networking.hostName}
+    ../../hosts/t851
   ];
 
   environment.etc = {

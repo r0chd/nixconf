@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, profile, ... }:
 {
   imports = [
     ./root
@@ -15,6 +15,12 @@
       enable = true;
       rules = [ "-a exit,always -F arch=b64 -S execve" ];
     };
-    pam.services.hyprlock = { };
+    pam.services = {
+      hyprpolkitagent.enable = profile == "desktop";
+      hyprlock = {
+        enable = profile == "desktop";
+        text = "auth include login";
+      };
+    };
   };
 }

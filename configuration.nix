@@ -21,6 +21,10 @@
           root.enable = true;
           shell = "nushell";
         };
+        os1 = {
+          root.enable = true;
+          shell = "nushell";
+        };
       };
     };
     laptop-huawei = {

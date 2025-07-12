@@ -15,6 +15,7 @@
       system-manager,
       treefmt,
       nix-raspberrypi,
+      nix-cue,
       ...
     }@inputs:
     let
@@ -55,7 +56,7 @@
           modules = [
             ./modules/home
             stylix.homeModules.stylix
-            inputs.nix-index-database.hmModules.nix-index
+            inputs.nix-index-database.homeModules.nix-index
             {
               home = {
                 inherit username;
@@ -84,6 +85,7 @@
             let
               system = config.hosts.${hostname}.system;
               pkgs = import nixpkgs { inherit system; };
+              inherit (pkgs) lib;
               deployPkgs = import nixpkgs {
                 inherit system;
                 overlays = [
@@ -101,16 +103,16 @@
               mkUserProfiles =
                 users:
                 users
-                |> builtins.attrNames
-                |> map (user: {
-                  name = user;
-                  value = {
-                    inherit user;
-                    profilePath = "/home/${user}/.local/state/nix/profiles/profile";
-                    path = deployPkgs.deploy-rs.lib.activate.custom (mkHome hostname user).activationPackage "$PROFILE/activate";
-                  };
-                })
-                |> lib.filterAttrs (_: attrs.platform != "mobile")
+                |> lib.mapAttrsToList (
+                  user: attrs: {
+                    name = user;
+                    value = {
+                      inherit user;
+                      profilePath = "${attrs.home}/.local/state/nix/profiles/profile";
+                      path = deployPkgs.deploy-rs.lib.activate.custom (mkHome hostname user).activationPackage "$PROFILE/activate";
+                    };
+                  }
+                )
                 |> builtins.listToAttrs;
             in
             {
@@ -252,6 +254,7 @@
               in
               function pkgs
             );
+
         in
         forAllSystems (pkgs: {
           default = import ./shell.nix { inherit pkgs; };
@@ -317,6 +320,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland.url = "github:hyprwm/Hyprland";
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs.hyprland.follows = "hyprland";
+    };
     nix-on-droid = {
       url = "github:nix-community/nix-on-droid";
       inputs.nixpkgs.follows = "nixpkgs";

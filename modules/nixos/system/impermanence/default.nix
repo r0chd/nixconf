@@ -149,8 +149,6 @@ in
         |> lib.concatMap (user: [ "d ${cfg.mountPoint}/home/${user} 0700 ${user} users -" ])
       );
 
-    boot.tmp.useTmpfs = config.system.fileSystem == "ext4";
-
     programs.fuse.userAllowOther = true;
 
     environment.persistence."${cfg.mountPoint}/system" = {

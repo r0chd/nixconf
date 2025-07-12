@@ -28,14 +28,13 @@
     nh.package = inputs.nh-system.packages.${pkgs.system}.default;
     gnome.enable = true;
 
-    zen-browser.enable = true;
+    firefox.enable = true;
     ghostty.settings.window-decoration = lib.mkForce false;
 
     editor = "hx";
     git = {
       signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
       identityFile = [ "${config.home.homeDirectory}/.ssh/id_ed25519.pub" ];
-      #email = "100892812+unixpariah@users.noreply.github.com";
       email = "os1@qed.ai";
     };
     multiplexer = {

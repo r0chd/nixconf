@@ -50,7 +50,7 @@ in
   };
 
   config = lib.mkIf config.services.impermanence.enable {
-    home.persistence."/persist/home/${config.home.username}" = {
+    home.persistence."/persist${config.home.homeDirectory}" = {
       directories = [
         ".local/state/nix/profiles"
         ".cache/nix-index"

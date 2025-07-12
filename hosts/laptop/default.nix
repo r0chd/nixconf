@@ -56,7 +56,6 @@
   };
 
   programs = {
-    ladybird.enable = true;
     deploy-rs.sshKeyFile = config.sops.secrets.deploy-rs.path;
     thunderbird.enable = true;
     nix-index.enable = true;
@@ -72,9 +71,16 @@
     gamescope.enable = true;
   };
 
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot = {
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
+    tmp.useTmpfs = true;
+  };
 
   virtualisation = {
+    buildkitd = {
+      enable = true;
+      rootless = true;
+    };
     containers.enable = true;
     podman = {
       enable = true;

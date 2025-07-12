@@ -2,7 +2,7 @@
 {
   config = {
     programs.chromium = {
-      package = pkgs.ungoogled-chromium;
+      #package = pkgs.ungoogled-chromium;
       extensions = [
         { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; } # Dark Reader
         { id = "gnphfcibcphlpedmaccolafjonmckcdn"; } # Extension Switch
@@ -17,6 +17,7 @@
         "--enable-features=Vulkan"
         "--force-dark-mode"
         "--enable-features=TouchpadOverscrollHistoryNavigation,WebUIDarkMode"
+        "--extension-mime-request-handling=always-prompt-for-install"
       ];
     };
   };

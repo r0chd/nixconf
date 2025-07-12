@@ -1,4 +1,6 @@
 { pkgs }:
+let
+in
 pkgs.mkShell {
   buildInputs =
     builtins.attrValues {
@@ -12,6 +14,8 @@ pkgs.mkShell {
         yaml-language-server
         prettier
         kustomize
+        cuelsp
+        cue
         ;
     }
     ++ [

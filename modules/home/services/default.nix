@@ -7,10 +7,12 @@
     ./ngrok
     ./cliphist
     ./gc
+    ./sccache
   ];
 
   services = {
     udiskie.enable = profile == "desktop";
     sysnotifier.enable = profile == "desktop";
+    hyprpolkitagent.enable = profile == "desktop";
   };
 }

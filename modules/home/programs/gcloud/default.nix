@@ -12,7 +12,7 @@ in
     enable = lib.mkEnableOption "gcloud";
     package = lib.mkPackageOption pkgs "google-cloud-sdk-gce" { };
     authFile = lib.mkOption {
-      type = lib.types.nullOr lib.types.path;
+      type = lib.types.nullOr lib.types.str;
       default = null;
     };
   };

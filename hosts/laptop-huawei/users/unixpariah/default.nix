@@ -1,4 +1,9 @@
-{ pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 {
   sops.secrets = {
     "yubico/u2f_keys".path = "/home/unixpariah/.config/Yubico/u2f_keys";
@@ -68,6 +73,7 @@
   ];
 
   services = {
+    sccache.enable = true;
     impermanence.enable = true;
     yubikey-touch-detector.enable = true;
   };

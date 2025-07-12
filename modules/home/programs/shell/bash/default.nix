@@ -12,7 +12,7 @@
         "erasedups"
         "ignoreboth"
       ];
-      historyFile = "/home/${config.home.username}/.bash_history";
+      historyFile = "${config.home.homeDirectory}/.bash_history";
       historyFileSize = 10000;
     };
   };

@@ -17,7 +17,7 @@ in
 
   config = lib.mkIf cfg.enable {
     services = {
-      pulseaudio.enable = lib.mkDefault false;
+      pulseaudio.enable = false;
       pipewire = {
         enable = true;
         alsa = {
