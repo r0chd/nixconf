@@ -16,10 +16,7 @@ in
   config.programs.hyprlock = {
     inherit (cfg) enable;
     settings = {
-      general = {
-        hide_cursor = true;
-        grace = 2;
-      };
+      general.hide_cursor = true;
       label = [
         {
           monitor = "";

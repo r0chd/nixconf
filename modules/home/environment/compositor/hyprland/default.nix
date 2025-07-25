@@ -10,8 +10,8 @@ let
   cfg = config.wayland.windowManager.hyprland;
 in
 {
-  home.packages = with pkgs; [
-    (writeShellScriptBin "click" ''
+  home.packages = [
+    (pkgs.writeShellScriptBin "click" ''
       cursorpos=$(hyprctl cursorpos)
       x=$(echo $cursorpos | cut -d "," -f 1)
       y=$(echo $cursorpos | cut -d "," -f 2)

@@ -57,11 +57,11 @@ in
     shellAliases.opensops = "SOPS_AGE_KEY_FILE=\"${config.sops.age.keyFile}\" sops /var/lib/nixconf/hosts/${config.networking.hostName}/secrets/secrets.yaml";
   };
 
-  systemd.services.sops-generate-keys = {
+  systemd.services.sopsGenerateKeys = {
     description = "Generate SOPS age keys from SSH keys";
 
     wantedBy = [ "sysinit.target" ];
-    after = [ "systemd-sysusers.service" ];
+    after = [ "sops-install-secrets.service" ];
     before = [ "activate-home-manager.service" ];
     requiredBy = [ "activate-home-manager.service" ];
     unitConfig.DefaultDependencies = "no";
@@ -90,11 +90,9 @@ in
           sshUserKeyPath = "/home/${user}/.ssh/id_ed25519";
         in
         ''
-          if [[ -f "${sshUserKeyPath}" ]]; then
-            mkdir -p "$(dirname ${escapedUserKeyFile})"
-            ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshUserKeyPath} > ${escapedUserKeyFile}
-            chown -R ${user}:users /home/${user}/.config
-          fi
+          mkdir -p "$(dirname ${escapedUserKeyFile})"
+          ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshUserKeyPath} > ${escapedUserKeyFile}
+          chown -R ${user}:users /home/${user}/.config
         ''
       ) (lib.attrNames systemUsers);
   };

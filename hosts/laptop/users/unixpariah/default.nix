@@ -21,11 +21,33 @@
     github-api = { };
     atuin_key = { };
     gcloud = { };
+
+    "moxapi/t851" = { };
+    "moxapi/laptop" = { };
+    "moxapi/laptop-huawei" = { };
+    "moxapi/password" = { };
   };
 
   nix.access-tokens = [ config.sops.placeholder.nixos-access-token-github ];
 
   services = {
+    moxapi.settings = {
+      password = config.sops.secrets."moxapi/password".path;
+      hosts = {
+        t851 = {
+          ip = "http://t851:8000";
+          api_key = config.sops.secrets."moxapi/t851".path;
+        };
+        laptop = {
+          ip = "http://laptop:8000";
+          api_key = config.sops.secrets."moxapi/laptop".path;
+        };
+        laptop-huawei = {
+          ip = "http://laptop-huawei:8000";
+          api_key = config.sops.secrets."moxapi/laptop-huawei".path;
+        };
+      };
+    };
     impermanence.enable = true;
     yubikey-touch-detector.enable = true;
   };

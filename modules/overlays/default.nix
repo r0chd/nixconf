@@ -18,6 +18,7 @@ inputs: config: [
       moxctl = inputs.moxctl.packages.${system}.default;
       moxidle = inputs.moxidle.packages.${system}.default;
       moxpaper = inputs.moxpaper.packages.${system}.default;
+      moxapi = inputs.moxapi.packages.${system}.default;
       seto = inputs.seto.packages.${system}.default;
       nh = inputs.nh.packages.${system}.default;
       sysnotifier = inputs.sysnotifier.packages.${system}.default;

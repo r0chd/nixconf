@@ -51,6 +51,16 @@ in
             };
           };
 
+          biome = {
+            command = "biome";
+            args = [ "lsp-proxy" ];
+          };
+
+          tailwindcss-ls = {
+            command = "tailwindcss-language-server";
+            args = [ "--stdio" ];
+          };
+
           wgsl-analyzer.command = "wgsl-analyzer";
 
           steel-language-server.command = "${pkgs.steel}/bin/steel-language-server";
@@ -133,44 +143,80 @@ in
           {
             name = "javascript";
             auto-format = true;
+            language-servers = [
+              {
+                name = "typescript-language-server";
+                except-features = [ "format" ];
+              }
+              "biome"
+              "tailwindcss-ls"
+            ];
             formatter = {
-              command = "prettierd";
+              command = "biome";
               args = [
-                "--stdin-filepath"
-                "file.js"
+                "format"
+                "--stdin-file-path"
+                "test.tsx"
               ];
             };
           }
           {
             name = "typescript";
             auto-format = true;
+            language-servers = [
+              {
+                name = "typescript-language-server";
+                except-features = [ "format" ];
+              }
+              "biome"
+              "tailwindcss-ls"
+            ];
             formatter = {
-              command = "prettierd";
+              command = "biome";
               args = [
-                "--stdin-filepath"
-                "file.ts"
+                "format"
+                "--stdin-file-path"
+                "test.tsx"
               ];
             };
           }
           {
             name = "jsx";
             auto-format = true;
+            language-servers = [
+              {
+                name = "typescript-language-server";
+                except-features = [ "format" ];
+              }
+              "biome"
+              "tailwindcss-ls"
+            ];
             formatter = {
-              command = "prettierd";
+              command = "biome";
               args = [
-                "--stdin-filepath"
-                "file.jsx"
+                "format"
+                "--stdin-file-path"
+                "test.tsx"
               ];
             };
           }
           {
             name = "tsx";
             auto-format = true;
+            language-servers = [
+              {
+                name = "typescript-language-server";
+                except-features = [ "format" ];
+              }
+              "biome"
+              "tailwindcss-ls"
+            ];
             formatter = {
-              command = "prettierd";
+              command = "biome";
               args = [
-                "--stdin-filepath"
-                "file.tsx"
+                "format"
+                "--stdin-file-path"
+                "test.tsx"
               ];
             };
           }

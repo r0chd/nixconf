@@ -13,7 +13,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.gamescope.enable = true;
 
-    environment.systemPackages = with pkgs; [
+    environment.systemPackages = [
       (pkgs.writeShellScriptBin "gamescope-session-uwsm" ''
         #!/usr/bin/env bash
         set -xeuo pipefail

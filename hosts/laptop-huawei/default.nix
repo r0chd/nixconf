@@ -29,6 +29,12 @@
     };
   };
 
+  virtualisation = {
+    docker.enable = true;
+    libvirtd.enable = true;
+    buildkitd.enable = true;
+  };
+
   services = {
     rpcbind.enable = true;
     fprintd = {

@@ -1,10 +1,10 @@
-# While this may seem not seem like the most sofisticated way to manage ssh keys,
-# it's the most maintainable one when it comes to multiple machines, trust me
 { lib, config, ... }:
+
 let
   keys = {
     "deploy-rs" = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOBaG0f5JOYQn/JJuvKjH+29rWSuzlv+LUrhVlD7rDkb deploy-rs"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP7UVzSfFNFq1v392BK1+PUyD08L6/hMdF2sF5yGp+IV deploy-rs@laptop-huawei"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHpfYyLblWb0YI/gGzH09KMuK7JcjXRatTfdgxCcfp/9 deploy-rs@laptop"
     ];
     "unixpariah@laptop" =
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIt5tKaE1UZuWe22amvR0gpW0HMmvBY5W5E+Bpw6AswA unixpariah@laptop";
@@ -14,26 +14,26 @@ let
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ/oAHQPuhH41A/PFgmF138j0eWkmZo0i2Jtl/OMBILD os1@qed.ai";
   };
 
-  hosts = {
+  baseHosts = {
     "t851" = {
       "os1" = [
         keys."unixpariah@laptop"
         keys."unixpariah@laptop-huawei"
-      ] ++ keys.deploy-rs;
+      ];
     };
 
     "laptop" = {
       "unixpariah" = [
         keys."unixpariah@laptop-huawei"
         keys."os1@t851"
-      ] ++ keys.deploy-rs;
+      ];
     };
 
     "laptop-huawei" = {
       "unixpariah" = [
         keys."unixpariah@laptop"
         keys."os1@t851"
-      ] ++ keys.deploy-rs;
+      ];
     };
 
     "agent-0" = {
@@ -41,7 +41,7 @@ let
         keys."unixpariah@laptop"
         keys."unixpariah@laptop-huawei"
         keys."os1@t851"
-      ] ++ keys.deploy-rs;
+      ];
     };
 
     "server-0" = {
@@ -49,9 +49,12 @@ let
         keys."unixpariah@laptop"
         keys."unixpariah@laptop-huawei"
         keys."os1@t851"
-      ] ++ keys.deploy-rs;
+      ];
     };
   };
+
+  # Automatically inject deploy-rs keys into all hosts
+  hosts = lib.mapAttrs (_host: users: users // { "deploy-rs" = keys."deploy-rs"; }) baseHosts;
 in
 {
   users.users = lib.genAttrs (hosts.${config.networking.hostName} |> builtins.attrNames) (user: {
@@ -59,6 +62,6 @@ in
   });
 
   boot.initrd.network.ssh.authorizedKeys = lib.flatten (
-    lib.mapAttrsToList (user: userConfig: userConfig.openssh.authorizedKeys.keys) config.users.users
+    lib.mapAttrsToList (_user: userConfig: userConfig.openssh.authorizedKeys.keys) config.users.users
   );
 }

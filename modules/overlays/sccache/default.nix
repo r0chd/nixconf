@@ -32,15 +32,12 @@ rustPlatform.buildRustPackage rec {
   # pure environment, see https://github.com/mozilla/sccache/issues/460
   doCheck = false;
 
-  meta = with lib; {
+  meta = {
     description = "Ccache with Cloud Storage";
     mainProgram = "sccache";
     homepage = "https://github.com/mozilla/sccache";
     changelog = "https://github.com/mozilla/sccache/releases/tag/v${version}";
-    maintainers = with maintainers; [
-      doronbehar
-      figsoda
-    ];
-    license = licenses.asl20;
+    maintainers = builtins.attrValues { inherit (lib.maintainers) unixpariah; };
+    license = lib.licenses.asl20;
   };
 }

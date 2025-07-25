@@ -2,13 +2,23 @@
   config,
   pkgs,
   profile,
+  lib,
   ...
 }:
-with config.lib.stylix.colors.withHashtag;
-with config.stylix.fonts;
+let
+  cfg = config.environment.statusBar;
+  inherit (lib) types;
+  inherit (config.lib.stylix.colors) withHashtag;
+  inherit (config.stylix) fonts;
+in
 {
-  programs.waybar = {
-    enable = profile == "desktop";
+  options.environment.statusBar.enable = lib.mkOption {
+    type = types.bool;
+    default = profile == "desktop";
+  };
+
+  config.programs.waybar = {
+    enable = cfg.enable;
     systemd.enable = true;
     settings = {
       mainBar = {
@@ -111,8 +121,8 @@ with config.stylix.fonts;
           interval = 1;
           exec = pkgs.writeShellScript "mox notify status" ''
             COUNT=$(mox notify waiting)
-            INHIBITED="<span size='large' color='${config.lib.stylix.colors.withHashtag.base0F}'>  $( [ $COUNT -gt 0 ] && echo "$COUNT" )</span>"
-            UNINHIBITED="<span size='large' color='${config.lib.stylix.colors.withHashtag.base0F}'>  </span>"
+            INHIBITED="<span size='large' color='${withHashtag.base0F}'>  $( [ $COUNT -gt 0 ] && echo "$COUNT" )</span>"
+            UNINHIBITED="<span size='large' color='${withHashtag.base0F}'>  </span>"
 
             if mox notify inhibit state | grep -q "uninhibited" ; then echo $UNINHIBITED; else echo $INHIBITED; fi
           '';
@@ -123,8 +133,8 @@ with config.stylix.fonts;
         "custom/moxnotify-muted" = {
           interval = 1;
           exec = pkgs.writeShellScript "mox notify status" ''
-            MUTED="<span size='large' color='${config.lib.stylix.colors.withHashtag.base08}'>  </span>"       
-            UNMUTED="<span size='large' color='${config.lib.stylix.colors.withHashtag.base0B}'>  </span>"     
+            MUTED="<span size='large' color='${withHashtag.base08}'>  </span>"       
+            UNMUTED="<span size='large' color='${withHashtag.base0B}'>  </span>"     
 
             if mox notify mute state | grep -q "unmuted" ; then echo $UNMUTED; else echo $MUTED; fi
           '';
@@ -135,8 +145,8 @@ with config.stylix.fonts;
         "custom/moxnotify-history" = {
           interval = 1;
           exec = pkgs.writeShellScript "mox notify status" ''
-            HISTORY_SHOWN="<span size='large' color='${config.lib.stylix.colors.withHashtag.base0D}'>  </span>"   
-            HISTORY_HIDDEN="<span size='large' color='${config.lib.stylix.colors.withHashtag.base03}'>  </span>"  
+            HISTORY_SHOWN="<span size='large' color='${withHashtag.base0D}'>  </span>"   
+            HISTORY_HIDDEN="<span size='large' color='${withHashtag.base03}'>  </span>"  
 
             if mox notify history state | grep -q "hidden" ; then echo $HISTORY_HIDDEN; else echo $HISTORY_SHOWN; fi
           '';
@@ -148,8 +158,8 @@ with config.stylix.fonts;
           interval = 1;
           exec = pkgs.writeShellScript "idle-inhibit" ''
             LOCKFILE="/tmp/idle-inhibit.lock"
-            INHIBITED_ICON="<span size='large' color='${config.lib.stylix.colors.withHashtag.base0A}'>󱫞</span>"
-            UNINHIBITED_ICON="<span size='large' color='${config.lib.stylix.colors.withHashtag.base0D}'>󱎫</span>"
+            INHIBITED_ICON="<span size='large' color='${withHashtag.base0A}'>󱫞</span>"
+            UNINHIBITED_ICON="<span size='large' color='${withHashtag.base0D}'>󱎫</span>"
 
             if [ -f "$LOCKFILE" ]; then
                 echo "$INHIBITED_ICON"
@@ -204,26 +214,15 @@ with config.stylix.fonts;
     };
 
     style = ''
-      @define-color blue      ${base0D};
-      @define-color lavender  ${base07};
-      @define-color sapphire  ${base0C};
-      @define-color teal      ${base0C};
-      @define-color green     ${base0B};
-      @define-color peach     ${base09};
-      @define-color red       ${base08};
-      @define-color mauve     ${base0E};
-      @define-color flamingo  ${base0F};
-      @define-color rosewater ${base06};
-
       * {
         border: none;
-        font-family: '${sansSerif.name}';
+        font-family: '${fonts.sansSerif.name}';
         font-weight: 500;
         min-height: 0;
       }
 
       #waybar {
-        background: ${base01};
+        background: ${withHashtag.base01};
         padding-left: 1.5px;
         padding-right: 1.5px;
       }
@@ -234,12 +233,12 @@ with config.stylix.fonts;
         padding-left: 8px;
         padding-right: 8px;
         border-radius: 4px;
-        background: ${base02};
+        background: ${withHashtag.base02};
       }
 
       #custom-idle-inhibit {
         min-width: 30px; 
-        background: ${base02};
+        background: ${withHashtag.base02};
         padding: 5px;
         padding-left: 8px;
         padding-right: 8px;
@@ -251,7 +250,7 @@ with config.stylix.fonts;
       #custom-moxnotify-history,
       #custom-moxnotify-muted {
         min-width: 30px; 
-        background: ${base02};
+        background: ${withHashtag.base02};
         padding: 5px;
         margin-top: 7px;
         margin-bottom: 7px;
@@ -281,77 +280,77 @@ with config.stylix.fonts;
       }
 
       #workspaces button:hover {
-        background: ${base02};
-        border: ${base01};
+        background: ${withHashtag.base02};
+        border: ${withHashtag.base01};
         padding: 0 3px;
       }
 
       #workspaces button.active {
-        color: @mauve;  /* Active workspace */
+        color: ${withHashtag.base0E};  /* Active workspace */
       }
 
       #workspaces button.empty {
-        color: ${base04};  /* Empty workspaces */
+        color: ${withHashtag.base04};  /* Empty workspaces */
       }
 
       #workspaces button.default {
-        color: ${base04};
+        color: ${withHashtag.base04};
       }
 
       #workspaces button.special {
-        color: @sapphire;
+        color: ${withHashtag.base0C};
       }
 
       #workspaces button.urgent {
-        color: @red;
+        color: ${withHashtag.base08};
       }
 
       #custom-sep {
-        color: ${base03};
+        color: ${withHashtag.base03};
       }
 
       #cpu {
-        color: @teal;
+        color: ${withHashtag.base0C};
       }
 
       #memory {
-        color: @flamingo;
+        color: ${withHashtag.base0F};
       }
 
       #clock {
-        color: @lavender;
+        color: ${withHashtag.base07};
       }
 
       #mpris {
-        color: @rosewater;
+        color: ${withHashtag.base06};
       }
 
       #network {
-        color: @sapphire;
+        color: ${withHashtag.base0C};
       }
 
       #network.disconnected {
-        color: @peach;
+        color: ${withHashtag.base09};
       }
 
       #window {
-        color: @blue;
+        color: ${withHashtag.base0D};
       }
 
       #custom-nix {
-        color: @blue;
+        color: ${withHashtag.base0D};
       }
 
       #pulseaudio {
-        color: @green;
+        color: ${withHashtag.base0B};
       }
 
       #battery {
-        color: @peach;
+        color: ${withHashtag.base09};
       }
 
       #backlight {
-        color: @rosewater;
+        color: ${withHashtag.base06};
       }
     '';
   };

@@ -10,6 +10,11 @@
     github-api = { };
     "ssh_keys/id_yubikey".path = "/home/unixpariah/.ssh/id_yubikey";
     atuin_key = { };
+
+    "moxapi/t851" = { };
+    "moxapi/laptop" = { };
+    "moxapi/laptop-huawei" = { };
+    "moxapi/password" = { };
   };
 
   programs = {
@@ -29,7 +34,7 @@
       variant = "tmux";
     };
     nixcord.vesktop.enable = true;
-    zen-browser.enable = true;
+    chromium.enable = true;
     nix-index.enable = true;
     fastfetch.enable = true;
     starship.enable = true;
@@ -73,6 +78,23 @@
   ];
 
   services = {
+    moxapi.settings = {
+      password = config.sops.secrets."moxapi/password".path;
+      hosts = {
+        t851 = {
+          ip = "http://t851:8000";
+          api_key = config.sops.secrets."moxapi/t851".path;
+        };
+        laptop = {
+          ip = "http://laptop:8000";
+          api_key = config.sops.secrets."moxapi/laptop".path;
+        };
+        laptop-huawei = {
+          ip = "http://laptop-huawei:8000";
+          api_key = config.sops.secrets."moxapi/laptop-huawei".path;
+        };
+      };
+    };
     sccache.enable = true;
     impermanence.enable = true;
     yubikey-touch-detector.enable = true;

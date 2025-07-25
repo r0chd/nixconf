@@ -21,6 +21,8 @@
   wayland.windowManager.hyprland.package = config.lib.nixGL.wrap pkgs.hyprland;
 
   programs = {
+    waybar.enable = lib.mkForce false;
+
     thunderbird = {
       enable = true;
       profiles = { };
@@ -29,6 +31,8 @@
     gnome.enable = true;
 
     firefox.enable = true;
+    chromium.enable = true;
+    zen-browser.enable = true;
     ghostty.settings.window-decoration = lib.mkForce false;
 
     editor = "hx";
@@ -84,7 +88,7 @@
           x = 0;
           y = 0;
         };
-        refresh = 99.946;
+        refresh = 99.95;
         dimensions = {
           width = 2560;
           height = 1440;
@@ -127,11 +131,16 @@
   };
 
   services = {
+    hyprpolkitagent.enable = lib.mkForce false;
+    moxidle.enable = lib.mkForce false;
+    moxpaper.enable = lib.mkForce false;
+    moxapi.enable = lib.mkForce false;
+    cliphist.enable = lib.mkForce false;
     yubikey-touch-detector.enable = true;
-    gc = {
-      enable = true;
-      interval = 3;
-    };
+    #gc = {
+    #  enable = true;
+    #  interval = 3;
+    #};
   };
 
   home.packages = builtins.attrValues { inherit (pkgs) slack signal-desktop google-cloud-sql-proxy; };

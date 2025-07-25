@@ -1,16 +1,15 @@
 { inputs, lib, ... }:
 {
-
   # Fully disable channels
-  nix = {
-    channel.enable = false;
-    registry = lib.mapAttrs (_: flake: { inherit flake; }) inputs;
-    nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") inputs;
-    settings = {
-      nix-path = lib.mapAttrsToList (n: _: "${n}=flake:${n}") inputs;
-      flake-registry = "";
-    };
-  };
+  #nix = {
+  #  channel.enable = false;
+  #  registry = lib.mapAttrs (_: flake: { inherit flake; }) inputs;
+  #  nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") inputs;
+  #  settings = {
+  #    nix-path = lib.mapAttrsToList (n: _: "${n}=flake:${n}") inputs;
+  #    flake-registry = "";
+  #  };
+  #};
 
   nix = {
     settings = {

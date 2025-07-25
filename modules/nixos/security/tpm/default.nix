@@ -34,9 +34,9 @@
       };
     };
 
-    environment.systemPackages = with pkgs; [
-      tpm2-tss
-      (writeShellApplication {
+    environment.systemPackages = [
+      pkgs.tpm2-tss
+      (pkgs.writeShellApplication {
         name = "apply-tpm";
         runtimeInputs = builtins.attrValues { inherit (pkgs) cryptsetup systemd; };
         text = ''

@@ -357,10 +357,11 @@
     nix-cue.url = "github:jmgilman/nix-cue";
 
     seto.url = "github:unixpariah/seto";
-    moxidle.url = "github:unixpariah/moxidle";
-    moxnotify.url = "github:unixpariah/moxnotify";
-    moxctl.url = "github:unixpariah/moxctl";
-    moxpaper.url = "github:unixpariah/moxpaper";
+    moxidle.url = "github:mox-desktop/moxidle";
+    moxnotify.url = "github:mox-desktop/moxnotify";
+    moxctl.url = "github:mox-desktop/moxctl";
+    moxpaper.url = "github:mox-desktop/moxpaper";
+    moxapi.url = "github:mox-desktop/moxapi";
     nh = {
       url = "github:unixpariah/nh";
       inputs.nixpkgs.follows = "nixpkgs";
