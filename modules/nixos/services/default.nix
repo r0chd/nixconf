@@ -7,6 +7,7 @@
     ./phpApp
     ./k3s
     ./gc
+    ./sccache
   ];
 
   services = {

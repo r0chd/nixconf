@@ -8,7 +8,6 @@
     ./ngrok
     ./cliphist
     ./gc
-    ./sccache
   ];
 
   services = {

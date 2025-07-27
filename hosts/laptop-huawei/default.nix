@@ -36,6 +36,7 @@
   };
 
   services = {
+    sccache.enable = true;
     rpcbind.enable = true;
     fprintd = {
       enable = true;

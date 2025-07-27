@@ -5,6 +5,8 @@
   ...
 }:
 {
+  nixpkgs.config.allowUnfreePredicate = pkgs: builtins.elem (lib.getName pkgs) [ "slack" ];
+
   sops.secrets = {
     "yubico/u2f_keys".path = "/home/unixpariah/.config/Yubico/u2f_keys";
     github-api = { };
@@ -34,6 +36,7 @@
       variant = "tmux";
     };
     nixcord.vesktop.enable = true;
+    zen-browser.enable = true;
     chromium.enable = true;
     nix-index.enable = true;
     fastfetch.enable = true;
@@ -72,10 +75,13 @@
     };
   };
 
-  home.persist.directories = [
-    "workspace"
-    ".yubico"
-  ];
+  home = {
+    persist.directories = [
+      "workspace"
+      ".yubico"
+    ];
+    packages = builtins.attrValues { inherit (pkgs) slack figma-linux; };
+  };
 
   services = {
     moxapi.settings = {
@@ -95,7 +101,6 @@
         };
       };
     };
-    sccache.enable = true;
     impermanence.enable = true;
     yubikey-touch-detector.enable = true;
   };
