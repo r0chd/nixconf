@@ -3,7 +3,6 @@
   config,
   pkgs,
   profile,
-  inputs,
   ...
 }:
 {

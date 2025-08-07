@@ -2,7 +2,8 @@
   lib,
   config,
   pkgs,
-  inputs,
+  hostName,
+  username,
   ...
 }:
 let
@@ -29,6 +30,35 @@ in
       enable = true;
       languages = {
         language-server = {
+          clangd = {
+            command = "clangd";
+            args = [
+              "--background-index"
+              "--clang-tidy"
+              "--header-insertion=iwyu"
+            ];
+          };
+
+          nixd = {
+            command = "${pkgs.nixd}/bin/nixd";
+            args = [
+              "--semantic-tokens=true"
+              "--inlay-hints=true"
+            ];
+            config.nixd =
+              let
+                flake = "(builtins.getFlake (builtins.toString /var/lib/nixconf))";
+              in
+              {
+                nixpkgs.expr = "import ${flake}.inputs.nixpkgs { }";
+                formatting.command = [ "nixfmt" ];
+                options = {
+                  nixos.expr = "${flake}.nixosConfigurations.${hostName}.options";
+                  home-manager.expr = "${flake}.homeConfigurations.${username}@${hostName}.options";
+                };
+              };
+          };
+
           groovy-language-server.command = "${groovyls}/bin/groovy-language-server";
 
           rust-analyzer.config = {
@@ -66,6 +96,12 @@ in
           steel-language-server.command = "${pkgs.steel}/bin/steel-language-server";
         };
         language = [
+          {
+            name = "c";
+            auto-format = true;
+            formatter.command = "clang-format";
+            language-servers = [ "clangd" ];
+          }
           {
             name = "yaml";
             auto-format = true;
@@ -122,7 +158,7 @@ in
           {
             name = "nix";
             auto-format = true;
-            language-servers = [ "${pkgs.nixd}/bin/nixd" ];
+            language-servers = [ "nixd" ];
             formatter = {
               command = lib.getExe pkgs.nixfmt-rfc-style;
               args = [ "-s" ];

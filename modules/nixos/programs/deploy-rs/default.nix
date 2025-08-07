@@ -14,7 +14,7 @@ in
       type = types.bool;
       default = true;
     };
-    #package = lib.mkPackageOption pkgs "deploy-rs" { }; TODO
+    package = lib.mkPackageOption pkgs "deploy-rs" { };
     sshKeyFile = lib.mkOption {
       type = types.nullOr types.path;
       default = null;
@@ -42,6 +42,7 @@ in
         useDefaultShell = true;
         description = "NixOS deployer";
         group = "deploy-rs";
+        extraGroups = [ "wheel" ];
       };
       groups.deploy-rs = { };
     };

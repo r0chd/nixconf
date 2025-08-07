@@ -4,7 +4,6 @@
     ./proton-vpn
     ./tailscale
     ./logind
-    ./phpApp
     ./k3s
     ./gc
     ./sccache

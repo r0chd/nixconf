@@ -5,7 +5,6 @@
   inputs,
   config,
   hostName,
-  profile,
   platform,
   ...
 }:
@@ -31,7 +30,7 @@
       '';
     };
 
-    nixpkgs.overlays = import ../overlays inputs config;
+    nixpkgs.overlays = import ../overlays inputs config; # ++ import ../lib;
 
     home = {
       persist.directories = [ ".local/state/syncthing" ];

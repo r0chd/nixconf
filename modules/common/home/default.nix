@@ -2,16 +2,19 @@
   config,
   hostName,
   profile,
+  platform,
   lib,
   ...
 }:
 {
   sops.secrets = {
-    "moxapi/${hostName}" = lib.mkIf (profile == "desktop") { };
+    "moxapi/${hostName}" = lib.mkIf (profile == "desktop" && platform == "nixos") { };
   };
 
   services = {
-    moxapi.authKeyFile = lib.mkIf (profile == "desktop") config.sops.secrets."moxapi/${hostName}".path;
+    moxapi.authKeyFile = lib.mkIf (
+      profile == "desktop" && platform == "nixos"
+    ) config.sops.secrets."moxapi/${hostName}".path;
     syncthing = {
       enable = true;
       settings = {

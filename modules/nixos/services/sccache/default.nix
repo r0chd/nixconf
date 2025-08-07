@@ -11,7 +11,11 @@ in
 {
   options.services.sccache = {
     enable = lib.mkEnableOption "sccache";
-    package = lib.mkPackageOption pkgs "sccache" { };
+    package = lib.mkOption {
+      type = types.package;
+      default = pkgs.sccache.override { distributed = true; };
+      description = "sccache package with optional dist support";
+    };
     bwrapPackage = lib.mkPackageOption pkgs "bubblewrap" { };
 
     cacheDir = lib.mkOption {
@@ -43,13 +47,13 @@ in
       auth = {
         token = lib.mkOption {
           type = types.str;
-          default = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0In0.Hs_rWhKOBA4DbQfzh0rb_tPGvqrxJjbVZQGYV3uSsXA";
+          default = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjAsInNlcnZlcl9pZCI6IjEyNy4wLjAuMToxMDUwMSJ9.5XwRfN4GP6JjYoNq-uIv8EdJBhNa2vIJZynGbtOGD2g";
           description = "Authentication token (JWT format)";
         };
 
         jwtSecret = lib.mkOption {
           type = types.str;
-          default = "MC4CAQAwBQYDK2VwBCIEIOz2tJcKlyL/9E96FZ8yoP9QUPLcYeHu4t/v/1WJepII";
+          default = "f561c77ee065d64eb7c048d022b803e91ece20e12c12222be45fa9108e30944662de07b441931e2311003ac71490a061079b1614b5efa18507aaaa6f6ed3faff";
           description = "JWT secret key";
         };
       };
@@ -62,35 +66,33 @@ in
       "user.max_user_namespaces" = 3883;
     };
 
-    systemd.tmpfiles.rules = [
-      "d ${cfg.cacheDir} 0755 sccache sccache -"
-      "d ${cfg.buildDir} 0755 sccache sccache -"
-      "d /var/lib/sccache 0755 sccache sccache -"
-    ];
+    environment = {
+      systemPackages = [ (pkgs.sccache.override { distributed = true; }) ];
+      etc = {
+        "sccache/sccache.conf".text = ''
+          cache_dir = "${cfg.cacheDir}"
+          public_addr = "${cfg.settings.builder.addr}"
+          scheduler_url = "${cfg.settings.scheduler.addr}"
+          [builder]
+          type = "overlay"
+          build_dir = "${cfg.buildDir}"
+          bwrap_path = "${cfg.bwrapPackage}/bin/bwrap"
+          [scheduler_auth]
+          type = "DANGEROUSLY_INSECURE"
+        '';
+        #type = "token"
+        #token = "${cfg.settings.auth.token}"
 
-    environment.etc = {
-      "sccache/sccache.conf".text = ''
-        cache_dir = "${cfg.cacheDir}"
-        public_addr = "${cfg.settings.builder.addr}"
-        scheduler_url = "${cfg.settings.scheduler.addr}"
-        [builder]
-        type = "overlay"
-        build_dir = "${cfg.buildDir}"
-        bwrap_path = "${cfg.bwrapPackage}/bin/bwrap"
-        [scheduler_auth]
-        type = "token"
-        token = "${cfg.settings.auth.token}"
-      '';
-
-      "sccache/scheduler.conf".text = ''
-        public_addr = "${cfg.settings.scheduler.addr}"
-        [client_auth]
-        type = "token"
-        token = "${cfg.settings.auth.token}"
-        [server_auth]
-        type = "jwt_hs256"
-        secret_key = "${cfg.settings.auth.jwtSecret}"
-      '';
+        "sccache/scheduler.conf".text = ''
+          public_addr = "${cfg.settings.scheduler.addr}"
+          [client_auth]
+          type = "DANGEROUSLY_INSECURE"
+          [server_auth]
+          type = "DANGEROUSLY_INSECURE"
+        '';
+        #type = "jwt_hs256"
+        #secret_key = "${cfg.settings.auth.jwtSecret}"
+      };
     };
 
     systemd.services.sccache-server = {
@@ -140,14 +142,12 @@ in
         CapabilityBoundingSet = "CAP_SYS_ADMIN CAP_SETUID CAP_SETGID CAP_DAC_OVERRIDE CAP_CHOWN";
         AmbientCapabilities = "CAP_SYS_ADMIN CAP_SETUID CAP_SETGID CAP_DAC_OVERRIDE CAP_CHOWN";
 
-        # Allow access to necessary directories
         ReadWritePaths = [
           cfg.cacheDir
           cfg.buildDir
           "/var/lib/sccache"
         ];
 
-        # Security settings (but allow namespaces for bwrap)
         NoNewPrivileges = false;
         ProtectSystem = "strict";
         ProtectHome = true;

@@ -22,7 +22,6 @@
     "immich-postgres-user/username" = { };
     "immich-postgres-user/password" = { };
 
-    "atuin/DB_USERNAME" = { };
     "atuin/DB_PASSWORD" = { };
     "atuin/DB_URI" = { };
 
@@ -32,6 +31,47 @@
   system = {
     bootloader.variant = "systemd-boot";
     fileSystem = "zfs";
+  };
+
+  homelab = {
+    enable = true;
+    atuin = {
+      enable = true;
+      db = {
+        username = "atuin";
+        passwordFile = config.sops.secrets."atuin/DB_PASSWORD".path;
+        uriFile = config.sops.secrets."atuin/DB_URI".path;
+        resources = {
+          requests = {
+            cpu = "100m";
+            memory = "100Mi";
+          };
+          limits = {
+            cpu = "250m";
+            memory = "600Mi";
+          };
+          storage = "300Mi";
+        };
+      };
+    };
+    pihole = {
+      domain = "pihole.your-domain.com";
+      dns = "192.168.30.1";
+      passwordFile = config.sops.secrets."pihole-password/password".path;
+      adlists = [ "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt" ];
+      webLoadBalancerIP = "192.168.30.102";
+      dnsLoadBalancerIP = "192.168.30.103";
+    };
+    vaultwarden = {
+      enable = true;
+      hostname = "vaultwarden.your-domain.com";
+      storage = "512Mi";
+      yubikey = {
+        enable = true;
+        keyFile = config.sops.secrets.YUBI.path;
+      };
+    };
+    metallb.addresses = [ "192.168.30.100-192.168.30.150" ];
   };
 
   virtualisation = {
@@ -66,7 +106,6 @@
     impermanence.enable = true;
     tailscale.authKeyFile = config.sops.secrets.tailscale.path;
     k3s = {
-      enable = true;
       tokenFile = config.sops.secrets.k3s.path;
       clusterInit = true;
       secrets = [
@@ -84,11 +123,6 @@
           data.github_api = config.sops.secrets.github-api.path;
         }
         {
-          name = "pihole-password";
-          namespace = "pihole-system";
-          data.password = config.sops.secrets."pihole-password/password".path;
-        }
-        {
           name = "immich-postgres-user";
           namespace = "immich";
           data = {
@@ -97,20 +131,6 @@
             DB_PASSWORD = config.sops.secrets."immich-postgres-user/DB_PASSWORD".path;
             username = config.sops.secrets."immich-postgres-user/username".path;
             password = config.sops.secrets."immich-postgres-user/password".path;
-          };
-        }
-        {
-          name = "yubisecret";
-          namespace = "vaultwarden";
-          data.YUBI = config.sops.secrets.YUBI.path;
-        }
-        {
-          name = "atuin-secrets";
-          namespace = "atuin";
-          data = {
-            ATUIN_DB_USERNAME = config.sops.secrets."atuin/DB_USERNAME".path;
-            ATUIN_DB_PASSWORD = config.sops.secrets."atuin/DB_PASSWORD".path;
-            ATUIN_DB_URI = config.sops.secrets."atuin/DB_URI".path;
           };
         }
       ];
@@ -131,7 +151,7 @@
   networking = {
     interfaces.enp3s0.ipv4.addresses = [
       {
-        address = "192.168.30.142";
+        address = "192.168.30.141";
         prefixLength = 24;
       }
     ];

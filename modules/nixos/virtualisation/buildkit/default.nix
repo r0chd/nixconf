@@ -88,7 +88,7 @@ in
       users = {
         users.buildkit = {
           description = "buildkit user";
-          isNormalUser = true;
+          isSystemUser = true;
           useDefaultShell = true;
         };
         groups.buildkit = { };

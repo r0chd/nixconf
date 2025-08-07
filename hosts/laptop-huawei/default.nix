@@ -36,7 +36,7 @@
   };
 
   services = {
-    sccache.enable = true;
+    #sccache.enable = true;
     rpcbind.enable = true;
     fprintd = {
       enable = true;
@@ -96,7 +96,10 @@
   };
 
   networking = {
-    wireless.mainInterface = "wlan0";
+    wireless = {
+      iwd.enable = true;
+      mainInterface = "wlan0";
+    };
     hostId = "6add04c2";
   };
 
@@ -109,7 +112,6 @@
     tailscale.authKeyFile = config.sops.secrets.tailscale.path;
 
     k3s = {
-      enable = true;
       tokenFile = config.sops.secrets.k3s.path;
     };
   };

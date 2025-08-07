@@ -3,6 +3,13 @@
   programs = {
     editor = "hx";
     git.email = "os1@qed.ai";
+    multiplexer = {
+      enable = true;
+      variant = "tmux";
+    };
+    starship.enable = true;
+    zoxide.enable = true;
+    direnv.enable = true;
   };
 
   environment.terminal.program = "foot";

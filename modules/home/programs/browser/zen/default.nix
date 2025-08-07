@@ -11,6 +11,8 @@ in
 {
   imports = [ inputs.zen-browser.homeModules.default ];
 
+  stylix.targets.zen-browser.profileNames = [ config.home.username ];
+
   programs.zen-browser = {
     policies = {
       DisableAppUpdate = true;
@@ -25,22 +27,6 @@ in
     };
 
     profiles.${config.home.username} = {
-      userChrome = pkgs.runCommand "userChrome.css" { } ''
-        cat ${
-          pkgs.fetchurl {
-            url = "https://raw.githubusercontent.com/catppuccin/zen-browser/refs/heads/main/themes/Frappe/Lavender/userChrome.css";
-            sha256 = "06cy1yrhfbnhsfacm48n817b4h3p1kgdw7aj6469sqci3wglyqwy";
-          }
-        } > $out
-        echo ':root {
-          --zen-main-browser-background: rgba(26,27,38,0.8) !important;
-        }' >> $out
-      '';
-
-      userContent = pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/catppuccin/zen-browser/refs/heads/main/themes/Frappe/Lavender/userContent.css";
-        sha256 = "1xiabsqsm7x10q2kx6c5fd2nfii96c0hffbpx34h9pivx52f8vhz";
-      };
       settings = {
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         "zen.welcome-screen.seen" = true;
@@ -49,7 +35,6 @@ in
 
         "extensions.autoDisableScopes" = 0;
         "extensions.webextensions.restrictedDomains" = "";
-        "browser.startup.homepage" = "https://ironlungx.github.io/Bento/";
         "browser.search.defaultenginename" = "Duckduckgo";
         "browser.aboutConfig.showWarning" = false;
         "browser.startup.page" = 1;

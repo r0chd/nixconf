@@ -31,9 +31,11 @@
       system = "x86_64-linux";
       profile = "desktop";
       platform = "nixos";
-      users.unixpariah = {
-        root.enable = true;
-        shell = "nushell";
+      users = {
+        unixpariah = {
+          root.enable = true;
+          shell = "nushell";
+        };
       };
     };
     server-0 = {
@@ -45,15 +47,15 @@
         shell = "bash";
       };
     };
-    agent-0 = {
-      system = "x86_64-linux";
-      profile = "server";
-      platform = "nixos";
-      users.unixpariah = {
-        root.enable = true;
-        shell = "bash";
-      };
-    };
+    #agent-0 = {
+    #  system = "x86_64-linux";
+    #  profile = "server";
+    #  platform = "nixos";
+    #  users.unixpariah = {
+    #    root.enable = true;
+    #    shell = "bash";
+    #  };
+    #};
     #mi10lite = {
     #  system = "aarch64-linux";
     #  profile = "mobile";

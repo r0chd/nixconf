@@ -30,10 +30,12 @@
   };
 
   networking = {
-    nameservers = [ "1.1.1.1" ];
+    nameservers = [
+      "8.8.8.8"
+      "1.1.1.1"
+    ];
 
     wireless.iwd = {
-      enable = true;
       networks = {
         SaltoraUp.psk = config.sops.secrets."wireless/SaltoraUp".path;
         Saltora.psk = config.sops.secrets."wireless/Saltora".path;

@@ -13,12 +13,14 @@
   ];
 
   programs = {
+    less.lessopen = null;
+    command-not-found.enable = false;
     fish.enable = lib.mkDefault true;
     zsh.enable = lib.mkDefault true;
     nano.enable = lib.mkDefault false;
-    captive-browser = lib.mkIf (config.networking.mainInterface != null) {
+    captive-browser = lib.mkIf (config.networking.wireless.mainInterface != null) {
       enable = profile == "desktop";
-      interface = config.networking.mainInterface;
+      interface = config.networking.wireless.mainInterface;
     };
   };
 

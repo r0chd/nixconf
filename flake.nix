@@ -15,7 +15,6 @@
       system-manager,
       treefmt,
       nix-raspberrypi,
-      nix-cue,
       ...
     }@inputs:
     let
@@ -131,7 +130,8 @@
                       deployPkgs.deploy-rs.lib.activate.custom self.nixOnDroidConfigurations.${hostname}
                         "/nix/var/nix/profiles/system/activate";
                 };
-              } // mkUserProfiles hostUsers;
+              }
+              // mkUserProfiles hostUsers;
             };
         in
         config.hosts |> lib.mapAttrs (hostname: attrs: mkNode hostname attrs);
@@ -150,21 +150,20 @@
                 systemUsers = attrs.users;
                 inherit (config.hosts.${hostName}) system profile;
               };
-              modules =
-                [
-                  ./modules/nixos
-                  nix-gaming.nixosModules.pipewireLowLatency
-                  nix-gaming.nixosModules.platformOptimizations
-                  disko.nixosModules.default
-                  stylix.nixosModules.stylix
-                  nix-index-database.nixosModules.nix-index
-                  { networking = { inherit hostName; }; }
-                ]
-                ++ lib.optionals (attrs.platform == "rpi-nixos") (
-                  builtins.attrValues {
-                    inherit (nixpkgs.nixos-raspberrypi.nixosModules.raspberry-pi-5) base display-vc4 bluetooth;
-                  }
-                );
+              modules = [
+                ./modules/nixos
+                nix-gaming.nixosModules.pipewireLowLatency
+                nix-gaming.nixosModules.platformOptimizations
+                disko.nixosModules.default
+                stylix.nixosModules.stylix
+                nix-index-database.nixosModules.nix-index
+                { networking = { inherit hostName; }; }
+              ]
+              ++ lib.optionals (attrs.platform == "rpi-nixos") (
+                builtins.attrValues {
+                  inherit (nixpkgs.nixos-raspberrypi.nixosModules.raspberry-pi-5) base display-vc4 bluetooth;
+                }
+              );
             };
         in
         config.hosts
@@ -180,10 +179,7 @@
               pkgs = import nixpkgs { inherit (attrs) system; };
             in
             system-manager.lib.makeSystemConfig {
-              modules = [
-                ./modules/system
-                { networking = { inherit hostName; }; }
-              ];
+              modules = [ ./modules/system ];
               extraSpecialArgs = {
                 inherit inputs systemUsers pkgs;
                 inherit (config.hosts.${hostName}) system profile;
@@ -354,7 +350,6 @@
       url = "github:nvmd/nixos-raspberrypi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-cue.url = "github:jmgilman/nix-cue";
 
     seto.url = "github:unixpariah/seto";
     moxidle.url = "github:mox-desktop/moxidle";

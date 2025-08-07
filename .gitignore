@@ -2,4 +2,5 @@
 .direnv
 infra/*terraform*
 **/*sync-conflict-*
+result
 

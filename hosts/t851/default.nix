@@ -10,23 +10,6 @@
     };
   };
 
-  systemd.services.buildkitd = {
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" ];
-    wants = [ "network.target" ];
-
-    serviceConfig = {
-      Type = "simple";
-      User = "buildkit";
-      StateDirectory = "buildkit";
-      RuntimeDirectory = "buildkit";
-      ExecStart = "${pkgs.rootlesskit}/bin/rootlesskit ${pkgs.buildkit}/bin/buildkitd --rootless";
-      Restart = "on-failure";
-      RestartSec = "5s";
-    };
-    path = builtins.attrValues { inherit (pkgs) shadow runc; };
-  };
-
   environment = {
     systemPackages = builtins.attrValues { inherit (pkgs) pamtester; };
 

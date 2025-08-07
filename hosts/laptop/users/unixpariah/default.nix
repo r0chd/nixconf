@@ -46,6 +46,10 @@
           ip = "http://laptop-huawei:8000";
           api_key = config.sops.secrets."moxapi/laptop-huawei".path;
         };
+        t85 = {
+          ip = "http://t85:8000";
+          api_key = config.sops.secrets."moxapi/laptop-huawei".path;
+        };
       };
     };
     impermanence.enable = true;

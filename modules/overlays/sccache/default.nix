@@ -4,10 +4,13 @@
   rustPlatform,
   pkg-config,
   openssl,
+  distributed ? false,
 }:
-
-rustPlatform.buildRustPackage rec {
+let
   version = "0.10.0";
+in
+rustPlatform.buildRustPackage {
+  inherit version;
   pname = "sccache";
 
   src = fetchFromGitHub {
@@ -20,7 +23,7 @@ rustPlatform.buildRustPackage rec {
   useFetchCargoVendor = true;
   cargoHash = "sha256-1kfKBN4uRbU5LjbC0cLgMqoGnOSEAdC0S7EzXlfaDPo=";
 
-  buildFeatures = [
+  buildFeatures = lib.optionals distributed [
     "dist-client"
     "dist-server"
   ];

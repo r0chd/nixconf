@@ -30,11 +30,12 @@
   systemd.enableStrictShellChecks = true;
 
   nixpkgs = {
-    overlays = import ../overlays inputs config;
+    overlays = import ../overlays inputs config; # ++ import ../lib;
     hostPlatform = system;
   };
 
   environment = {
+    defaultPackages = lib.mkDefault [ ];
     systemPackages =
       let
         inherit (pkgs) writeShellScriptBin;
@@ -86,25 +87,24 @@
 
   users = {
     mutableUsers = false;
-    users =
-      {
-        root = {
-          isNormalUser = false;
-          hashedPassword = null;
-        };
-      }
-      // (
-        systemUsers
-        |> lib.mapAttrs (
-          name: value: {
-            isNormalUser = true;
-            inherit (value) home;
-            hashedPasswordFile = config.sops.secrets."${name}/password".path;
-            extraGroups = lib.mkIf value.root.enable [ "wheel" ];
-            shell = pkgs.${value.shell};
-            createHome = true;
-          }
-        )
-      );
+    users = {
+      root = {
+        isNormalUser = false;
+        hashedPassword = null;
+      };
+    }
+    // (
+      systemUsers
+      |> lib.mapAttrs (
+        name: value: {
+          isNormalUser = true;
+          inherit (value) home;
+          hashedPasswordFile = config.sops.secrets."${name}/password".path;
+          extraGroups = lib.mkIf value.root.enable [ "wheel" ];
+          shell = pkgs.${value.shell};
+          createHome = true;
+        }
+      )
+    );
   };
 }

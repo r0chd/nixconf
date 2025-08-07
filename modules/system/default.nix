@@ -12,6 +12,8 @@
     "nix/nix.conf".text = ''
       experimental-features = nix-command flakes pipe-operators
       build-users-group = nixbld
+      accept-flake-config = true
+      trusted-users = root @wheel
     '';
   };
 

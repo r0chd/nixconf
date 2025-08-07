@@ -16,7 +16,7 @@ in
         { id = "gnphfcibcphlpedmaccolafjonmckcdn"; } # Extension Switch
         { id = "fihnjjcciajhdojfnbdddfaoknhalnja"; } # I don't care about cookies
         { id = "mnjggcdmjocbbbhaepdhchncahnbgone"; } # SponsorBlock for YouTube - Skip Sponsorships
-        { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # uBlock Origin
+        { id = "ddkjiahejlhfcafbddmgiahcphecmpfh"; } # uBlock Origin Lite
         { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # Vimium
       ];
       commandLineArgs = [
@@ -29,6 +29,9 @@ in
       ];
     };
 
-    home.persist.directories = [ ".cache/chromium" ];
+    home.persist.directories = [
+      ".cache/chromium"
+      ".config/chromium/Default"
+    ];
   };
 }
