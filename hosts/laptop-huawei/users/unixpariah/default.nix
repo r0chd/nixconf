@@ -5,7 +5,12 @@
   ...
 }:
 {
-  nixpkgs.config.allowUnfreePredicate = pkgs: builtins.elem (lib.getName pkgs) [ "slack" ];
+  nixpkgs.config.allowUnfreePredicate =
+    pkgs:
+    builtins.elem (lib.getName pkgs) [
+      "slack"
+      "obsidian"
+    ];
 
   sops.secrets = {
     "yubico/u2f_keys".path = "/home/unixpariah/.config/Yubico/u2f_keys";
@@ -80,7 +85,7 @@
       "workspace"
       ".yubico"
     ];
-    packages = builtins.attrValues { inherit (pkgs) slack figma-linux; };
+    packages = builtins.attrValues { inherit (pkgs) slack figma-linux obsidian; };
   };
 
   services = {

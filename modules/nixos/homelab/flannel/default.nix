@@ -29,10 +29,9 @@ let
         ${pkgs.kubernetes-helm}/bin/helm pull \
         --version "${version}" \
         ${pullFlags} \
-        -d $OUT_DIR \
-        --untar
+        -d $OUT_DIR
 
-        mv $OUT_DIR/${chart} "$out"
+        mv $OUT_DIR/${chart}.tgz "$out"
       '';
 
       outputHashMode = "recursive";

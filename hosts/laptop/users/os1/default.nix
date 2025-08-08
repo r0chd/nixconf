@@ -1,5 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
+  nixpkgs.config.allowUnfreePredicate = pkgs: builtins.elem (lib.getName pkgs) [ "obsidian" ];
+
   programs = {
     editor = "hx";
     git.email = "os1@qed.ai";
@@ -12,7 +14,11 @@
     direnv.enable = true;
   };
 
-  environment.terminal.program = "foot";
+  environment = {
+    terminal.program = "foot";
+    variables.EDITOR = "hx";
+    systemPackages = builtins.attrValues { inherit (pkgs) obsidian; };
+  };
 
   stylix = {
     enable = true;

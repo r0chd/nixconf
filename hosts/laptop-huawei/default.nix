@@ -16,7 +16,6 @@
       "nvidia-x11"
       "steam"
       "steam-unwrapped"
-      "libfprint-2-tod1-goodix"
     ];
 
   sops.secrets = {
@@ -36,15 +35,7 @@
   };
 
   services = {
-    #sccache.enable = true;
-    rpcbind.enable = true;
-    fprintd = {
-      enable = true;
-      tod = {
-        enable = true;
-        driver = pkgs.libfprint-2-tod1-goodix;
-      };
-    };
+    sccache.enable = true;
   };
 
   documentation.enable = true;

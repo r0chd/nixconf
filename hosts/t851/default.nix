@@ -11,7 +11,7 @@
   };
 
   environment = {
-    systemPackages = builtins.attrValues { inherit (pkgs) pamtester; };
+    systemPackages = builtins.attrValues { inherit (pkgs) pamtester niri; };
 
     etc = {
       "hosts".text = ''

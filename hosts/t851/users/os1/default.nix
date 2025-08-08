@@ -7,7 +7,12 @@
 }:
 {
   nixpkgs.config = {
-    allowUnfreePredicate = pkgs: builtins.elem (lib.getName pkgs) [ "slack" ];
+    allowUnfreePredicate =
+      pkgs:
+      builtins.elem (lib.getName pkgs) [
+        "slack"
+        "obsidian"
+      ];
     nixGLWrap = [
       "niri-unstable"
       "ghostty"
@@ -21,6 +26,10 @@
   wayland.windowManager.hyprland.package = config.lib.nixGL.wrap pkgs.hyprland;
 
   programs = {
+    obsidian = {
+      enable = true;
+    };
+    atuin.enable = true;
     waybar.enable = lib.mkForce false;
 
     thunderbird = {

@@ -19,7 +19,7 @@
     zsh.enable = lib.mkDefault true;
     nano.enable = lib.mkDefault false;
     captive-browser = lib.mkIf (config.networking.wireless.mainInterface != null) {
-      enable = profile == "desktop";
+      enable = lib.mkDefault profile == "desktop";
       interface = config.networking.wireless.mainInterface;
     };
   };

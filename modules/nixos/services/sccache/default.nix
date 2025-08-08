@@ -30,72 +30,84 @@ in
       description = "Directory for build operations";
     };
 
-    settings = {
-      builder = {
-        addr = lib.mkOption {
-          type = types.str;
-          default = "127.0.0.1:10501";
-        };
+    builder = {
+      enable = lib.mkOption {
+        type = types.bool;
+        default = cfg.enable;
       };
-      scheduler = {
-        addr = lib.mkOption {
-          type = types.str;
-          default = "127.0.0.1:10600";
-        };
-      };
-
-      auth = {
-        token = lib.mkOption {
-          type = types.str;
-          default = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjAsInNlcnZlcl9pZCI6IjEyNy4wLjAuMToxMDUwMSJ9.5XwRfN4GP6JjYoNq-uIv8EdJBhNa2vIJZynGbtOGD2g";
-          description = "Authentication token (JWT format)";
-        };
-
-        jwtSecret = lib.mkOption {
-          type = types.str;
-          default = "f561c77ee065d64eb7c048d022b803e91ece20e12c12222be45fa9108e30944662de07b441931e2311003ac71490a061079b1614b5efa18507aaaa6f6ed3faff";
-          description = "JWT secret key";
-        };
+      addr = lib.mkOption {
+        type = types.str;
+        default = "127.0.0.1:10501";
       };
     };
+    scheduler = {
+      enable = lib.mkOption {
+        type = types.bool;
+        default = cfg.enable;
+      };
+      addr = lib.mkOption {
+        type = types.str;
+        default = "127.0.0.1:10600";
+      };
+    };
+
+    #auth = {
+    #  token = lib.mkOption {
+    #    type = types.str;
+    #    default = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjAsInNlcnZlcl9pZCI6IjEyNy4wLjAuMToxMDUwMSJ9.5XwRfN4GP6JjYoNq-uIv8EdJBhNa2vIJZynGbtOGD2g";
+    #    description = "Authentication token (JWT format)";
+    #  };
+
+    #  jwtSecret = lib.mkOption {
+    #    type = types.str;
+    #    default = "f561c77ee065d64eb7c048d022b803e91ece20e12c12222be45fa9108e30944662de07b441931e2311003ac71490a061079b1614b5efa18507aaaa6f6ed3faff";
+    #    description = "JWT secret key";
+    #  };
+    #};
   };
 
   config = lib.mkIf cfg.enable {
-    boot.kernel.sysctl = {
-      "kernel.unprivileged_userns_clone" = 1;
-      "user.max_user_namespaces" = 3883;
-    };
+    systemd.tmpfiles.rules = [
+      "d ${cfg.cacheDir} 0755 root root"
+      "d ${cfg.buildDir} 0755 root root"
+      "d /var/lib/sccache 0755 root root"
+    ];
 
     environment = {
-      systemPackages = [ (pkgs.sccache.override { distributed = true; }) ];
+      sessionVariables.RUSTC_WRAPPER = "${cfg.package}/bin/sccache";
+      systemPackages = [ cfg.package ];
       etc = {
-        "sccache/sccache.conf".text = ''
-          cache_dir = "${cfg.cacheDir}"
-          public_addr = "${cfg.settings.builder.addr}"
-          scheduler_url = "${cfg.settings.scheduler.addr}"
-          [builder]
-          type = "overlay"
-          build_dir = "${cfg.buildDir}"
-          bwrap_path = "${cfg.bwrapPackage}/bin/bwrap"
-          [scheduler_auth]
-          type = "DANGEROUSLY_INSECURE"
-        '';
+        "sccache/sccache.conf" = lib.mkIf cfg.builder.enable {
+          text = ''
+            cache_dir = "${cfg.cacheDir}"
+            public_addr = "${cfg.builder.addr}"
+            scheduler_url = "${cfg.scheduler.addr}"
+            [builder]
+            type = "overlay"
+            build_dir = "${cfg.buildDir}"
+            bwrap_path = "${cfg.bwrapPackage}/bin/bwrap"
+            [scheduler_auth]
+            type = "DANGEROUSLY_INSECURE"
+          '';
+        };
         #type = "token"
         #token = "${cfg.settings.auth.token}"
 
-        "sccache/scheduler.conf".text = ''
-          public_addr = "${cfg.settings.scheduler.addr}"
-          [client_auth]
-          type = "DANGEROUSLY_INSECURE"
-          [server_auth]
-          type = "DANGEROUSLY_INSECURE"
-        '';
-        #type = "jwt_hs256"
-        #secret_key = "${cfg.settings.auth.jwtSecret}"
+        "sccache/scheduler.conf" = {
+          text = ''
+            public_addr = "${cfg.scheduler.addr}"
+            [client_auth]
+            type = "DANGEROUSLY_INSECURE"
+            [server_auth]
+            type = "DANGEROUSLY_INSECURE"
+          '';
+          #type = "jwt_hs256"
+          #secret_key = "${cfg.settings.auth.jwtSecret}"
+        };
       };
     };
 
-    systemd.services.sccache-server = {
+    systemd.services.sccache-server = lib.mkIf cfg.builder.enable {
       description = "sccache-dist server";
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
@@ -127,7 +139,7 @@ in
       };
     };
 
-    systemd.services.sccache-scheduler = {
+    systemd.services.sccache-scheduler = lib.mkIf cfg.scheduler.enable {
       description = "sccache-dist scheduler";
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];

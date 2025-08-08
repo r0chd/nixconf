@@ -65,7 +65,7 @@ in
     };
   };
 
-  config.services.k3s = {
+  config.services.k3s = lib.mkIf config.homelab.enable {
     autoDeployCharts.pihole = {
       package = downloadHelmChart {
         repo = "https://mojo2600.github.io/pihole-kubernetes";
