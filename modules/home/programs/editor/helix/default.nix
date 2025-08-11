@@ -2,8 +2,6 @@
   lib,
   config,
   pkgs,
-  hostName,
-  username,
   ...
 }:
 let
@@ -47,14 +45,14 @@ in
             ];
             config.nixd =
               let
-                flake = "(builtins.getFlake (builtins.toString /var/lib/nixconf))";
+                flake = "(builtins.getFlake (toString /var/lib/nixconf))";
               in
               {
                 nixpkgs.expr = "import ${flake}.inputs.nixpkgs { }";
                 formatting.command = [ "nixfmt" ];
                 options = {
-                  nixos.expr = "${flake}.nixosConfigurations.${hostName}.options";
-                  home-manager.expr = "${flake}.homeConfigurations.${username}@${hostName}.options";
+                  nixos.expr = "${flake}.nixosConfigurations.${config.networking.hostName}.options";
+                  home-manager.expr = "${flake}.homeConfigurations.${config.home.username}@${config.networking.hostName}.options";
                 };
               };
           };
@@ -62,8 +60,27 @@ in
           groovy-language-server.command = "${groovyls}/bin/groovy-language-server";
 
           rust-analyzer.config = {
-            checkOnSave.command = "clippy";
+            checkOnSave = {
+              command = "${pkgs.clippy}/bin/clippy";
+              args = [
+                "--"
+                "-W"
+                "clippy::pedantic"
+                "-W"
+                "clippy::correctness"
+                "-W"
+                "clippy::suspicious"
+                "-W"
+                "clippy::cargo"
+              ];
+              features = "all";
+              workspace = true;
+            };
+            diagnostics.experimental.enable = true;
+            hover.actions.enable = true;
+            typing.autoClosingAngleBrackets.enable = true;
             cargo.allFeatures = true;
+            procMacro.enable = true;
           };
 
           tailwindcss = {
@@ -160,8 +177,7 @@ in
             auto-format = true;
             language-servers = [ "nixd" ];
             formatter = {
-              command = lib.getExe pkgs.nixfmt-rfc-style;
-              args = [ "-s" ];
+              command = lib.getExe pkgs.nixfmt;
             };
           }
           {
@@ -292,6 +308,9 @@ in
             "collapse_selection"
             "keep_primary_selection"
           ];
+          space = {
+            i = ":toggle lsp.display-inlay-hints";
+          };
         };
       };
     };

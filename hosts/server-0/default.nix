@@ -6,7 +6,6 @@
   ];
 
   sops.secrets = {
-    tailscale = { };
     k3s = { };
 
     "grafana/username" = { };
@@ -104,7 +103,6 @@
     #  };
     #};
     impermanence.enable = true;
-    tailscale.authKeyFile = config.sops.secrets.tailscale.path;
     k3s = {
       tokenFile = config.sops.secrets.k3s.path;
       clusterInit = true;

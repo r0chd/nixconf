@@ -1,7 +1,4 @@
 { lib, config, ... }:
-let
-  cfg = config.nix;
-in
 {
   options.nix.access-tokens = lib.mkOption {
     type = lib.types.listOf lib.types.str;

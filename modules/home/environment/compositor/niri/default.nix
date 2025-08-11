@@ -6,13 +6,16 @@
   config,
   ...
 }:
+let
+  cfg = config.programs.niri;
+in
 {
   imports = [
     inputs.niri.homeModules.niri
     inputs.niri.homeModules.stylix
   ];
 
-  home.packages = lib.mkIf config.programs.niri.enable [ pkgs.xwayland-satellite ];
+  home.packages = lib.mkIf cfg.enable [ pkgs.xwayland-satellite ];
 
   programs.niri = {
     enable = lib.mkDefault (profile == "desktop");

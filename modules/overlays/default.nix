@@ -2,7 +2,6 @@ inputs: config: [
   inputs.nixGL.overlay
   inputs.niri.overlays.niri
   inputs.deploy-rs.overlays.default
-  inputs.nixpkgs-wayland.overlay
 
   (
     final: prev:
@@ -10,7 +9,7 @@ inputs: config: [
       inherit (prev) system;
     in
     {
-      stable = import inputs.nixpkgs-stable {
+      unstable = import inputs.nixpkgs-unstable {
         inherit (final) system;
         inherit (config.nixpkgs) config;
       };
@@ -23,10 +22,8 @@ inputs: config: [
       nh = inputs.nh.packages.${system}.default;
       sysnotifier = inputs.sysnotifier.packages.${system}.default;
       helix = inputs.helix-steel.packages.${system}.default;
-      waybar = inputs.waybar.packages.${system}.default;
       sccache = prev.callPackage ./sccache { };
-      inherit (inputs.hyprland.packages.${system}) hyprland;
-      inherit (inputs.hyprland.packages.${system}) xdg-desktop-portal-hyprland;
+      darkfi = prev.callPackage ./darkfi { };
     }
   )
 ]

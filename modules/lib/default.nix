@@ -1,6 +1,12 @@
-[
-  (final: prev: {
+config: [
+  (_final: prev: {
     lib = prev.lib // {
+      onGnome =
+        let
+          cfg = config.programs;
+        in
+        cfg.gnome.enable;
+
       downloadHelmChart =
         {
           repo,

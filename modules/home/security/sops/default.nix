@@ -1,8 +1,6 @@
 {
   pkgs,
   config,
-  lib,
-  hostName,
   inputs,
   ...
 }:
@@ -14,7 +12,7 @@
       "${config.home.username}/ssh" = { };
       "${config.home.username}/password" = { };
     };
-    defaultSopsFile = ../../../../hosts/${hostName}/users/${config.home.username}/secrets/secrets.yaml;
+    defaultSopsFile = ../../../../hosts/${config.networking.hostName}/users/${config.home.username}/secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     age = {
       sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
@@ -22,7 +20,7 @@
     };
   };
   home = {
-    shellAliases.opensops = "sops /var/lib/nixconf/hosts/${hostName}/users/${config.home.username}/secrets/secrets.yaml";
+    shellAliases.opensops = "sops /var/lib/nixconf/hosts/${config.networking.hostName}/users/${config.home.username}/secrets/secrets.yaml";
     packages = [ pkgs.sops ];
   };
 }

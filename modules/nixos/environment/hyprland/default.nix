@@ -2,8 +2,6 @@
   config,
   lib,
   profile,
-  inputs,
-  pkgs,
   ...
 }:
 let

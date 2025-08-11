@@ -14,44 +14,44 @@
       "obsidian"
     ];
 
-  sops.secrets = {
-    "yubico/u2f_keys".path = "/home/unixpariah/.config/Yubico/u2f_keys";
-    "ssh_keys/id_yubikey".path = "/home/unixpariah/.ssh/id_yubikey";
-    nixos-access-token-github = { };
-    github-api = { };
-    atuin_key = { };
-    gcloud = { };
+  #sops.secrets = {
+  #  "yubico/u2f_keys".path = "/home/unixpariah/.config/Yubico/u2f_keys";
+  #  "ssh_keys/id_yubikey".path = "/home/unixpariah/.ssh/id_yubikey";
+  #  nixos-access-token-github = { };
+  #  github-api = { };
+  #  atuin_key = { };
+  #  gcloud = { };
 
-    "moxapi/t851" = { };
-    "moxapi/laptop" = { };
-    "moxapi/laptop-huawei" = { };
-    "moxapi/password" = { };
-  };
+  #  "moxapi/t851" = { };
+  #  "moxapi/laptop" = { };
+  #  "moxapi/laptop-huawei" = { };
+  #  "moxapi/password" = { };
+  #};
 
-  nix.access-tokens = [ config.sops.placeholder.nixos-access-token-github ];
+  #nix.access-tokens = [ config.sops.placeholder.nixos-access-token-github ];
 
   services = {
-    moxapi.settings = {
-      password = config.sops.secrets."moxapi/password".path;
-      hosts = {
-        t851 = {
-          ip = "http://t851:8000";
-          api_key = config.sops.secrets."moxapi/t851".path;
-        };
-        laptop = {
-          ip = "http://laptop:8000";
-          api_key = config.sops.secrets."moxapi/laptop".path;
-        };
-        laptop-huawei = {
-          ip = "http://laptop-huawei:8000";
-          api_key = config.sops.secrets."moxapi/laptop-huawei".path;
-        };
-        t85 = {
-          ip = "http://t85:8000";
-          api_key = config.sops.secrets."moxapi/laptop-huawei".path;
-        };
-      };
-    };
+    #moxapi.settings = {
+    #  password = config.sops.secrets."moxapi/password".path;
+    #  hosts = {
+    #    t851 = {
+    #      ip = "http://t851:8000";
+    #      api_key = config.sops.secrets."moxapi/t851".path;
+    #    };
+    #    laptop = {
+    #      ip = "http://laptop:8000";
+    #      api_key = config.sops.secrets."moxapi/laptop".path;
+    #    };
+    #    laptop-huawei = {
+    #      ip = "http://laptop-huawei:8000";
+    #      api_key = config.sops.secrets."moxapi/laptop-huawei".path;
+    #    };
+    #    t85 = {
+    #      ip = "http://t85:8000";
+    #      api_key = config.sops.secrets."moxapi/laptop-huawei".path;
+    #    };
+    #  };
+    #};
     impermanence.enable = true;
     yubikey-touch-detector.enable = true;
   };
@@ -63,10 +63,10 @@
     };
     atuin = {
       enable = true;
-      settings.key_path = config.sops.secrets.atuin_key.path;
+      #settings.key_path = config.sops.secrets.atuin_key.path;
     };
 
-    git = {
+    vcs = {
       signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
       email = "100892812+unixpariah@users.noreply.github.com";
     };
@@ -78,7 +78,6 @@
     starship.enable = true;
     zoxide.enable = true;
     direnv.enable = true;
-    seto.enable = true;
     bottom.enable = true;
     keepassxc = {
       enable = true;
@@ -160,6 +159,7 @@
         wf-recorder
         libreoffice
         cosmic-files
+        hello
         ;
     };
 

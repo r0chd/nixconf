@@ -2,8 +2,6 @@
   config,
   lib,
   pkgs,
-  homeModules,
-  inputs,
   rootPath,
   ...
 }@configArgs:

@@ -1,5 +1,4 @@
 {
-  pkgs,
   inputs,
   lib,
   config,
@@ -31,8 +30,7 @@ in
     };
 
     home.persist.directories =
-      [ ]
-      ++ lib.optionals cfg.enable [ ".config/Vencord" ]
+      lib.optionals cfg.enable [ ".config/Vencord" ]
       ++ lib.optionals cfg.vesktop.enable [ ".config/vesktop" ]
       ++ lib.optionals cfg.discord.enable [ ".config/discord" ];
   };

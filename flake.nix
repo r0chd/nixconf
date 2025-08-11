@@ -27,7 +27,7 @@
         modules = [
           { _module.args.inputs = inputs; }
           ./configuration.nix
-          ./options.nix
+          ./utils/options.nix
         ];
       };
 
@@ -36,27 +36,26 @@
       mkHome =
         hostName: username:
         let
-          system = config.hosts.${hostName}.system;
-          pkgs = import nixpkgs { inherit system; };
+          pkgs = import nixpkgs {
+            inherit (config.hosts.${hostName}) system;
+          };
           shell = "${config.hosts.${hostName}.users.${username}.shell}";
         in
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = {
-            inherit
-              inputs
-              username
-              hostName
-              shell
-              ;
+            inherit inputs shell;
             inherit (config.hosts.${hostName}) platform profile;
           };
 
           modules = [
             ./modules/home
+            ./modules/common/home
+            ./hosts/${hostName}/users/${username}
             stylix.homeModules.stylix
             inputs.nix-index-database.homeModules.nix-index
             {
+              networking = { inherit hostName; };
               home = {
                 inherit username;
                 homeDirectory = config.hosts.${hostName}.users.${username}.home;
@@ -82,11 +81,10 @@
           mkNode =
             hostname: attrs:
             let
-              system = config.hosts.${hostname}.system;
-              pkgs = import nixpkgs { inherit system; };
+              pkgs = import nixpkgs { inherit (config.hosts.${hostname}) system; };
               inherit (pkgs) lib;
               deployPkgs = import nixpkgs {
-                inherit system;
+                inherit (config.hosts.${hostname}) system;
                 overlays = [
                   deploy-rs.overlays.default
                   (self: super: {
@@ -146,12 +144,14 @@
             in
             nixosSystem {
               specialArgs = {
-                inherit inputs hostName;
+                inherit inputs;
                 systemUsers = attrs.users;
                 inherit (config.hosts.${hostName}) system profile;
               };
               modules = [
                 ./modules/nixos
+                ./modules/common/nixos
+                ./hosts/${hostName}
                 nix-gaming.nixosModules.pipewireLowLatency
                 nix-gaming.nixosModules.platformOptimizations
                 disko.nixosModules.default
@@ -179,7 +179,10 @@
               pkgs = import nixpkgs { inherit (attrs) system; };
             in
             system-manager.lib.makeSystemConfig {
-              modules = [ ./modules/system ];
+              modules = [
+                ./modules/system
+                ./hosts/${hostName}
+              ];
               extraSpecialArgs = {
                 inherit inputs systemUsers pkgs;
                 inherit (config.hosts.${hostName}) system profile;
@@ -210,11 +213,8 @@
         let
           mkDroid =
             hostName: attrs:
-            let
-              system = config.hosts.${hostName}.system;
-            in
             nix-on-droid.lib.nixOnDroidConfiguration {
-              pkgs = import nixpkgs { inherit system; };
+              pkgs = import nixpkgs { inherit (config.hosts.${hostName}) system; };
               modules = [
                 ./hosts/${hostName}
                 ./modules/nixOnDroid
@@ -229,44 +229,24 @@
         (deploy-rs.lib."x86_64-linux".deployChecks self.deploy)
         {
           treefmt-check = forAllSystems (
-            pkgs: (treefmt.lib.evalModule pkgs ./treefmt.nix).config.build.wrapper
+            pkgs: (treefmt.lib.evalModule pkgs ./utils/treefmt.nix).config.build.wrapper
           );
         }
       ];
 
-      formatter = forAllSystems (pkgs: (treefmt.lib.evalModule pkgs ./treefmt.nix).config.build.wrapper);
-
-      devShells =
-        let
-          forAllSystems =
-            function:
-            nixpkgs.lib.genAttrs systems (
-              system:
-              let
-                pkgs = import nixpkgs {
-                  inherit system;
-                  config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "terraform" ];
-                };
-              in
-              function pkgs
-            );
-
-        in
-        forAllSystems (pkgs: {
-          default = import ./shell.nix { inherit pkgs; };
-        });
+      formatter = forAllSystems (
+        pkgs: (treefmt.lib.evalModule pkgs ./utils/treefmt.nix).config.build.wrapper
+      );
     };
 
   inputs = {
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
 
     stylix = {
       url = "github:danth/stylix";
@@ -315,11 +295,6 @@
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "github:hyprwm/Hyprland";
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland";
-    };
     nix-on-droid = {
       url = "github:nix-community/nix-on-droid";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -342,16 +317,11 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    waybar = {
-      url = "github:Alexays/Waybar";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-raspberrypi = {
       url = "github:nvmd/nixos-raspberrypi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    seto.url = "github:unixpariah/seto";
     moxidle.url = "github:mox-desktop/moxidle";
     moxnotify.url = "github:mox-desktop/moxnotify";
     moxctl.url = "github:mox-desktop/moxctl";

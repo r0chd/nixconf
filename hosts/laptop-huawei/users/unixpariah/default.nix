@@ -31,7 +31,7 @@
       enable = true;
       settings.key_path = config.sops.secrets.atuin_key.path;
     };
-    git = {
+    vcs = {
       signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
       email = "100892812+unixpariah@users.noreply.github.com";
     };
@@ -48,7 +48,6 @@
     starship.enable = true;
     zoxide.enable = true;
     direnv.enable = true;
-    seto.enable = true;
     bottom.enable = true;
   };
 
@@ -58,24 +57,25 @@
       "eDP-1" = {
         position = {
           x = 0;
-          y = 1440;
+          y = 1439;
         };
-        refresh = 60.008;
+        refresh = 144.0;
         dimensions = {
           width = 1920;
           height = 1080;
         };
       };
-      "HDMI-1" = {
+      "HDMI-A-1" = {
         position = {
           x = 0;
           y = 0;
         };
-        refresh = 99.946;
+        refresh = 180.0;
         dimensions = {
           width = 2560;
           height = 1440;
         };
+        scale = 1.25;
       };
     };
   };
@@ -108,6 +108,7 @@
     };
     impermanence.enable = true;
     yubikey-touch-detector.enable = true;
+    #darkfirc.enable = true;
   };
 
   stylix = {

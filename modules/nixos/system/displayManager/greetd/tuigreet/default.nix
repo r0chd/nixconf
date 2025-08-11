@@ -13,7 +13,7 @@ in
     package = lib.mkOption {
       description = "Tuigreet package";
       type = lib.types.package;
-      default = pkgs.greetd.tuigreet;
+      default = pkgs.tuigreet;
     };
     width = lib.mkOption {
       description = "Width of the main prompt";

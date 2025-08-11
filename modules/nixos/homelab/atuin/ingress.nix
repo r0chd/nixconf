@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   services.k3s.manifests.atuin.content = [
     {
       apiVersion = "networking.k8s.io/v1";

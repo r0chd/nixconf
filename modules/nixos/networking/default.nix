@@ -1,6 +1,5 @@
 { config, lib, ... }:
 let
-  cfg = config.networking;
   inherit (lib) types;
 in
 {

@@ -1,27 +1,26 @@
-{ pkgs }:
 let
+  pkgs = import (import ./npins).nixpkgs {
+    config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [ "terraform" ];
+  };
 in
 pkgs.mkShell {
-  buildInputs =
+  nativeBuildInputs =
     builtins.attrValues {
       inherit (pkgs)
-        helm-ls
-        helmfile
-        terraform-ls
-        jq
+        lix
+        git
+        npins
         nixd
-        nixfmt-rfc-style
-        yaml-language-server
-        prettier
-        kustomize
-        cuelsp
-        cue
+        terraform-ls
+        nixfmt
+        home-manager
+        nixos-rebuild
+        jq
         ;
     }
-    ++ [
-      (pkgs.terraform.withPlugins (p: builtins.attrValues { inherit (p) null external; }))
-      (pkgs.wrapHelm pkgs.kubernetes-helm {
-        plugins = builtins.attrValues { inherit (pkgs.kubernetes-helmPlugins) helm-diff; };
-      })
-    ];
+    ++ [ (pkgs.terraform.withPlugins (p: builtins.attrValues { inherit (p) null external; })) ];
+
+  shellHook = ''
+    export NIX_PATH="nixpkgs=${builtins.storePath pkgs.path}"
+  '';
 }

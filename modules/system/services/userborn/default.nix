@@ -1,5 +1,4 @@
 {
-  utils,
   config,
   lib,
   pkgs,
@@ -80,7 +79,7 @@ in
       tmpfiles.settings.home-directories =
         lib.mapAttrs'
           (
-            username: opts:
+            _username: opts:
             lib.nameValuePair (toString opts.home) {
               d = {
                 mode = opts.homeMode;

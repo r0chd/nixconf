@@ -1,9 +1,6 @@
 { config, lib, ... }:
-let
-  cfg = config.environment.outputs;
-in
 {
-  programs.niri.settings.outputs = lib.mapAttrs (name: value: {
+  programs.niri.settings.outputs = lib.mapAttrs (_name: value: {
     inherit (value) scale;
     mode = {
       inherit (value.dimensions) width;

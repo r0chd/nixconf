@@ -15,7 +15,7 @@ in
     users.users =
       systemUsers
       |> lib.mapAttrs (
-        name: value: {
+        _name: value: {
           extraGroups = lib.mkIf value.root.enable [
             "ydotool"
             "uinput"

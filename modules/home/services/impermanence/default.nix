@@ -49,12 +49,13 @@ in
     };
   };
 
-  config = lib.mkIf config.services.impermanence.enable {
+  config = lib.mkIf cfg.enable {
     home.persistence."/persist${config.home.homeDirectory}" = {
       directories = [
         ".local/state/nix/profiles"
         ".cache/nix-index"
-      ] ++ config.home.persist.directories;
+      ]
+      ++ config.home.persist.directories;
       inherit (config.home.persist) files;
       allowOther = true;
     };

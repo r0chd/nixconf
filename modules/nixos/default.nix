@@ -3,9 +3,7 @@
   lib,
   config,
   systemUsers,
-  hostName,
   inputs,
-  system,
   ...
 }:
 {
@@ -22,17 +20,12 @@
     ./programs
     ./virtualisation
     ./homelab
-    ../../hosts/${hostName}
     ../theme
-    ../common/nixos
   ];
 
   systemd.enableStrictShellChecks = true;
 
-  nixpkgs = {
-    overlays = import ../overlays inputs config; # ++ import ../lib;
-    hostPlatform = system;
-  };
+  nixpkgs.overlays = import ../overlays inputs config ++ import ../lib config;
 
   environment = {
     defaultPackages = lib.mkDefault [ ];

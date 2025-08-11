@@ -26,7 +26,6 @@ in
     services.moxnotify = {
       inherit (cfg) enable;
       settings = {
-
         general = {
           margin.top = 50;
           history.size = 10000;

@@ -18,7 +18,7 @@ in
   };
 
   config.programs.waybar = {
-    enable = cfg.enable;
+    inherit (cfg) enable;
     systemd.enable = true;
     settings = {
       mainBar = {

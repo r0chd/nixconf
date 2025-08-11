@@ -141,13 +141,14 @@ in
       };
     };
 
-    systemd.tmpfiles.rules =
-      [ "d ${cfg.mountPoint}/home 0777 root root -" ]
-      ++ (
-        systemUsers
-        |> builtins.attrNames
-        |> lib.concatMap (user: [ "d ${cfg.mountPoint}/home/${user} 0700 ${user} users -" ])
-      );
+    systemd.tmpfiles.rules = [
+      "d ${cfg.mountPoint}/home 0777 root root -"
+    ]
+    ++ (
+      systemUsers
+      |> builtins.attrNames
+      |> lib.concatMap (user: [ "d ${cfg.mountPoint}/home/${user} 0700 ${user} users -" ])
+    );
 
     programs.fuse.userAllowOther = true;
 
@@ -163,7 +164,8 @@ in
           group = "wheel";
           mode = "0775";
         }
-      ] ++ config.environment.persist.directories;
+      ]
+      ++ config.environment.persist.directories;
       inherit (config.environment.persist) files;
 
       users = systemUsers |> lib.mapAttrs (name: value: config.environment.persist.users);

@@ -7,46 +7,6 @@
 let
   cfg = config.homelab.pihole;
   inherit (lib) types;
-
-  downloadHelmChart =
-    {
-      repo,
-      chart,
-      version,
-      chartHash ? pkgs.lib.fakeHash,
-    }:
-    let
-      pullFlags =
-        if (pkgs.lib.hasPrefix "oci://" repo) then
-          "${repo}/${chart}"
-        else
-          "--repo \"${repo}\" \"${chart}\"";
-    in
-    pkgs.stdenv.mkDerivation {
-      name = "helm-chart-${repo}-${chart}-${version}";
-      nativeBuildInputs = [ pkgs.cacert ];
-
-      phases = [ "installPhase" ];
-      installPhase = ''
-        export HELM_CACHE_HOME="$TMP/.nix-helm-build-cache"
-
-        OUT_DIR="$TMP/temp-chart-output"
-
-        mkdir -p "$OUT_DIR"
-
-        ${pkgs.kubernetes-helm}/bin/helm pull \
-        --version "${version}" \
-        ${pullFlags} \
-        -d $OUT_DIR \
-        --untar
-
-        mv $OUT_DIR/${chart} "$out"
-      '';
-
-      outputHashMode = "recursive";
-      outputHashAlgo = "sha256";
-      outputHash = chartHash;
-    };
 in
 {
   options.homelab.pihole = {
@@ -67,7 +27,7 @@ in
 
   config.services.k3s = lib.mkIf config.homelab.enable {
     autoDeployCharts.pihole = {
-      package = downloadHelmChart {
+      package = pkgs.lib.downloadHelmChart {
         repo = "https://mojo2600.github.io/pihole-kubernetes";
         chart = "pihole";
         version = "2.18.0";
@@ -112,7 +72,7 @@ in
           passwordKey = "password";
           annotations = { };
         };
-        adlists = cfg.adlists;
+        inherit (cfg) adlists;
       };
     };
     secrets = [

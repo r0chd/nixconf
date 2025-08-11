@@ -1,9 +1,4 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}:
+{ config, lib, ... }:
 let
   cfg = config.programs.chromium;
 in
@@ -20,18 +15,41 @@ in
         { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # Vimium
       ];
       commandLineArgs = [
-        "--ozone-platform-hint=auto"
-        "--ozone-platform=wayland"
-        "--enable-features=Vulkan"
+        "--disable-sync"
+        "--no-default-browser-check"
         "--force-dark-mode"
+        "--ozone-platform=wayland"
+        "--enable-features=UseOzonePlatform"
+        "--enable-features=BlockThirdPartyCookiesInIncognito"
+        "--no-service-autorun"
+        "--disable-features=PreloadMediaEngagementData,MediaEngagementBypassAutoplayPolicies"
+        "--disable-reading-from-canvas"
+        "--no-pings"
+        "--no-first-run"
+        "--no-experiments"
+        "--no-crash-upload"
+        "--disable-wake-on-wifi"
+        "--enable-features=VaapiVideoDecodeLinuxGL"
+        "--ignore-gpu-blocklist"
+        "--enable-zero-copy"
+        "--disable-breakpad"
+        "--disable-sync"
+        "--disable-speech-api"
+        "--disable-speech-synthesis-api"
+        "--enable-features=Vulkan"
         "--enable-features=TouchpadOverscrollHistoryNavigation,WebUIDarkMode"
         "--extension-mime-request-handling=always-prompt-for-install"
       ];
     };
 
-    home.persist.directories = [
-      ".cache/chromium"
-      ".config/chromium/Default"
-    ];
+    home.persist = {
+      files = [
+        ".config/chromium/Local State"
+        ".config/chromium/Default/Bookmarks"
+        ".config/chromium/Default/Cookies"
+        ".config/chromium/Default/Bookmarks"
+      ];
+      directories = [ ".config/chromium/Default/Local Storage" ];
+    };
   };
 }

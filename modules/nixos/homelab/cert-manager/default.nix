@@ -1,45 +1,4 @@
 { pkgs, ... }:
-let
-  downloadHelmChart =
-    {
-      repo,
-      chart,
-      version,
-      chartHash ? pkgs.lib.fakeHash,
-    }:
-    let
-      pullFlags =
-        if (pkgs.lib.hasPrefix "oci://" repo) then
-          "${repo}/${chart}"
-        else
-          "--repo \"${repo}\" \"${chart}\"";
-    in
-    pkgs.stdenv.mkDerivation {
-      name = "helm-chart-${repo}-${chart}-${version}";
-      nativeBuildInputs = [ pkgs.cacert ];
-
-      phases = [ "installPhase" ];
-      installPhase = ''
-        export HELM_CACHE_HOME="$TMP/.nix-helm-build-cache"
-
-        OUT_DIR="$TMP/temp-chart-output"
-
-        mkdir -p "$OUT_DIR"
-
-        ${pkgs.kubernetes-helm}/bin/helm pull \
-        --version "${version}" \
-        ${pullFlags} \
-        -d $OUT_DIR \
-        --untar
-
-        mv $OUT_DIR/${chart} "$out"
-      '';
-
-      outputHashMode = "recursive";
-      outputHashAlgo = "sha256";
-      outputHash = chartHash;
-    };
-in
 {
   imports = [
     ./certificate.nix
@@ -47,7 +6,7 @@ in
   ];
 
   config.services.k3s.autoDeployCharts.cert-manager = {
-    package = downloadHelmChart {
+    package = pkgs.lib.downloadHelmChart {
       repo = "https://charts.jetstack.io";
       chart = "cert-manager";
       version = "1.17.2";

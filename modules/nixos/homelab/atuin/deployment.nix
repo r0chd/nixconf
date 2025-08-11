@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   services.k3s.manifests.atuin.content = [
     {
       apiVersion = "apps/v1";

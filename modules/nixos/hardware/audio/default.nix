@@ -33,6 +33,6 @@ in
 
     environment.systemPackages = [ pkgs.pavucontrol ];
 
-    users.users = systemUsers |> lib.mapAttrs (user: value: { extraGroups = [ "audio" ]; });
+    users.users = systemUsers |> lib.mapAttrs (_user: _value: { extraGroups = [ "audio" ]; });
   };
 }

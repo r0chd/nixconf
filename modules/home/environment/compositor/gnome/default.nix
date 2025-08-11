@@ -24,7 +24,12 @@ with lib.hm.gvariant;
       ];
     };
 
-    home.packages = [ pkgs.gnome-randr ];
+    home.packages = builtins.attrValues {
+      inherit (pkgs)
+        # Using wl-clipboard-rs on environments made for humans
+        wl-clipboard
+        ;
+    };
 
     ### EXTENSIONS ###
     dconf.settings = {

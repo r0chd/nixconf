@@ -19,33 +19,13 @@
       "steam-unwrapped"
     ];
 
-  sops.secrets = {
-    tailscale = { };
-    k3s = { };
-    deploy-rs = {
-      owner = "deploy-rs";
-      group = "deploy-rs";
-      mode = "0440";
-    };
-
-    "pihole/password" = { };
-
-    "atuin/DB_PASSWORD" = { };
-    "atuin/DB_URI" = { };
-
-    #"grafana/username" = { };
-    #"grafana/password" = { };
-
-    #github-api = { };
-
-    #"immich-postgres-user/DB_USERNAME" = { };
-    #"immich-postgres-user/DB_DATABASE_NAME" = { };
-    #"immich-postgres-user/DB_PASSWORD" = { };
-    #"immich-postgres-user/username" = { };
-    #"immich-postgres-user/password" = { };
-
-    #YUBI = { };
-  };
+  #sops.secrets = {
+  #  deploy-rs = {
+  #    owner = "deploy-rs";
+  #    group = "deploy-rs";
+  #    mode = "0440";
+  #  };
+  #};
 
   documentation.enable = true;
 
@@ -55,7 +35,7 @@
   };
 
   programs = {
-    deploy-rs.sshKeyFile = config.sops.secrets.deploy-rs.path;
+    #deploy-rs.sshKeyFile = config.sops.secrets.deploy-rs.path;
     thunderbird.enable = true;
     nix-index.enable = true;
     wshowkeys.enable = true;
@@ -83,13 +63,16 @@
     };
   };
 
-  networking.wireless = {
-    iwd.enable = true;
-    mainInterface = "wlan0";
+  networking = {
+    hostId = "499673df";
+    wireless = {
+      iwd.enable = true;
+      mainInterface = "wlan0";
+    };
   };
 
   system = {
-    fileSystem = "btrfs";
+    fileSystem = "zfs";
     bootloader = {
       variant = "systemd-boot";
       silent = true;
@@ -118,23 +101,6 @@
       interval = 3;
     };
 
-    k3s = {
-      tokenFile = config.sops.secrets.k3s.path;
-      clusterInit = true;
-      extraFlags = [
-        "--disable traefik"
-        "--disable servicelb"
-        "--write-kubeconfig-mode \"0644\""
-        "--disable local-storage"
-        "--kube-controller-manager-arg bind-address=0.0.0.0"
-        "--kube-proxy-arg metrics-bind-address=0.0.0.0"
-        "--kube-scheduler-arg bind-address=0.0.0.0"
-        "--etcd-expose-metrics true"
-        "--kubelet-arg containerd=/run/k3s/containerd/containerd.sock"
-      ];
-    };
-
-    tailscale.authKeyFile = config.sops.secrets.tailscale.path;
     impermanence.enable = true;
   };
 

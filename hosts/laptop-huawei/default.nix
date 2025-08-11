@@ -2,9 +2,28 @@
   pkgs,
   lib,
   config,
+  systemUsers,
   ...
 }:
 {
+  users.users =
+    systemUsers
+    |> lib.mapAttrs (
+      _user: value: {
+        extraGroups = lib.mkIf (
+          value.root.enable
+          && config.programs.deploy-rs.enable
+          && config.programs.deploy-rs.sshKeyFile != null
+        ) [ "video" ];
+      }
+    );
+
+  boot.initrd.kernelModules = [ "amdgpu" ];
+  hardware.graphics = {
+    enable32Bit = true;
+    extraPackages = builtins.attrValues { inherit (pkgs) amdvlk; };
+  };
+
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
@@ -20,7 +39,6 @@
 
   sops.secrets = {
     k3s = { };
-    tailscale = { };
     deploy-rs = {
       owner = "deploy-rs";
       group = "deploy-rs";
@@ -56,7 +74,13 @@
 
   environment = {
     variables.EDITOR = "hx";
-    systemPackages = builtins.attrValues { inherit (pkgs) helix kubectl cosmic-icons; };
+    systemPackages = builtins.attrValues {
+      inherit (pkgs)
+        helix
+        kubectl
+        cosmic-icons
+        ;
+    };
   };
 
   security = {
@@ -84,6 +108,7 @@
 
   gaming = {
     steam.enable = true;
+    heroic.enable = true;
   };
 
   networking = {
@@ -100,7 +125,6 @@
       interval = 3;
     };
     impermanence.enable = true;
-    tailscale.authKeyFile = config.sops.secrets.tailscale.path;
 
     k3s = {
       tokenFile = config.sops.secrets.k3s.path;

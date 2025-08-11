@@ -1,10 +1,8 @@
 {
   pkgs,
   lib,
-  username,
   inputs,
   config,
-  hostName,
   platform,
   ...
 }:
@@ -13,14 +11,11 @@
     ./nix
     ./nixpkgs
     ./environment
-    ./workspace
     ./programs
     ./security
     ./networking
     ./services
-    ../../hosts/${hostName}/users/${username}
     ../theme
-    ../common/home
   ];
 
   config = {
@@ -30,7 +25,7 @@
       '';
     };
 
-    nixpkgs.overlays = import ../overlays inputs config; # ++ import ../lib;
+    nixpkgs.overlays = import ../overlays inputs config ++ import ../lib config;
 
     home = {
       persist.directories = [ ".local/state/syncthing" ];
@@ -50,7 +45,7 @@
 
           args=()
           for pkg in "$@"; do
-            args+=("''${NH_FLAKE}#homeConfigurations.${config.home.username}@${hostName}.pkgs.$pkg")
+            args+=("''${NH_FLAKE}#homeConfigurations.${config.home.username}@${config.networking.hostName}.pkgs.$pkg")
           done
 
           nix shell "''${args[@]}"
@@ -66,7 +61,7 @@
 
           package="$1"
           shift
-          nix run ''${NH_FLAKE}#homeConfigurations.${config.home.username}@${hostName}.pkgs.$package "$@"
+          nix run ''${NH_FLAKE}#homeConfigurations.${config.home.username}@${config.networking.hostName}.pkgs.$package "$@"
         '')
       ];
       stateVersion = "25.11";

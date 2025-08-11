@@ -7,6 +7,7 @@
     ./yubikey-touch-detector
     ./ngrok
     ./cliphist
+    ./darkfirc
     ./gc
   ];
 

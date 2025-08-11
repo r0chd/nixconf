@@ -27,7 +27,7 @@
   users.users =
     systemUsers
     |> lib.mapAttrs (
-      user: value: {
+      _user: value: {
         extraGroups = lib.mkIf (
           value.root.enable
           && config.programs.deploy-rs.enable

@@ -14,10 +14,8 @@
         "obsidian"
       ];
     nixGLWrap = [
-      "niri-unstable"
       "ghostty"
       "zen"
-      "hyprland"
     ];
   };
 
@@ -45,7 +43,7 @@
     ghostty.settings.window-decoration = lib.mkForce false;
 
     editor = "hx";
-    git = {
+    vcs = {
       signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
       identityFile = [ "${config.home.homeDirectory}/.ssh/id_ed25519.pub" ];
       email = "os1@qed.ai";
@@ -145,11 +143,12 @@
     moxpaper.enable = lib.mkForce false;
     moxapi.enable = lib.mkForce false;
     cliphist.enable = lib.mkForce false;
+    sysnotifier.enable = lib.mkForce false;
     yubikey-touch-detector.enable = true;
-    #gc = {
-    #  enable = true;
-    #  interval = 3;
-    #};
+    gc = {
+      enable = true;
+      interval = 3;
+    };
   };
 
   home.packages = builtins.attrValues { inherit (pkgs) slack signal-desktop google-cloud-sql-proxy; };

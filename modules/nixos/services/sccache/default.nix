@@ -20,7 +20,7 @@ in
 
     cacheDir = lib.mkOption {
       type = types.path;
-      default = "/var/cache/sccache";
+      default = "/var/lib/sccache/cache";
       description = "Directory for sccache cache";
     };
 
@@ -67,17 +67,54 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    systemd.tmpfiles.rules = [
-      "d ${cfg.cacheDir} 0755 root root"
-      "d ${cfg.buildDir} 0755 root root"
-      "d /var/lib/sccache 0755 root root"
-    ];
+    systemd = {
+      tmpfiles.rules = [
+        "d ${cfg.cacheDir} 0755 root root"
+        "d ${cfg.buildDir} 0755 root root"
+      ];
+
+      services.sccache-server = lib.mkIf cfg.builder.enable {
+        description = "sccache-dist server";
+        wants = [ "network-online.target" ];
+        after = [ "network-online.target" ];
+        wantedBy = [ "multi-user.target" ];
+
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${cfg.package}/bin/sccache-dist server --config /etc/sccache/server.conf";
+          Restart = "on-failure";
+          RestartSec = 5;
+        };
+
+        environment = {
+          RUST_LOG = "info";
+        };
+      };
+
+      services.sccache-scheduler = lib.mkIf cfg.scheduler.enable {
+        description = "sccache-dist scheduler";
+        wants = [ "network-online.target" ];
+        after = [ "network-online.target" ];
+        wantedBy = [ "multi-user.target" ];
+
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${cfg.package}/bin/sccache-dist scheduler --config /etc/sccache/scheduler.conf";
+          Restart = "on-failure";
+          RestartSec = 5;
+        };
+
+        environment = {
+          RUST_LOG = "info";
+        };
+      };
+    };
 
     environment = {
       sessionVariables.RUSTC_WRAPPER = "${cfg.package}/bin/sccache";
       systemPackages = [ cfg.package ];
       etc = {
-        "sccache/sccache.conf" = lib.mkIf cfg.builder.enable {
+        "sccache/server.conf" = lib.mkIf cfg.builder.enable {
           text = ''
             cache_dir = "${cfg.cacheDir}"
             public_addr = "${cfg.builder.addr}"
@@ -104,70 +141,6 @@ in
           #type = "jwt_hs256"
           #secret_key = "${cfg.settings.auth.jwtSecret}"
         };
-      };
-    };
-
-    systemd.services.sccache-server = lib.mkIf cfg.builder.enable {
-      description = "sccache-dist server";
-      wants = [ "network-online.target" ];
-      after = [ "network-online.target" ];
-      wantedBy = [ "multi-user.target" ];
-
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${cfg.package}/bin/sccache-dist server --config /etc/sccache/sccache.conf";
-        Restart = "on-failure";
-        RestartSec = 5;
-
-        CapabilityBoundingSet = "CAP_SYS_ADMIN CAP_SETUID CAP_SETGID CAP_DAC_OVERRIDE CAP_CHOWN";
-        AmbientCapabilities = "CAP_SYS_ADMIN CAP_SETUID CAP_SETGID CAP_DAC_OVERRIDE CAP_CHOWN";
-
-        ReadWritePaths = [
-          cfg.cacheDir
-          cfg.buildDir
-          "/var/lib/sccache"
-        ];
-
-        NoNewPrivileges = false;
-        ProtectSystem = "strict";
-        ProtectHome = true;
-        RestrictNamespaces = false;
-      };
-
-      environment = {
-        RUST_LOG = "info";
-      };
-    };
-
-    systemd.services.sccache-scheduler = lib.mkIf cfg.scheduler.enable {
-      description = "sccache-dist scheduler";
-      wants = [ "network-online.target" ];
-      after = [ "network-online.target" ];
-      wantedBy = [ "multi-user.target" ];
-
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${cfg.package}/bin/sccache-dist scheduler --config /etc/sccache/scheduler.conf";
-        Restart = "on-failure";
-        RestartSec = 5;
-
-        CapabilityBoundingSet = "CAP_SYS_ADMIN CAP_SETUID CAP_SETGID CAP_DAC_OVERRIDE CAP_CHOWN";
-        AmbientCapabilities = "CAP_SYS_ADMIN CAP_SETUID CAP_SETGID CAP_DAC_OVERRIDE CAP_CHOWN";
-
-        ReadWritePaths = [
-          cfg.cacheDir
-          cfg.buildDir
-          "/var/lib/sccache"
-        ];
-
-        NoNewPrivileges = false;
-        ProtectSystem = "strict";
-        ProtectHome = true;
-        RestrictNamespaces = false;
-      };
-
-      environment = {
-        RUST_LOG = "info";
       };
     };
   };

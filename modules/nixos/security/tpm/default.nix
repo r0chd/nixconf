@@ -13,7 +13,7 @@
     };
 
     users.users =
-      systemUsers |> lib.mapAttrs (name: value: { extraGroups = lib.mkIf value.root.enable [ "tss" ]; });
+      systemUsers |> lib.mapAttrs (_name: value: { extraGroups = lib.mkIf value.root.enable [ "tss" ]; });
 
     boot.initrd = {
       kernelModules = [ "tpm_crb" ];

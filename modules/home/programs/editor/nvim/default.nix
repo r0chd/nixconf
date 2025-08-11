@@ -15,7 +15,8 @@
     home = {
       packages = [
         inputs.nixvim.packages.${pkgs.system}.default
-      ] ++ builtins.attrValues { inherit (pkgs) ripgrep tree-sitter fd; };
+      ]
+      ++ builtins.attrValues { inherit (pkgs) ripgrep tree-sitter fd; };
 
       persist.directories = [
         ".local/share/nvim"

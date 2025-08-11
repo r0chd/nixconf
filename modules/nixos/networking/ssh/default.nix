@@ -1,10 +1,4 @@
-{
-  lib,
-  systemUsers,
-  config,
-  inputs,
-  ...
-}:
+_:
 {
   boot.initrd.network.ssh = {
     enable = true;

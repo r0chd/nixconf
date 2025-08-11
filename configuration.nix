@@ -1,5 +1,6 @@
-{ ... }:
-{
+_: {
+  imports = [ ./utils/options.nix ];
+
   hosts = {
     t851 = {
       system = "x86_64-linux";
@@ -21,10 +22,10 @@
           root.enable = true;
           shell = "nushell";
         };
-        os1 = {
-          root.enable = true;
-          shell = "nushell";
-        };
+        #os1 = {
+        #  root.enable = true;
+        #  shell = "nushell";
+        #};
       };
     };
     laptop-huawei = {

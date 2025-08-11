@@ -2,105 +2,98 @@
   pkgs,
   lib,
   config,
-  inputs,
   profile,
   ...
 }:
 let
-  cfg = config.wayland.windowManager.hyprland;
+  cfg = config.programs.hyprland;
+  inherit (lib) types;
 in
 {
-  home.packages = [
-    (pkgs.writeShellScriptBin "click" ''
-      cursorpos=$(hyprctl cursorpos)
-      x=$(echo $cursorpos | cut -d "," -f 1)
-      y=$(echo $cursorpos | cut -d "," -f 2)
-      initial_cursorpos="$x $y"
+  options.programs.hyprland.enable = lib.mkOption {
+    type = types.bool;
+    default = profile == "desktop";
+  };
 
-      ydotool mousemove -a $(seto -f $'%x %y\\n') && ydotool click 0xC0 && ydotool mousemove -a $initial_cursorpos
-    '')
-  ];
-
-  wayland.windowManager.hyprland = {
-    enable = lib.mkDefault (profile == "desktop");
-    plugins = [ pkgs.hyprlandPlugins.hyprscrolling ];
-    settings = {
-      plugin.hyprscrolling = {
-        column_width = 0;
-        fullscreen_on_one_column = true;
-        explicit_column_widths = "0.333, 0.5, 0.667, 1.0";
-      };
-
-      input = {
-        kb_layout = "us";
-        kb_variant = "";
-        kb_model = "";
-        kb_options = "";
-        kb_rules = "";
-
-        follow_mouse = "1";
-
-        touchpad = {
-          disable_while_typing = "false";
-          natural_scroll = "no";
+  config = {
+    wayland.windowManager.hyprland = {
+      inherit (cfg) enable;
+      settings = {
+        plugin.hyprscrolling = {
+          column_width = 0;
+          fullscreen_on_one_column = true;
+          explicit_column_widths = "0.333, 0.5, 0.667, 1.0";
         };
-      };
 
-      ecosystem.no_update_news = true;
+        input = {
+          kb_layout = "us";
+          kb_variant = "";
+          kb_model = "";
+          kb_options = "";
+          kb_rules = "";
 
-      general = {
-        border_size = 1;
-      };
+          follow_mouse = "1";
 
-      decoration = {
-        rounding = 16;
+          touchpad = {
+            disable_while_typing = "false";
+            natural_scroll = "no";
+          };
+        };
 
-        blur.enabled = false;
-      };
+        ecosystem.no_update_news = true;
 
-      debug.disable_logs = false;
+        general = {
+          border_size = 1;
+        };
 
-      animations = {
-        enabled = true;
+        decoration = {
+          rounding = 16;
 
-        bezier = [
-          "overshot, 0.05, 0.9, 0.1, 1.05"
-          "smoothOut, 0.36, 0, 0.66, -0.56"
-          "smoothIn, 0.25, 1, 0.5, 1"
-        ];
+          blur.enabled = false;
+        };
 
-        animation = [
-          "windows, 1, 5, overshot, slide"
-          "windowsOut, 1, 4, smoothOut, slide"
-          "windowsMove, 1, 4, default"
-          "border, 1, 10, default"
-          "fadeDim, 1, 10, smoothIn"
-          "workspaces, 1, 6, default"
-        ];
-      };
+        debug.disable_logs = false;
 
-      dwindle = {
-        pseudotile = true;
-        preserve_split = true;
-      };
+        animations = {
+          enabled = true;
 
-      master = {
-        new_status = "master";
-      };
+          bezier = [
+            "overshot, 0.05, 0.9, 0.1, 1.05"
+            "smoothOut, 0.36, 0, 0.66, -0.56"
+            "smoothIn, 0.25, 1, 0.5, 1"
+          ];
 
-      gestures = {
-        workspace_swipe = "off";
-      };
+          animation = [
+            "windows, 1, 5, overshot, slide"
+            "windowsOut, 1, 4, smoothOut, slide"
+            "windowsMove, 1, 4, default"
+            "border, 1, 10, default"
+            "fadeDim, 1, 10, smoothIn"
+            "workspaces, 1, 6, default"
+          ];
+        };
 
-      misc = {
-        force_default_wallpaper = "0";
-        vfr = true;
-      };
+        dwindle = {
+          pseudotile = true;
+          preserve_split = true;
+        };
 
-      "$mainMod" = "ALT"; # Mod key
+        master = {
+          new_status = "master";
+        };
 
-      bind =
-        [
+        gestures = {
+          workspace_swipe = "off";
+        };
+
+        misc = {
+          force_default_wallpaper = "0";
+          vfr = true;
+        };
+
+        "$mainMod" = "ALT"; # Mod key
+
+        bind = [
           # Brightness
           ", XF86MonBrightnessUp, exec, ${pkgs.brightnessctl}/bin/brightnessctl set +5%"
           ", XF86MonBrightnessDown, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 5%-"
@@ -162,21 +155,20 @@ in
           ", XF86AudioLowerVolume, exec, ${pkgs.pamixer}/bin/pamixer -d 5"
 
           "$mainMod, q, exec, uwsm stop"
-        ]
-        ++ (lib.optional config.programs.seto.enable ", Print, exec, ${pkgs.grim}/bin/grim -g \"$(seto -r)\" - | ${pkgs.swappy}/bin/swappy -f -")
-        ++ (lib.optional config.programs.seto.enable "$mainMod, G, exec, click");
+        ];
 
-      bindm = [
-        # Move/resize windows with mainMod + LMB/RMB and dragging
-        "$mainMod, mouse:272, movewindow"
-        "$mainMod, mouse:273, resizewindow"
-      ];
+        bindm = [
+          # Move/resize windows with mainMod + LMB/RMB and dragging
+          "$mainMod, mouse:272, movewindow"
+          "$mainMod, mouse:273, resizewindow"
+        ];
+      };
     };
-  };
 
-  nix.settings = lib.mkIf cfg.enable {
-    substituters = [ "https://hyprland.cachix.org" ];
-    trusted-substituters = [ "https://hyprland.cachix.org" ];
-    trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+    nix.settings = lib.mkIf cfg.enable {
+      substituters = [ "https://hyprland.cachix.org" ];
+      trusted-substituters = [ "https://hyprland.cachix.org" ];
+      trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+    };
   };
 }

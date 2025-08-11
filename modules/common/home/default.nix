@@ -1,6 +1,5 @@
 {
   config,
-  hostName,
   profile,
   platform,
   lib,
@@ -8,13 +7,13 @@
 }:
 {
   sops.secrets = {
-    "moxapi/${hostName}" = lib.mkIf (profile == "desktop" && platform == "nixos") { };
+    "moxapi/${config.networking.hostName}" = lib.mkIf (profile == "desktop" && platform == "nixos") { };
   };
 
   services = {
     moxapi.authKeyFile = lib.mkIf (
       profile == "desktop" && platform == "nixos"
-    ) config.sops.secrets."moxapi/${hostName}".path;
+    ) config.sops.secrets."moxapi/${config.networking.hostName}".path;
     syncthing = {
       enable = true;
       settings = {

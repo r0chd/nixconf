@@ -91,7 +91,7 @@ in
           };
 
           aliases = {
-            cl-up = [
+            review = [
               "util"
               "exec"
               "--"
@@ -99,11 +99,11 @@ in
               "-c"
               ''
                 set -euo pipefail
-                INPUT=''${1:-"@-"}
+                INPUT=''${1:-"@"}
                 HASH=$(jj log -r "''${INPUT}" -T commit_id --no-graph)
                 HASHINFO=$(git log -n 1 ''${HASH} --oneline --color=always)
                 echo "Pushing from commit ''${HASHINFO}"
-                git push origin "''${HASH}":refs/for/main                  
+                git push origin "''${HASH}":refs/for/main
               ''
               ""
             ];

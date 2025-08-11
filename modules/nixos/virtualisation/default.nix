@@ -25,10 +25,9 @@ in
     users.users =
       systemUsers
       |> lib.mapAttrs (
-        user: value: {
+        _user: value: {
           extraGroups =
-            [ ]
-            ++ lib.optionals (value.root.enable && cfg.libvirtd.enable) [ "libvirtd" ]
+            lib.optionals (value.root.enable && cfg.libvirtd.enable) [ "libvirtd" ]
             ++ lib.optionals (value.root.enable && cfg.docker.enable) [ "docker" ]
             ++ lib.optionals (value.root.enable && cfg.podman.enable) [ "podman" ];
         }

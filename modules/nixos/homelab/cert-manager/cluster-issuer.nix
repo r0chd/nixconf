@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   config.services.k3s.autoDeployCharts.cert-manager.extraDeploy = [
     {
       apiVersion = "cert-manager.io/v1";

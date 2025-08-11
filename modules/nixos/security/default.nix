@@ -1,4 +1,4 @@
-{ pkgs, profile, ... }:
+{ profile, ... }:
 {
   imports = [
     ./root

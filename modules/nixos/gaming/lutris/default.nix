@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  systemUsers,
   ...
 }:
 let
@@ -19,7 +18,7 @@ in
 
   config = lib.mkIf cfg.enable {
     environment = {
-      systemPackages = [ (cfg.package.override { extraPkgs = pkgs: [ ]; }) ];
+      systemPackages = [ (cfg.package.override { extraPkgs = _pkgs: [ ]; }) ];
       persist.users.directories = [
         ".local/share/lutris"
         "Games/Lutris"

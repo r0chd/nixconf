@@ -1,7 +1,4 @@
-{ lib, config, ... }:
-let
-  cfg = config.programs.atuin;
-in
+{ config, ... }:
 {
   programs.atuin = {
     daemon.enable = true;

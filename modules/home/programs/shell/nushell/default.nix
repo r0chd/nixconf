@@ -11,7 +11,7 @@
     programs = {
       nushell = {
         enable = true;
-        package = pkgs.stable.nushell;
+        package = pkgs.nushell;
         inherit (config.home) shellAliases;
         extraConfig = ''
           let carapace_completer = {|spans: list<string>|
@@ -27,7 +27,7 @@
           let external_completer = {|spans|
               let expanded_alias = scope aliases
               | where name == $spans.0
-              | get -i 0.expansion
+              | get 0.expansion
 
               let spans = if $expanded_alias != null {
                   $spans

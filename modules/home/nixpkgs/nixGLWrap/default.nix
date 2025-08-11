@@ -18,7 +18,7 @@ in
 
   nixpkgs.overlays = [
     (
-      final: prev:
+      _final: prev:
       with prev;
       builtins.listToAttrs (
         cfg

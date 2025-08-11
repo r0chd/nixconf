@@ -7,7 +7,6 @@
 
   sops.secrets = {
     k3s = { };
-    tailscale = { };
   };
 
   system = {
@@ -28,7 +27,6 @@
       tokenFile = config.sops.secrets.k3s.path;
     };
     impermanence.enable = true;
-    tailscale.authKeyFile = config.sops.secrets.tailscale.path;
   };
 
   time.timeZone = "Europe/Warsaw";
