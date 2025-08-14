@@ -689,11 +689,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1751195190,
-        "narHash": "sha256-PiBoAPUgowmaWXuOcQdUipwoNJFqO6GKfat1Mek8R0o=",
+        "lastModified": 1751128719,
+        "narHash": "sha256-Zg1bA26KJgdNFJz4D1zDdr3eKGJdwi59g4FqxbzX9go=",
         "owner": "unixpariah",
         "repo": "nh",
-        "rev": "35c03f4895c31c0a9387066647d6d0989a27e194",
+        "rev": "0dba1f6cf7e194a5fc308425bfb055a9fa8c96e7",
         "type": "github"
       },
       "original": {

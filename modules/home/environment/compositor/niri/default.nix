@@ -84,7 +84,7 @@ in
       spawn-at-startup = [
         {
           command = [
-            "uwsm"
+            "${pkgs.uwsm}/bin/uwsm"
             "finalize"
             "FINALIZED=\"I'm here\""
             "WAYLAND_DISPLAY"
@@ -93,7 +93,7 @@ in
 
         {
           command = [
-            "uwsm"
+            "${pkgs.uwsm}/bin/uwsm"
             "app"
             "xwayland-satellite"
           ];
@@ -302,7 +302,7 @@ in
         "Print".action.screenshot = { };
 
         "Alt+Q".action.spawn = [
-          "uwsm"
+          "${pkgs.uwsm}/bin/uwsm"
           "stop"
         ];
 

@@ -6,8 +6,17 @@
 }:
 let
   cfg = config.programs.vcs;
+  inherit (lib) types;
 in
 {
+  options.programs.vcs.git = {
+    enable = lib.mkOption {
+      type = types.bool;
+      default = true;
+    };
+    package = lib.mkPackageOption pkgs "git" { };
+  };
+
   config = lib.mkIf cfg.git.enable {
     programs.git = {
       enable = true;

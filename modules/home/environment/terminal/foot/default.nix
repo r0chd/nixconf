@@ -7,6 +7,7 @@ in
     enable = cfg.enable && cfg.program == "foot";
     settings = {
       main.term = "xterm-256color";
+      csd.preferred = "none";
     };
   };
 }

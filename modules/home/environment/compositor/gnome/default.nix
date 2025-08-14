@@ -19,7 +19,7 @@ with lib.hm.gvariant;
     programs.gnome-shell = {
       enable = true;
       extensions = [
-        { package = pkgs.gnomeExtensions.burn-my-windows; }
+        #{ package = pkgs.gnomeExtensions.burn-my-windows; }
         { package = pkgs.gnomeExtensions.paperwm; }
       ];
     };

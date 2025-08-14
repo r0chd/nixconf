@@ -23,16 +23,6 @@ in
       default = null;
     };
     email = lib.mkOption { type = types.nullOr lib.types.str; };
-
-    git.enable = lib.mkOption {
-      type = types.bool;
-      default = true;
-    };
-
-    jj.enable = lib.mkOption {
-      type = types.bool;
-      default = true;
-    };
   };
 
   config.programs.ssh.matchBlocks = lib.mkIf (cfg.identityFile != null) {

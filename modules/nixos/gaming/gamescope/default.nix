@@ -51,7 +51,7 @@ in
         gamescope "''${gamescopeArgs[@]}" -- steam "''${steamArgs[@]}" &
         GAMESCOPE_PID=$!
 
-        FINALIZED="I'm here" WAYLAND_DISPLAY=gamescope-0 uwsm finalize
+        FINALIZED="I'm here" WAYLAND_DISPLAY=gamescope-0 ${pkgs.uwsm}/bin/uwsm finalize
 
         wait $GAMESCOPE_PID
       '')

@@ -33,14 +33,14 @@ in
   config = lib.mkIf cfg.enable {
     wayland.windowManager = {
       hyprland.settings = {
-        exec-once = [ "uwsm app ${programExe}" ];
-        bind = [ "$mainMod+Shift, RETURN, exec, uwsm app ${programExe}" ];
+        exec-once = [ "${pkgs.uwsm}/bin/uwsm app ${programExe}" ];
+        bind = [ "$mainMod+Shift, RETURN, exec, ${pkgs.uwsm}/bin/uwsm app ${programExe}" ];
       };
 
       sway.config = {
-        startup = [ { command = "sway workspace 1; uwsm app ${programExe}"; } ];
+        startup = [ { command = "sway workspace 1; ${pkgs.uwsm}/bin/uwsm app ${programExe}"; } ];
         keybindings = {
-          "Mod1+Shift+Return" = "exec uwsm app ${programExe}";
+          "Mod1+Shift+Return" = "exec ${pkgs.uwsm}/bin/uwsm app ${programExe}";
         };
       };
     };
@@ -48,7 +48,7 @@ in
       spawn-at-startup = [
         {
           command = [
-            "uwsm"
+            "${pkgs.uwsm}/bin/uwsm"
             "app"
             "${programExe}"
           ];
@@ -56,7 +56,7 @@ in
       ];
 
       binds."Alt+Shift+Return".action.spawn = [
-        "uwsm"
+        "${pkgs.uwsm}/bin/uwsm"
         "app"
         "${programExe}"
       ];

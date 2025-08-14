@@ -18,12 +18,10 @@ in
   config = {
     wayland.windowManager.hyprland = {
       inherit (cfg) enable;
+      plugins = [ pkgs.hyprscroller ];
+
       settings = {
-        plugin.hyprscrolling = {
-          column_width = 0;
-          fullscreen_on_one_column = true;
-          explicit_column_widths = "0.333, 0.5, 0.667, 1.0";
-        };
+        layerrule = [ "noanim, moxnotify" ];
 
         input = {
           kb_layout = "us";
@@ -44,6 +42,14 @@ in
 
         general = {
           border_size = 1;
+          layout = "scroller";
+        };
+
+        plugin.scroller = {
+          column_default_width = "one";
+          center_row_if_space_available = true;
+          column_widths = "onethird onehalf twothirds one";
+          window_heights = "onethird onehalf twothirds one";
         };
 
         decoration = {
@@ -94,30 +100,20 @@ in
         "$mainMod" = "ALT"; # Mod key
 
         bind = [
-          # Brightness
-          ", XF86MonBrightnessUp, exec, ${pkgs.brightnessctl}/bin/brightnessctl set +5%"
-          ", XF86MonBrightnessDown, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 5%-"
+          ", XF86MonBrightnessUp, exec, brightnessctl set +5%"
+          ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
 
-          # Manage workspace
           "$mainMod SHIFT, C, killactive,"
           "$mainMod, F, togglefloating,"
-          "$mainMod, H, focusmonitor, -1"
-          "$mainMod, L, focusmonitor, +1"
 
-          "$mainMod SHIFT, H, movewindow, mon:-1"
-          "$mainMod SHIFT, L, movewindow, mon:+1"
+          "$mainMod, H, scroller:movefocus, l"
+          "$mainMod, L, scroller:movefocus, r"
 
-          "$mainMod, left, movefocus, l"
-          "$mainMod, up, movefocus, u"
-          "$mainMod, right, movefocus, r"
-          "$mainMod, down, movefocus, d"
+          "$mainMod SHIFT, H, scroller:movewindow, l"
+          "$mainMod SHIFT, L, scroller:movewindow, r"
 
-          "$mainMod SHIFT, left, movewindow, l"
-          "$mainMod SHIFT, up, movewindow, u"
-          "$mainMod SHIFT, right, movewindow, r"
-          "$mainMod SHIFT, down, movewindow, d"
+          "$mainMod, R, scroller:cyclewidth, next"
 
-          # Switch workspaces with mainMod + [0-9]
           "$mainMod, 1, workspace, 1"
           "$mainMod, 2, workspace, 2"
           "$mainMod, 3, workspace, 3"
@@ -129,15 +125,6 @@ in
           "$mainMod, 9, workspace, 9"
           "$mainMod, 0, workspace, 10"
 
-          # Move to next workspace with mainMod + [M/N]
-          "$mainMod, N, workspace, m-1"
-          "$mainMod, M, workspace, m+1"
-
-          # Move active window to next workspace with mainMod + Shift + [M/N]
-          "$mainMod SHIFT, N, movetoworkspace, r-1"
-          "$mainMod SHIFT, M, movetoworkspace, r+1"
-
-          # Move active window to a workspace with mainMod + SHIFT + [0-9]
           "$mainMod SHIFT, 1, movetoworkspace, 1"
           "$mainMod SHIFT, 2, movetoworkspace, 2"
           "$mainMod SHIFT, 3, movetoworkspace, 3"
@@ -149,12 +136,12 @@ in
           "$mainMod SHIFT, 9, movetoworkspace, 9"
           "$mainMod SHIFT, 0, movetoworkspace, 10"
 
-          "$mainMod, D, exec, mox notify focus"
+          "$mainMod, D, exec, ${pkgs.moxctl}/bin/mox notify focus"
 
           ", XF86AudioRaiseVolume, exec, ${pkgs.pamixer}/bin/pamixer -i 5"
           ", XF86AudioLowerVolume, exec, ${pkgs.pamixer}/bin/pamixer -d 5"
 
-          "$mainMod, q, exec, uwsm stop"
+          "$mainMod, q, exec, ${pkgs.uwsm}/bin/uwsm stop"
         ];
 
         bindm = [
@@ -163,12 +150,6 @@ in
           "$mainMod, mouse:273, resizewindow"
         ];
       };
-    };
-
-    nix.settings = lib.mkIf cfg.enable {
-      substituters = [ "https://hyprland.cachix.org" ];
-      trusted-substituters = [ "https://hyprland.cachix.org" ];
-      trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
     };
   };
 }

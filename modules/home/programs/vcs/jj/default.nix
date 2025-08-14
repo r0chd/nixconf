@@ -2,13 +2,23 @@
   config,
   pkgs,
   lib,
+  pkgs,
   ...
 }:
 let
   cfg = config.programs.vcs;
+  inherit (lib) types;
 in
 {
-  programs.jujutsu = lib.mkIf cfg.jj.enable {
+  options.programs.vcs.jj = {
+    enable = lib.mkOption {
+      type = types.bool;
+      default = true;
+    };
+    package = lib.mkPackageOption pkgs "jujutsu" { };
+  };
+
+  config.programs.jujutsu = lib.mkIf cfg.jj.enable {
     enable = true;
     settings = {
       user = {
@@ -27,6 +37,8 @@ in
 
       # True freedom, fully mutable commits
       revset-aliases."immutable_heads()" = "none()";
+
+      ui.movement.edit = true;
 
       templates = {
         commit_trailers = ''
@@ -47,10 +59,12 @@ in
           ''
             set -euo pipefail
             INPUT=''${1:-"@"}
-            HASH=$(jj log -r "''${INPUT}" -T commit_id --no-graph)
-            HASHINFO=$(${pkgs.git}/bin/git log -n 1 ''${HASH} --oneline --color=always)
+            HASH=$(${cfg.jj.package}/bin/jj log -r "''${INPUT}" -T commit_id --no-graph)
+            HASHINFO=$(${cfg.git.package}/bin/git log -n 1 ''${HASH} --oneline --color=always)
             echo "Pushing from commit ''${HASHINFO}"
-            ${pkgs.git}/bin/git push origin "''${HASH}":refs/for/main
+            BRANCH=$(${cfg.git.package}/bin/git branch --list main master | tr -d ' *')
+            ${cfg.git.package}/bin/git push origin "''${HASH}":refs/for/"''${BRANCH}"
+            ${cfg.jj.package}/bin/jj new
           ''
           ""
         ];

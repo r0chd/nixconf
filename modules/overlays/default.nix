@@ -13,6 +13,7 @@ inputs: config: [
         inherit (final) system;
         inherit (config.nixpkgs) config;
       };
+      hyprscroller = prev.callPackage ./hyprscroller { inherit (prev) hyprland; };
       moxnotify = inputs.moxnotify.packages.${system}.default;
       moxctl = inputs.moxctl.packages.${system}.default;
       moxidle = inputs.moxidle.packages.${system}.default;

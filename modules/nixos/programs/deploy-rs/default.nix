@@ -21,7 +21,7 @@ in
     };
   };
 
-  config = {
+  config = lib.mkIf cfg.enable {
     environment.systemPackages = lib.mkIf (cfg.sshKeyFile != null) [ pkgs.deploy-rs.deploy-rs ];
 
     security.sudo.extraRules = [

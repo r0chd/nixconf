@@ -1,4 +1,8 @@
-{ inputs, profile, ... }:
+{
+  inputs,
+  profile,
+  ...
+}:
 {
   imports = [
     inputs.sysnotifier.homeManagerModules.default
@@ -15,6 +19,6 @@
     udiskie.enable = profile == "desktop";
     sysnotifier.enable = profile == "desktop";
     hyprpolkitagent.enable = profile == "desktop";
-    moxapi.enable = profile == "desktop";
+    #moxapi.enable = profile == "desktop";
   };
 }

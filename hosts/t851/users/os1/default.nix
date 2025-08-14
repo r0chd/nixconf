@@ -14,14 +14,13 @@
         "obsidian"
       ];
     nixGLWrap = [
-      "ghostty"
+      "moxnotify"
+      "hyprland"
       "zen"
     ];
   };
 
   targets.genericLinux.enable = true;
-
-  wayland.windowManager.hyprland.package = config.lib.nixGL.wrap pkgs.hyprland;
 
   programs = {
     obsidian = {
@@ -40,7 +39,6 @@
     firefox.enable = true;
     chromium.enable = true;
     zen-browser.enable = true;
-    ghostty.settings.window-decoration = lib.mkForce false;
 
     editor = "hx";
     vcs = {
@@ -109,7 +107,7 @@
       };
     };
 
-    terminal.program = "ghostty";
+    terminal.program = "foot";
   };
 
   stylix = {
@@ -138,12 +136,6 @@
   };
 
   services = {
-    hyprpolkitagent.enable = lib.mkForce false;
-    moxidle.enable = lib.mkForce false;
-    moxpaper.enable = lib.mkForce false;
-    moxapi.enable = lib.mkForce false;
-    cliphist.enable = lib.mkForce false;
-    sysnotifier.enable = lib.mkForce false;
     yubikey-touch-detector.enable = true;
     gc = {
       enable = true;
@@ -151,5 +143,11 @@
     };
   };
 
-  home.packages = builtins.attrValues { inherit (pkgs) slack signal-desktop google-cloud-sql-proxy; };
+  home.packages = builtins.attrValues {
+    inherit (pkgs)
+      slack
+      signal-desktop
+      google-cloud-sql-proxy
+      ;
+  };
 }

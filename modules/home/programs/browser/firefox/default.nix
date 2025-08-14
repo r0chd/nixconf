@@ -2,18 +2,28 @@
   pkgs,
   inputs,
   config,
+  lib,
   ...
 }:
 {
   programs.firefox = {
+    package = lib.mkIf config.programs.gnome.enable (
+      pkgs.firefox.override {
+        nativeMessagingHosts = [
+          pkgs.gnome-browser-connector
+        ];
+      }
+    );
     profiles."${config.home.username}" = {
-      extensions.packages = with inputs.firefox-addons.packages.${pkgs.system}; [
-        ublock-origin
-        sponsorblock
-        darkreader
-        vimium
-        youtube-shorts-block
-      ];
+      extensions.packages = builtins.attrValues {
+        inherit (inputs.firefox-addons.packages.${pkgs.system})
+          ublock-origin
+          sponsorblock
+          darkreader
+          vimium
+          youtube-shorts-block
+          ;
+      };
 
       search = {
         engines = {

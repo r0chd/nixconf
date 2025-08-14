@@ -19,16 +19,17 @@
               | from json
               | if ($in | default [] | where value =~ '^-.*ERR$' | is-empty) { $in } else { null }
           }
-
           let zoxide_completer = {|spans|
               $spans | skip 1 | ${pkgs.zoxide}/bin/zoxide query -l ...$in | lines | where {|x| $x != $env.PWD}
           }
-
+          let jj_completer = {|spans|
+              ${pkgs.jujutsu}/bin/jj util completion nushell ($spans | skip 1 | str join ' ')
+              | from json
+          }
           let external_completer = {|spans|
               let expanded_alias = scope aliases
               | where name == $spans.0
               | get 0.expansion
-
               let spans = if $expanded_alias != null {
                   $spans
                   | skip 1
@@ -36,14 +37,13 @@
               } else {
                   $spans
               }
-
               match $spans.0 {
                   __zoxide_z => $zoxide_completer,
                   __zoxide_zi => $zoxide_completer,
-                  _ => $carapace_completer
+                  jj => $jj_completer,
+                  * => $carapace_completer
               } | do $in $spans
           }
-
           $env.config = {
             show_banner: false
             edit_mode: "vi"

@@ -22,6 +22,7 @@ in
   };
 
   config = {
+    nixpkgs.config.nixGLWrap = [ "moxpaper" ];
 
     services = {
       hyprpaper.enable = lib.mkForce false;

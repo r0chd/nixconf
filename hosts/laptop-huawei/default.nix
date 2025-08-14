@@ -10,11 +10,7 @@
     systemUsers
     |> lib.mapAttrs (
       _user: value: {
-        extraGroups = lib.mkIf (
-          value.root.enable
-          && config.programs.deploy-rs.enable
-          && config.programs.deploy-rs.sshKeyFile != null
-        ) [ "video" ];
+        extraGroups = lib.mkIf (value.root.enable) [ "video" ];
       }
     );
 
@@ -27,6 +23,7 @@
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
+    ./gpu.nix
   ];
 
   nixpkgs.config.allowUnfreePredicate =
@@ -70,6 +67,14 @@
 
   hardware = {
     power-management.enable = true;
+    amdgpu = {
+      amdvlk = {
+        enable = true;
+        support32Bit.enable = true;
+        supportExperimental.enable = true;
+      };
+      initrd.enable = true;
+    };
   };
 
   environment = {

@@ -30,7 +30,7 @@ in
         inherit modifier;
         gaps.outer = 7;
 
-        startup = [ { command = "uwsm app ${pkgs.autotiling-rs}/bin/autotiling-rs"; } ];
+        startup = [ { command = "${pkgs.uwsm}/bin/uwsm app ${pkgs.autotiling-rs}/bin/autotiling-rs"; } ];
 
         keybindings = {
           "${modifier}+Shift+c" = "kill";
@@ -83,7 +83,7 @@ in
           "XF86AudioRaiseVolume" = "exec pamixer -i 5";
           "XF86AudioLowerVolume" = "exec pamixer -d 5";
 
-          "${modifier}+q" = "exec uwsm stop";
+          "${modifier}+q" = "exec ${pkgs.uwsm}/bin/uwsm stop";
         };
       };
   };

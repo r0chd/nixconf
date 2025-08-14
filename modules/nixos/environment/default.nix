@@ -15,8 +15,8 @@
   config = lib.mkIf (profile == "desktop") {
     environment = {
       loginShellInit = lib.mkIf (!config.system.displayManager.enable) ''
-        if uwsm check may-start && uwsm select; then
-            exec uwsm start default
+        if ${pkgs.uwsm}/bin/uwsm check may-start && ${pkgs.uwsm}/bin/uwsm select; then
+            exec ${pkgs.uwsm}/bin/uwsm start default
         fi
       '';
       variables = {
