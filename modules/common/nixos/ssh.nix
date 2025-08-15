@@ -4,10 +4,10 @@ let
   keys = {
     "deploy-rs" = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP7UVzSfFNFq1v392BK1+PUyD08L6/hMdF2sF5yGp+IV deploy-rs@laptop-huawei"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHpfYyLblWb0YI/gGzH09KMuK7JcjXRatTfdgxCcfp/9 deploy-rs@laptop"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINxG93Ge43zI7fw/tzzZwtNefNnLgPTZTEdTXwi+LEI9 deploy-rs@laptop"
     ];
     "unixpariah@laptop" =
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIt5tKaE1UZuWe22amvR0gpW0HMmvBY5W5E+Bpw6AswA unixpariah@laptop";
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEHM/K2ZbUnI91wCATV/kVXEWn02nJ9xsDygb9u1EmWx unixpariah@laptop-huawei";
     "unixpariah@laptop-huawei" =
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIHlMzZUr5wkZj2AFsQEX2v3Kfaj30q77YmAAkdlH/Fi unixpariah@laptop";
     "os1@t851" =

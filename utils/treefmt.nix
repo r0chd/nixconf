@@ -10,9 +10,9 @@
       strict = true;
     };
     deadnix.enable = true;
-    statix = {
-      enable = true;
-      package = inputs.statix.packages.${pkgs.system}.default;
-    };
+    #statix = {
+    #  enable = true;
+    #  package = inputs.statix.packages.${pkgs.system}.default;
+    #};
   };
 }

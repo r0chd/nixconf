@@ -235,7 +235,11 @@
       ];
 
       formatter = forAllSystems (
-        pkgs: (treefmt.lib.evalModule pkgs ./utils/treefmt.nix).config.build.wrapper
+        pkgs:
+        (treefmt.lib.evalModule pkgs {
+          imports = [ ./utils/treefmt.nix ];
+          _module.args = { inherit inputs; };
+        }).config.build.wrapper
       );
     };
 

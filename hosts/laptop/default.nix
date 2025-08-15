@@ -19,13 +19,13 @@
       "steam-unwrapped"
     ];
 
-  #sops.secrets = {
-  #  deploy-rs = {
-  #    owner = "deploy-rs";
-  #    group = "deploy-rs";
-  #    mode = "0440";
-  #  };
-  #};
+  sops.secrets = {
+    deploy-rs = {
+      owner = "deploy-rs";
+      group = "deploy-rs";
+      mode = "0440";
+    };
+  };
 
   documentation.enable = true;
 
@@ -35,7 +35,7 @@
   };
 
   programs = {
-    #deploy-rs.sshKeyFile = config.sops.secrets.deploy-rs.path;
+    deploy-rs.sshKeyFile = config.sops.secrets.deploy-rs.path;
     thunderbird.enable = true;
     nix-index.enable = true;
     wshowkeys.enable = true;

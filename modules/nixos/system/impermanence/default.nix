@@ -183,8 +183,8 @@ in
       };
       environment.PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}/bin:${pkgs.sudo}/bin:${pkgs.coreutils}/bin:$PATH";
       script = lib.concatMapStrings (user: ''
+        chown -R ${user}:users /home/${user}
         if [ -L "${cfg.mountPoint}/home/${user}/.local/state/nix/profiles/home-manager" ]; then
-          chown -R ${user}:users /home/${user}
           HOME_MANAGER_BACKUP_EXT="bak" sudo -u ${user} ${cfg.mountPoint}/home/${user}/.local/state/nix/profiles/home-manager/activate
         fi
       '') (lib.attrNames systemUsers);

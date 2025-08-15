@@ -22,6 +22,7 @@ in
   ];
 
   sops = {
+    environment.HOME = "/var/empty";
     secrets =
       systemUsers
       |> builtins.attrNames
