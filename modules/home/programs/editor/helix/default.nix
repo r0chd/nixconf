@@ -276,6 +276,20 @@ in
             name = "jsonnet";
             auto-format = true;
           }
+          {
+            name = "solidity";
+            auto-format = true;
+            formatter = {
+              command = "forge";
+              args = [
+                "fmt"
+                "-"
+                "--raw"
+                "--threads"
+                "0"
+              ];
+            };
+          }
         ];
 
         grammar = [

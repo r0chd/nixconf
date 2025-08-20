@@ -1,0 +1,51 @@
+tailscale: ENC[AES256_GCM,data:VO7HkoFBZqkb85QZdBSwt8QTnHWXH01WMEifVwOF7/TM+yzTePRgfQ3UZlgnAx8DWpkRsjezSLiHTSTr5xA=,iv:Cu58X6W5lX1n6+dUYEFVvkLD72TeC6zpHwdg22r6NeU=,tag:IajZ9EWTjebPdStiPN5P/w==,type:str]
+wireless:
+    Saltora: ENC[AES256_GCM,data:HcRhpdwB845Xq2xF7Y461lJanF2HkFnDbQqYnNTQQJlK3zISlnIvKBPAwrCWIn+3zQ7XI1pPa8UelCSLEt1sVoEItEp7fv816g2G+t8acH6XZOqRtNWbYOHq7cO0g0XlhbldqcM3gIf0OtnhU/D6CCsSuo5syRNYsrsnaEAP3/mYNBZ26hoHbcg8JeZBizZvkdMaNz8hNScxhUFQbdKN/uSyNSobCQW59fYdvDcbpoLcLHndEdfjed15qhE3BCHd7r1hyqUgOLY/Xl01KuPF1msDwl22Rxzsw4niuaJMTmLsqX1WHcAkQZArW5xGJlsHSQ18i7JTnBb5SGfamhgOJPv6ChCchDNirhNvJJ2w7Kjb2rdz2CJZ77x+EO9ZvU29mkSRyED+mwIjzO+jqTnzRUo0GQczlkpiXf3EmdenrgWvxNUnDQVAj8lKOt6c1uSLwPMOM6twyZhtZOHfbbQCQAFEreDlgHStSOU3qtyRND4HBntHSY8qtoWkbhbas46ZWD6o4/nH0eV5ViLWY2C8uqQprHYk82nKYLCQW8d9cNeu3l77316ELxvbObvPI4gc5/c8O8pgTGyR1iCT3D+9TtCiFnD3ekgX+DdFiZ8h1cfyKjF0ItAh,iv:7a4iu218JyMai9jjaryki7D1XSigFZFNVKEBxoesyL4=,tag:8+2xCSG9jCJPP3Z86sZk0w==,type:str]
+    T-Mobile_5G_HomeOffice_2.4GHz: ENC[AES256_GCM,data:Tjkp/vqs/3c5rg4zQguIDbhXF8G8IA560EzGKHu1nEso8vNsPsLOuabWZScG2R4lYQBCAu6MkusgxhlOSv6NoGE7Va48GBPPbSxhz7cagHUAJWdiPXvTglZQUDIhyemFCohxRY0/XFnHgwdin+5jdGkq4zgLSq4HR7Ov111IO0hClnUEzB9z7pnEjyXxhP0LbUCt1gRvg600NFPQoPDfZ+KzmLOa7FaS57TQBfgH8td+aICxxQ0Tj0ap7ryz9MoWd4d4/0EHPOfY6eyekKI5X51QuR5N1FXTENynEVz3MQ0h4yRvnTrVU5k2AFcrdPrjkCVk5md7+587FwCpArMD6ggXIB0f3qMHvUswomUsS5IWD6No7GLJa/YzKse6PHqtqTxNDvOxqaRufAFgncdDyBshNoVzZ/uS93PeuXxwV0ACDuFP/m1KUfD0/5rqfIE6BBULsaHVtIhDJyt2VonuHZjsg8LJ+hpLeMZufKFhZ1syI1VRxM+pdMpJ47cWmE0J+Ze+PBhQNl1bLWzChLJ9Es9aYU3g4E8OyHOsFBo6xi9ahgA5WU2qXlokJ8RUTbkF/JyaogkVhUpcaU3VqgD7FfQvG2ZhcahJbSGB,iv:DxrFabxtMQdOHgoVTqZmFOtwPZnZw5g3ve/fmx4uYC0=,tag:jn/ztEMkeIIs6PxfMKWe8A==,type:str]
+    T-Mobile_5G_HomeOffice_2.4GH_EXT: ENC[AES256_GCM,data:3u3yAuH4fB28POGLR33vbFswNnY8ndh9l6mnEosGY7bmNgZjlbyVV2X2F+xnSw+CARGnkepQ2jmR5dqhU3mQV0P4YaVVMiiJp84UR+p+KctU1AihLdWslSx8reiEAphY415hqaNtTuE8rq+ywkYmVt9d2IHODTPc0NxWcq4r7AVjG9ZOF4URx0DkSs+SwhvMOcT6drN5BtoTHI2AamsvttqsXSd4L9f2ck4Iu4i7PB6BA+PfvDcgwL8B/p6w+te7Z8jaeY9BzNx1YZmlvgeC9gireY4Q6x62P0mIMzqISoyQjhapGlDfMhcB/CJfMBfaQwkvIQwEIMH6206reknw+NBcU3rk6SAyWqKcFf4PbmLgXOwMTZhq0U7iLCmi+O5lk+wSmrJKDPilAoR+lMhb6DvNZQehg4568UmBGw+LAOtzlXmmALEawX4kmxDa53lwXWTkRqqqeJ5QNeS8hPm9dRY+7rohbcm3NqWnX5BdEJDvcCqfbr0MIIGjHPTKhCCqE60LjuzwfA==,iv:RFPlhJGPBQbg+Xrm4ZG0q8PwllcF3obGqcnUtkEFIk8=,tag:ENSa6v93uyTMkK71UC0qDA==,type:str]
+    T-Mobile_5G_HomeOffice_5GHz: ENC[AES256_GCM,data:MTg3Aw0u7Xue8dyNSvWyU3FfwiOwCAOeESmE2uKD3zhzfoNZ4wIdQUw6U+0TrR84AoGFi22b/j/Ek4S7UwV/2Yl9c/D5EFHmqO1Q8V62TNJ6rZQMCkVLpSiRc0o6Odtw+HA9o0CWs1JkYyl463ymav5Qr4xo0QNCNaJKlfqFwc4TZIFNVQwkQ52TG5vMX+A8AOKtBdoKdVKirdUd/Iw7NJNvr7vePGOL5rpr0SW7OYb7IoE2HIe+roFrrmBmqrrnN1aoDjm1t3Ok3+eIWgl3iHpSpq6LbVJN9XJBE8hS7TwGaw2gqkKPCjXiK52ugvorEjlnY9tjC+WTRCdj0AsfJkkMcMSJ6ELQtW/eeRyVCAnhg5CvvFo1N1P6PPEZ/YdBHCVzK36uqAT/fFlyBQ69AZ0aQvGAdqBX78LlwGXf1kmA3EPOdaHZmKw3bselcxE0ewyKrl8oPL/ePmyFFe5n9ivglSOeHLaZi0iSq7EPs7nNe8Ln+fhugpGyE1XB/66tyXD2fLrT7GDgwCXaZTjTMkRB431EKPExOClzYHrHUrnRphBdArxo+/vUieKuV8jQ/9jxw8itOZa1bFiWy6UivickYjrgsHBUpkza,iv:2lsiQZY71bQk5oJjgjLLXol0cTEaJCmCXDusBo5TqRQ=,tag:1ZM5+ftkIyGJtwUiBDzlLQ==,type:str]
+    T-Mobile_5G_HomeOffice_5GHz_EXT: ENC[AES256_GCM,data:uE9XzZdduYHiI+Gn4welcldh1VhtgHN1ysraw7PmxA+gfa5Wyq2xw4v3pBotmjaspi8JsE1wRIFjtxDyRtCaCOqyH+oh6LxNU9E77SPNdj575tAFt0JzXhHXbLzETaGXLbT39NqaZGHLaUzDYp2CLGDRN/21qhHF80BvvbcCo7E0pRyKyfx4K8pLSP1z8BS15ehGoaKIlPwD7sgTpwQGXDSoC6AAty6KYkTkSwfE6SjVLBtIBmEngNcGUBXYTDuHgGdwDPW7gUZyflb1ivG393LOI0rHSBo93mFFKKCP7gXdkj6vVtjr/zj64mBiQ+SN1lAufh6hK+04zGsGxJGw16Sv2sNiQDNxTkRYtWj5L522l/byGWw83bN+PHtqPP5cw2woavOw9DVaeKX8KA3GLRgxeNLqltyVBZrNUYYo8YS3UT0YMxbbyjsOlve369yDlEZQYE0MrjM02TxFig11oPiVEUBlX1KeDXQcueS5x8pA9SzlO3dM28aM380ccCIMH59cTr3cLw==,iv:oX6nxRyPLTsUoN2c9drK1fPVob713npT/I9Xq6+rtRE=,tag:IKwRJAfMGi7x68j4wxBfeA==,type:str]
+    Internet_Domowy_5G_660ECA: ENC[AES256_GCM,data:LG1c8mMb0hPmW4dmC5f+qHOCoY7ElGHxsqWFCiZwrQAJQgXVb16yv3j1SbGcx7wWWx4hCHbnZqKrgq3dD8HeDK37C7DDbElTt7FDaWZZ8VxVv62ddmtBipAQ6pE92qBAwibvXqC+pDbmU7QARQNNKzG2FkUXGqIEWBZZxbtLbfO3ku9ypAlmBzJeZ9n4/trU3vVALXR39ousvWUfr4ToxeoPtxyZdn1RxxojIo8f+SvCuRDgS/NeCRkh/tuCibLoj00nqzmczEIqewEzupElDh3i3x3cXW3+rG342sX3c2JLPlkzvOFt8vb849Tw2wlM1g4KAiszsK306KpvE9WklpKvadNJ2yjboi6xU9DtiZuvBJlZQkLs/MLmi6vVHfE897xHbDNd9vdmbAWFFx5nQLnkbm4ZACsd9XDK72J+0qKOEV8tpOLRpkqm9aQzX2QIMfRp6AtWYUKg77N/Dy56ZLnCWNXa+HMzcw/zmSHPmuseRR+TGeFbFXYPb2TDP5LAMETD6rc1fSl8zpnNdMXg92FRUVbkVsd9DvOUwTRmP0Is4Kp8ISHNwvGoZ5b/x4OoYirkfVHOeDDAdwR0lSWmWx+JJsofXOo0vnjmBbI=,iv:fZQZjYbQInZZo18c8jCpUt/O5MY64drXoYFKEQCCY/A=,tag:EgwmlIZ+yw4yctj2/41FMw==,type:str]
+    Internet_Domowy_660ECA: ENC[AES256_GCM,data:kn+7aXrE32f6a6al//vAH3WAk8NmiH0fdqYQiZV0sEazb6H8Q8pgWy5hoYsJPAelyj8GrFWoQW8GvHq4cuMKEGzsQJafPlUExpIhyeEySb9dUhyO+7g2cDtY/93gwqkUOJ38cUT/mhhF+cZ9vGDLKRrfEQ6W1mMKO+dzVyG4wk/iCWenb3TVcmkEAibysRV786O6phwFNvly5Iae7g8TkXBvTez4uaa9GzKCS9rD8lm7RzqV1ygnNOm8NTg6lc4WtmjbLR8eWYrkh+kLiUKBCcfxOcEZWh8nZESfQJGCD4YeF6FY0vUoGnC30PUU9RReF3aPUwH/6qqnE3hlbJU9XKkXimhQEGkfGFEyKL+8Zad4VWXVKdtzlDbVysYOiSd+BSifv5PgtQZ4vhSj1ZmJj30hxLOqk3nsoTfuUadKMma4Df6uInuasosaoefJ+TkVHr6y0wMa1PMSWkbvMPh/m2VaVYRY+A2e7bL/8blJynxUoV587GzEbximrsJoBcr9EoA77xY3hrqdjho2G5f9bS4heFowIzfIYgccWla0slWhxbc0E/0iMRfSKemHocpu8NZHkiGdrugLmPajmzE4ygOZBwtQjOPsLI9Yxuk=,iv:lfNd8jC+GGs6SAfMVR33nXCiFxotBCkzBswWKnAp6CQ=,tag:Eg5ppLdM/bu1sI0YI+BIiw==,type:str]
+sops:
+    age:
+        - recipient: age1lpg2ahjc4ashmfc27f03sggwr7fy2x6lfemvsvutl49cgsdwvsysw7x4th
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBNUmVyMnZud2QzWVdVWjBh
+            N1E5R0J6MVl4UVhZdWIwMmgxejY4RGJ6MEY0CkpOQS9vWTJFNmd0RkJ0ZjNvWklr
+            eHV5ZTZRTWJoVHo2VllqNURvRjNLYzAKLS0tIFJENjBmRmZ4V3ZsSDIvR20xVFdD
+            UGh1OHFhRStMSnZ1NU5JL2lBUmFUT0EKtp9P65oGsY+0N6yQ+skFrrZVpN9O8qaQ
+            ZF4kt1d9RukM+Mr2LAsvPtWji5CnrcidEN3MyzZXGgSRhll9kZasTA==
+            -----END AGE ENCRYPTED FILE-----
+        - recipient: age14tnez5sz8j37864lfvrckslrn6sl34asy0m7cglpyy7rwaf27g3qhxl90l
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAwdVNMbHc3ZTFRaGNteFV6
+            d0xmRVpOb2d1YzZNSFpnNFNucUtPajdnU1ZNCnBjWTNwZjVTcWx6Ry9CUjRxWVVm
+            K3FqM0tUNnF2VnR6QXNRVkFpZjlKb0EKLS0tIE9ERDRVYkF6cC9WamtrNmFjekN1
+            WnpET2tpVHdIa0g3REJibmdManQxajQKY6StkduUvFkfHXBj/sxkpAakTIjoSs1j
+            4VcDvCa7ZbNN/CNXfAhQak4JNQlg+33eyUPtRnstqKEgizcoApHcCQ==
+            -----END AGE ENCRYPTED FILE-----
+        - recipient: age1xn5a8wuwt3c7r5njtlzwfwuvryanrtr5uvcgzazwh77pap0vu38qsm24lg
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA0MU9RYmNPcXZkZWlld0F4
+            NitnQUJJeWo3ckRBMTMvWEhnOFJkS2FTSnc4Ck9xUGNRVll1a2E5MGQvK0w3RXhy
+            MFVjOVpHY2tFWEYyU05oT1dyRkhxTFEKLS0tIDBWaGZVTjlNb3RXNW03QVVDeitt
+            SFJoVHFpZm1LNy9hZnFDRWZSMkpwdE0KHpqHpCWROHkIEnnbS/W0bE8+0XF+s7p/
+            XQQT6FjFJeeMJBBtiK9GYw0+rt6cG/LPsO/PIqBET9KGNYUkcFiT8A==
+            -----END AGE ENCRYPTED FILE-----
+        - recipient: age1npphzfaarxvv2flkmdkm777gafuhvmsh38020432ju9v0aznh55sd0ce3s
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBzR3h5UG43SkZCWFd6Ukdl
+            V0VTQ21OOUY0bURUL01zeEl2U1pJR1FmL3hVCnhad1pvRWtjNU1uN0N6ajVqVkow
+            b05vMnhKSUxEaWRyeThHK1RuUmFsa0kKLS0tIEJTWUU5QzJZN3IvTm9WNlBRUXQ0
+            Zk8vVTRYZ0lLYTZDUkliU29Ga1RTc0kKA7AoxW0wo0n7KLITv9ifj2pqCuxGH6P/
+            HoaEZ/nQN7/EV12HTMHwG8maf2eTyNKtCJFldU+600iw2z97IDAMrA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-08-22T19:53:45Z"
+    mac: ENC[AES256_GCM,data:T/DzOHjzxIjpzgue9mWS/kRg/NiX2E7VpugN4bWqAZYCo8Dufq6MgbCEqUoauVAj5a2sN1k4WoVA6Y2KARRN+CdA3xjiuXxOzCmCdc8TUqDOUKUe02LKNv/epp2N9qJLRMnwkyAXIJe+1R9Wa38oRRliEpk3OwDv9UcKx88Smt0=,iv:Jp54Uw/leMJ0K2KfDXfcNd5v2BkzK2NyG9nLoEDiZZI=,tag:/wQgGOZOQczRCsfT8OrItQ==,type:str]
+    unencrypted_suffix: _unencrypted
+    version: 3.10.2

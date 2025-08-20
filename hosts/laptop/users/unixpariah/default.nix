@@ -14,44 +14,10 @@
       "obsidian"
     ];
 
-  #sops.secrets = {
-  #  "yubico/u2f_keys".path = "/home/unixpariah/.config/Yubico/u2f_keys";
-  #  "ssh_keys/id_yubikey".path = "/home/unixpariah/.ssh/id_yubikey";
-  #  nixos-access-token-github = { };
-  #  github-api = { };
-  #  atuin_key = { };
-  #  gcloud = { };
-
-  #  "moxapi/t851" = { };
-  #  "moxapi/laptop" = { };
-  #  "moxapi/laptop-huawei" = { };
-  #  "moxapi/password" = { };
-  #};
-
-  #nix.access-tokens = [ config.sops.placeholder.nixos-access-token-github ];
+  sops.secrets = {
+  };
 
   services = {
-    #moxapi.settings = {
-    #  password = config.sops.secrets."moxapi/password".path;
-    #  hosts = {
-    #    t851 = {
-    #      ip = "http://t851:8000";
-    #      api_key = config.sops.secrets."moxapi/t851".path;
-    #    };
-    #    laptop = {
-    #      ip = "http://laptop:8000";
-    #      api_key = config.sops.secrets."moxapi/laptop".path;
-    #    };
-    #    laptop-huawei = {
-    #      ip = "http://laptop-huawei:8000";
-    #      api_key = config.sops.secrets."moxapi/laptop-huawei".path;
-    #    };
-    #    t85 = {
-    #      ip = "http://t85:8000";
-    #      api_key = config.sops.secrets."moxapi/laptop-huawei".path;
-    #    };
-    #  };
-    #};
     impermanence.enable = true;
     yubikey-touch-detector.enable = true;
   };
@@ -91,17 +57,6 @@
 
   environment = {
     outputs = {
-      "eDP-1" = {
-        position = {
-          x = 0;
-          y = 1439;
-        };
-        refresh = 144.0;
-        dimensions = {
-          width = 1920;
-          height = 1080;
-        };
-      };
       "HDMI-A-1" = {
         position = {
           x = 0;
@@ -113,6 +68,18 @@
           height = 1440;
         };
         scale = 1.25;
+      };
+
+      "eDP-1" = {
+        position = {
+          x = 320;
+          y = 1440;
+        };
+        refresh = 144.0;
+        dimensions = {
+          width = 1920;
+          height = 1080;
+        };
       };
     };
 

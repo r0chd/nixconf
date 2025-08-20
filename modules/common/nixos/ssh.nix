@@ -9,7 +9,7 @@ let
     "unixpariah@laptop" =
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEHM/K2ZbUnI91wCATV/kVXEWn02nJ9xsDygb9u1EmWx unixpariah@laptop-huawei";
     "unixpariah@laptop-huawei" =
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIHlMzZUr5wkZj2AFsQEX2v3Kfaj30q77YmAAkdlH/Fi unixpariah@laptop";
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF3XG/jXx/zYi7L8H3/KnePWbFg9t44JHHjAn1LZ2eyu unixpariah@laptop-huawei";
     "os1@t851" =
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ/oAHQPuhH41A/PFgmF138j0eWkmZo0i2Jtl/OMBILD os1@qed.ai";
   };
@@ -54,7 +54,7 @@ let
   };
 
   # Automatically inject deploy-rs keys into all hosts
-  hosts = lib.mapAttrs (_host: users: users // { "deploy-rs" = keys."deploy-rs"; }) baseHosts;
+  hosts = lib.mapAttrs (_host: users: users // { inherit (keys) deploy-rs; }) baseHosts;
 in
 {
   users.users = lib.genAttrs (hosts.${config.networking.hostName} |> builtins.attrNames) (user: {

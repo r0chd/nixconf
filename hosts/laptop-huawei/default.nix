@@ -1,52 +1,20 @@
 {
   pkgs,
-  lib,
   config,
-  systemUsers,
   ...
 }:
 {
-  users.users =
-    systemUsers
-    |> lib.mapAttrs (
-      _user: value: {
-        extraGroups = lib.mkIf (value.root.enable) [ "video" ];
-      }
-    );
-
-  boot.initrd.kernelModules = [ "amdgpu" ];
-  hardware.graphics = {
-    enable32Bit = true;
-    extraPackages = builtins.attrValues { inherit (pkgs) amdvlk; };
-  };
-
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
-    ./gpu.nix
   ];
 
-  nixpkgs.config.allowUnfreePredicate =
-    pkgs:
-    builtins.elem (lib.getName pkgs) [
-      "nvidia-x11"
-      "steam"
-      "steam-unwrapped"
-    ];
-
   sops.secrets = {
-    k3s = { };
     deploy-rs = {
       owner = "deploy-rs";
       group = "deploy-rs";
       mode = "0440";
     };
-  };
-
-  virtualisation = {
-    docker.enable = true;
-    libvirtd.enable = true;
-    buildkitd.enable = true;
   };
 
   services = {
@@ -67,14 +35,6 @@
 
   hardware = {
     power-management.enable = true;
-    amdgpu = {
-      amdvlk = {
-        enable = true;
-        support32Bit.enable = true;
-        supportExperimental.enable = true;
-      };
-      initrd.enable = true;
-    };
   };
 
   environment = {
@@ -108,12 +68,6 @@
 
   programs = {
     deploy-rs.sshKeyFile = config.sops.secrets.deploy-rs.path;
-    nix-index.enable = true;
-  };
-
-  gaming = {
-    steam.enable = true;
-    heroic.enable = true;
   };
 
   networking = {
@@ -130,10 +84,6 @@
       interval = 3;
     };
     impermanence.enable = true;
-
-    k3s = {
-      tokenFile = config.sops.secrets.k3s.path;
-    };
   };
 
   time.timeZone = "Europe/Warsaw";

@@ -158,6 +158,7 @@ in
         "/usr/systemd-placeholder"
         "/var/lib/systemd/coredump"
         "/var/lib/nixos"
+        "/var/lib/journal"
         {
           directory = "/var/lib/nixconf";
           user = "root";

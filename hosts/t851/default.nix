@@ -14,6 +14,9 @@
     systemPackages = builtins.attrValues { inherit (pkgs) pamtester niri; };
 
     etc = {
+      "pam.d/hyprlock".text = ''
+        auth include login
+      '';
       "hosts".text = ''
         127.0.0.1 localhost
         127.0.1.1 t851

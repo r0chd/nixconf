@@ -22,7 +22,6 @@ in
   ];
 
   sops = {
-    environment.HOME = "/var/empty";
     secrets =
       systemUsers
       |> builtins.attrNames
@@ -58,43 +57,46 @@ in
     shellAliases.opensops = "SOPS_AGE_KEY_FILE=\"${config.sops.age.keyFile}\" sops /var/lib/nixconf/hosts/${config.networking.hostName}/secrets/secrets.yaml";
   };
 
-  systemd.services.sopsGenerateKeys = {
-    description = "Generate SOPS age keys from SSH keys";
+  systemd = {
+    services = {
+      sops-generate-root-key = {
+        description = "Generate SOPS age keys from SSH keys";
 
-    wantedBy = [ "sysinit.target" ];
-    after = [ "sops-install-secrets.service" ];
-    before = [ "activate-home-manager.service" ];
-    requiredBy = [ "activate-home-manager.service" ];
-    unitConfig.DefaultDependencies = "no";
+        after = [ "local-fs.target" ];
+        before = [ "sops-install-secrets.service" ];
+        requiredBy = [ "sops-install-secrets.service" ];
+        unitConfig.DefaultDependencies = "no";
 
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      User = "root";
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          User = "root";
+        };
+
+        script = ''
+          mkdir -p "$(dirname "${root}/.config/sops/age/keys.txt")"
+          ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i "${root}/.ssh/id_ed25519" > "${root}/.config/sops/age/keys.txt"
+        '';
+      };
     };
 
-    script =
-      let
-        escapedKeyFile = lib.escapeShellArg "${root}/.config/sops/age/keys.txt";
-        sshKeyPath = "${root}/.ssh/id_ed25519";
-      in
-      ''
-        if [[ -f "${sshKeyPath}" ]]; then
-          mkdir -p "$(dirname ${escapedKeyFile})"
-          ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshKeyPath} > ${escapedKeyFile}
-        fi
-      ''
-      + lib.concatMapStrings (
-        user:
-        let
-          escapedUserKeyFile = lib.escapeShellArg "/home/${user}/.config/sops/age/keys.txt";
-          sshUserKeyPath = "/home/${user}/.ssh/id_ed25519";
-        in
-        ''
-          mkdir -p "$(dirname ${escapedUserKeyFile})"
-          ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${sshUserKeyPath} > ${escapedUserKeyFile}
-          chown -R ${user}:users /home/${user}/.config
-        ''
-      ) (lib.attrNames systemUsers);
+    user.services.sops-generate-user-keys = {
+      description = "Generate SOPS age keys from SSH keys";
+
+      after = [ "local-fs.target" ];
+      before = [ "sops-install-secrets.service" ];
+      requiredBy = [ "sops-install-secrets.service" ];
+      unitConfig.DefaultDependencies = "no";
+
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+
+      script = ''
+        mkdir -p "$(dirname "$HOME/.config/sops/age/keys.txt")"
+        ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i "$HOME/.ssh/id_ed25519" > "$HOME/.config/sops/age/keys.txt"
+      '';
+    };
   };
 }

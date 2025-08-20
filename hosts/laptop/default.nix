@@ -7,7 +7,7 @@
 {
   imports = [
     ./disko.nix
-    ./gpu.nix
+    #./gpu.nix
     ./hardware-configuration.nix
   ];
 
@@ -87,7 +87,6 @@
       id = "31888351";
       actions.unplug.enable = true;
     };
-    root.timeout = 0;
   };
 
   hardware = {

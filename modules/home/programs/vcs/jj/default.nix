@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   lib,
   pkgs,
   ...
@@ -58,13 +57,34 @@ in
           "-c"
           ''
             set -euo pipefail
-            INPUT=''${1:-"@"}
+
+            WIP_FLAG=""
+            INPUT=""
+
+            while [[ $# -gt 0 ]]; do
+              case $1 in
+                -w|--wip|--work-in-progress)
+                  WIP_FLAG="%wip"
+                  shift
+                  ;;
+                *)
+                  INPUT="$1"
+                  shift
+                  ;;
+              esac
+            done
+
+            # Default to "@" if no input specified
+            INPUT=''${INPUT:-"@"}
+
             HASH=$(${cfg.jj.package}/bin/jj log -r "''${INPUT}" -T commit_id --no-graph)
             HASHINFO=$(${cfg.git.package}/bin/git log -n 1 ''${HASH} --oneline --color=always)
             echo "Pushing from commit ''${HASHINFO}"
             BRANCH=$(${cfg.git.package}/bin/git branch --list main master | tr -d ' *')
-            ${cfg.git.package}/bin/git push origin "''${HASH}":refs/for/"''${BRANCH}"
-            ${cfg.jj.package}/bin/jj new
+
+            ${cfg.git.package}/bin/git push origin "''${HASH}":refs/for/"''${BRANCH}''${WIP_FLAG}"
+
+            [ "''${INPUT}" = "@" ] && ${cfg.jj.package}/bin/jj new || true
           ''
           ""
         ];

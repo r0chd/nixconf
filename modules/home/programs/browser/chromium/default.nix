@@ -13,6 +13,7 @@ in
         { id = "mnjggcdmjocbbbhaepdhchncahnbgone"; } # SponsorBlock for YouTube - Skip Sponsorships
         { id = "ddkjiahejlhfcafbddmgiahcphecmpfh"; } # uBlock Origin Lite
         { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # Vimium
+        { id = "nkbihfbeogaeaoehlefnkodbefgpgknn"; } # Metamask
       ];
       commandLineArgs = [
         "--disable-sync"

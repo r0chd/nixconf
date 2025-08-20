@@ -13,5 +13,7 @@
     udisks2.enable = profile == "desktop";
     gnome.gnome-keyring.enable = profile == "desktop";
     userborn.enable = true;
+    orca.enable = false;
+    speechd.enable = false;
   };
 }

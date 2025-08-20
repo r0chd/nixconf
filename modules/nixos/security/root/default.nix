@@ -1,4 +1,8 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  ...
+}:
 let
   cfg = config.security.root;
 in
@@ -6,18 +10,20 @@ in
   options.security.root = {
     timeout = lib.mkOption {
       type = lib.types.int;
-      default = 15;
+      default = 0;
     };
   };
 
   config = {
-    security.sudo = {
-      enable = true;
-      execWheelOnly = true;
-      extraConfig = ''
-        Defaults timestamp_timeout=${toString cfg.timeout}
-        Defaults lecture=never
-      '';
+    security = {
+      sudo.enable = false;
+      sudo-rs = {
+        enable = true;
+        execWheelOnly = true;
+        extraConfig = ''
+          Defaults timestamp_timeout=${toString cfg.timeout}
+        '';
+      };
     };
   };
 }

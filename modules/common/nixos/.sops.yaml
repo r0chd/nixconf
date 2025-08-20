@@ -1,6 +1,6 @@
 keys:
   - &laptop age1lpg2ahjc4ashmfc27f03sggwr7fy2x6lfemvsvutl49cgsdwvsysw7x4th
-  - &laptop-huawei age1tp6dlk5urkw4tahmkcv7dpr57hwxrmhefe7de42ak3h9ckrcgc7q0svyzv
+  - &laptop-huawei age14tnez5sz8j37864lfvrckslrn6sl34asy0m7cglpyy7rwaf27g3qhxl90l
   - &server-0 age1xn5a8wuwt3c7r5njtlzwfwuvryanrtr5uvcgzazwh77pap0vu38qsm24lg
   - &agent-0 age1npphzfaarxvv2flkmdkm777gafuhvmsh38020432ju9v0aznh55sd0ce3s
 creation_rules:

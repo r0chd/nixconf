@@ -18,15 +18,18 @@ in
 
   nixpkgs.overlays = [
     (
-      _final: prev:
-      with prev;
-      builtins.listToAttrs (
-        cfg
-        |> lib.map (value: {
-          name = value;
-          value = config.lib.nixGL.wrap prev.${value};
-        })
-      )
+      _: prev:
+      let
+        wrapAttrs = lib.listToAttrs (
+          cfg
+          |> lib.map (name: {
+            name = name;
+            value = prev.${name};
+          })
+        );
+      in
+      lib.attrsets.mapAttrs (_: pkg: config.lib.nixGL.wrap pkg) wrapAttrs
     )
+
   ];
 }

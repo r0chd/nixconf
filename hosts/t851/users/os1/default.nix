@@ -70,10 +70,27 @@
 
   environment = {
     outputs = {
+      "HDMI-A-1" = {
+        position = {
+          x = 0;
+          y = 0;
+        };
+        refresh = 99.945999;
+        dimensions = {
+          width = 2560;
+          height = 1440;
+        };
+        monitorSpec = {
+          vendor = "GSM";
+          product = "LG IPS QHD";
+          serial = "501TFLM09504";
+        };
+      };
+
       "eDP-1" = {
         primary = true;
         position = {
-          x = 378;
+          x = 320;
           y = 1440;
         };
         refresh = 60.008;
@@ -81,28 +98,10 @@
           width = 1920;
           height = 1080;
         };
-
         monitorSpec = {
           vendor = "CMN";
           product = "0x1409";
           serial = "0x00000000";
-        };
-      };
-      "HDMI-1" = {
-        position = {
-          x = 0;
-          y = 0;
-        };
-        refresh = 99.95;
-        dimensions = {
-          width = 2560;
-          height = 1440;
-        };
-
-        monitorSpec = {
-          vendor = "GSM";
-          product = "LG IPS QHD";
-          serial = "501TFLM09504";
         };
       };
     };

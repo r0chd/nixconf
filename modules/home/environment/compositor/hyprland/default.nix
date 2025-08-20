@@ -33,7 +33,7 @@ in
           follow_mouse = "1";
 
           touchpad = {
-            disable_while_typing = "false";
+            disable_while_typing = false;
             natural_scroll = "no";
           };
         };
@@ -79,19 +79,6 @@ in
           ];
         };
 
-        dwindle = {
-          pseudotile = true;
-          preserve_split = true;
-        };
-
-        master = {
-          new_status = "master";
-        };
-
-        gestures = {
-          workspace_swipe = "off";
-        };
-
         misc = {
           force_default_wallpaper = "0";
           vfr = true;
@@ -100,17 +87,27 @@ in
         "$mainMod" = "ALT"; # Mod key
 
         bind = [
-          ", XF86MonBrightnessUp, exec, brightnessctl set +5%"
-          ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
+          ", XF86MonBrightnessUp, exec, ${pkgs.brightnessctl}/bin/brightnessctl set +5%"
+          ", XF86MonBrightnessDown, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 5%-"
 
           "$mainMod SHIFT, C, killactive,"
           "$mainMod, F, togglefloating,"
 
           "$mainMod, H, scroller:movefocus, l"
           "$mainMod, L, scroller:movefocus, r"
+          "$mainMod, J, scroller:movefocus, d"
+          "$mainMod, K, scroller:movefocus, u"
 
           "$mainMod SHIFT, H, scroller:movewindow, l"
           "$mainMod SHIFT, L, scroller:movewindow, r"
+
+          "$mainMod SHIFT, K, scroller:movewindow, mon:u"
+          "$mainMod SHIFT, J, scroller:movewindow, mon:d"
+          "$mainMod SHIFT, N, scroller:movewindow, mon:l"
+          "$mainMod SHIFT, M, scroller:movewindow, mon:r"
+
+          "$mainMod SHIFT, N, scroller:movefocus, mon:l"
+          "$mainMod SHIFT, M, scroller:movefocus, mon:r"
 
           "$mainMod, R, scroller:cyclewidth, next"
 
