@@ -14,7 +14,8 @@ in
       type = lib.types.enum [
         "grub"
         "systemd-boot"
-        "lanzaboote"
+        #"lanzaboote"
+        "limine"
         "none"
       ];
     };
@@ -24,6 +25,7 @@ in
   imports = [
     ./systemd-boot
     ./grub
+    ./limine.nix
     #./lanzaboote
   ];
 

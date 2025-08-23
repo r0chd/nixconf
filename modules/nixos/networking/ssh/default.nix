@@ -1,5 +1,4 @@
-_:
-{
+_: {
   boot.initrd.network.ssh = {
     enable = true;
     ignoreEmptyHostKeys = true;

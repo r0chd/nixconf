@@ -1,7 +1,7 @@
 { profile, inputs, ... }:
 {
   imports = [
-    ./nixcord
+    ./vesktop
     ./cachix
     ./shell
     ./editor

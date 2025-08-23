@@ -133,7 +133,7 @@ in
           "$mainMod SHIFT, 9, movetoworkspace, 9"
           "$mainMod SHIFT, 0, movetoworkspace, 10"
 
-          "$mainMod, D, exec, ${pkgs.moxctl}/bin/mox notify focus"
+          #"$mainMod, D, exec, ${pkgs.moxctl}/bin/mox notify focus"
 
           ", XF86AudioRaiseVolume, exec, ${pkgs.pamixer}/bin/pamixer -i 5"
           ", XF86AudioLowerVolume, exec, ${pkgs.pamixer}/bin/pamixer -d 5"

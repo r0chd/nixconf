@@ -36,7 +36,7 @@
       signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
       email = "100892812+unixpariah@users.noreply.github.com";
     };
-    nixcord.vesktop.enable = true;
+    vesktop.enable = true;
     editor = "hx";
     chromium.enable = true;
     nix-index.enable = true;

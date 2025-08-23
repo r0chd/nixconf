@@ -38,7 +38,6 @@
 
     firefox.enable = true;
     chromium.enable = true;
-    zen-browser.enable = true;
 
     editor = "hx";
     vcs = {
