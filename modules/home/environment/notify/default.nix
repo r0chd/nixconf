@@ -1,19 +1,14 @@
 {
-  inputs,
   config,
   lib,
   profile,
+  platform,
   ...
 }:
 let
   cfg = config.environment.notify;
 in
 {
-  imports = [
-    inputs.moxnotify.homeManagerModules.default
-    inputs.moxnotify.homeManagerModules.stylix
-  ];
-
   options.environment.notify = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -23,6 +18,7 @@ in
 
   config = {
     home.persist.directories = [ ".local/share/moxnotify" ];
+    nixpkgs.config.nixGLWrap = lib.mkIf (platform == "non-nixos") [ "moxnotify" ];
     services.moxnotify = {
       inherit (cfg) enable;
       settings = {

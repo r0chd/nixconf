@@ -290,6 +290,10 @@ in
               ];
             };
           }
+          {
+            name = "nu";
+            auto-format = true;
+          }
         ];
 
         grammar = [

@@ -27,7 +27,7 @@
 
   system = {
     bootloader = {
-      variant = "systemd-boot";
+      variant = "limine";
       silent = true;
     };
     fileSystem = "zfs";

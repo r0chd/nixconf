@@ -2,18 +2,14 @@
   config,
   lib,
   profile,
-  inputs,
+  platform,
+  pkgs,
   ...
 }:
 let
   cfg = config.environment.wallpaper;
 in
 {
-  imports = [
-    inputs.moxpaper.homeManagerModules.default
-    inputs.moxpaper.homeManagerModules.stylix
-  ];
-
   options.environment.wallpaper = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -22,12 +18,11 @@ in
   };
 
   config = {
-    nixpkgs.config.nixGLWrap = [ "moxpaper" ];
-
     services = {
       hyprpaper.enable = lib.mkForce false;
       moxpaper = {
         inherit (cfg) enable;
+        package = lib.mkIf (platform == "non-nixos") (config.lib.nixGL.wrap pkgs.moxpaper);
 
         settings = {
           power_preference = "high_performance";

@@ -106,7 +106,7 @@
         name = "DejaVu Serif";
       };
       emoji = {
-        package = pkgs.noto-fonts-emoji;
+        package = pkgs.noto-fonts-emoji-blob-bin;
         name = "Noto Color Emoji";
       };
     };

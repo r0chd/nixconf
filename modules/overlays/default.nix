@@ -2,23 +2,19 @@ inputs: config: [
   inputs.nixGL.overlay
   inputs.niri.overlays.niri
   inputs.deploy-rs.overlays.default
+  inputs.mox-flake.overlays.default
 
   (
     final: prev:
     let
-      inherit (prev) system;
+      inherit (prev.stdenv.hostPlatform) system;
     in
     {
       unstable = import inputs.nixpkgs-unstable {
-        inherit (final) system;
+        inherit (final.stdenv.hostPlatform) system;
         inherit (config.nixpkgs) config;
       };
       hyprscroller = prev.callPackage ./hyprscroller { inherit (prev) hyprland; };
-      moxnotify = inputs.moxnotify.packages.${system}.default;
-      moxctl = inputs.moxctl.packages.${system}.default;
-      moxidle = inputs.moxidle.packages.${system}.default;
-      moxpaper = inputs.moxpaper.packages.${system}.default;
-      seto = inputs.seto.packages.${system}.default;
       sysnotifier = inputs.sysnotifier.packages.${system}.default;
       darkfi = prev.callPackage ./darkfi { };
     }

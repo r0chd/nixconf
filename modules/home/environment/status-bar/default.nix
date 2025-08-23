@@ -124,10 +124,10 @@ in
             INHIBITED="<span size='large' color='${withHashtag.base0F}'>  $( [ $COUNT -gt 0 ] && echo "$COUNT" )</span>"
             UNINHIBITED="<span size='large' color='${withHashtag.base0F}'>  </span>"
 
-            if mox notify inhibit state | grep -q "uninhibited" ; then echo $UNINHIBITED; else echo $INHIBITED; fi
+            if ${pkgs.moxnotify}/bin/moxnotifyctl inhibit state | grep -q "uninhibited" ; then echo $UNINHIBITED; else echo $INHIBITED; fi
           '';
 
-          on-click = "mox notify inhibit toggle";
+          on-click = "${pkgs.moxnotify}/bin/moxnotifyctl inhibit toggle";
         };
 
         "custom/moxnotify-muted" = {
@@ -136,10 +136,10 @@ in
             MUTED="<span size='large' color='${withHashtag.base08}'>  </span>"       
             UNMUTED="<span size='large' color='${withHashtag.base0B}'>  </span>"     
 
-            if mox notify mute state | grep -q "unmuted" ; then echo $UNMUTED; else echo $MUTED; fi
+            if ${pkgs.moxnotify}/bin/moxnotifyctl mute state | grep -q "unmuted" ; then echo $UNMUTED; else echo $MUTED; fi
           '';
 
-          on-click = "mox notify mute toggle";
+          on-click = "${pkgs.moxnotify}/bin/moxnotifyctl mute toggle";
         };
 
         "custom/moxnotify-history" = {
@@ -148,44 +148,22 @@ in
             HISTORY_SHOWN="<span size='large' color='${withHashtag.base0D}'>  </span>"   
             HISTORY_HIDDEN="<span size='large' color='${withHashtag.base03}'>  </span>"  
 
-            if mox notify history state | grep -q "hidden" ; then echo $HISTORY_HIDDEN; else echo $HISTORY_SHOWN; fi
+            if ${pkgs.moxnotify}/bin/moxnotifyctl history state | grep -q "hidden" ; then echo $HISTORY_HIDDEN; else echo $HISTORY_SHOWN; fi
           '';
 
-          on-click = "mox notify history toggle";
+          on-click = "${pkgs.moxnotify}/bin/moxnotifyctl history toggle";
         };
 
         "custom/idle-inhibit" = {
           interval = 1;
-          exec = pkgs.writeShellScript "idle-inhibit" ''
-            LOCKFILE="/tmp/idle-inhibit.lock"
-            INHIBITED_ICON="<span size='large' color='${withHashtag.base0A}'>󱫞</span>"
-            UNINHIBITED_ICON="<span size='large' color='${withHashtag.base0D}'>󱎫</span>"
+          exec = pkgs.writeShellScript "mox notify status" ''
+            INHIBITED="<span size='large' color='${withHashtag.base0A}'>󱫞</span>"
+            UNINHIBITED="<span size='large' color='${withHashtag.base0D}'>󱎫</span>"
 
-            if [ -f "$LOCKFILE" ]; then
-                echo "$INHIBITED_ICON"
-            else
-                echo "$UNINHIBITED_ICON"
-            fi
+            if ${pkgs.moxidle}/bin/moxidlectl inhibit state | grep -q "uninhibited" ; then echo $UNINHIBITED; else echo $INHIBITED; fi
           '';
 
-          on-click =
-            #sh
-            ''
-              LOCKFILE="/tmp/idle-inhibit.lock"
-
-              if [ -f "$LOCKFILE" ]; then
-                rm "$LOCKFILE"
-              else 
-                touch "$LOCKFILE"
-                systemd-inhibit \
-                  --who="waybar" \
-                  --what=idle \
-                  --why="Prevent sleep while lockfile exists" \
-                  bash -c "${pkgs.inotify-tools}/bin/inotifywait -e delete \"$LOCKFILE\"" \
-                  &> /dev/null &
-              fi
-
-            '';
+          on-click = "${pkgs.moxidle}/bin/moxidlectl inhibit toggle";
         };
 
         pulseaudio = {

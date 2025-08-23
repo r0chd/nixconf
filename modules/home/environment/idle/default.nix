@@ -2,7 +2,6 @@
   config,
   lib,
   profile,
-  inputs,
   pkgs,
   ...
 }:
@@ -11,12 +10,12 @@ let
   inherit (lib) types;
 in
 {
-  imports = [ inputs.moxidle.homeManagerModules.default ];
   options.environment.idle = {
     enable = lib.mkOption {
       type = types.bool;
       default = profile == "desktop";
     };
+    package = { };
     stages = {
       dim = {
         enable = lib.mkOption {
@@ -55,7 +54,7 @@ in
       enable = true;
       settings = {
         general = {
-          lock_cmd = "pidof ${pkgs.hyprlock}/bin/hyprlock || ${pkgs.hyprlock}/bin/hyprlock";
+          lock_cmd = "pidof hyprlock || ${config.programs.hyprlock.package}/bin/hyprlock";
           unlock_cmd = "pkill -USR1 hyprlock";
           ignore_dbus_inhibit = false;
           ignore_systemd_inhibit = false;

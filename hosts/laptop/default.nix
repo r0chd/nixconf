@@ -7,7 +7,7 @@
 {
   imports = [
     ./disko.nix
-    #./gpu.nix
+    ./gpu.nix
     ./hardware-configuration.nix
   ];
 

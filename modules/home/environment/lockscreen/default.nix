@@ -3,6 +3,7 @@
   lib,
   profile,
   platform,
+  pkgs,
   ...
 }:
 let
@@ -15,9 +16,9 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    nixpkgs.config.nixGLWrap = lib.mkIf (platform == "non-nixos") [ "hyprlock" ];
     programs.hyprlock = {
       enable = true;
+      package = lib.mkIf (platform == "non-nixos") (config.lib.nixGL.wrap pkgs.hyprlock);
       settings = {
         general.hide_cursor = true;
         label = [

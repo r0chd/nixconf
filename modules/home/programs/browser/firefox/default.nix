@@ -16,7 +16,7 @@
     );
     profiles."${config.home.username}" = {
       extensions.packages = builtins.attrValues {
-        inherit (inputs.firefox-addons.packages.${pkgs.system})
+        inherit (inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system})
           ublock-origin
           sponsorblock
           darkreader

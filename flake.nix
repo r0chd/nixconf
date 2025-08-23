@@ -240,13 +240,14 @@
     };
 
   inputs = {
+    # Necessary
+
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     stylix = {
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -261,26 +262,12 @@
     };
     impermanence.url = "github:nix-community/impermanence";
 
-    firefox-addons = {
-      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    niri.url = "github:sodiboo/niri-flake";
-
-    nixvim = {
-      url = "github:unixpariah/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    deploy-rs = {
-      url = "github:serokell/deploy-rs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-on-droid = {
       url = "github:nix-community/nix-on-droid";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+
     nixGL = {
       url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -294,15 +281,33 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    moxidle.url = "github:mox-desktop/moxidle";
-    moxnotify.url = "github:mox-desktop/moxnotify";
-    moxctl.url = "github:mox-desktop/moxctl";
-    moxpaper.url = "github:mox-desktop/moxpaper";
-    moxapi.url = "github:mox-desktop/moxapi";
+    mox-flake.url = "github:mox-desktop/mox-flake";
+
+    # To be ditched
+
+    # Just copy paste addons from nur-expressions
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    niri.url = "github:sodiboo/niri-flake"; # wait for kdl parser to be implemented in nixpkgs
+    # No idea, I dont really use it anymore anyways so maybe just remove
+    nixvim = {
+      url = "github:unixpariah/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # Use nixos-anywhere terraform module
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # No clue, I like to have it for my non NixOS machines but at the same time it feels weird
+    # to have it in my inputs
     nh-system = {
       url = "github:unixpariah/nh/system-manager-support";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Maybe just maintain a derivation? Not gonna change it a lot anyways
     sysnotifier = {
       url = "github:unixpariah/SysNotifier";
       inputs.nixpkgs.follows = "nixpkgs";

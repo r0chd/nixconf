@@ -3,6 +3,7 @@
   lib,
   config,
   profile,
+  platform,
   ...
 }:
 let
@@ -16,6 +17,8 @@ in
   };
 
   config = {
+    nixpkgs.config.nixGLWrap = lib.mkIf (platform == "non-nixos") [ "hyprland" ];
+
     wayland.windowManager.hyprland = {
       inherit (cfg) enable;
       plugins = [ pkgs.hyprscroller ];

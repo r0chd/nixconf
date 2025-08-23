@@ -9,27 +9,33 @@
   ...
 }:
 let
-  # Not possible to set options for nixpkgs.config
-  # and I REALLY love this syntax so yeah
-  cfg = config.nixpkgs.config.nixGLWrap or [ ];
+  cfg = config.nixGLWrap;
+  inherit (lib) types;
 in
 {
-  nixGL.packages = inputs.nixGL.packages;
+  options.nixGLWrap = lib.mkOption {
+    type = types.listOf types.str;
+    default = [ ];
+  };
 
-  nixpkgs.overlays = [
-    (
-      _: prev:
-      let
-        wrapAttrs = lib.listToAttrs (
-          cfg
-          |> lib.map (name: {
-            name = name;
-            value = prev.${name};
-          })
-        );
-      in
-      lib.attrsets.mapAttrs (_: pkg: config.lib.nixGL.wrap pkg) wrapAttrs
-    )
+  config = {
+    nixGL.packages = inputs.nixGL.packages;
 
-  ];
+    nixpkgs.overlays = lib.mkAfter [
+      (
+        _: prev:
+        let
+          wrapAttrs = lib.listToAttrs (
+            cfg
+            |> lib.map (name: {
+              name = name;
+              value = prev.${name};
+            })
+          );
+        in
+        lib.attrsets.mapAttrs (_: pkg: config.lib.nixGL.wrap pkg) wrapAttrs
+      )
+
+    ];
+  };
 }

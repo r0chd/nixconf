@@ -1,4 +1,4 @@
-{ profile, inputs, ... }:
+{ profile, ... }:
 {
   imports = [
     ./vesktop
@@ -19,7 +19,6 @@
     ./nh
     ./gcloud
     ./vcs
-    inputs.moxctl.homeManagerModules.default
   ];
 
   programs = {

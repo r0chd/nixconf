@@ -5,6 +5,8 @@ in
 {
   boot.loader.limine = lib.mkIf (cfg.variant == "limine") {
     enable = true;
-    editor = true;
+    enableEditor = true;
+    biosSupport = cfg.legacy;
+    biosDevice = lib.mkIf (!cfg.legacy) "nodev";
   };
 }

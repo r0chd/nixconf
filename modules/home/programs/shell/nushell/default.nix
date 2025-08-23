@@ -7,7 +7,11 @@
 }:
 {
   config = lib.mkIf (shell == "nushell") {
-    home.persist.files = [ ".config/nushell/history.txt" ];
+    home = {
+      #packages = builtins.attrValues { inherit (pkgs) nufmt; };
+      # nufmt is very WIP, idk why its even in nixpkgs
+      persist.files = [ ".config/nushell/history.txt" ];
+    };
     programs = {
       nushell = {
         enable = true;

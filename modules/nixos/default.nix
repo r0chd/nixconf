@@ -20,6 +20,7 @@
     ./programs
     ./virtualisation
     ./homelab
+    ./nixpkgs
     ../theme
   ];
 
