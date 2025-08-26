@@ -21,5 +21,5 @@ in
     enable = lib.mkEnableOption "homelab";
   };
 
-  config.services.k3s = { inherit (cfg) enable; };
+  config.services.k3s = lib.mkDefault { inherit (cfg) enable; };
 }

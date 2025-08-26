@@ -9,14 +9,6 @@
     ./disko.nix
   ];
 
-  sops.secrets = {
-    deploy-rs = {
-      owner = "deploy-rs";
-      group = "deploy-rs";
-      mode = "0440";
-    };
-  };
-
   services = {
     sccache.enable = true;
   };
@@ -64,10 +56,6 @@
   stylix = {
     enable = true;
     theme = "gruvbox";
-  };
-
-  programs = {
-    deploy-rs.sshKeyFile = config.sops.secrets.deploy-rs.path;
   };
 
   networking = {

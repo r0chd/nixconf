@@ -9,7 +9,7 @@
   imports = [
     ./nh
     ./git
-    ./deploy-rs
+    ./nixos-anywhere
   ];
 
   programs = {
@@ -30,8 +30,8 @@
       _user: value: {
         extraGroups = lib.mkIf (
           value.root.enable
-          && config.programs.deploy-rs.enable
-          && config.programs.deploy-rs.sshKeyFile != null
+          && config.programs.nixos-anywhere.enable
+          && config.programs.nixos-anywhere.sshKeyFile != null
         ) [ "deploy-rs" ];
       }
     );

@@ -2,12 +2,12 @@
 
 let
   keys = {
-    "deploy-rs" = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP7UVzSfFNFq1v392BK1+PUyD08L6/hMdF2sF5yGp+IV deploy-rs@laptop-huawei"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINxG93Ge43zI7fw/tzzZwtNefNnLgPTZTEdTXwi+LEI9 deploy-rs@laptop"
+    "nixos-anywhere" = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ9Ni+XknzGyAHhNxgbZ9TGCCl96PfipvE44PqbS8MqU nixos-anywhere@laptop"
     ];
+
     "unixpariah@laptop" =
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEHM/K2ZbUnI91wCATV/kVXEWn02nJ9xsDygb9u1EmWx unixpariah@laptop-huawei";
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKC3KCUFx+9Q26DOYrzA/axbc9rSf6m/3DOvE5h/wApI unixpariah@laptop-huawei";
     "unixpariah@laptop-huawei" =
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF3XG/jXx/zYi7L8H3/KnePWbFg9t44JHHjAn1LZ2eyu unixpariah@laptop-huawei";
     "os1@t851" =
@@ -53,8 +53,7 @@ let
     };
   };
 
-  # Automatically inject deploy-rs keys into all hosts
-  hosts = lib.mapAttrs (_host: users: users // { inherit (keys) deploy-rs; }) baseHosts;
+  hosts = baseHosts |> lib.mapAttrs (_host: users: users // { inherit (keys) nixos-anywhere; });
 in
 {
   users.users = lib.genAttrs (hosts.${config.networking.hostName} |> builtins.attrNames) (user: {

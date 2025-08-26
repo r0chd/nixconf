@@ -1,20 +1,18 @@
 {
-  pkgs,
-  config,
   lib,
+  config,
   ...
 }:
 let
-  cfg = config.programs.deploy-rs;
+  cfg = config.programs.nixos-anywhere;
   inherit (lib) types;
 in
 {
-  options.programs.deploy-rs = {
+  options.programs.nixos-anywhere = {
     enable = lib.mkOption {
       type = types.bool;
       default = true;
     };
-    package = lib.mkPackageOption pkgs "deploy-rs" { };
     sshKeyFile = lib.mkOption {
       type = types.nullOr types.path;
       default = null;
@@ -22,11 +20,9 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = lib.mkIf (cfg.sshKeyFile != null) [ pkgs.deploy-rs.deploy-rs ];
-
     security.sudo.extraRules = [
       {
-        users = [ "deploy-rs" ];
+        users = [ "nixos-anywhere" ];
         commands = [
           {
             command = "ALL";
@@ -37,21 +33,21 @@ in
     ];
 
     users = {
-      users.deploy-rs = {
+      users.nixos-anywhere = {
         isSystemUser = true;
         useDefaultShell = true;
         description = "NixOS deployer";
-        group = "deploy-rs";
+        group = "nixos-anywhere";
         extraGroups = [ "wheel" ];
       };
-      groups.deploy-rs = { };
+      groups.nixos-anywhere = { };
     };
 
-    nix.settings.trusted-users = [ "deploy-rs" ];
+    nix.settings.trusted-users = [ "nixos-anywhere" ];
 
     programs.ssh.extraConfig = lib.mkIf (cfg.sshKeyFile != null) ''
       Host *
-        Match User deploy-rs
+        Match User nixos-anywhere
           IdentityFile ${cfg.sshKeyFile}
           IdentitiesOnly yes
           StrictHostKeyChecking no

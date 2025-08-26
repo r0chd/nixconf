@@ -1,7 +1,6 @@
 inputs: config: [
   inputs.nixGL.overlay
   inputs.niri.overlays.niri
-  inputs.deploy-rs.overlays.default
   inputs.mox-flake.overlays.default
 
   (

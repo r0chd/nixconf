@@ -1,6 +1,6 @@
 {
-  pkgs,
   config,
+  pkgs,
   lib,
   ...
 }:
@@ -19,13 +19,15 @@
       "steam-unwrapped"
     ];
 
-  sops.secrets = {
-    deploy-rs = {
-      owner = "deploy-rs";
-      group = "deploy-rs";
-      mode = "0440";
-    };
-  };
+  #sops.secrets = {
+  #  nixos-anywhere = {
+  #    owner = "nixos-anywhere";
+  #    group = "nixos-anywhere";
+  #    mode = "0440";
+  #  };
+  #};
+
+  #programs.nixos-anywhere.sshKeyFile = config.sops.secrets.nixos-anywhere.path;
 
   documentation.enable = true;
 
@@ -35,7 +37,6 @@
   };
 
   programs = {
-    deploy-rs.sshKeyFile = config.sops.secrets.deploy-rs.path;
     thunderbird.enable = true;
     nix-index.enable = true;
     wshowkeys.enable = true;

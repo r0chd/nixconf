@@ -8,7 +8,6 @@
       disko,
       home-manager,
       stylix,
-      deploy-rs,
       nix-on-droid,
       system-manager,
       nix-raspberrypi,
@@ -72,64 +71,6 @@
       inherit (nixpkgs) lib;
     in
     {
-      deploy.nodes =
-        let
-          mkNode =
-            hostname: attrs:
-            let
-              pkgs = import nixpkgs { inherit (config.hosts.${hostname}) system; };
-              inherit (pkgs) lib;
-              deployPkgs = import nixpkgs {
-                inherit (config.hosts.${hostname}) system;
-                overlays = [
-                  deploy-rs.overlays.default
-                  (self: super: {
-                    deploy-rs = {
-                      inherit (pkgs) deploy-rs;
-                      inherit (super.deploy-rs) lib;
-                    };
-                  })
-                ];
-              };
-
-              hostUsers = config.hosts.${hostname}.users or { };
-              mkUserProfiles =
-                users:
-                users
-                |> lib.mapAttrsToList (
-                  user: attrs: {
-                    name = user;
-                    value = {
-                      inherit user;
-                      profilePath = "${attrs.home}/.local/state/nix/profiles/profile";
-                      path = deployPkgs.deploy-rs.lib.activate.custom (mkHome hostname user).activationPackage "$PROFILE/activate";
-                    };
-                  }
-                )
-                |> builtins.listToAttrs;
-            in
-            {
-              inherit hostname;
-              sshUser = "deploy-rs";
-              profiles = {
-                system = {
-                  user = "root";
-                  path =
-                    if config.hosts.${hostname}.platform == "nixos" then
-                      deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostname}
-                    else if config.hosts.${hostname}.platform == "non-nixos" then
-                      deployPkgs.deploy-rs.lib.activate.custom self.systemConfigs.${hostname}
-                        "/nix/var/nix/profiles/system/activate"
-                    else
-                      deployPkgs.deploy-rs.lib.activate.custom self.nixOnDroidConfigurations.${hostname}
-                        "/nix/var/nix/profiles/system/activate";
-                };
-              }
-              // mkUserProfiles hostUsers;
-            };
-        in
-        config.hosts |> lib.mapAttrs (hostname: attrs: mkNode hostname attrs);
-
       nixosConfigurations =
         let
           mkHost =
@@ -218,10 +159,6 @@
         |> lib.filterAttrs (_: attrs: attrs.platform == "mobile")
         |> lib.mapAttrs (hostName: attrs: mkDroid hostName attrs);
 
-      checks = lib.lists.foldl' lib.attrsets.unionOfDisjoint { } [
-        (deploy-rs.lib."x86_64-linux".deployChecks self.deploy)
-      ];
-
       formatter = forAllSystems (
         pkgs:
         pkgs.writeShellApplication {
@@ -294,11 +231,6 @@
     # No idea, I dont really use it anymore anyways so maybe just remove
     nixvim = {
       url = "github:unixpariah/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    # Use nixos-anywhere terraform module
-    deploy-rs = {
-      url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # No clue, I like to have it for my non NixOS machines but at the same time it feels weird

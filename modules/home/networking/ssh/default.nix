@@ -1,15 +1,23 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   services.ssh-agent.enable = true;
   programs.ssh = {
     enable = true;
-    hashKnownHosts = true;
-    addKeysToAgent = "yes";
-    userKnownHostsFile = "~/.ssh/custom_known_hosts/known_hosts";
 
-    controlMaster = "auto";
-    controlPath = "~/.ssh/sockets/S.%r@%h:%p";
-    controlPersist = "10m";
+    matchBlocks."*" = {
+      hashKnownHosts = true;
+      addKeysToAgent = "yes";
+      userKnownHostsFile = lib.mkIf config.services.impermanence.enable "~/.ssh/custom_known_hosts/known_hosts";
+
+      controlMaster = "auto";
+      controlPath = "~/.ssh/sockets/S.%r@%h:%p";
+      controlPersist = "10m";
+    };
   };
 
   systemd.user.services.derive-public-keys = {
