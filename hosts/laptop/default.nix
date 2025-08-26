@@ -19,15 +19,20 @@
       "steam-unwrapped"
     ];
 
-  #sops.secrets = {
-  #  nixos-anywhere = {
-  #    owner = "nixos-anywhere";
-  #    group = "nixos-anywhere";
-  #    mode = "0440";
-  #  };
-  #};
+  sops.secrets = {
+    nixos-anywhere = {
+      owner = "nixos-anywhere";
+      group = "nixos-anywhere";
+      mode = "0400";
+    };
 
-  #programs.nixos-anywhere.sshKeyFile = config.sops.secrets.nixos-anywhere.path;
+    "grafana/username" = { };
+    "grafana/password" = { };
+
+    "pihole/password" = { };
+  };
+
+  programs.nixos-anywhere.sshKeyFile = config.sops.secrets.nixos-anywhere.path;
 
   documentation.enable = true;
 
@@ -38,7 +43,6 @@
 
   programs = {
     thunderbird.enable = true;
-    nix-index.enable = true;
     wshowkeys.enable = true;
   };
 
@@ -116,4 +120,23 @@
   #  arch = "skylake";
   #  tune = "skylake";
   #};
+
+  homelab = {
+    enable = true;
+    pihole = {
+      domain = "pihole.your-domain.com";
+      dns = "192.168.30.1";
+      passwordFile = config.sops.secrets."pihole/password".path;
+      adlists = [ "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt" ];
+      webLoadBalancerIP = "192.168.30.102";
+      dnsLoadBalancerIP = "192.168.30.103";
+    };
+    grafana = {
+      enable = true;
+      domain = "grafana.your-domain.com";
+      passwordFile = config.sops.secrets."grafana/password".path;
+      usernameFile = config.sops.secrets."grafana/password".path;
+    };
+    metallb.addresses = [ "192.168.1.100-192.168.1.150" ];
+  };
 }

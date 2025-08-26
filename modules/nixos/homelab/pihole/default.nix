@@ -31,7 +31,7 @@ in
         repo = "https://mojo2600.github.io/pihole-kubernetes";
         chart = "pihole";
         version = "2.18.0";
-        chartHash = "sha256-zqTKKe2f9G85TRH1o4H8XjQws9EsSujwtbtIj0p7E5w=";
+        chartHash = "sha256-IPXWgsxtZ5E3ybsMjMuyWduMIH3HLwDHch8alipRNNo=";
       };
       targetNamespace = "pihole-system";
       createNamespace = true;
@@ -44,7 +44,7 @@ in
         ingress = {
           enabled = true;
           annotations = {
-            "nginx.ingress.kubernetes.io/ssl-redirect" = true;
+            "nginx.ingress.kubernetes.io/ssl-redirect" = "true";
             "nginx.ingress.kubernetes.io/backend-protocol" = "HTTP";
           };
           hosts = [ cfg.domain ];
@@ -70,7 +70,6 @@ in
           enabled = true;
           existingSecret = "pihole-password";
           passwordKey = "password";
-          annotations = { };
         };
         inherit (cfg) adlists;
       };
@@ -80,7 +79,7 @@ in
         name = "pihole-password";
         namespace = "pihole-system";
         data = {
-          "pihole-password" = cfg.passwordFile;
+          password = cfg.passwordFile;
         };
       }
     ];

@@ -1,6 +1,6 @@
-.cache
-.direnv
+.cache/
+.direnv/
 infra/*terraform*
 **/*sync-conflict-*
-result
-
+result/
+.stfolder/

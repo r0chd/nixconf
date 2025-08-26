@@ -3,7 +3,6 @@
 
   outputs =
     {
-      self,
       nixpkgs,
       disko,
       home-manager,
@@ -71,6 +70,39 @@
       inherit (nixpkgs) lib;
     in
     {
+      devShells =
+        let
+          forAllSystems =
+            function:
+            nixpkgs.lib.genAttrs systems (
+              system:
+              let
+                pkgs = import nixpkgs {
+                  inherit system;
+                  config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "terraform" ];
+                };
+              in
+              function pkgs
+            );
+
+        in
+        forAllSystems (pkgs: {
+          default = pkgs.mkShell {
+            buildInputs =
+              builtins.attrValues {
+                inherit (pkgs)
+                  lix
+                  git
+                  nixd
+                  terraform-ls
+                  nixfmt
+                  jq
+                  ;
+              }
+              ++ [ (pkgs.terraform.withPlugins (p: builtins.attrValues { inherit (p) null external; })) ];
+          };
+        });
+
       nixosConfigurations =
         let
           mkHost =

@@ -24,25 +24,19 @@ config: [
         prev.stdenv.mkDerivation {
           name = "helm-chart-${repo}-${chart}-${version}";
           nativeBuildInputs = [ prev.cacert ];
-
           phases = [ "installPhase" ];
           installPhase = ''
             export HELM_CACHE_HOME="$TMP/.nix-helm-build-cache"
-
             OUT_DIR="$TMP/temp-chart-output"
-
             mkdir -p "$OUT_DIR"
-
             ${prev.kubernetes-helm}/bin/helm pull \
             --version "${version}" \
             ${pullFlags} \
-            -d $OUT_DIR \
-            --untar
-
-            mv $OUT_DIR/${chart} "$out"
+            -d $OUT_DIR
+            # Remove --untar to keep as .tgz file
+            cp $OUT_DIR/${chart}-${version}.tgz "$out"
           '';
-
-          outputHashMode = "recursive";
+          outputHashMode = "flat"; # Changed from "recursive" since we're copying a single file
           outputHashAlgo = "sha256";
           outputHash = chartHash;
         };

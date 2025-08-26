@@ -37,7 +37,7 @@ in
           description = "k3s secret for ${secret.name}";
           after = [ "k3s.service" ];
           requires = [ "k3s.service" ];
-          partOf = [ "k3s.service" ];
+          wantedBy = [ "multi-user.target" ];
 
           serviceConfig = {
             Type = "oneshot";

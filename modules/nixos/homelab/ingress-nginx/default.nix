@@ -6,7 +6,7 @@
         repo = "https://kubernetes.github.io/ingress-nginx";
         chart = "ingress-nginx";
         version = "4.13.0";
-        chartHash = "sha256-Wqli6jwMbNnvHk57B/VxFOh37rg3JgNlzRVisBm5DHE=";
+        chartHash = "sha256-c8kjHcOr9p+YrwLqih6qqizePlOqd16xxbz3mw1Pn3g=";
       };
       targetNamespace = "ingress-nginx";
       createNamespace = true;
@@ -45,7 +45,7 @@
             name = "EXTERNAL_DNS_PIHOLE_PASSWORD";
             valueFrom.secretKeyRef = {
               name = "pihole-password";
-              key = "password";
+              key = "pihole-password";
             };
           }
         ];

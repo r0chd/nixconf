@@ -18,13 +18,13 @@ in
     };
     package = lib.mkOption {
       type = types.package;
-      default = if platform == "non-nixos" then config.lib.nixGL.wrap pkgs.hyprlock else pkgs.hyprlock;
+      default = if platform == "non-nixos" then (config.lib.nixGL.wrap pkgs.hyprlock) else pkgs.hyprlock;
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = {
     programs.hyprlock = {
-      enable = true;
+      inherit (cfg) enable;
       inherit (cfg) package;
       settings = {
         general.hide_cursor = true;
