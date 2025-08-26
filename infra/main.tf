@@ -1,15 +1,15 @@
 variable "ssh_source_path" {
-  type = string
+  type        = string
   description = "path to ssh private key used to decrypt sops secrets"
 }
 
 variable "target_ip" {
-  type = string
+  type        = string
   description = "ip of the target machine"
 }
 
 variable "machine_name" {
-  type = string
+  type        = string
   description = "hostname of the target machine"
 }
 

@@ -8,12 +8,17 @@
 }:
 let
   cfg = config.environment.wallpaper;
+  inherit (lib) types;
 in
 {
   options.environment.wallpaper = {
     enable = lib.mkOption {
-      type = lib.types.bool;
+      type = types.bool;
       default = profile == "desktop";
+    };
+    package = lib.mkOption {
+      type = types.package;
+      default = if platform == "non-nixos" then config.lib.nixGL.wrap pkgs.moxpaper else pkgs.moxpaper;
     };
   };
 
@@ -22,7 +27,7 @@ in
       hyprpaper.enable = lib.mkForce false;
       moxpaper = {
         inherit (cfg) enable;
-        package = lib.mkIf (platform == "non-nixos") (config.lib.nixGL.wrap pkgs.moxpaper);
+        inherit (cfg) package;
 
         settings = {
           power_preference = "high_performance";

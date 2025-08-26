@@ -8,17 +8,24 @@
 }:
 let
   cfg = config.environment.lockscreen;
+  inherit (lib) types;
 in
 {
-  options.environment.lockscreen.enable = lib.mkOption {
-    type = lib.types.bool;
-    default = profile == "desktop";
+  options.environment.lockscreen = {
+    enable = lib.mkOption {
+      type = types.bool;
+      default = profile == "desktop";
+    };
+    package = lib.mkOption {
+      type = types.package;
+      default = if platform == "non-nixos" then config.lib.nixGL.wrap pkgs.hyprlock else pkgs.hyprlock;
+    };
   };
 
   config = lib.mkIf cfg.enable {
     programs.hyprlock = {
       enable = true;
-      package = lib.mkIf (platform == "non-nixos") (config.lib.nixGL.wrap pkgs.hyprlock);
+      inherit (cfg) package;
       settings = {
         general.hide_cursor = true;
         label = [

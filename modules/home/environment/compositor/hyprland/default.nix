@@ -11,16 +11,22 @@ let
   inherit (lib) types;
 in
 {
-  options.programs.hyprland.enable = lib.mkOption {
-    type = types.bool;
-    default = profile == "desktop";
+  options.programs.hyprland = {
+    enable = lib.mkOption {
+      type = types.bool;
+      default = profile == "desktop";
+    };
+    package = lib.mkOption {
+      type = types.package;
+      default = if platform == "non-nixos" then config.lib.nixGL.wrap pkgs.hyprland else pkgs.hyprland;
+    };
   };
 
   config = {
-    nixpkgs.config.nixGLWrap = lib.mkIf (platform == "non-nixos") [ "hyprland" ];
-
     wayland.windowManager.hyprland = {
       inherit (cfg) enable;
+      inherit (cfg) package;
+
       plugins = [ pkgs.hyprscroller ];
 
       settings = {
@@ -136,7 +142,7 @@ in
           "$mainMod SHIFT, 9, movetoworkspace, 9"
           "$mainMod SHIFT, 0, movetoworkspace, 10"
 
-          #"$mainMod, D, exec, ${pkgs.moxctl}/bin/mox notify focus"
+          "$mainMod, D, exec, ${pkgs.moxctl}/bin/mox notify focus"
 
           ", XF86AudioRaiseVolume, exec, ${pkgs.pamixer}/bin/pamixer -i 5"
           ", XF86AudioLowerVolume, exec, ${pkgs.pamixer}/bin/pamixer -d 5"

@@ -16,11 +16,10 @@
     ./networking
     ./services
     ../theme
-
-    inputs.mox-flake.homeManagerModules.moxnotify
-    inputs.mox-flake.homeManagerModules.moxpaper
     inputs.mox-flake.homeManagerModules.moxidle
+    inputs.mox-flake.homeManagerModules.moxnotify
     inputs.mox-flake.homeManagerModules.moxctl
+    inputs.mox-flake.homeManagerModules.moxpaper
   ];
 
   xdg.configFile."environment.d/envvars.conf" = lib.mkIf (platform == "non-nixos") {

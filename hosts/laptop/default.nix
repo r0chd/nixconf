@@ -74,7 +74,7 @@
   system = {
     fileSystem = "zfs";
     bootloader = {
-      variant = "systemd-boot";
+      variant = "limine";
       silent = true;
     };
     ydotool.enable = true;
@@ -110,4 +110,9 @@
 
   time.timeZone = "Europe/Warsaw";
   i18n.defaultLocale = "en_US.UTF-8";
+
+  #nixpkgs.hostPlatform.gcc = {
+  #  arch = "skylake";
+  #  tune = "skylake";
+  #};
 }

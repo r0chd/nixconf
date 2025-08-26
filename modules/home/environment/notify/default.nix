@@ -3,24 +3,30 @@
   lib,
   profile,
   platform,
+  pkgs,
   ...
 }:
 let
   cfg = config.environment.notify;
+  inherit (lib) types;
 in
 {
   options.environment.notify = {
     enable = lib.mkOption {
-      type = lib.types.bool;
+      type = types.bool;
       default = profile == "desktop";
+    };
+    package = lib.mkOption {
+      type = types.package;
+      default = if platform == "non-nixos" then config.lib.nixGL.wrap pkgs.moxnotify else pkgs.moxnotify;
     };
   };
 
   config = {
     home.persist.directories = [ ".local/share/moxnotify" ];
-    nixpkgs.config.nixGLWrap = lib.mkIf (platform == "non-nixos") [ "moxnotify" ];
     services.moxnotify = {
       inherit (cfg) enable;
+      inherit (cfg) package;
       settings = {
         general = {
           margin.top = 50;

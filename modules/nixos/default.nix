@@ -84,7 +84,8 @@
     users = {
       root = {
         isNormalUser = false;
-        hashedPassword = null;
+        #hashedPassword = null;
+        password = "a";
       };
     }
     // (

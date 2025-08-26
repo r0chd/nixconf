@@ -15,7 +15,10 @@
     ];
 
   sops.secrets = {
+    access-token-github = { };
   };
+
+  nix.access-token-file = config.sops.secrets.access-token-github.path;
 
   services = {
     impermanence.enable = true;
