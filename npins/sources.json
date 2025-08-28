@@ -1,18 +1,5 @@
 {
   "pins": {
-    "deploy-rs": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "serokell",
-        "repo": "deploy-rs"
-      },
-      "branch": "master",
-      "submodules": false,
-      "revision": "6bc76b872374845ba9d645a2f012b764fecd765f",
-      "url": "https://github.com/serokell/deploy-rs/archive/6bc76b872374845ba9d645a2f012b764fecd765f.tar.gz",
-      "hash": "10a6g1ypzd2d5b4jash13p87j85gwfmp50ard9wms3ph5zmpny45"
-    },
     "disko": {
       "type": "Git",
       "repository": {
@@ -35,9 +22,9 @@
       },
       "branch": "master",
       "submodules": false,
-      "revision": "3cb5445c6a575cf7ece61678449bee89eec864d7",
-      "url": "https://gitlab.com/api/v4/projects/rycee%2Fnur-expressions/repository/archive.tar.gz?sha=3cb5445c6a575cf7ece61678449bee89eec864d7",
-      "hash": "01yppri1v4kch6m5mhdcxwb05vm4f9ashb3xj4qr9afmjy1a3w3c"
+      "revision": "702be0c726c76de3e069ae95c7b1dab5bd568000",
+      "url": "https://gitlab.com/api/v4/projects/rycee%2Fnur-expressions/repository/archive.tar.gz?sha=702be0c726c76de3e069ae95c7b1dab5bd568000",
+      "hash": "07idadffarmdbb4vvdpdzy4ikzdcsbvj7raa0qzj4rsb7777vhqv"
     },
     "home-manager": {
       "type": "Git",
@@ -48,9 +35,9 @@
       },
       "branch": "master",
       "submodules": false,
-      "revision": "9e3a33c0bcbc25619e540b9dfea372282f8a9740",
-      "url": "https://github.com/nix-community/home-manager/archive/9e3a33c0bcbc25619e540b9dfea372282f8a9740.tar.gz",
-      "hash": "09xg976ss7nimrd5nla0wx12k6k9h7rx42ww7vfx0z07pvkbfn17"
+      "revision": "77a71380c38fb2a440b4b5881bbc839f6230e1cb",
+      "url": "https://github.com/nix-community/home-manager/archive/77a71380c38fb2a440b4b5881bbc839f6230e1cb.tar.gz",
+      "hash": "0bqr4bn73k3bxn3nsv5npk95iwmmq8d1rhqny5g9qw5yzjf2r0i1"
     },
     "impermanence": {
       "type": "Git",
@@ -74,9 +61,9 @@
       },
       "branch": "master",
       "submodules": false,
-      "revision": "cf6c5d8cf0d6f2f71cbc6e3aff6ec45b964af8e2",
-      "url": "https://github.com/mox-desktop/mox-flake/archive/cf6c5d8cf0d6f2f71cbc6e3aff6ec45b964af8e2.tar.gz",
-      "hash": "1c7phpv4y68w4zzqpp2n0j5mx8c9cjx1qfx9s8i7m6szzyn328m1"
+      "revision": "7861425943261143214108c747b7a62f0869a186",
+      "url": "https://github.com/mox-desktop/mox-flake/archive/7861425943261143214108c747b7a62f0869a186.tar.gz",
+      "hash": "1xcdnhlc4xf66cz0afic18p4vxipny3wihp7ajyp6bryhcvn2i6r"
     },
     "nh-system": {
       "type": "Git",
@@ -100,9 +87,9 @@
       },
       "branch": "main",
       "submodules": false,
-      "revision": "c7341b5b3b1b7deb164bcaa54cc240a809352470",
-      "url": "https://github.com/sodiboo/niri-flake/archive/c7341b5b3b1b7deb164bcaa54cc240a809352470.tar.gz",
-      "hash": "1blcdv157nsfk0m469c5m67c9m9gj0w0pqxp8shzz0cdmx6g1xrf"
+      "revision": "cdfffe0b009582f5161dcd030a5549236287767b",
+      "url": "https://github.com/sodiboo/niri-flake/archive/cdfffe0b009582f5161dcd030a5549236287767b.tar.gz",
+      "hash": "0xs4y2gq4vw42vk0y64w3s0fayvj7j7d87c657adig1bf1nlmcff"
     },
     "nix-on-droid": {
       "type": "Git",
@@ -126,9 +113,9 @@
       },
       "branch": "develop",
       "submodules": false,
-      "revision": "afac615682b5289e1a8fa277a000848c656a9eb3",
-      "url": "https://github.com/nvmd/nixos-raspberrypi/archive/afac615682b5289e1a8fa277a000848c656a9eb3.tar.gz",
-      "hash": "0yy47m4a6h2wfnri2dfpvc6lwxvd6q09jhriyyrcy5h9csbdsdqx"
+      "revision": "40b98e35d34e1661c4fe38efce6faa57c37b4771",
+      "url": "https://github.com/nvmd/nixos-raspberrypi/archive/40b98e35d34e1661c4fe38efce6faa57c37b4771.tar.gz",
+      "hash": "0hhlcllcgslhwvvs1iiww08ibh4gwff9d8kaxnmv9p1x3ii3f54f"
     },
     "nixGL": {
       "type": "Git",
@@ -146,8 +133,8 @@
     "nixpkgs": {
       "type": "Channel",
       "name": "nixpkgs-unstable",
-      "url": "https://releases.nixos.org/nixpkgs/nixpkgs-25.11pre851377.c53baa668526/nixexprs.tar.xz",
-      "hash": "07fqbza7npcfnggqrd7w86h0086a2sv9v0kvz5in106g9fg5vg4v"
+      "url": "https://releases.nixos.org/nixpkgs/nixpkgs-25.11pre853059.aca2499b7917/nixexprs.tar.xz",
+      "hash": "1sd5yfsaq6y7nz972gni63akpr99apzqbhzis1gvbxfw23djm677"
     },
     "nixpkgs-stable_2": {
       "type": "Git",
@@ -158,11 +145,11 @@
       },
       "branch": "nixos-25.05",
       "submodules": false,
-      "revision": "b1b3291469652d5a2edb0becc4ef0246fff97a7c",
-      "url": "https://github.com/NixOS/nixpkgs/archive/b1b3291469652d5a2edb0becc4ef0246fff97a7c.tar.gz",
-      "hash": "1avlwbghhyzxqv72f5rh7bwbfkzyf237w7hlw119dlf7jgc7x3f1"
+      "revision": "41d292bfc37309790f70f4c120b79280ce40af16",
+      "url": "https://github.com/NixOS/nixpkgs/archive/41d292bfc37309790f70f4c120b79280ce40af16.tar.gz",
+      "hash": "0j8zxmr8qnqb2091ljhglc42aawwpdhjpgdjmwvw8qnc9vc47yv2"
     },
-    "nixpkgs_7": {
+    "nixpkgs_6": {
       "type": "Git",
       "repository": {
         "type": "GitHub",
@@ -171,9 +158,9 @@
       },
       "branch": "nixos-unstable",
       "submodules": false,
-      "revision": "3b9f00d7a7bf68acd4c4abb9d43695afb04e03a5",
-      "url": "https://github.com/NixOS/nixpkgs/archive/3b9f00d7a7bf68acd4c4abb9d43695afb04e03a5.tar.gz",
-      "hash": "1dqxd18g08f7n23r3wzng8x1f82rklznwmgfi06agqszk8lp5v2x"
+      "revision": "dfb2f12e899db4876308eba6d93455ab7da304cd",
+      "url": "https://github.com/NixOS/nixpkgs/archive/dfb2f12e899db4876308eba6d93455ab7da304cd.tar.gz",
+      "hash": "1l9spn9fbyj78mf14xdbrqxgcd4xjhk9wpfm4fpj5n2ngb77236p"
     },
     "nixvim": {
       "type": "Git",
@@ -236,9 +223,9 @@
       },
       "branch": "main",
       "submodules": false,
-      "revision": "dc7ba44d144039f214f3f5c6786da7d84d231308",
-      "url": "https://github.com/numtide/system-manager/archive/dc7ba44d144039f214f3f5c6786da7d84d231308.tar.gz",
-      "hash": "1612s6qp7krad6dxpa0h3acb9zdik65gwi7sv7v1px6hqp2s5gxn"
+      "revision": "e271eedac9a24678ca6cfc61677837422bf474e0",
+      "url": "https://github.com/numtide/system-manager/archive/e271eedac9a24678ca6cfc61677837422bf474e0.tar.gz",
+      "hash": "0sxw9inaflvwd2jwdlaq3pwdabg5b4xaqkr9cv7f09s919bnhfha"
     }
   },
   "version": 5

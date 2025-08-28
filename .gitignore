@@ -4,3 +4,4 @@ infra/*terraform*
 **/*sync-conflict-*
 result/
 .stfolder/
+.Trash-1000/

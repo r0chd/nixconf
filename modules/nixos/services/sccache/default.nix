@@ -9,6 +9,11 @@ let
   inherit (lib) types;
 in
 {
+  imports = [
+    ./builder.nix
+    ./scheduler.nix
+  ];
+
   options.services.sccache = {
     enable = lib.mkEnableOption "sccache";
     package = lib.mkOption {
@@ -28,27 +33,6 @@ in
       type = types.path;
       default = "/var/lib/sccache/build";
       description = "Directory for build operations";
-    };
-
-    builder = {
-      enable = lib.mkOption {
-        type = types.bool;
-        default = cfg.enable;
-      };
-      addr = lib.mkOption {
-        type = types.str;
-        default = "127.0.0.1:10501";
-      };
-    };
-    scheduler = {
-      enable = lib.mkOption {
-        type = types.bool;
-        default = cfg.enable;
-      };
-      addr = lib.mkOption {
-        type = types.str;
-        default = "127.0.0.1:10600";
-      };
     };
 
     #auth = {
@@ -72,76 +56,11 @@ in
         "d ${cfg.cacheDir} 0755 root root"
         "d ${cfg.buildDir} 0755 root root"
       ];
-
-      services.sccache-server = lib.mkIf cfg.builder.enable {
-        description = "sccache-dist server";
-        wants = [ "network-online.target" ];
-        after = [ "network-online.target" ];
-        wantedBy = [ "multi-user.target" ];
-
-        serviceConfig = {
-          Type = "simple";
-          ExecStart = "${cfg.package}/bin/sccache-dist server --config /etc/sccache/server.conf";
-          Restart = "on-failure";
-          RestartSec = 5;
-        };
-
-        environment = {
-          RUST_LOG = "info";
-        };
-      };
-
-      services.sccache-scheduler = lib.mkIf cfg.scheduler.enable {
-        description = "sccache-dist scheduler";
-        wants = [ "network-online.target" ];
-        after = [ "network-online.target" ];
-        wantedBy = [ "multi-user.target" ];
-
-        serviceConfig = {
-          Type = "simple";
-          ExecStart = "${cfg.package}/bin/sccache-dist scheduler --config /etc/sccache/scheduler.conf";
-          Restart = "on-failure";
-          RestartSec = 5;
-        };
-
-        environment = {
-          RUST_LOG = "info";
-        };
-      };
     };
 
     environment = {
       sessionVariables.RUSTC_WRAPPER = "${cfg.package}/bin/sccache";
       systemPackages = [ cfg.package ];
-      etc = {
-        "sccache/server.conf" = lib.mkIf cfg.builder.enable {
-          text = ''
-            cache_dir = "${cfg.cacheDir}"
-            public_addr = "${cfg.builder.addr}"
-            scheduler_url = "${cfg.scheduler.addr}"
-            [builder]
-            type = "overlay"
-            build_dir = "${cfg.buildDir}"
-            bwrap_path = "${cfg.bwrapPackage}/bin/bwrap"
-            [scheduler_auth]
-            type = "DANGEROUSLY_INSECURE"
-          '';
-        };
-        #type = "token"
-        #token = "${cfg.settings.auth.token}"
-
-        "sccache/scheduler.conf" = {
-          text = ''
-            public_addr = "${cfg.scheduler.addr}"
-            [client_auth]
-            type = "DANGEROUSLY_INSECURE"
-            [server_auth]
-            type = "DANGEROUSLY_INSECURE"
-          '';
-          #type = "jwt_hs256"
-          #secret_key = "${cfg.settings.auth.jwtSecret}"
-        };
-      };
     };
   };
 }

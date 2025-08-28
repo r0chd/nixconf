@@ -15,7 +15,7 @@ in
       type = types.bool;
       default = profile == "desktop";
     };
-    package = { };
+    package = lib.mkPackageOption pkgs "moxidle" { };
     stages = {
       dim = {
         enable = lib.mkOption {
@@ -49,9 +49,10 @@ in
       };
     };
   };
-  config = lib.mkIf cfg.enable {
+  config = {
     services.moxidle = {
-      enable = true;
+      inherit (cfg) enable;
+      inherit (cfg) package;
       settings = {
         general = {
           lock_cmd = "pidof hyprlock || ${config.programs.hyprlock.package}/bin/hyprlock";
@@ -95,7 +96,8 @@ in
         ];
       };
     };
-    nix.settings = {
+
+    nix.settings = lib.mkIf cfg.enable {
       substituters = [ "https://moxidle.cachix.org" ];
       trusted-substituters = [ "https://moxidle.cachix.org" ];
       trusted-public-keys = [ "moxidle.cachix.org-1:ck2KY0PlOsrgMUBfJaYVmcDbyHT2cK6KSvLP09amGUU=" ];

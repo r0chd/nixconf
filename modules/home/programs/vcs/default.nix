@@ -22,7 +22,11 @@ in
       type = types.nullOr types.str;
       default = null;
     };
-    email = lib.mkOption { type = types.nullOr lib.types.str; };
+    email = lib.mkOption { type = types.nullOr types.str; };
+    name = lib.mkOption {
+      type = types.str;
+      default = config.home.username;
+    };
   };
 
   config.programs.ssh.matchBlocks = lib.mkIf (cfg.identityFile != null) {

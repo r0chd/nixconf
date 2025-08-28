@@ -293,6 +293,18 @@ in
           {
             name = "nu";
             auto-format = true;
+            #formatter.command = "nufmt"; TODO: do it once nufmt is stabilized
+          }
+          {
+            name = "typst";
+            auto-format = true;
+            formatter = {
+              command = "typstfmt";
+              args = [
+                "--output"
+                "-"
+              ];
+            };
           }
         ];
 
@@ -328,7 +340,9 @@ in
           ];
           space = {
             i = ":toggle lsp.display-inlay-hints";
+            l = ":sh git log -n 5 --format='format:%%h (%%an: %%ar) %%s' --no-patch -L%{cursor_line},+1:%{buffer_name}";
           };
+          #j = ":sh git l"
         };
       };
     };

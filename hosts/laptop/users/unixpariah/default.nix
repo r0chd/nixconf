@@ -86,7 +86,7 @@
       };
     };
 
-    terminal.program = "foot";
+    terminal.program = "ghostty";
   };
 
   stylix = {

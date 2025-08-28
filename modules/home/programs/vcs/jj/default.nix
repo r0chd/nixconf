@@ -21,7 +21,7 @@ in
     enable = true;
     settings = {
       user = {
-        name = lib.mkDefault config.home.username;
+        inherit (cfg) name;
         inherit (cfg) email;
       };
 

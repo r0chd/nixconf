@@ -18,7 +18,8 @@ in
     };
     package = lib.mkOption {
       type = types.package;
-      default = if platform == "non-nixos" then config.lib.nixGL.wrap pkgs.moxnotify else pkgs.moxnotify;
+      default =
+        if platform == "non-nixos" then (config.lib.nixGL.wrap pkgs.moxnotify) else pkgs.moxnotify;
     };
   };
 

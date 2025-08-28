@@ -57,16 +57,16 @@ in
         '';
       };
 
-      bash.initExtra = lib.mkIf (shell == "bash") ''
+      bash.initExtra = ''
         tmux-init
       '';
-      zsh.initExtra = lib.mkIf (shell == "zsh") ''
+      zsh.initExtra = ''
         tmux-init
       '';
       nushell.configFile.text = ''
         tmux-init
       '';
-      fish.interactiveShellInit = lib.mkIf (shell == "fish") ''
+      fish.interactiveShellInit = ''
         if string match -q -- 'tmux*' $TERM
             set fish_cursor_insert line
         end

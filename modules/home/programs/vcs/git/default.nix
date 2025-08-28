@@ -20,7 +20,7 @@ in
   config = lib.mkIf cfg.git.enable {
     programs.git = {
       enable = true;
-      userName = lib.mkDefault config.home.username;
+      userName = cfg.name;
       userEmail = cfg.email;
 
       signing = lib.mkIf (cfg.signingKeyFile != null) {

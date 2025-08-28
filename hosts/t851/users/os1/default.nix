@@ -36,9 +36,10 @@
 
     editor = "hx";
     vcs = {
-      signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
-      identityFile = [ "${config.home.homeDirectory}/.ssh/id_ed25519.pub" ];
+      signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519";
+      identityFile = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
       email = "os1@qed.ai";
+      name = "Oskar Rochowiak";
     };
     multiplexer = {
       enable = true;
@@ -142,6 +143,8 @@
       slack
       signal-desktop
       google-cloud-sql-proxy
+      kubectl
+      kubernetes-helm
       ;
   };
 }
