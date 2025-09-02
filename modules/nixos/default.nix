@@ -12,6 +12,7 @@
     ./system
     ./hardware
     ./networking
+    ./specialisation.nix
     ./security
     ./environment
     ./services
@@ -68,7 +69,7 @@
           nix run ''${NH_FLAKE}#nixosConfigurations.${config.networking.hostName}.pkgs.$package "$@"
         '')
       ];
-    sessionVariables.HOME_MANAGER_BACKUP_EXT = "bak";
+    sessionVariables.HOME_MANAGER_BACKUP_EXT = "$(date +%Y%m%d_%H%M%S).bak";
   };
 
   boot = {

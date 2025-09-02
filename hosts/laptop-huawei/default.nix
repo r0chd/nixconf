@@ -20,6 +20,7 @@
   programs.nixos-anywhere.sshKeyFile = config.sops.secrets.nixos-anywhere.path;
 
   services = {
+    grafana.enable = true;
     sccache.enable = true;
   };
 
@@ -29,7 +30,6 @@
 
   system = {
     bootloader = {
-      variant = "limine";
       silent = true;
     };
     fileSystem = "zfs";

@@ -28,12 +28,11 @@
   };
 
   system = {
-    bootloader.variant = "systemd-boot";
     fileSystem = "zfs";
   };
 
   homelab = {
-    enable = true;
+    enable = false;
     atuin = {
       enable = true;
       db = {
@@ -61,16 +60,6 @@
       webLoadBalancerIP = "192.168.30.102";
       dnsLoadBalancerIP = "192.168.30.103";
     };
-    vaultwarden = {
-      enable = true;
-      hostname = "vaultwarden.your-domain.com";
-      storage = "512Mi";
-      yubikey = {
-        enable = true;
-        keyFile = config.sops.secrets.YUBI.path;
-      };
-    };
-    metallb.addresses = [ "192.168.30.100-192.168.30.150" ];
   };
 
   virtualisation = {
@@ -106,32 +95,32 @@
     k3s = {
       tokenFile = config.sops.secrets.k3s.path;
       clusterInit = true;
-      secrets = [
-        {
-          name = "grafana-admin-credentials";
-          namespace = "monitoring";
-          data = {
-            admin-user = config.sops.secrets."grafana/username".path;
-            admin-password = config.sops.secrets."grafana/password".path;
-          };
-        }
-        {
-          name = "github-api";
-          namespace = "portfolio";
-          data.github_api = config.sops.secrets.github-api.path;
-        }
-        {
-          name = "immich-postgres-user";
-          namespace = "immich";
-          data = {
-            DB_USERNAME = config.sops.secrets."immich-postgres-user/DB_USERNAME".path;
-            DB_DATABASE_NAME = config.sops.secrets."immich-postgres-user/DB_DATABASE_NAME".path;
-            DB_PASSWORD = config.sops.secrets."immich-postgres-user/DB_PASSWORD".path;
-            username = config.sops.secrets."immich-postgres-user/username".path;
-            password = config.sops.secrets."immich-postgres-user/password".path;
-          };
-        }
-      ];
+      #secrets = [
+      #  {
+      #    name = "grafana-admin-credentials";
+      #    namespace = "monitoring";
+      #    data = {
+      #      admin-user = config.sops.secrets."grafana/username".path;
+      #      admin-password = config.sops.secrets."grafana/password".path;
+      #    };
+      #  }
+      #  {
+      #    name = "github-api";
+      #    namespace = "portfolio";
+      #    data.github_api = config.sops.secrets.github-api.path;
+      #  }
+      #  {
+      #    name = "immich-postgres-user";
+      #    namespace = "immich";
+      #    data = {
+      #      DB_USERNAME = config.sops.secrets."immich-postgres-user/DB_USERNAME".path;
+      #      DB_DATABASE_NAME = config.sops.secrets."immich-postgres-user/DB_DATABASE_NAME".path;
+      #      DB_PASSWORD = config.sops.secrets."immich-postgres-user/DB_PASSWORD".path;
+      #      username = config.sops.secrets."immich-postgres-user/username".path;
+      #      password = config.sops.secrets."immich-postgres-user/password".path;
+      #    };
+      #  }
+      #];
       extraFlags = [
         "--disable traefik"
         "--disable servicelb"
