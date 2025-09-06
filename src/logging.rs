@@ -93,7 +93,7 @@ pub fn setup_logging(
 macro_rules! nh_trace {
     ($($arg:tt)*) => {
         use notify_rust::Urgency;
-        use crate::notify::NotificationSender;
+        use $crate::notify::NotificationSender;
         let message = format!($($arg)*);
         tracing::trace!($($arg)*);
         NotificationSender::new("nh trace", &message).urgency(Urgency::Low).send().unwrap();
@@ -104,7 +104,7 @@ macro_rules! nh_trace {
 macro_rules! nh_debug {
     ($($arg:tt)*) => {
         use notify_rust::Urgency;
-        use crate::notify::NotificationSender;
+        use $crate::notify::NotificationSender;
 
         let message = format!($($arg)*);
         tracing::debug!($($arg)*);
@@ -116,7 +116,7 @@ macro_rules! nh_debug {
 macro_rules! nh_info {
     ($($arg:tt)*) => {
         use notify_rust::Urgency;
-        use crate::notify::NotificationSender;
+        use $crate::notify::NotificationSender;
         let message = format!($($arg)*);
         tracing::info!($($arg)*);
         NotificationSender::new("nh info", &message).urgency(Urgency::Normal).send().unwrap();
@@ -127,10 +127,9 @@ macro_rules! nh_info {
 macro_rules! nh_warn {
     ($($arg:tt)*) => {
         use notify_rust::Urgency;
-        use crate::notify::NotificationSender;
+        use $crate::notify::NotificationSender;
         let message = format!($($arg)*);
         tracing::warn!($($arg)*);
         NotificationSender::new("nh warn", &message).urgency(Urgency::Normal).send().unwrap();
     };
 }
-
