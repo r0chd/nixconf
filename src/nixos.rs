@@ -22,6 +22,7 @@ use crate::{
     OsRollbackArgs,
     OsSubcommand::{self},
   },
+  nh_debug,
   update::update,
   util::{ensure_ssh_key_login, get_hostname, print_dix_diff},
 };
@@ -373,7 +374,7 @@ impl OsRebuildArgs {
         .wrap_err("Bootloader activation failed")?;
     }
 
-    debug!("Completed operation with output path: {out_path:?}");
+    nh_debug!("Completed operation with output path: {out_path:?}");
 
     Ok(())
   }
