@@ -1,0 +1,33 @@
+name: Flake check
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+jobs:
+  test:
+    name: Test and Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Install Nix
+        uses: cachix/install-nix-action@v25
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          install_url: https://releases.nixos.org/nix/nix-2.24.9/install
+          extra_nix_config: |
+            experimental-features = nix-command flakes pipe-operators
+          
+      - name: Cache Nix store
+        uses: actions/cache@v3
+        with:
+          path: /nix/store
+          key: ${{ runner.os }}-nix-${{ hashFiles('flake.lock', 'flake.nix') }}
+          restore-keys: |
+            ${{ runner.os }}-nix-
+            
+      - name: Run tests and linting in Nix shell
+        run: |
+          nix flake check
