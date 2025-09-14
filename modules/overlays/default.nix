@@ -9,7 +9,7 @@ inputs: config: [
       inherit (prev.stdenv.hostPlatform) system;
     in
     {
-      unstable = import inputs.nixpkgs-unstable {
+      stable = import inputs.nixpkgs-stable {
         inherit (final.stdenv.hostPlatform) system;
         inherit (config.nixpkgs) config;
       };

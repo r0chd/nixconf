@@ -20,7 +20,6 @@
   programs.nixos-anywhere.sshKeyFile = config.sops.secrets.nixos-anywhere.path;
 
   services = {
-    quickwit.enable = true;
     sccache.enable = true;
   };
 

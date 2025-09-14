@@ -31,6 +31,8 @@
 
   nixpkgs.overlays = import ../overlays inputs config ++ import ../lib config;
 
+  nixGL.packages = inputs.nixGL.packages;
+
   home = {
     persist.directories = [ ".local/state/syncthing" ];
     packages = [

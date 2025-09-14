@@ -8,7 +8,6 @@
     ./environment
     ./services
     ./security
-    ./programs
     ./nix
   ];
 

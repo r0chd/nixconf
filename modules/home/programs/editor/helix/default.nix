@@ -168,6 +168,18 @@ in
             grammar = "groovy";
           }
           {
+            name = "vrl";
+            scope = "source.vrl";
+            auto-format = true;
+            file-types = [ "vrl" ];
+            indent = {
+              tab-width = 2;
+              unit = "  ";
+            };
+            comment-token = "#";
+            grammar = "vrl";
+          }
+          {
             name = "wgsl";
             auto-format = true;
             formatter.command = "wgslfmt";
@@ -314,6 +326,13 @@ in
             source = {
               git = "https://github.com/codieboomboom/tree-sitter-groovy";
               rev = "de8e0c727a0de8cbc6f4e4884cba2d4e7c740570";
+            };
+          }
+          {
+            name = "vrl";
+            source = {
+              git = "https://github.com/belltoy/tree-sitter-vrl";
+              rev = "274b3ce63f72aa8ffea18e7fc280d3062d28f0ba";
             };
           }
         ];

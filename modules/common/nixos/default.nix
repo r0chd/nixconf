@@ -12,6 +12,8 @@
     "wireless/T-Mobile_5G_HomeOffice_5GHz_EXT".sopsFile = ./secrets/secrets.yaml;
     "wireless/Internet_Domowy_5G_660ECA".sopsFile = ./secrets/secrets.yaml;
     "wireless/Internet_Domowy_660ECA".sopsFile = ./secrets/secrets.yaml;
+    "wireless/NETIASPOT-K7Yf8n4-5G".sopsFile = ./secrets/secrets.yaml;
+    "wireless/NETIASPOT-K7Yf8n4-2.4G".sopsFile = ./secrets/secrets.yaml;
   };
 
   services.tailscale.authKeyFile = config.sops.secrets.tailscale.path;
@@ -34,6 +36,8 @@
           config.sops.secrets."wireless/T-Mobile_5G_HomeOffice_5GHz_EXT".path;
         Internet_Domowy_660ECA.psk = config.sops.secrets."wireless/Internet_Domowy_660ECA".path;
         Internet_Domowy_5G_660ECA.psk = config.sops.secrets."wireless/Internet_Domowy_5G_660ECA".path;
+        NETIASPOT-K7Yf8n4-5G.psk = config.sops.secrets."wireless/NETIASPOT-K7Yf8n4-5G".path;
+        "NETIASPOT-K7Yf8n4-2.4G".psk = config.sops.secrets."wireless/NETIASPOT-K7Yf8n4-2.4G".path;
       };
     };
   };

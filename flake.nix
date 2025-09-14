@@ -91,7 +91,6 @@
             buildInputs =
               builtins.attrValues {
                 inherit (pkgs)
-                  lix
                   git
                   nixd
                   terraform-ls
@@ -259,11 +258,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     niri.url = "github:sodiboo/niri-flake"; # wait for kdl parser to be implemented in nixpkgs
-    # No idea, I dont really use it anymore anyways so maybe just remove
-    nixvim = {
-      url = "github:unixpariah/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # No clue, I like to have it for my non NixOS machines but at the same time it feels weird
     # to have it in my inputs
     nh-system = {

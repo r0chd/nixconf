@@ -6,7 +6,7 @@
 }:
 {
   nix = {
-    package = pkgs.lixPackageSets.latest.lix;
+    package = pkgs.stable.lixPackageSets.latest.lix;
     channel.enable = false;
     registry = lib.mapAttrs (_: flake: { inherit flake; }) inputs;
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") inputs;

@@ -14,6 +14,8 @@ in
         { id = "ddkjiahejlhfcafbddmgiahcphecmpfh"; } # uBlock Origin Lite
         { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # Vimium
         { id = "nkbihfbeogaeaoehlefnkodbefgpgknn"; } # Metamask
+        { id = "kaibcgikagnkfgjnibflebpldakfhfih"; } # CS2 trader
+        { id = "jjicbefpemnphinccgikpdaagjebbnhg"; } # CSFloat Market Checker
       ];
       commandLineArgs = [
         "--disable-sync"
