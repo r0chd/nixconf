@@ -26,13 +26,8 @@
   };
 
   programs = {
-    gcloud = {
-      enable = true;
-      #authFile = config.sops.secrets.gcloud.path;
-    };
     atuin = {
       enable = true;
-      #settings.key_path = config.sops.secrets.atuin_key.path;
     };
 
     vcs = {
@@ -62,7 +57,7 @@
     outputs = {
       "HDMI-A-1" = {
         position = {
-          x = 0;
+          x = 1920;
           y = 0;
         };
         refresh = 180.0;
@@ -72,11 +67,10 @@
         };
         scale = 1.25;
       };
-
       "eDP-1" = {
         position = {
-          x = 320;
-          y = 1440;
+          x = 0;
+          y = 0;
         };
         refresh = 144.0;
         dimensions = {
@@ -85,7 +79,6 @@
         };
       };
     };
-
     terminal.program = "ghostty";
   };
 

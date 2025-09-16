@@ -20,7 +20,9 @@
 
       hostEval = nixpkgs.lib.evalModules {
         modules = [
-          { _module.args.inputs = inputs; }
+          {
+            _module.args = { inherit inputs; };
+          }
           ./configuration.nix
           ./utils/options.nix
         ];

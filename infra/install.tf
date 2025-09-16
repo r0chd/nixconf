@@ -4,7 +4,6 @@ variable "ssh_source_path" {
   default     = ""
 }
 
-# --- bootstrap modules for new machines ---
 module "system-build" {
   for_each = { for name, host in local.hosts : name => host if host.needs_install }
 

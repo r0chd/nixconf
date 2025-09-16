@@ -23,6 +23,16 @@
     sccache.enable = true;
   };
 
+  virtualisation = {
+    containers.enable = true;
+    podman = {
+      enable = true;
+      dockerCompat = true;
+    };
+  };
+
+  users.users.unixpariah.extraGroups = [ "podman" ];
+
   documentation.enable = true;
 
   boot.tmp.useTmpfs = true;

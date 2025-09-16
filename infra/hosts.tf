@@ -5,10 +5,10 @@ locals {
     #  hostname      = "agent-0"
     #  needs_install = false
     #}
-    "laptop" = {
-      hostname      = "laptop"
-      needs_install = false
-    }
+    #"laptop" = {
+    #  hostname      = "laptop"
+    #  needs_install = false
+    #}
     "laptop-huawei" = {
       hostname      = "laptop-huawei"
       needs_install = false
