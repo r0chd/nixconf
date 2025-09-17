@@ -19,6 +19,7 @@
     ./nh
     ./gcloud
     ./vcs
+    ./minio
   ];
 
   programs = {

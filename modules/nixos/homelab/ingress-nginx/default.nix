@@ -28,33 +28,5 @@
         ingressClass = "ingress-nginx";
       };
     };
-
-    externaldns-pihole = {
-      name = "externaldns-pihole";
-      targetNamespace = "pihole-system";
-      repo = "oci://registry-1.docker.io/bitnamicharts/external-dns";
-      version = "9.0.0";
-      hash = "sha256-uanyYjrtTuErABr9qNn/z36QP3HV3Ew2h6oJvpB+FwA=";
-      values = {
-        provider = "pihole";
-        policy = "upsert-only";
-        txtOwnerId = "homelab";
-        pihole.server = "http://pihole-web.pihole-system.svc.cluster.local";
-        extraEnvVars = [
-          {
-            name = "EXTERNAL_DNS_PIHOLE_PASSWORD";
-            valueFrom.secretKeyRef = {
-              name = "pihole-password";
-              key = "pihole-password";
-            };
-          }
-        ];
-        serviceAccount = {
-          create = true;
-          name = "external-dns";
-        };
-        ingressClassFilters = [ "ingress-nginx" ];
-      };
-    };
   };
 }

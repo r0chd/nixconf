@@ -8,6 +8,9 @@
         version = "2.2.2";
         chartHash = "sha256-KIjExc9olb1HnA7HSbSLoT930AQPqWk+rfH+AjUNCVQ=";
       };
+      targetNamespace = "system";
+      createNamespace = true;
+
       values = {
         reloader = {
           autoReloadAll = true;

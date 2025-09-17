@@ -9,12 +9,10 @@ in
     ./metallb
     ./openebs
     ./pihole
-    ./prometheus
-    ./reloader
-    ./grafana
-    #./flannel
-    #./cert-manager
-    #./vaultwarden
+    ./system
+    ./monitoring
+    # ./cert-manager
+    # ./vaultwarden
     # ./nextcloud
     # ./immich
   ];
@@ -29,11 +27,13 @@ in
       "--disable traefik"
       "--write-kubeconfig-group wheel"
       "--write-kubeconfig-mode 0660"
+      "--cluster-cidr 10.244.0.0/16"
     ];
   };
 }
 
 # TODO:
+# [ ] add cloudnative-pg
 # [ ] add thanos for longer term metrics storage
 # [ ] add quickwit for centralized logging
 # [x] add config reloader
@@ -42,5 +42,6 @@ in
 # [x] add alertmanager
 # [x] add grafana
 # [ ] add vector
-# [ ] add minio
+# [x] add minio
 # [ ] finish cert-manager
+# [ ] add flux

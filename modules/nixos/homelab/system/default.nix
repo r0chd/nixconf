@@ -1,0 +1,8 @@
+{ ... }:
+{
+  imports = [
+    ./reloader
+    ./flannel
+    ./flux
+  ];
+}

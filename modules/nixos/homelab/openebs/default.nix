@@ -1,5 +1,7 @@
 { pkgs, ... }:
 {
+  imports = [ ./minio.nix ];
+
   config.services.k3s.autoDeployCharts.openebs = {
     targetNamespace = "openebs-system";
     package = pkgs.fetchurl {
@@ -9,11 +11,7 @@
     createNamespace = true;
 
     values = {
-      localpv-provisioner.enabled = false;
-      jiva.enabled = false;
-      cstor.enabled = false;
-      ndm.enabled = true;
-      mayastor.enabled = true;
+      loki.enabled = false;
     };
   };
 }

@@ -263,12 +263,12 @@
     # No clue, I like to have it for my non NixOS machines but at the same time it feels weird
     # to have it in my inputs
     nh-system = {
-      url = "github:unixpariah/nh/system-manager-support";
+      url = "github:r0chd/nh/system-manager-support";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # Maybe just maintain a derivation? Not gonna change it a lot anyways
     sysnotifier = {
-      url = "github:unixpariah/SysNotifier";
+      url = "github:r0chd/SysNotifier";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

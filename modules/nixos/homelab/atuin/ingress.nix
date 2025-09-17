@@ -12,7 +12,7 @@ _: {
         rules = [
           {
 
-            host = "atuin.your-domain.com";
+            host = "atuin.example.com";
             http = {
               paths = [
                 {

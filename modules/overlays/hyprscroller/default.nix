@@ -8,13 +8,13 @@
 }:
 hyprlandPlugins.mkHyprlandPlugin hyprland {
   pluginName = "hyprscroller";
-  version = "0-unstable-2025-03-24";
+  version = "0-unstable-2025-07-22";
 
   src = fetchFromGitHub {
     owner = "cpiber";
     repo = "hyprscroller";
-    rev = "d3e447a22cfaae77ab1cf3931d23cfdb7c010a9c";
-    hash = "sha256-XqUm5nnTmZUF17eqEACzQCAWXF7ezLKHqIwJR/td34Y=";
+    rev = "b0dfb7b1844eece9e15650b963f8e343baf63106";
+    hash = "sha256-dA8fKlDPReinuP4SkOqPwkebv43himKpN4wvoLctTKE=";
   };
 
   nativeBuildInputs = [ cmake ];
@@ -34,7 +34,7 @@ hyprlandPlugins.mkHyprlandPlugin hyprland {
     homepage = "https://github.com/dawsers/hyprscroller";
     description = "Hyprland layout plugin providing a scrolling layout like PaperWM";
     license = lib.licenses.mit;
-    #maintainers = builtins.attrValues { inherit (lib.maintainers) unixpariah; };
+    maintainers = builtins.attrValues { inherit (lib.maintainers) r0chd; };
     platforms = lib.platforms.linux;
   };
 }

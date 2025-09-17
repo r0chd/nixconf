@@ -20,6 +20,10 @@
     ];
 
   sops.secrets = {
+    "pihole/password" = { };
+    "grafana/username" = { };
+    "grafana/password" = { };
+
     nixos-anywhere = {
       owner = "nixos-anywhere";
       group = "nixos-anywhere";
@@ -64,7 +68,7 @@
   };
 
   networking = {
-    #nameservers = [ "192.168.1.103" ];
+    nameservers = lib.mkForce [ "192.168.0.103" ];
     hostId = "499673df";
     wireless = {
       iwd.enable = true;
@@ -103,6 +107,25 @@
   environment = {
     variables.EDITOR = "hx";
     systemPackages = builtins.attrValues { inherit (pkgs) helix cosmic-icons; };
+  };
+
+  homelab = {
+    enable = true;
+    pihole = {
+      enable = true;
+      domain = "pihole.example.com";
+      dns = "192.168.0.1";
+      passwordFile = config.sops.secrets."pihole/password".path;
+      adlists = [ "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt" ];
+      webLoadBalancerIP = "192.168.0.102";
+      dnsLoadBalancerIP = "192.168.0.103";
+    };
+    metallb.addresses = [ "192.168.0.100-192.168.0.150" ];
+    grafana = {
+      domain = "grafana.example.com";
+      usernameFile = config.sops.secrets."grafana/username".path;
+      passwordFile = config.sops.secrets."grafana/password".path;
+    };
   };
 
   time.timeZone = "Europe/Warsaw";

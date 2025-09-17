@@ -10,6 +10,7 @@ let
 in
 {
   options.homelab.pihole = {
+    enable = lib.mkEnableOption "pihole";
     passwordFile = lib.mkOption { type = types.path; };
     dns = lib.mkOption { type = types.str; };
     domain = lib.mkOption { type = types.str; };
@@ -25,59 +26,89 @@ in
     };
   };
 
-  config.services.k3s = lib.mkIf config.homelab.enable {
-    autoDeployCharts.pihole = {
-      package = pkgs.lib.downloadHelmChart {
-        repo = "https://mojo2600.github.io/pihole-kubernetes";
-        chart = "pihole";
-        version = "2.18.0";
-        chartHash = "sha256-IPXWgsxtZ5E3ybsMjMuyWduMIH3HLwDHch8alipRNNo=";
-      };
-      targetNamespace = "pihole-system";
-      createNamespace = true;
-      values = {
-        DNS1 = [ cfg.dns ];
-        persistentVolumeClaim = {
-          enabled = true;
-          storageClass = "openebs-hostpath";
+  config.services.k3s = lib.mkIf (config.homelab.enable && cfg.enable) {
+    autoDeployCharts = {
+      pihole = {
+        package = pkgs.lib.downloadHelmChart {
+          repo = "https://mojo2600.github.io/pihole-kubernetes";
+          chart = "pihole";
+          version = "2.18.0";
+          chartHash = "sha256-IPXWgsxtZ5E3ybsMjMuyWduMIH3HLwDHch8alipRNNo=";
         };
-        ingress = {
-          enabled = true;
-          annotations = {
-            "nginx.ingress.kubernetes.io/ssl-redirect" = "true";
-            "nginx.ingress.kubernetes.io/backend-protocol" = "HTTP";
+        targetNamespace = "system";
+        createNamespace = true;
+        values = {
+          DNS1 = [ cfg.dns ];
+          persistentVolumeClaim = {
+            enabled = true;
+            storageClass = "openebs-hostpath";
           };
-          hosts = [ cfg.domain ];
-          tls = [
+          ingress = {
+            enabled = true;
+            annotations = {
+              "nginx.ingress.kubernetes.io/ssl-redirect" = "false";
+              "nginx.ingress.kubernetes.io/backend-protocol" = "HTTP";
+            };
+            hosts = [ cfg.domain ];
+            #tls = [
+            #  {
+            #    secretName = "pihole-tls-secret";
+            #    hosts = [ cfg.domain ];
+            #  }
+            #];
+          };
+          serviceWeb = {
+            loadBalancerIP = cfg.webLoadBalancerIP;
+            annotations."metallb.universe.tf/allow-shared-ip" = "pihole-svc";
+            type = "LoadBalancer";
+          };
+          serviceDns = {
+            loadBalancerIP = cfg.dnsLoadBalancerIP;
+            annotations."metallb.universe.tf/allow-shared-ip" = "pihole-svc";
+            type = "LoadBalancer";
+          };
+          replicaCount = cfg.replicas;
+          admin = {
+            enabled = true;
+            existingSecret = "pihole";
+            passwordKey = "password";
+          };
+          inherit (cfg) adlists;
+        };
+      };
+
+      externaldns-pihole = {
+        name = "externaldns-pihole";
+        targetNamespace = "system";
+        repo = "oci://registry-1.docker.io/bitnamicharts/external-dns";
+        version = "9.0.0";
+        hash = "sha256-uanyYjrtTuErABr9qNn/z36QP3HV3Ew2h6oJvpB+FwA=";
+        values = {
+          provider = "pihole";
+          policy = "upsert-only";
+          txtOwnerId = "homelab";
+          pihole.server = "http://pihole-web.system.svc.cluster.local";
+          extraEnvVars = [
             {
-              secretName = "pihole-tls-secret";
-              hosts = [ cfg.domain ];
+              name = "EXTERNAL_DNS_PIHOLE_PASSWORD";
+              valueFrom.secretKeyRef = {
+                name = "pihole";
+                key = "password";
+              };
             }
           ];
+          serviceAccount = {
+            create = true;
+            name = "external-dns";
+          };
+          ingressClassFilters = [ "ingress-nginx" ];
         };
-        serviceWeb = {
-          loadBalancerIP = cfg.webLoadBalancerIP;
-          annotations."metallb.universe.tf/allow-shared-ip" = "pihole-svc";
-          type = "LoadBalancer";
-        };
-        serviceDns = {
-          loadBalancerIP = cfg.dnsLoadBalancerIP;
-          annotations."metallb.universe.tf/allow-shared-ip" = "pihole-svc";
-          type = "LoadBalancer";
-        };
-        replicaCount = cfg.replicas;
-        admin = {
-          enabled = true;
-          existingSecret = "pihole-password";
-          passwordKey = "password";
-        };
-        inherit (cfg) adlists;
       };
     };
     secrets = [
       {
-        name = "pihole-password";
-        namespace = "pihole-system";
+        name = "pihole";
+        namespace = "system";
         data = {
           password = cfg.passwordFile;
         };

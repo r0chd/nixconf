@@ -27,10 +27,10 @@ _: {
           name = "selfsigned-issuer";
           kind = "ClusterIssuer";
         };
-        commonName = "*.your-domain.com";
+        commonName = "*.example.com";
         dnsNames = [
-          "*.your-domain.com"
-          "your-domain.com"
+          "*.example.com"
+          "example.com"
         ];
       };
     }

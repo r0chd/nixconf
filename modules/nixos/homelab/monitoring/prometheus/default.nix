@@ -1,6 +1,20 @@
-{ pkgs, ... }:
 {
-  config.services.k3s.autoDeployCharts = {
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+let
+  cfg = config.programs.prometheus;
+  inherit (lib) types;
+in
+{
+  options.programs.prometheus.enable = lib.mkOption {
+    type = types.bool;
+    default = config.homelab.enable;
+  };
+
+  config.services.k3s.autoDeployCharts = lib.mkIf cfg.enable {
     prometheus-crds = {
       package = pkgs.lib.downloadHelmChart {
         repo = "https://prometheus-community.github.io/helm-charts";

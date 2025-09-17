@@ -350,13 +350,13 @@
       "locked": {
         "lastModified": 1757485763,
         "narHash": "sha256-PiBoAPUgowmaWXuOcQdUipwoNJFqO6GKfat1Mek8R0o=",
-        "owner": "unixpariah",
+        "owner": "r0chd",
         "repo": "nh",
         "rev": "12a37b3c44b097259869e1d5f0c8f3439f5e8f96",
         "type": "github"
       },
       "original": {
-        "owner": "unixpariah",
+        "owner": "r0chd",
         "ref": "system-manager-support",
         "repo": "nh",
         "type": "github"
@@ -976,13 +976,13 @@
       "locked": {
         "lastModified": 1749848574,
         "narHash": "sha256-G7vx8L2bdy4/S4Ddoknyzqpe3656icswtSKPwvwSYhQ=",
-        "owner": "unixpariah",
+        "owner": "r0chd",
         "repo": "SysNotifier",
         "rev": "c4d05adfbaead65122ee838757156d9da68c62fd",
         "type": "github"
       },
       "original": {
-        "owner": "unixpariah",
+        "owner": "r0chd",
         "repo": "SysNotifier",
         "type": "github"
       }

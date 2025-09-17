@@ -122,13 +122,6 @@ in
           {
             name = "yaml";
             auto-format = true;
-            formatter = {
-              command = "prettier";
-              args = [
-                "--parser"
-                "yaml"
-              ];
-            };
           }
           {
             name = "scheme";
