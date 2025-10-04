@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  lib,
   ...
 }:
 {
@@ -8,6 +9,13 @@
     ./hardware-configuration.nix
     ./disko.nix
   ];
+
+  nixpkgs.config.allowUnfreePredicate =
+    pkgs:
+    builtins.elem (lib.getName pkgs) [
+      "steam"
+      "steam-unwrapped"
+    ];
 
   sops.secrets = {
     nixos-anywhere = {
@@ -31,11 +39,21 @@
     };
   };
 
-  users.users.unixpariah.extraGroups = [ "podman" ];
+  users.groups.wl-clicker = { };
+  users.users.unixpariah.extraGroups = [
+    "podman"
+    "wl-clicker"
+  ];
 
   documentation.enable = true;
 
   boot.tmp.useTmpfs = true;
+
+  gaming = {
+    steam.enable = true;
+    minecraft.enable = true;
+  };
+  networking.firewall.allowedTCPPorts = [ 25565 ];
 
   system = {
     bootloader = {
@@ -52,6 +70,7 @@
     variables.EDITOR = "hx";
     systemPackages = builtins.attrValues {
       inherit (pkgs)
+        #quickwit
         helix
         kubectl
         cosmic-icons

@@ -83,10 +83,8 @@ in
     user.services.sops-generate-user-keys = {
       description = "Generate SOPS age keys from SSH keys";
 
-      after = [ "local-fs.target" ];
-      before = [ "sops-install-secrets.service" ];
-      requiredBy = [ "sops-install-secrets.service" ];
-      unitConfig.DefaultDependencies = "no";
+      before = [ "sops-nix.service" ];
+      wantedBy = [ "default.target" ];
 
       serviceConfig = {
         Type = "oneshot";
@@ -98,5 +96,6 @@ in
         ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i "$HOME/.ssh/id_ed25519" > "$HOME/.config/sops/age/keys.txt"
       '';
     };
+
   };
 }

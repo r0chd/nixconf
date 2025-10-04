@@ -71,7 +71,14 @@
       "workspace"
       ".yubico"
     ];
-    packages = builtins.attrValues { inherit (pkgs) slack figma-linux obsidian; };
+    packages = builtins.attrValues {
+      inherit (pkgs)
+        slack
+        figma-linux
+        obsidian
+        devenv
+        ;
+    };
   };
 
   services = {

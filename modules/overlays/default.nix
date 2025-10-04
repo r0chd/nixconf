@@ -16,6 +16,7 @@ inputs: config: [
       hyprscroller = prev.callPackage ./hyprscroller { };
       sysnotifier = inputs.sysnotifier.packages.${system}.default;
       darkfi = prev.callPackage ./darkfi { };
+      quickwit = prev.callPackage ./quickwit { };
     }
   )
 ]

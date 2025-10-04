@@ -27,6 +27,7 @@ in
       };
       plymouth.enable = profile == "desktop" && config.stylix.enable;
       loader = {
+        timeout = null;
         limine = {
           enable = platform == "nixos";
           enableEditor = true;

@@ -8,7 +8,6 @@
       home-manager,
       stylix,
       nix-on-droid,
-      system-manager,
       nix-raspberrypi,
       ...
     }@inputs:
@@ -137,29 +136,6 @@
         |> lib.filterAttrs (_: attrs: attrs.platform == "nixos")
         |> lib.mapAttrs (hostName: attrs: mkHost hostName attrs);
 
-      systemConfigs =
-        let
-          mkHost =
-            hostName: attrs:
-            let
-              systemUsers = attrs.users;
-              pkgs = import nixpkgs { inherit (attrs) system; };
-            in
-            system-manager.lib.makeSystemConfig {
-              modules = [
-                ./modules/system
-                ./hosts/${hostName}
-              ];
-              extraSpecialArgs = {
-                inherit inputs systemUsers pkgs;
-                inherit (config.hosts.${hostName}) system profile;
-              };
-            };
-        in
-        config.hosts
-        |> lib.filterAttrs (_: attrs: attrs.platform == "non-nixos")
-        |> lib.mapAttrs (hostName: attrs: mkHost hostName attrs);
-
       homeConfigurations =
         config.hosts
         |> lib.filterAttrs (_: attrs: attrs.platform != "mobile")
@@ -241,10 +217,6 @@
       url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    system-manager = {
-      url = "github:numtide/system-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-raspberrypi = {
       url = "github:nvmd/nixos-raspberrypi";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -260,15 +232,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     niri.url = "github:sodiboo/niri-flake"; # wait for kdl parser to be implemented in nixpkgs
-    # No clue, I like to have it for my non NixOS machines but at the same time it feels weird
-    # to have it in my inputs
-    nh-system = {
-      url = "github:r0chd/nh/system-manager-support";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # Maybe just maintain a derivation? Not gonna change it a lot anyways
     sysnotifier = {
       url = "github:r0chd/SysNotifier";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # Wait for 0.34.0 jj release in nixpkgs
+    jj = {
+      url = "github:jj-vcs/jj";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

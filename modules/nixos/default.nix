@@ -96,7 +96,9 @@
           isNormalUser = true;
           inherit (value) home;
           hashedPasswordFile = config.sops.secrets."${name}/password".path;
-          extraGroups = lib.mkIf value.root.enable [ "wheel" ];
+          extraGroups = lib.mkIf value.root.enable [
+            "wheel"
+          ];
           shell = pkgs.${value.shell};
           createHome = true;
         }

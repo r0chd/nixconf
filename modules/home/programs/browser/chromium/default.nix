@@ -26,7 +26,6 @@ in
         "--enable-features=BlockThirdPartyCookiesInIncognito"
         "--no-service-autorun"
         "--disable-features=PreloadMediaEngagementData,MediaEngagementBypassAutoplayPolicies"
-        "--disable-reading-from-canvas"
         "--no-pings"
         "--no-first-run"
         "--no-experiments"
@@ -47,7 +46,7 @@ in
 
     home.persist = {
       files = [
-        ".config/chromium/Local State"
+        #".config/chromium/Local State"
         ".config/chromium/Default/Cookies"
       ];
       directories = [ ".config/chromium/Default/Local Storage" ];

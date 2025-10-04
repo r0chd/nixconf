@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  inputs,
   pkgs,
   ...
 }:
@@ -14,7 +15,10 @@ in
       type = types.bool;
       default = true;
     };
-    package = lib.mkPackageOption pkgs "jujutsu" { };
+    package = lib.mkOption {
+      type = types.package;
+      default = inputs.jj.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    };
   };
 
   config.programs.jujutsu = lib.mkIf cfg.jj.enable {
