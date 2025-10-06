@@ -20,6 +20,7 @@
     ./gcloud
     ./vcs
     ./minio
+    ./re-toolkit
   ];
 
   programs = {

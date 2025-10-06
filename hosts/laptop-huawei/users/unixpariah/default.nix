@@ -10,6 +10,8 @@
     builtins.elem (lib.getName pkgs) [
       "slack"
       "obsidian"
+      "steam"
+      "steam-unwrapped"
     ];
 
   programs = {
@@ -35,6 +37,7 @@
     zoxide.enable = true;
     direnv.enable = true;
     bottom.enable = true;
+    re-toolkit.enable = true;
   };
 
   environment = {
@@ -73,6 +76,7 @@
     ];
     packages = builtins.attrValues {
       inherit (pkgs)
+        waypipe
         slack
         figma-linux
         obsidian
@@ -84,7 +88,6 @@
   services = {
     impermanence.enable = true;
     yubikey-touch-detector.enable = true;
-    #darkfirc.enable = true;
   };
 
   stylix = {

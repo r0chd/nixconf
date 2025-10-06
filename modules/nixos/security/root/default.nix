@@ -16,8 +16,7 @@ in
 
   config = {
     security = {
-      sudo.enable = false;
-      sudo-rs = {
+      sudo = {
         enable = true;
         execWheelOnly = true;
         extraConfig = ''

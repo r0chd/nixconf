@@ -7,7 +7,6 @@
       disko,
       home-manager,
       stylix,
-      nix-on-droid,
       nix-raspberrypi,
       ...
     }@inputs:
@@ -152,22 +151,6 @@
         |> builtins.concatLists
         |> builtins.listToAttrs;
 
-      nixOnDroidConfigurations =
-        let
-          mkDroid =
-            hostName: attrs:
-            nix-on-droid.lib.nixOnDroidConfiguration {
-              pkgs = import nixpkgs { inherit (config.hosts.${hostName}) system; };
-              modules = [
-                ./hosts/${hostName}
-                ./modules/nixOnDroid
-              ];
-            };
-        in
-        config.hosts
-        |> lib.filterAttrs (_: attrs: attrs.platform == "mobile")
-        |> lib.mapAttrs (hostName: attrs: mkDroid hostName attrs);
-
       formatter = forAllSystems (
         pkgs:
         pkgs.writeShellApplication {
@@ -206,12 +189,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
-
-    nix-on-droid = {
-      url = "github:nix-community/nix-on-droid";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-    };
 
     nixGL = {
       url = "github:nix-community/nixGL";

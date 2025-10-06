@@ -19,10 +19,15 @@ with lib.hm.gvariant;
     programs.gnome-shell = {
       enable = true;
       extensions = [
-        #{ package = pkgs.gnomeExtensions.burn-my-windows; }
         { package = pkgs.gnomeExtensions.paperwm; }
       ];
     };
+
+    home.file.".config/paperwm/user.css".text = ''
+      .paperwm-selection {
+        background-color: rgba(0, 0, 0, 0);
+      }
+    '';
 
     ### EXTENSIONS ###
     dconf.settings = {
