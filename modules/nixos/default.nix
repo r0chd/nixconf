@@ -22,7 +22,6 @@
     ./virtualisation
     ./homelab
     ./nixpkgs
-    ./re
     ../theme
   ];
 

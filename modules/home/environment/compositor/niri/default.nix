@@ -304,6 +304,17 @@ in
           "stop"
         ];
 
+        "Alt+G".action.spawn = [
+          ''
+            ${(pkgs.writeShellScriptBin "ah-sell" ''
+              inputs.whydotool.packages.${pkgs.stdenv.hostPlatform.system}.default key 53:1 53:0
+              inputs.whydotool.packages.${pkgs.stdenv.hostPlatform.system}.default type "ah sell 2k"
+              inputs.whydotool.packages.${pkgs.stdenv.hostPlatform.system}.default mousemove -x 60 -y -70
+              inputs.whydotool.packages.${pkgs.stdenv.hostPlatform.system}.default click 0xC0
+            '')}/bin/ah-sell
+          ''
+        ];
+
         "Alt+D".action.spawn = [
           "mox"
           "notify"

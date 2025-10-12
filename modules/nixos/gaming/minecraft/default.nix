@@ -12,13 +12,26 @@ in
     enable = lib.mkEnableOption "Enable minecraft";
     package = lib.mkOption {
       type = lib.types.package;
-      default = pkgs.prismlauncher;
+      default = (
+        pkgs.prismlauncher.override {
+          additionalLibs = builtins.attrValues {
+            inherit (pkgs)
+              nss
+              nspr
+              cef-binary
+              libgbm
+              ;
+          };
+        }
+      );
     };
   };
 
   config = lib.mkIf cfg.enable {
     environment = {
-      systemPackages = [ cfg.package ];
+      systemPackages = [
+        cfg.package
+      ];
       persist.users.directories = [ ".local/share/PrismLauncher" ];
     };
   };

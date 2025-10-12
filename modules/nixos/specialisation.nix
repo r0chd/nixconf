@@ -54,7 +54,7 @@ in
       environment.etc."specialisation".text = "sway";
     };
     "gnome".configuration = {
-      services.desktopManager.gnome.enable = true;
+      #services.desktopManager.gnome.enable = true;
       environment.etc."specialisation".text = "gnome";
     };
     "cosmic".configuration = {

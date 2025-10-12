@@ -200,6 +200,7 @@
     };
 
     mox-flake.url = "github:mox-desktop/mox-flake";
+    whydotool.url = "github:r0chd/whydotool";
 
     # To be ditched
 
@@ -209,15 +210,5 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     niri.url = "github:sodiboo/niri-flake"; # wait for kdl parser to be implemented in nixpkgs
-    # Maybe just maintain a derivation? Not gonna change it a lot anyways
-    sysnotifier = {
-      url = "github:r0chd/SysNotifier";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    # Wait for 0.34.0 jj release in nixpkgs
-    jj = {
-      url = "github:jj-vcs/jj";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 }

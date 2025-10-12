@@ -68,7 +68,6 @@
   };
 
   networking = {
-    nameservers = lib.mkForce [ "192.168.0.103" ];
     hostId = "499673df";
     wireless = {
       iwd.enable = true;
@@ -78,7 +77,6 @@
 
   system = {
     fileSystem = "zfs";
-    ydotool.enable = true;
   };
 
   security = {
@@ -106,11 +104,16 @@
 
   environment = {
     variables.EDITOR = "hx";
-    systemPackages = builtins.attrValues { inherit (pkgs) helix cosmic-icons; };
+    systemPackages = builtins.attrValues {
+      inherit (pkgs)
+        helix
+        cosmic-icons
+        ;
+    };
   };
 
   homelab = {
-    enable = true;
+    enable = false;
     pihole = {
       enable = true;
       domain = "pihole.example.com";

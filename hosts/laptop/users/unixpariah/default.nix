@@ -112,17 +112,16 @@
     packages = builtins.attrValues {
       inherit (pkgs)
         obsidian
-        renderdoc
         zathura
         mpv
         lazygit
         unzip
-        gimp3
+        gimp
         imagemagick
         wf-recorder
         libreoffice
         cosmic-files
-        hello
+        devenv
         ;
     };
 

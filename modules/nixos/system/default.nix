@@ -3,7 +3,6 @@
   imports = [
     ./bootloader
     ./impermanence
-    ./ydotool
     ./displayManager
   ];
 

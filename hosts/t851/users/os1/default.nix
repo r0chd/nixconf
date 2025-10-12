@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  inputs,
   config,
   ...
 }:
@@ -28,7 +27,6 @@
       enable = true;
       profiles = { };
     };
-    nh.package = inputs.nh-system.packages.${pkgs.stdenv.hostPlatform.system}.default;
     gnome.enable = true;
 
     firefox.enable = true;
