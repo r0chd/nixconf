@@ -18,12 +18,45 @@ in
     };
   };
 
-  config = {
+  config = lib.mkIf cfg.enable {
+    systemd.user.services.hyprland-plugin-loader = {
+      Unit = {
+        Description = "Load Hyprland plugins";
+        After = [ "graphical-session.target" ];
+        PartOf = [ "graphical-session.target" ];
+        ConditionEnvironment = "HYPRLAND_INSTANCE_SIGNATURE";
+      };
+      Service = {
+        Type = "oneshot";
+        ExecStart =
+          let
+            hyprctl = lib.getExe' pkgs.hyprland "hyprctl";
+            pluginPath = "${pkgs.hyprscroller}/lib/libhyprscroller.so";
+            loader = pkgs.writeShellScript "hyprland-plugin-loader" ''
+              for i in {1..10}; do
+                if ${hyprctl} version &>/dev/null; then
+                  ${hyprctl} plugin load ${pluginPath} && exit 0
+                  exit 1
+                fi
+                sleep 0.5
+              done
+              echo "Hyprland not ready after 5 seconds, giving up"
+              exit 1
+            '';
+          in
+          "${loader}";
+        RemainAfterExit = true;
+        Restart = "on-failure";
+        RestartSec = "2s";
+      };
+      Install = {
+        WantedBy = [ "graphical-session.target" ];
+      };
+    };
+
     wayland.windowManager.hyprland = {
       inherit (cfg) enable;
       inherit (cfg) package;
-
-      plugins = [ pkgs.hyprscroller ];
 
       settings = {
         layerrule = [ "noanim, moxnotify" ];

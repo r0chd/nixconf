@@ -147,20 +147,69 @@ in
     };
 
     systemd.services.activate-home-manager = {
-      description = "Activate home manager";
+      description = "Activate previous Home Manager generation for all users";
       wantedBy = [ "default.target" ];
       requiredBy = [ "systemd-user-sessions.service" ];
       after = [ "sops-install-secrets.service" ];
       before = [ "systemd-user-sessions.service" ];
       serviceConfig = {
         Type = "oneshot";
+        RemainAfterExit = true;
       };
-      environment.PATH = lib.mkForce "${pkgs.nix}/bin:${pkgs.git}/bin:${pkgs.home-manager}/bin:${pkgs.sudo}/bin:${pkgs.coreutils}/bin:$PATH";
+      path = with pkgs; [
+        coreutils
+        nix
+        git
+        home-manager
+        ripgrep
+        gnused
+        findutils
+        sudo
+      ];
       script = lib.concatMapStrings (user: ''
-        chown -R ${user}:users /home/${user}
-        if [ -L "${cfg.mountPoint}/home/${user}/.local/state/nix/profiles/home-manager" ]; then
-          HOME_MANAGER_BACKUP_EXT="$(date +%Y%m%d_%H%M%S).bak" sudo -u ${user} ${cfg.mountPoint}/home/${user}/.local/state/nix/profiles/home-manager/activate
+        echo "========================================="
+        echo "Processing user: ${user}"
+        echo "========================================="
+
+        # Fix ownership first
+        chown -R ${user}:users /home/${user} 2>/dev/null || true
+
+        HM_DIR="/persist/home/${user}/.local/state/nix/profiles"
+        if [ -d "$HM_DIR" ]; then
+          # Get sorted list of generations
+          GENERATIONS=$(find "$HM_DIR" -maxdepth 1 -type l -name 'home-manager-*-link' | sort -V)
+          NUM_GEN=$(echo "$GENERATIONS" | wc -l)
+          
+          echo "Found $NUM_GEN generations for ${user}"
+          
+          if [ "$NUM_GEN" -ge 2 ]; then
+            # Get second-to-last (previous) generation
+            PREV_GEN=$(echo "$GENERATIONS" | tail -n 2 | head -n 1)
+            
+            echo "Previous generation: $PREV_GEN"
+            
+            if [ -n "$PREV_GEN" ] && [ -x "$PREV_GEN/activate" ]; then
+              echo "Activating previous Home Manager generation for ${user}..."
+              
+              # Run activation with better error handling
+              if sudo -u ${user} "$PREV_GEN/activate" 2>&1; then
+                echo "Successfully activated generation for ${user}"
+              else
+                ACTIVATE_EXIT=$?
+                echo "Warning: Activation for ${user} exited with code $ACTIVATE_EXIT"
+                echo "This may be normal if there are warnings during activation"
+                # Don't fail the entire service for one user's activation issues
+              fi
+            else
+              echo "No valid activate script in previous generation for ${user}"
+            fi
+          else
+            echo "Not enough Home Manager generations yet for ${user} (need at least 2)"
+          fi
+        else
+          echo "Home Manager profiles directory does not exist for user ${user}, skipping."
         fi
+        echo ""
       '') (lib.attrNames systemUsers);
     };
   };

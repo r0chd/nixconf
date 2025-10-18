@@ -1,20 +1,13 @@
 {
   pkgs,
   inputs,
-  lib,
-  config,
   ...
 }:
-let
-  cfg = config.programs.niri;
-in
 {
   imports = [
     inputs.niri.homeModules.niri
     inputs.niri.homeModules.stylix
   ];
-
-  home.packages = lib.mkIf cfg.enable [ pkgs.xwayland-satellite ];
 
   programs.niri = {
     package = pkgs.niri-unstable;
@@ -93,7 +86,7 @@ in
           command = [
             "${pkgs.uwsm}/bin/uwsm"
             "app"
-            "xwayland-satellite"
+            "${pkgs.xwayland-satellite}/bin/xwayland-satellite"
           ];
         }
       ];
