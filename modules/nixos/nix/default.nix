@@ -6,7 +6,7 @@
 }:
 {
   nix = {
-    package = pkgs.stable.lixPackageSets.latest.lix;
+    package = pkgs.nix;
     channel.enable = false;
     registry = lib.mapAttrs (_: flake: { inherit flake; }) inputs;
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") inputs;
@@ -16,7 +16,7 @@
       experimental-features = [
         "nix-command"
         "flakes"
-        "pipe-operator"
+        "pipe-operators"
       ];
       auto-optimise-store = true;
       substituters = [

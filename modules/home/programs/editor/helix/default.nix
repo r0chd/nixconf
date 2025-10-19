@@ -110,9 +110,14 @@ in
 
           wgsl-analyzer.command = "wgsl-analyzer";
 
-          steel-language-server.command = "${pkgs.steel}/bin/steel-language-server";
+          steel-language-server.command = "steel-language-server";
         };
         language = [
+          {
+            name = "kotlin";
+            auto-format = true;
+            formatter.command = "ktfmt";
+          }
           {
             name = "c";
             auto-format = true;

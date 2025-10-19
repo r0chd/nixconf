@@ -7,12 +7,12 @@
   imports = [ ./access-tokens ];
 
   nix = {
-    package = pkgs.stable.lixPackageSets.latest.lix;
+    package = pkgs.nix;
     settings = {
       experimental-features = [
         "nix-command"
         "flakes"
-        "pipe-operator"
+        "pipe-operators"
       ];
       substituters = [
         "https://cache.garnix.io"
