@@ -23,8 +23,6 @@
         package = pkgs.nushell;
         inherit (config.home) shellAliases;
 
-        plugins = builtins.attrValues { inherit (pkgs.nushellPlugins) highlight; };
-
         configFile.text = ''
           let carapace_completer = {|spans|
               ${config.programs.carapace.package}/bin/carapace $spans.0 nushell ...$spans | from json

@@ -4,21 +4,21 @@
     nvidia = {
       nvidiaSettings = false;
       modesetting.enable = true;
-      #powerManagement = {
-      #  enable = true;
-      #  finegrained = true;
-      #};
+      powerManagement = {
+        enable = true;
+        finegrained = true;
+      };
 
       dynamicBoost.enable = true;
       forceFullCompositionPipeline = true;
 
       open = true;
       prime = {
-        sync.enable = true;
-        #offload = {
-        #  enable = true;
-        #  enableOffloadCmd = true;
-        #};
+        #sync.enable = true;
+        offload = {
+          enable = true;
+          enableOffloadCmd = true;
+        };
         intelBusId = "PCI:0:2:0";
         nvidiaBusId = "PCI:0:1:0";
       };

@@ -20,8 +20,6 @@ in
   config = lib.mkIf cfg.git.enable {
     programs.git = {
       enable = true;
-      userName = cfg.name;
-      userEmail = cfg.email;
 
       signing = lib.mkIf (cfg.signingKeyFile != null) {
         key = cfg.signingKeyFile;
@@ -29,11 +27,13 @@ in
         signByDefault = true;
       };
 
-      aliases = {
-        rev = "review --no-rebase --reviewers ${config.home.username}";
-      };
+      settings = {
+        user = { inherit (cfg) name email; };
 
-      extraConfig = {
+        alias = {
+          rev = "review --no-rebase --reviewers ${config.home.username}";
+        };
+
         #diff.tool = "kdiff3";
         #merge.tool = "kdiff3";
 
