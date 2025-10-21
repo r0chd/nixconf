@@ -10,13 +10,14 @@ in
   options.security.root = {
     timeout = lib.mkOption {
       type = lib.types.int;
-      default = 0;
+      default = 15;
     };
   };
 
   config = {
     security = {
-      sudo = {
+      sudo.enable = false;
+      sudo-rs = {
         enable = true;
         execWheelOnly = true;
         extraConfig = ''

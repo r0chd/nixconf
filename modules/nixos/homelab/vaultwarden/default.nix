@@ -272,7 +272,7 @@ in
           };
           spec = {
             accessModes = [ "ReadWriteOnce" ];
-            storageClassName = "openebs-hostpath";
+            storageClassName = "local-path";
             resources.requests.storage = cfg.storage;
           };
         }

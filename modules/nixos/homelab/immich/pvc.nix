@@ -10,7 +10,7 @@ in
       metadata.name = "vaultwarden-pvc";
       spec = {
         accessModes = [ "ReadWriteOnce" ];
-        storageClassName = "openebs-hostpath";
+        storageClassName = "local-path";
         resources.requests.storage = "5G"; # TODO: make it into an option
       };
     }

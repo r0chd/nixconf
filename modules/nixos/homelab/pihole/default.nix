@@ -41,7 +41,7 @@ in
           DNS1 = [ cfg.dns ];
           persistentVolumeClaim = {
             enabled = true;
-            storageClass = "openebs-hostpath";
+            storageClass = "local-path";
           };
           ingress = {
             enabled = true;
@@ -84,6 +84,12 @@ in
         version = "9.0.0";
         hash = "sha256-uanyYjrtTuErABr9qNn/z36QP3HV3Ew2h6oJvpB+FwA=";
         values = {
+          global.security.allowInsecureImages = true;
+          image = {
+            registry = "registry.k8s.io";
+            repository = "external-dns/external-dns";
+            tag = "v0.14.0";
+          };
           provider = "pihole";
           policy = "upsert-only";
           txtOwnerId = "homelab";

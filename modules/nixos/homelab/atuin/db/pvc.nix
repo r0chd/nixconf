@@ -13,7 +13,7 @@ in
         namespace = "atuin";
       };
       spec = {
-        storageClassName = "openebs-hostpath";
+        storageClassName = "local-path";
         accessModes = [ "ReadWriteOnce" ];
         resources.requests = lib.mkIf (cfg.resources.storage != null) { inherit (cfg.resources) storage; };
       };

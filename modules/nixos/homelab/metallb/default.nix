@@ -17,6 +17,20 @@ in
     targetNamespace = "metallb-system";
     createNamespace = true;
 
+    values = {
+      global.security.allowInsecureImages = true;
+      controller.image = {
+        registry = "quay.io";
+        repository = "metallb/controller";
+        tag = "v0.14.9";
+      };
+      speaker.image = {
+        registry = "quay.io";
+        repository = "metallb/speaker";
+        tag = "v0.14.9";
+      };
+    };
+
     extraDeploy = [
       {
         apiVersion = "metallb.io/v1beta1";

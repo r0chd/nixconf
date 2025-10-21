@@ -24,6 +24,10 @@
     "grafana/username" = { };
     "grafana/password" = { };
 
+    "garage/rpc-secret" = { };
+    "garage/admin-token" = { };
+    "garage/metrics-token" = { };
+
     nixos-anywhere = {
       owner = "nixos-anywhere";
       group = "nixos-anywhere";
@@ -113,7 +117,7 @@
   };
 
   homelab = {
-    enable = false;
+    enable = true;
     pihole = {
       enable = true;
       domain = "pihole.example.com";
@@ -122,6 +126,12 @@
       adlists = [ "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt" ];
       webLoadBalancerIP = "192.168.0.102";
       dnsLoadBalancerIP = "192.168.0.103";
+    };
+    garage = {
+      enable = true;
+      rpcSecretFile = config.sops.secrets."garage/rpc-secret".path;
+      adminTokenFile = config.sops.secrets."garage/admin-token".path;
+      metricsTokenFile = config.sops.secrets."garage/metrics-token".path;
     };
     metallb.addresses = [ "192.168.0.100-192.168.0.150" ];
     grafana = {

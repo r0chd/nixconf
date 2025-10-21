@@ -7,7 +7,7 @@ in
     ./atuin
     ./ingress-nginx
     ./metallb
-    ./openebs
+    ./garage
     ./pihole
     ./system
     ./monitoring
@@ -42,6 +42,6 @@ in
 # [x] add alertmanager
 # [x] add grafana
 # [ ] add vector
-# [x] add minio
+# [x] add garage
 # [ ] finish cert-manager
-# [ ] add flux
+# [x] add flux
