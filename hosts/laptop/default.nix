@@ -118,6 +118,7 @@
 
   homelab = {
     enable = true;
+    cloudnative-pg.enable = true;
     pihole = {
       enable = true;
       domain = "pihole.example.com";

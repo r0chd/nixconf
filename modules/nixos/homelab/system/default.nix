@@ -4,5 +4,6 @@
     ./reloader
     ./flannel
     ./flux
+    ./cloudnative-pg
   ];
 }

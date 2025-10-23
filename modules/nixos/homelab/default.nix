@@ -33,7 +33,7 @@ in
 }
 
 # TODO:
-# [ ] add cloudnative-pg
+# [x] add cloudnative-pg
 # [ ] add thanos for longer term metrics storage
 # [ ] add quickwit for centralized logging
 # [x] add config reloader
