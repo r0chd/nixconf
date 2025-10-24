@@ -93,7 +93,44 @@ in
           provider = "pihole";
           policy = "upsert-only";
           txtOwnerId = "homelab";
-          pihole.server = "http://pihole-web.system.svc.cluster.local";
+          pihole.server = cfg.dnsLoadBalancerIP;
+          
+          # Resource limits to prevent OOM kills
+          resources = {
+            limits = {
+              cpu = "200m";
+              memory = "256Mi";
+            };
+            requests = {
+              cpu = "50m";
+              memory = "128Mi";
+            };
+          };
+          
+          # Health probes for automatic restart on failure
+          livenessProbe = {
+            enabled = true;
+            initialDelaySeconds = 30;
+            periodSeconds = 30;
+            timeoutSeconds = 5;
+            failureThreshold = 3;
+            successThreshold = 1;
+          };
+          
+          readinessProbe = {
+            enabled = true;
+            initialDelaySeconds = 10;
+            periodSeconds = 10;
+            timeoutSeconds = 5;
+            failureThreshold = 3;
+            successThreshold = 1;
+          };
+          
+          # Logging and stability settings
+          logLevel = "info";
+          logFormat = "json";
+          interval = "2m";  # Increase interval to reduce load
+          
           extraEnvVars = [
             {
               name = "EXTERNAL_DNS_PIHOLE_PASSWORD";

@@ -116,6 +116,8 @@
     };
   };
 
+  networking.nameservers = [ "192.168.0.103" ];
+
   homelab = {
     enable = true;
     cloudnative-pg.enable = true;
