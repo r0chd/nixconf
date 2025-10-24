@@ -62,9 +62,15 @@ in
       sops-generate-root-key = {
         description = "Generate SOPS age keys from SSH keys";
 
-        after = if config.system.fileSystem == "zfs" then [ "zfs-mount.service" ] else [ "local-fs.target" ];
-        before = [ "sops-install-secrets.service" ];
-        requiredBy = [ "sops-install-secrets.service" ];
+        after = [ "local-fs.target" ];
+        before = [
+          "sops-install-secrets.service"
+          "sops-install-secrets-for-users.service"
+        ];
+        requiredBy = [
+          "sops-install-secrets.service"
+          "sops-install-secrets-for-users.service"
+        ];
         unitConfig = {
           DefaultDependencies = "no";
           RequiresMountsFor = lib.optional config.services.impermanence.enable "/persist";

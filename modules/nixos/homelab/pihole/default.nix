@@ -9,6 +9,10 @@ let
   inherit (lib) types;
 in
 {
+  imports = [
+    ./external-dns-rbac.nix
+  ];
+
   options.homelab.pihole = {
     enable = lib.mkEnableOption "pihole";
     passwordFile = lib.mkOption { type = types.path; };
@@ -93,8 +97,8 @@ in
           provider = "pihole";
           policy = "upsert-only";
           txtOwnerId = "homelab";
-          pihole.server = cfg.dnsLoadBalancerIP;
-          
+          pihole.server = "http://pihole-web.system.svc.cluster.local";
+
           # Resource limits to prevent OOM kills
           resources = {
             limits = {
@@ -106,7 +110,7 @@ in
               memory = "128Mi";
             };
           };
-          
+
           # Health probes for automatic restart on failure
           livenessProbe = {
             enabled = true;
@@ -116,7 +120,7 @@ in
             failureThreshold = 3;
             successThreshold = 1;
           };
-          
+
           readinessProbe = {
             enabled = true;
             initialDelaySeconds = 10;
@@ -125,12 +129,12 @@ in
             failureThreshold = 3;
             successThreshold = 1;
           };
-          
+
           # Logging and stability settings
           logLevel = "info";
           logFormat = "json";
-          interval = "2m";  # Increase interval to reduce load
-          
+          interval = "2m"; # Increase interval to reduce load
+
           extraEnvVars = [
             {
               name = "EXTERNAL_DNS_PIHOLE_PASSWORD";
@@ -143,8 +147,9 @@ in
           serviceAccount = {
             create = true;
             name = "external-dns";
+            automountServiceAccountToken = true;
           };
-          ingressClassFilters = [ "ingress-nginx" ];
+          ingressClassFilters = [ "nginx" ];
         };
       };
     };

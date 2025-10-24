@@ -75,7 +75,6 @@
     hostId = "499673df";
     wireless = {
       iwd.enable = true;
-      mainInterface = "wlan0";
     };
   };
 
@@ -116,7 +115,9 @@
     };
   };
 
-  networking.nameservers = [ "192.168.0.103" ];
+  users.users.unixpariah.extraGroups = [ "homelab" ];
+
+  networking.nameservers = lib.mkForce [ "192.168.0.103" ];
 
   homelab = {
     enable = true;

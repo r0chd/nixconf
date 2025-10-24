@@ -99,7 +99,6 @@
   networking = {
     wireless = {
       iwd.enable = true;
-      mainInterface = "wlan0";
     };
     hostId = "6add04c2";
   };

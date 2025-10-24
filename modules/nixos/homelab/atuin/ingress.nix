@@ -8,7 +8,7 @@ _: {
         namespace = "atuin";
       };
       spec = {
-        ingressClassName = "ingress-nginx";
+        ingressClassName = "nginx";
         rules = [
           {
 

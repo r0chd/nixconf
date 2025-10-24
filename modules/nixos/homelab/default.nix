@@ -21,14 +21,20 @@ in
     enable = lib.mkEnableOption "homelab";
   };
 
-  config.services.k3s = lib.mkDefault {
-    inherit (cfg) enable;
-    extraFlags = [
-      "--disable traefik"
-      "--write-kubeconfig-group wheel"
-      "--write-kubeconfig-mode 0660"
-      "--cluster-cidr 10.244.0.0/16"
-    ];
+  config = {
+    services.k3s = lib.mkDefault {
+      inherit (cfg) enable;
+      extraFlags = [
+        "--disable traefik"
+        "--write-kubeconfig-group homelab"
+        "--write-kubeconfig-mode 0660"
+        "--cluster-cidr 10.244.0.0/16"
+      ];
+    };
+
+    users.groups = lib.mkIf cfg.enable {
+      homelab = { };
+    };
   };
 }
 

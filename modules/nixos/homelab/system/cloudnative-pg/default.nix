@@ -7,6 +7,7 @@ let
 in
 {
   imports = [
+    ./crds.nix
     ./namespace.nix
     ./serviceaccount.nix
     ./rbac.nix

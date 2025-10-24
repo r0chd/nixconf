@@ -51,7 +51,5 @@ in
       };
       thermald.enable = true;
     };
-
-    powerManagement.enable = true;
   };
 }

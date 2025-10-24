@@ -171,7 +171,6 @@ in
         echo "Processing user: ${user}"
         echo "========================================="
 
-        # Fix ownership first
         chown -R ${user}:users /home/${user} 2>/dev/null || true
 
         HM_DIR="/persist/home/${user}/.local/state/nix/profiles"
