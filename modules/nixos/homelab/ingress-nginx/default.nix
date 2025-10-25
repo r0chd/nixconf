@@ -16,7 +16,6 @@
             enabled = true;
             default = true;
             controllerValue = "k8s.io/ingress-nginx";
-            parameters = "{}";
           };
           admissionWebHooks = {
             enabled = false;
