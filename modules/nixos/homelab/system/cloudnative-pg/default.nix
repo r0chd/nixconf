@@ -19,7 +19,10 @@ in
   ];
 
   options.homelab.cloudnative-pg = {
-    enable = lib.mkEnableOption "CloudNativePG operator";
+    enable = lib.mkOption {
+      type = types.bool;
+      default = true;
+    };
 
     image = lib.mkOption {
       type = types.str;

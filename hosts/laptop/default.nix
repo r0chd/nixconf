@@ -121,9 +121,7 @@
 
   homelab = {
     enable = true;
-    cloudnative-pg.enable = true;
     pihole = {
-      enable = true;
       domain = "pihole.example.com";
       dns = "192.168.0.1";
       passwordFile = config.sops.secrets."pihole/password".path;
@@ -132,7 +130,7 @@
       dnsLoadBalancerIP = "192.168.0.103";
     };
     garage = {
-      enable = true;
+      ingressHost = "storage.example.com";
       rpcSecretFile = config.sops.secrets."garage/rpc-secret".path;
       adminTokenFile = config.sops.secrets."garage/admin-token".path;
       metricsTokenFile = config.sops.secrets."garage/metrics-token".path;

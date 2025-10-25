@@ -18,12 +18,13 @@ in
 
           db_engine = "lmdb"
 
-          replication_mode = "${cfg.replicationMode}"
+          replication_factor = ${toString cfg.replicationFactor}
+          consistency_mode = "${cfg.consistencyMode}"
 
           compression_level = 1
 
           rpc_bind_addr = "[::]:3901"
-          rpc_public_addr = "${config.networking.hostName}.garage.garage.svc.cluster.local:3901"
+          rpc_public_addr = "garage-0.garage.garage.svc.cluster.local:3901"
           rpc_secret_file = "/secrets/rpc-secret"
 
           [s3_api]

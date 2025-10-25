@@ -12,63 +12,69 @@ in
     ./namespace.nix
     ./configmap.nix
     ./statefulset.nix
+    ./service.nix
     ./service-s3.nix
     ./service-admin.nix
     ./service-rpc.nix
+    ./ingress.nix
   ];
 
   options.homelab.garage = {
-    enable = lib.mkEnableOption "garage";
+    enable = lib.mkOption {
+      type = types.bool;
+      default = true;
+    };
 
     replicas = lib.mkOption {
       type = types.int;
       default = 1;
-      description = "Number of Garage replicas";
     };
 
     image = lib.mkOption {
       type = types.str;
       default = "dxflrs/garage:v1.0.1";
-      description = "Garage container image";
     };
 
-    replicationMode = lib.mkOption {
+    replicationFactor = lib.mkOption {
+      type = types.int;
+      default = 1;
+    };
+
+    consistencyMode = lib.mkOption {
       type = types.enum [
-        "none"
-        "1"
-        "2"
-        "3"
+        "consistent"
+        "degraded"
+        "dangerous"
       ];
-      default = "none";
-      description = "Replication mode for Garage (none for single node, 1/2/3 for multi-node)";
+      default = "consistent";
     };
 
     s3Region = lib.mkOption {
       type = types.str;
       default = "garage";
-      description = "S3 region name";
+    };
+
+    ingressHost = lib.mkOption {
+      type = types.nullOr types.str;
+      default = null;
     };
 
     rpcSecretFile = lib.mkOption {
       type = types.path;
-      description = "Path to file containing the RPC secret (must be 64 hex characters)";
     };
 
     adminTokenFile = lib.mkOption {
       type = types.path;
-      description = "Path to file containing the admin API token";
     };
 
     metricsTokenFile = lib.mkOption {
       type = types.path;
-      description = "Path to file containing the metrics API token";
     };
 
     storage = {
       dataSize = lib.mkOption {
         type = types.str;
         default = "100Gi";
-        description = "Size of data volume";
       };
 
       metaSize = lib.mkOption {

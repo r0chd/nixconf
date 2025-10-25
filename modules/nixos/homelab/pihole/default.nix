@@ -14,7 +14,10 @@ in
   ];
 
   options.homelab.pihole = {
-    enable = lib.mkEnableOption "pihole";
+    enable = lib.mkOption {
+      type = types.bool;
+      default = true;
+    };
     passwordFile = lib.mkOption { type = types.path; };
     dns = lib.mkOption { type = types.str; };
     domain = lib.mkOption { type = types.str; };
