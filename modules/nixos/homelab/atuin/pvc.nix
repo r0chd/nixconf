@@ -1,9 +1,10 @@
 { config, lib, ... }:
 let
-  cfg = config.homelab.atuin.db;
+  cfg = config.homelab.atuin;
 in
 {
-  services.k3s.manifests.atuin.content = [
+  config = lib.mkIf (config.homelab.enable && cfg.enable) {
+    services.k3s.manifests."atuin-pvc".content = [
     {
       apiVersion = "v1";
       kind = "PersistentVolumeClaim";
@@ -15,8 +16,9 @@ in
       spec = {
         storageClassName = "local-path";
         accessModes = [ "ReadWriteOnce" ];
-        resources.requests = lib.mkIf (cfg.resources.storage != null) { inherit (cfg.resources) storage; };
+        resources.requests.storage = cfg.storageSize;
       };
     }
-  ];
+    ];
+  };
 }

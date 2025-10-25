@@ -5,6 +5,8 @@
   ...
 }:
 {
+  sops.secrets.atuin_key = { };
+
   nixpkgs.config = {
     allowUnfreePredicate =
       pkg:
@@ -20,7 +22,10 @@
     obsidian = {
       enable = true;
     };
-    atuin.enable = true;
+    atuin = {
+      enable = true;
+      settings.key_path = config.sops.secrets.atuin_key.path;
+    };
     waybar.enable = lib.mkForce false;
 
     thunderbird = {

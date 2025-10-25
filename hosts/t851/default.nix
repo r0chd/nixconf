@@ -1,5 +1,10 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
+  sops.secrets = {
+    "atuin/DB_PASSWORD" = { };
+    "atuin/DB_URI" = { };
+  };
+
   security.yubikey = {
     enable = true;
     rootAuth = true;
@@ -7,6 +12,29 @@
     actions = {
       unplug.enable = true;
       plug.enable = true;
+    };
+  };
+
+  homelab = {
+    enable = true;
+    atuin = {
+      enable = true;
+      db = {
+        username = "atuin";
+        passwordFile = config.sops.secrets."atuin/DB_PASSWORD".path;
+        uriFile = config.sops.secrets."atuin/DB_URI".path;
+        storageSize = "1Gi";
+        resources = {
+          requests = {
+            cpu = "100m";
+            memory = "256Mi";
+          };
+          limits = {
+            cpu = null;
+            memory = "512Mi";
+          };
+        };
+      };
     };
   };
 

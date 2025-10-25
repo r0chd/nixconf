@@ -1,5 +1,7 @@
-_: {
-  services.k3s.manifests.atuin.content = [
+{ config, lib, ... }:
+{
+  config = lib.mkIf (config.homelab.enable && config.homelab.atuin.enable) {
+    services.k3s.manifests."atuin-ingress".content = [
     {
       apiVersion = "networking.k8s.io/v1";
       kind = "Ingress";
@@ -31,5 +33,6 @@ _: {
         ];
       };
     }
-  ];
+    ];
+  };
 }

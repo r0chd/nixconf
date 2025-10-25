@@ -31,7 +31,7 @@ in
           wrapAttrs = lib.listToAttrs (
             cfg
             |> lib.map (name: {
-              name = name;
+              inherit name;
               value = prev.${name};
             })
           );

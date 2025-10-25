@@ -17,12 +17,6 @@
   networking.hostId = "a62446e5";
 
   services = {
-    k3s = {
-      enable = true;
-      role = "agent";
-      serverAddr = "https://server-0:6443";
-      tokenFile = config.sops.secrets.k3s.path;
-    };
     impermanence.enable = true;
   };
 

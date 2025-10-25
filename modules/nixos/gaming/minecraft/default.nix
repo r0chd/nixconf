@@ -12,8 +12,7 @@ in
     enable = lib.mkEnableOption "Enable minecraft";
     package = lib.mkOption {
       type = lib.types.package;
-      default = (
-        pkgs.prismlauncher.override {
+      default = pkgs.prismlauncher.override {
           additionalLibs = builtins.attrValues {
             inherit (pkgs)
               nss
@@ -22,8 +21,7 @@ in
               libgbm
               ;
           };
-        }
-      );
+        };
     };
   };
 

@@ -11,6 +11,7 @@ in
     ./pihole
     ./system
     ./monitoring
+    ./database
     # ./cert-manager
     # ./vaultwarden
     # ./nextcloud
@@ -21,20 +22,18 @@ in
     enable = lib.mkEnableOption "homelab";
   };
 
-  config = {
+  config = lib.mkIf cfg.enable {
     services.k3s = lib.mkDefault {
       inherit (cfg) enable;
       extraFlags = [
         "--disable traefik"
-        "--write-kubeconfig-group homelab"
+        "--write-kubeconfig-group ${config.users.groups.homelab.name}"
         "--write-kubeconfig-mode 0660"
         "--cluster-cidr 10.244.0.0/16"
       ];
     };
 
-    users.groups = lib.mkIf cfg.enable {
-      homelab = { };
-    };
+    users.groups.homelab = { };
   };
 }
 

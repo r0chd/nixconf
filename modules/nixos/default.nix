@@ -25,9 +25,11 @@
     ../theme
   ];
 
-  systemd.enableStrictShellChecks = true;
-  systemd.services.syslog.enable = false;
-  systemd.sockets.syslog.enable = false;
+  systemd = {
+    enableStrictShellChecks = true;
+    services.syslog.enable = false;
+    sockets.syslog.enable = false;
+  };
 
   nixpkgs.overlays = import ../overlays inputs config ++ import ../lib config;
 

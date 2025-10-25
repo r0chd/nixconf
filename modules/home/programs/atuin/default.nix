@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   programs.atuin = {
     daemon.enable = true;

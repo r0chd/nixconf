@@ -1,5 +1,7 @@
-_: {
-  services.k3s.manifests.atuin.content = [
+{ config, lib, ... }:
+{
+  config = lib.mkIf (config.homelab.enable && config.homelab.atuin.enable) {
+    services.k3s.manifests."atuin-deployment".content = [
     {
       apiVersion = "apps/v1";
       kind = "Deployment";
@@ -10,9 +12,13 @@ _: {
       spec = {
         replicas = 1;
         selector.matchLabels."io.kompose.service" = "atuin";
-        template.metadata.labels."io.kompose.service" = "atuin";
-        spec = {
-          containers = [
+        template = {
+          metadata.labels = {
+            "io.kompose.service" = "atuin";
+            "app.kubernetes.io/name" = "atuin";
+          };
+          spec = {
+            containers = [
             {
               args = [
                 "server"
@@ -34,11 +40,11 @@ _: {
                 }
                 {
                   name = "ATUIN_PORT";
-                  value = 8888;
+                  value = "8888";
                 }
                 {
                   name = "ATUIN_OPEN_REGISTRATION";
-                  value = true;
+                  value = "true";
                 }
               ];
 
@@ -63,14 +69,16 @@ _: {
               ];
             }
           ];
-          volumes = [
-            {
-              name = "atuin-claim0";
-              persistentVolumeClaim.claimName = "atuin-claim0";
-            }
-          ];
+            volumes = [
+              {
+                name = "atuin-claim0";
+                persistentVolumeClaim.claimName = "atuin-claim0";
+              }
+            ];
+          };
         };
       };
     }
-  ];
+    ];
+  };
 }

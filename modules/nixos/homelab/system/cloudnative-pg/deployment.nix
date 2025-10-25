@@ -28,7 +28,7 @@ in
               containers = [
                 {
                   name = "manager";
-                  image = cfg.image;
+                  inherit (cfg) image;
                   imagePullPolicy = "Always";
                   command = [ "/manager" ];
                   args = [

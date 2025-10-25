@@ -1,16 +1,24 @@
 { config, lib, ... }:
 let
   cfg = config.homelab.atuin;
+  inherit (lib) types;
 in
 {
   imports = [
+    ./namespace.nix
     ./deployment.nix
     ./ingress.nix
     ./pvc.nix
     ./db
   ];
 
-  options.homelab.atuin.enable = lib.mkEnableOption "atuin k3s service";
+  options.homelab.atuin = {
+    enable = lib.mkEnableOption "atuin k3s service";
 
-  config.services.k3s.manifests.atuin.enable = cfg.enable && config.homelab.enable;
+    storageSize = lib.mkOption {
+      type = types.str;
+      default = "1Gi";
+      description = "Storage size for atuin configuration volume";
+    };
+  };
 }

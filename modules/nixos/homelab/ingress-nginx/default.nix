@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   config.services.k3s.autoDeployCharts = {
     ingress-nginx = {

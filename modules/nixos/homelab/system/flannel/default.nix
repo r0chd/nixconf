@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   config.services.k3s.autoDeployCharts.flannel = {
     name = "flannel";

@@ -31,37 +31,6 @@
     fileSystem = "zfs";
   };
 
-  homelab = {
-    enable = false;
-    atuin = {
-      enable = true;
-      db = {
-        username = "atuin";
-        passwordFile = config.sops.secrets."atuin/DB_PASSWORD".path;
-        uriFile = config.sops.secrets."atuin/DB_URI".path;
-        resources = {
-          requests = {
-            cpu = "100m";
-            memory = "100Mi";
-          };
-          limits = {
-            cpu = "250m";
-            memory = "600Mi";
-          };
-          storage = "300Mi";
-        };
-      };
-    };
-    pihole = {
-      domain = "pihole.your-domain.com";
-      dns = "192.168.30.1";
-      passwordFile = config.sops.secrets."pihole-password/password".path;
-      adlists = [ "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt" ];
-      webLoadBalancerIP = "192.168.30.102";
-      dnsLoadBalancerIP = "192.168.30.103";
-    };
-  };
-
   virtualisation = {
     containers.enable = true;
     podman = {

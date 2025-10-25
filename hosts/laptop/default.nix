@@ -21,12 +21,16 @@
 
   sops.secrets = {
     "pihole/password" = { };
+
     "grafana/username" = { };
     "grafana/password" = { };
 
     "garage/rpc-secret" = { };
     "garage/admin-token" = { };
     "garage/metrics-token" = { };
+
+    "atuin/db_password" = { };
+    "atuin/db_uri" = { };
 
     nixos-anywhere = {
       owner = "nixos-anywhere";
@@ -140,6 +144,26 @@
       domain = "grafana.example.com";
       usernameFile = config.sops.secrets."grafana/username".path;
       passwordFile = config.sops.secrets."grafana/password".path;
+    };
+    atuin = {
+      enable = true;
+      db = {
+        username = "r0chd";
+        passwordFile = config.sops.secrets."atuin/db_password".path;
+        uriFile = config.sops.secrets."atuin/db_uri".path;
+        storageSize = "5Gi";
+        walStorageSize = "2Gi";
+        resources = {
+          requests = {
+            cpu = "100m";
+            memory = "512Mi";
+          };
+          limits = {
+            cpu = null;
+            memory = "1Gi";
+          };
+        };
+      };
     };
   };
 

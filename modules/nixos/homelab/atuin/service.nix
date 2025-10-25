@@ -1,5 +1,7 @@
-_: {
-  services.k3s.manifests.atuin.content = [
+{ config, lib, ... }:
+{
+  config = lib.mkIf (config.homelab.enable && config.homelab.atuin.enable) {
+    services.k3s.manifests."atuin-service".content = [
     {
       apiVersion = "v1";
       kind = "Service";
@@ -19,5 +21,6 @@ _: {
         selector."io.kompose.service" = "atuin";
       };
     }
-  ];
+    ];
+  };
 }

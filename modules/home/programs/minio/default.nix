@@ -15,7 +15,7 @@ let
 
   # Build alias config, handling secret files
   buildAlias = name: alias: {
-    url = alias.url;
+    inherit (alias) url;
     accessKey =
       if alias.accessKeyFile != null then
         "%{${name}_access_key}" # Template placeholder
@@ -26,8 +26,8 @@ let
         "%{${name}_secret_key}" # Template placeholder
       else
         alias.secretKey;
-    api = alias.api;
-    path = alias.path;
+    inherit (alias) api;
+    inherit (alias) path;
   };
 
   # Generate config structure

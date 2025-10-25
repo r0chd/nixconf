@@ -14,7 +14,7 @@ in
         };
         spec = {
           serviceName = "garage";
-          replicas = cfg.replicas;
+          inherit (cfg) replicas;
           selector.matchLabels.app = "garage";
           template = {
             metadata.labels.app = "garage";
@@ -22,7 +22,7 @@ in
               containers = [
                 {
                   name = "garage";
-                  image = cfg.image;
+                  inherit (cfg) image;
                   ports = [
                     {
                       containerPort = 3900;
