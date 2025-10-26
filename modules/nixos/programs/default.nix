@@ -27,7 +27,7 @@
           value.root.enable
           && config.programs.nixos-anywhere.enable
           && config.programs.nixos-anywhere.sshKeyFile != null
-        ) [ "deploy-rs" ];
+        ) [ "nixos-anywhere" ];
       }
     );
 }

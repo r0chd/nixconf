@@ -5,13 +5,19 @@
   ...
 }:
 let
-  cfg = config.programs.prometheus;
+  cfg = config.homelab.prometheus;
   inherit (lib) types;
 in
 {
-  options.programs.prometheus.enable = lib.mkOption {
-    type = types.bool;
-    default = config.homelab.enable;
+  options.homelab.prometheus = {
+    enable = lib.mkOption {
+      type = types.bool;
+      default = true;
+    };
+    domain = lib.mkOption {
+      type = types.nullOr types.str;
+      default = null;
+    };
   };
 
   config.services.k3s.autoDeployCharts = lib.mkIf cfg.enable {
@@ -34,6 +40,18 @@ in
         chartHash = "sha256-7picRoOCgfUUr+oBHCwPzOEd4GUj3q2frBZHlbcWYT0=";
       };
       targetNamespace = "monitoring";
+      values = {
+        server = {
+          ingress = {
+            enabled = cfg.domain != null;
+            ingressClassName = "nginx";
+            annotations = {
+              "nginx.ingress.kubernetes.io/rewrite-target" = "/";
+            };
+            hosts = lib.optional (cfg.domain != null) cfg.domain;
+          };
+        };
+      };
     };
   };
 }

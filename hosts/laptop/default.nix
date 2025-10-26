@@ -35,7 +35,7 @@
     nixos-anywhere = {
       owner = "nixos-anywhere";
       group = "nixos-anywhere";
-      mode = "0400";
+      mode = "0440";
     };
   };
 
@@ -140,6 +140,7 @@
       metricsTokenFile = config.sops.secrets."garage/metrics-token".path;
     };
     metallb.addresses = [ "192.168.0.100-192.168.0.150" ];
+    prometheus.domain = "prometheus.example.com";
     grafana = {
       domain = "grafana.example.com";
       usernameFile = config.sops.secrets."grafana/username".path;
