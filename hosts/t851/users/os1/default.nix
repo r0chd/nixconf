@@ -5,8 +5,6 @@
   ...
 }:
 {
-  sops.secrets.atuin_key = { };
-
   nixpkgs.config = {
     allowUnfreePredicate =
       pkg:
@@ -16,15 +14,12 @@
       ];
   };
 
-  targets.genericLinux.enable = true;
-
   programs = {
     obsidian = {
       enable = true;
     };
     atuin = {
       enable = true;
-      settings.key_path = config.sops.secrets.atuin_key.path;
     };
     waybar.enable = lib.mkForce false;
 

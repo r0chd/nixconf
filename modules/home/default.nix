@@ -23,6 +23,8 @@
     inputs.mox-flake.homeManagerModules.moxpaper
   ];
 
+  targets.genericLinux.enable = platform == "non-nixos";
+
   xdg.configFile."environment.d/envvars.conf" = lib.mkIf (platform == "non-nixos") {
     text = ''
       PATH="${config.home.homeDirectory}/.nix-profile/bin:$PATH";

@@ -98,7 +98,11 @@
                   jq
                   ;
               }
-              ++ [ (pkgs.terraform.withPlugins (p: builtins.attrValues { inherit (p) null external; })) ];
+              ++ [
+                (pkgs.terraform.withPlugins (
+                  p: builtins.attrValues { inherit (p) hashicorp_null hashicorp_external; }
+                ))
+              ];
           };
         });
 
