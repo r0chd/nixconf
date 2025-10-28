@@ -51,6 +51,26 @@
               image = "ghcr.io/atuinsh/atuin:latest";
               name = "atuin";
               ports = [ { containerPort = 8888; } ];
+              readinessProbe = {
+                httpGet = {
+                  path = "/";
+                  port = 8888;
+                };
+                initialDelaySeconds = 10;
+                periodSeconds = 5;
+                timeoutSeconds = 3;
+                failureThreshold = 3;
+              };
+              livenessProbe = {
+                httpGet = {
+                  path = "/";
+                  port = 8888;
+                };
+                initialDelaySeconds = 30;
+                periodSeconds = 10;
+                timeoutSeconds = 5;
+                failureThreshold = 3;
+              };
               resources = {
                 limits = {
                   cpu = "250m";

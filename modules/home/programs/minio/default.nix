@@ -32,7 +32,7 @@ let
 
   # Generate config structure
   configData = {
-    version = cfg.settings.version;
+    inherit (cfg.settings) version;
     aliases = lib.mapAttrs buildAlias cfg.settings.aliases;
   };
 in

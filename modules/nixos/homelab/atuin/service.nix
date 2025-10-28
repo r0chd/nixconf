@@ -1,7 +1,8 @@
 { config, lib, ... }:
 {
   config = lib.mkIf (config.homelab.enable && config.homelab.atuin.enable) {
-    services.k3s.manifests."atuin-service".content = [
+    services.k3s.manifests."atuin-service" = {
+      content = [
     {
       apiVersion = "v1";
       kind = "Service";
@@ -14,13 +15,15 @@
         type = "NodePort";
         ports = [
           {
-            name = 8888;
+            name = "http";
             port = 8888;
+            targetPort = 8888;
           }
         ];
         selector."io.kompose.service" = "atuin";
       };
     }
-    ];
+      ];
+    };
   };
 }

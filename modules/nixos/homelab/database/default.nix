@@ -183,25 +183,25 @@ in
                     type = types.str;
                     description = "S3 endpoint URL";
                   };
-                  accessKeySecret = {
+                  accessKeyId = {
                     name = lib.mkOption {
                       type = types.str;
                       description = "Secret name containing access key";
                     };
                     key = lib.mkOption {
                       type = types.str;
-                      default = "access-key";
+                      default = "access-key-id";
                       description = "Secret key for access key";
                     };
                   };
-                  secretKeySecret = {
+                  secretAccessKey = {
                     name = lib.mkOption {
                       type = types.str;
                       description = "Secret name containing secret key";
                     };
                     key = lib.mkOption {
                       type = types.str;
-                      default = "secret-key";
+                      default = "secret-access-key";
                       description = "Secret key for secret key";
                     };
                   };
@@ -293,29 +293,20 @@ in
               major = lib.toInt clusterCfg.postgresVersion;
             };
             postgresql.parameters = clusterCfg.postgresParameters;
-            monitoring.enablePodMonitor = clusterCfg.monitoring.enablePodMonitor;
+              inherit (clusterCfg) monitoring;
             bootstrap = lib.optionalAttrs (clusterCfg.bootstrap.initdb.database != null) {
               initdb = {
                 database = clusterCfg.bootstrap.initdb.database;
                 owner = clusterCfg.bootstrap.initdb.owner;
-                secret.name = clusterCfg.bootstrap.initdb.secret.name;
+                secret = {
+                  name = clusterCfg.bootstrap.initdb.secret.name;
+                };
               };
             };
-            storage = {
-              storageClass = clusterCfg.storage.storageClass;
-              resizeInUseVolumes = clusterCfg.storage.resizeInUseVolumes;
-              size = clusterCfg.storage.size;
-            };
-            walStorage = {
-              storageClass = clusterCfg.walStorage.storageClass;
-              resizeInUseVolumes = clusterCfg.walStorage.resizeInUseVolumes;
-              size = clusterCfg.walStorage.size;
-            };
+            inherit (clusterCfg) storage;
+            inherit (clusterCfg) walStorage;
             resources = {
-              requests = {
-                cpu = clusterCfg.resources.requests.cpu;
-                memory = clusterCfg.resources.requests.memory;
-              };
+              inherit (clusterCfg.resources) requests;
               limits =
                 lib.optionalAttrs (clusterCfg.resources.limits.cpu != null) {
                   inherit (clusterCfg.resources.limits) cpu;
@@ -323,6 +314,25 @@ in
                 // lib.optionalAttrs (clusterCfg.resources.limits.memory != null) {
                   inherit (clusterCfg.resources.limits) memory;
                 };
+            };
+            backup = lib.optionalAttrs clusterCfg.backup.enable {
+              barmanObjectStore = {
+                inherit (clusterCfg.backup.barmanObjectStore) destinationPath;
+                inherit (clusterCfg.backup.barmanObjectStore) endpointURL;
+                s3Credentials = {
+                  accessKeyId = {
+                    inherit (clusterCfg.backup.barmanObjectStore.accessKeyId) name;
+                    inherit (clusterCfg.backup.barmanObjectStore.accessKeyId) key;
+                  };
+                  secretAccessKey = {
+                    inherit (clusterCfg.backup.barmanObjectStore.secretAccessKey) name;
+                    inherit (clusterCfg.backup.barmanObjectStore.secretAccessKey) key;
+                  };
+                };
+                wal = {
+                  inherit (clusterCfg.backup.barmanObjectStore) compression;
+                };
+              };
             };
           };
         }
@@ -335,10 +345,11 @@ in
             inherit (clusterCfg) namespace;
           };
           spec = {
-            schedule = clusterCfg.backup.schedule;
-            immediate = clusterCfg.backup.immediate;
+            inherit (clusterCfg.backup) schedule;
+            inherit (clusterCfg.backup) immediate;
             backupOwnerReference = "self";
             cluster.name = clusterName;
+            method = "barmanObjectStore";
           };
         })
 

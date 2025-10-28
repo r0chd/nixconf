@@ -7,6 +7,7 @@ in
   imports = [
     ./namespace.nix
     ./deployment.nix
+    ./service.nix
     ./ingress.nix
     ./pvc.nix
     ./db

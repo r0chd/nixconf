@@ -29,8 +29,10 @@
     "garage/admin-token" = { };
     "garage/metrics-token" = { };
 
-    "atuin/db_password" = { };
-    "atuin/db_uri" = { };
+    "atuin/db/password" = { };
+    "atuin/db/uri" = { };
+    "atuin/backup/access_key_id" = { };
+    "atuin/backup/secret_access_key" = { };
 
     nixos-anywhere = {
       owner = "nixos-anywhere";
@@ -148,10 +150,11 @@
     };
     atuin = {
       enable = true;
+      ingressHost = "atuin.example.com";
       db = {
         username = "r0chd";
-        passwordFile = config.sops.secrets."atuin/db_password".path;
-        uriFile = config.sops.secrets."atuin/db_uri".path;
+        passwordFile = config.sops.secrets."atuin/db/password".path;
+        uriFile = config.sops.secrets."atuin/db/uri".path;
         storageSize = "5Gi";
         walStorageSize = "2Gi";
         resources = {
@@ -160,9 +163,13 @@
             memory = "512Mi";
           };
           limits = {
-            cpu = null;
             memory = "1Gi";
           };
+        };
+        backup = {
+          enable = true;
+          accessKeyIdFile = config.sops.secrets."atuin/backup/access_key_id".path;
+          secretAccessKeyFile = config.sops.secrets."atuin/backup/secret_access_key".path;
         };
       };
     };
