@@ -89,6 +89,17 @@
         forAllSystems (pkgs: {
           default = pkgs.mkShell {
             buildInputs =
+              let
+                prologin_garage = pkgs.terraform-providers.mkProvider {
+                  owner = "prologin";
+                  repo = "terraform-provider-garage";
+                  rev = "v0.0.1";
+                  version = "0.0.1";
+                  hash = "sha256-JNeTJ5nt8IvYk9M8fUEiGTLUDd9QHS6PeBwWDjRzx4g=";
+                  vendorHash = "sha256-6PXFDwQRPJU6+X1pUuzIaTiQNVPJjOUDMsnDXBivO5A=";
+                  homepage = "https://registry.terraform.io/providers/prologin/garage";
+                };
+              in
               builtins.attrValues {
                 inherit (pkgs)
                   git
@@ -100,7 +111,16 @@
               }
               ++ [
                 (pkgs.terraform.withPlugins (
-                  p: builtins.attrValues { inherit (p) hashicorp_null hashicorp_external hashicorp_aws; }
+                  p:
+                  builtins.attrValues {
+                    inherit (p)
+                      hashicorp_null
+                      hashicorp_external
+                      hashicorp_aws
+                      carlpett_sops
+                      ;
+                  }
+                  ++ [ prologin_garage ]
                 ))
               ];
           };

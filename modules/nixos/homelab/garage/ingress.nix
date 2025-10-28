@@ -16,7 +16,24 @@ in
           ingressClassName = "nginx";
           rules = [
             {
-              host = cfg.ingressHost;
+              host = "s3.${cfg.ingressHost}";
+              http = {
+                paths = [
+                  {
+                    path = "/";
+                    pathType = "Prefix";
+                    backend = {
+                      service = {
+                        name = "garage-s3";
+                        port.number = 3900;
+                      };
+                    };
+                  }
+                ];
+              };
+            }
+            {
+              host = "admin.${cfg.ingressHost}";
               http = {
                 paths = [
                   {

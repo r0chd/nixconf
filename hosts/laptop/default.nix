@@ -134,7 +134,7 @@
       dnsLoadBalancerIP = "192.168.0.103";
     };
     garage = {
-      ingressHost = "storage.example.com";
+      ingressHost = "example.com";
       rpcSecretFile = config.sops.secrets."garage/rpc-secret".path;
       adminTokenFile = config.sops.secrets."garage/admin-token".path;
       metricsTokenFile = config.sops.secrets."garage/metrics-token".path;

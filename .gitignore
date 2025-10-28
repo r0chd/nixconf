@@ -1,4 +1,6 @@
 .cache/
 .direnv/
-infra/*terraform*
 result/
+infra/homelab/.terraform
+infra/homelab/terraform.tfstate
+infra/homelab/terraform.tfstate.backup
