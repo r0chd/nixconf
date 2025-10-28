@@ -116,6 +116,13 @@ in
             };
           };
 
+          managed.roles = [
+            {
+              name = cfg.username;
+              login = true;
+            }
+          ];
+
           monitoring = {
             enablePodMonitor = false;
           };

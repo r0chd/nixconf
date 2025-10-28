@@ -86,6 +86,26 @@ in
                 };
               };
 
+              managed.roles = lib.mkOption {
+                type = types.listOf (
+                  types.submodule {
+                    options = {
+                      name = lib.mkOption {
+                        type = types.str;
+                        description = "Role name";
+                      };
+                      login = lib.mkOption {
+                        type = types.bool;
+                        default = false;
+                        description = "Whether the role can login";
+                      };
+                    };
+                  }
+                );
+                default = [ ];
+                description = "Managed database roles";
+              };
+
               resources = {
                 requests = {
                   cpu = lib.mkOption {
@@ -293,7 +313,7 @@ in
               major = lib.toInt clusterCfg.postgresVersion;
             };
             postgresql.parameters = clusterCfg.postgresParameters;
-              inherit (clusterCfg) monitoring;
+            inherit (clusterCfg) monitoring;
             bootstrap = lib.optionalAttrs (clusterCfg.bootstrap.initdb.database != null) {
               initdb = {
                 database = clusterCfg.bootstrap.initdb.database;
@@ -303,6 +323,7 @@ in
                 };
               };
             };
+            managed.roles = lib.optionalAttrs (clusterCfg.managed.roles != [ ]) clusterCfg.managed.roles;
             inherit (clusterCfg) storage;
             inherit (clusterCfg) walStorage;
             resources = {

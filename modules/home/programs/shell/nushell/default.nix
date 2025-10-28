@@ -15,7 +15,6 @@
           inshellisense
           ;
       };
-      persist.files = [ ".config/nushell/history.txt" ];
     };
     programs = {
       nushell = {
@@ -65,6 +64,7 @@
             render_right_prompt_on_last_line: false
           }
         '';
+        #+ lib.optionalString config.programs.atuin.enable ./atuin.nix;
 
         extraEnv = ''
           $env.TRANSIENT_PROMPT_COMMAND = ">"

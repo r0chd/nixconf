@@ -6,12 +6,12 @@ in
   imports = [
     ./atuin
     ./ingress-nginx
-    ./metallb
     ./garage
-    ./pihole
     ./system
     ./monitoring
     ./database
+    ./kube-web
+    ./metallb
     # ./cert-manager
     # ./vaultwarden
     # ./nextcloud
@@ -42,7 +42,7 @@ in
 # [ ] add thanos for longer term metrics storage
 # [ ] add quickwit for centralized logging
 # [x] add config reloader
-# [ ] add kube web
+# [x] add kube web
 # [ ] add kube ops
 # [x] add alertmanager
 # [x] add grafana

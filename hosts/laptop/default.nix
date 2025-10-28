@@ -173,6 +173,10 @@
         };
       };
     };
+    kube-web = {
+      enable = true;
+      ingressHost = "kube-web.example.com";
+    };
   };
 
   time.timeZone = "Europe/Warsaw";

@@ -26,6 +26,14 @@
   };
 
   programs = {
+    minio-client = {
+      enable = true;
+      settings = {
+        version = "10";
+        aliases = { };
+      };
+    };
+
     atuin = {
       enable = true;
     };

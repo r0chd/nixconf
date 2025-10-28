@@ -5,5 +5,6 @@
     ./flannel
     ./flux
     ./cloudnative-pg
+    ./pihole
   ];
 }
