@@ -19,7 +19,7 @@
     ./nh
     ./gcloud
     ./vcs
-    ./minio
+    ./minio-client
     ./re-toolkit
   ];
 

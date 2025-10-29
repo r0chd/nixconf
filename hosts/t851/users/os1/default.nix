@@ -14,7 +14,48 @@
       ];
   };
 
+  sops.secrets = {
+    "minio/de-test-quickwit/access-key" = { };
+    "minio/de-test-quickwit/secret-key" = { };
+
+    "minio/de-test-quickwit-backup/access-key" = { };
+    "minio/de-test-quickwit-backup/secret-key" = { };
+
+    "minio/fi-test-quickwit-backup/access-key" = { };
+    "minio/fi-test-quickwit-backup/secret-key" = { };
+  };
+
   programs = {
+    minio-client = {
+      enable = true;
+      settings = {
+        version = "10";
+        aliases = {
+          de-test-quickwit = {
+            url = "https://storage.test.qed.ai";
+            accessKey = config.sops.placeholder."minio/de-test-quickwit/access-key";
+            secretKey = config.sops.placeholder."minio/de-test-quickwit/secret-key";
+            api = "s3v4";
+            path = "auto";
+          };
+          de-test-quickwit-backup = {
+            url = "https://storage.test.qed.ai";
+            accessKey = config.sops.placeholder."minio/de-test-quickwit-backup/access-key";
+            secretKey = config.sops.placeholder."minio/de-test-quickwit-backup/secret-key";
+            api = "s3v4";
+            path = "auto";
+          };
+          fi-test-quickwit-backup = {
+            url = "https://storage.test.qed.ai";
+            accessKey = config.sops.placeholder."minio/fi-test-quickwit-backup/access-key";
+            secretKey = config.sops.placeholder."minio/fi-test-quickwit-backup/secret-key";
+            api = "s3v4";
+            path = "auto";
+          };
+        };
+      };
+    };
+
     obsidian = {
       enable = true;
     };
