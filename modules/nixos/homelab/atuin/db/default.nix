@@ -23,29 +23,6 @@ in
       description = "WAL storage size";
     };
 
-    resources = {
-      requests = {
-        cpu = lib.mkOption {
-          type = types.str;
-          default = "100m";
-        };
-        memory = lib.mkOption {
-          type = types.str;
-          default = "256Mi";
-        };
-      };
-      limits = {
-        cpu = lib.mkOption {
-          type = types.nullOr types.str;
-          default = null;
-        };
-        memory = lib.mkOption {
-          type = types.str;
-          default = "512Mi";
-        };
-      };
-    };
-
     backup = {
       enable = lib.mkOption {
         type = types.bool;
@@ -81,122 +58,250 @@ in
   };
 
   config = lib.mkIf (config.homelab.enable && config.homelab.atuin.enable) {
-    homelab.database.cloudnative-pg = {
-      clusters = {
-        "atuin-db" = {
-          namespace = "atuin";
-          inherit (cfg) instances;
-          minSyncReplicas = 0;
-          maxSyncReplicas = 0;
-          postgresVersion = "15";
-
-          postgresParameters = {
-            max_connections = "100";
-            shared_buffers = "128MB";
-            effective_cache_size = "384MB";
-            maintenance_work_mem = "64MB";
-            checkpoint_completion_target = "0.9";
-            wal_buffers = "4MB";
-            default_statistics_target = "100";
-            random_page_cost = "1.1";
-            effective_io_concurrency = "200";
-            work_mem = "1310kB";
-            huge_pages = "off";
-            min_wal_size = "256MB";
-            max_wal_size = "1GB";
+    services.k3s = {
+      manifests.cnpg-databases.content = [
+        {
+          apiVersion = "networking.k8s.io/v1";
+          kind = "NetworkPolicy";
+          metadata = {
+            name = "atuin-db-allow-app";
+            namespace = "atuin";
           };
+          spec = {
+            podSelector.matchLabels."cnpg.io/cluster" = "atuin-db";
+            ingress = [
+              {
+                from = [
+                  {
+                    podSelector.matchLabels."app.kubernetes.io/name" = "atuin";
+                  }
+                ];
+                ports = [
+                  {
+                    port = 5432;
+                  }
+                ];
+              }
+            ];
+          };
+        }
 
-          bootstrap = {
-            initdb = {
-              database = "atuin";
-              owner = cfg.username;
-              secret = {
-                name = "atuin-db-credentials";
+        {
+          apiVersion = "networking.k8s.io/v1";
+          kind = "NetworkPolicy";
+          metadata = {
+            name = "atuin-db-allow-operator";
+            namespace = "atuin";
+          };
+          spec = {
+            podSelector.matchLabels."cnpg.io/cluster" = "atuin-db";
+            ingress = [
+              {
+                from = [
+                  {
+                    namespaceSelector.matchLabels."kubernetes.io/metadata.name" = "cnpg-system";
+                    podSelector.matchLabels."app.kubernetes.io/name" = "cloudnative-pg";
+                  }
+                ];
+                ports = [
+                  { port = 8000; }
+                  { port = 5432; }
+                ];
+              }
+            ];
+          };
+        }
+
+        {
+          apiVersion = "networking.k8s.io/v1";
+          kind = "NetworkPolicy";
+          metadata = {
+            name = "atuin-db-allow-monitoring";
+            namespace = "atuin";
+          };
+          spec = {
+            podSelector.matchLabels."cnpg.io/cluster" = "atuin-db";
+            ingress = [
+              {
+                from = [
+                  {
+                    podSelector.matchLabels."app.kubernetes.io/name" = "prometheus";
+                  }
+                ];
+                ports = [
+                  {
+                    port = 9187;
+                  }
+                ];
+              }
+            ];
+          };
+        }
+
+        {
+          apiVersion = "networking.k8s.io/v1";
+          kind = "NetworkPolicy";
+          metadata = {
+            name = "atuin-db-allow-inter-node";
+            namespace = "atuin";
+          };
+          spec = {
+            podSelector.matchLabels."cnpg.io/cluster" = "atuin-db";
+            ingress = [
+              {
+                from = [
+                  {
+                    podSelector.matchLabels."cnpg.io/cluster" = "atuin-db";
+                  }
+                ];
+                ports = [
+                  {
+                    port = 5432;
+                  }
+                ];
+              }
+            ];
+          };
+        }
+
+        {
+          apiVersion = "postgresql.cnpg.io/v1";
+          kind = "Cluster";
+          metadata = {
+            name = "atuin-db";
+            namespace = "atuin";
+            #annotations."cnpg.io/fencesInstances" = [ "*" ];
+          };
+          spec = {
+            inherit (cfg) instances;
+            minSyncReplicas = 0;
+            maxSyncReplicas = 0;
+            imageCatalogRef = {
+              apiGroup = "postgresql.cnpg.io";
+              kind = "ClusterImageCatalog";
+              name = "postgresql";
+              major = 15;
+            };
+
+            postgresql.parameters = {
+              max_connections = "50";
+
+              shared_buffers = "64MB";
+              effective_cache_size = "400MB";
+              maintenance_work_mem = "32MB";
+              work_mem = "4MB";
+
+              wal_buffers = "2MB";
+              min_wal_size = "256MB";
+              max_wal_size = "1GB";
+              checkpoint_completion_target = "0.9";
+
+              default_statistics_target = "100";
+              random_page_cost = "1.1";
+              effective_io_concurrency = "200";
+
+              huge_pages = "off";
+
+              log_statement = "none";
+              log_min_duration_statement = "1000";
+              autovacuum = "on";
+              autovacuum_max_workers = "2";
+            };
+
+            monitoring = {
+              enablePodMonitor = true;
+            };
+
+            storage = {
+              storageClass = "local-path";
+              resizeInUseVolumes = false;
+              size = cfg.storageSize;
+            };
+
+            walStorage = {
+              storageClass = "local-path";
+              resizeInUseVolumes = false;
+              size = cfg.walStorageSize;
+            };
+
+            resources = {
+              requests = {
+                cpu = "100m";
+                memory = "100Mi";
+              };
+              limits = {
+                cpu = "250m";
+                memory = "600Mi";
               };
             };
+          }
+          // lib.optionalAttrs cfg.backup.enable {
+            backup = {
+              barmanObjectStore = {
+                destinationPath = "s3://atuin-backup";
+                endpointURL = "http://s3.${config.homelab.garage.ingressHost}";
+                s3Credentials = {
+                  accessKeyId = {
+                    name = "atuin-backup-credentials";
+                    key = "access-key-id";
+                  };
+                  secretAccessKey = {
+                    name = "atuin-backup-credentials";
+                    key = "secret-access-key";
+                  };
+                };
+                data.compression = "snappy";
+                wal.compression = "snappy";
+              };
+
+              retentionPolicy = "30d";
+            };
           };
-
-          managed.roles = [
-            {
-              name = cfg.username;
-              login = true;
-            }
-          ];
-
-          monitoring = {
-            enablePodMonitor = false;
+        }
+      ]
+      ++ lib.optionals cfg.backup.enable [
+        {
+          apiVersion = "postgresql.cnpg.io/v1";
+          kind = "ScheduledBackup";
+          metadata = {
+            name = "atuin-db";
+            namespace = "atuin";
           };
-
-          inherit (cfg) resources;
-
-          storage = {
-            size = cfg.storageSize;
-            storageClass = "local-path";
-            resizeInUseVolumes = false;
-          };
-
-          walStorage = {
-            size = cfg.walStorageSize;
-            storageClass = "local-path";
-            resizeInUseVolumes = false;
-          };
-
-          backup = {
-            inherit (cfg.backup) enable;
+          spec = {
+            schedule = "0 0 1 * * 0";
             immediate = true;
-            retentionPolicy = "30d";
-
-            barmanObjectStore = {
-              destinationPath = "s3://atuin-backup";
-              endpointURL = "http://s3.${config.homelab.garage.ingressHost}";
-              accessKeyId = {
-                name = "atuin-backup-credentials";
-                key = "access-key-id";
-              };
-              secretAccessKey = {
-                name = "atuin-backup-credentials";
-                key = "secret-access-key";
-              };
-              compression = "snappy";
-            };
+            backupOwnerReference = "self";
+            cluster.name = "atuin-db";
           };
+        }
+      ];
 
-          networkPolicies = {
-            enable = true;
-            allowFromApps = [ "atuin" ];
-            allowPrometheus = true;
-            allowOperator = true;
-            allowInterNode = false;
+      secrets = [
+        {
+          name = "atuin-db-credentials";
+          namespace = "atuin";
+          data = {
+            password = cfg.passwordFile;
           };
-        };
-      };
+        }
+        {
+          name = "atuin-secrets";
+          namespace = "atuin";
+          data = {
+            ATUIN_DB_URI = cfg.uriFile;
+          };
+        }
+      ]
+      ++ lib.optionals cfg.backup.enable [
+        {
+          name = "atuin-backup-credentials";
+          namespace = "atuin";
+          data = {
+            "access-key-id" = cfg.backup.accessKeyIdFile;
+            "secret-access-key" = cfg.backup.secretAccessKeyFile;
+          };
+        }
+      ];
     };
-
-    services.k3s.secrets = [
-      {
-        name = "atuin-db-credentials";
-        namespace = "atuin";
-        data = {
-          password = cfg.passwordFile;
-        };
-      }
-      {
-        name = "atuin-secrets";
-        namespace = "atuin";
-        data = {
-          ATUIN_DB_URI = cfg.uriFile;
-        };
-      }
-    ]
-    ++ lib.optionals cfg.backup.enable [
-      {
-        name = "atuin-backup-credentials";
-        namespace = "atuin";
-        data = {
-          "access-key-id" = cfg.backup.accessKeyIdFile;
-          "secret-access-key" = cfg.backup.secretAccessKeyFile;
-        };
-      }
-    ];
   };
 }

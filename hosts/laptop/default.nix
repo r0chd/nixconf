@@ -157,15 +157,6 @@
         uriFile = config.sops.secrets."atuin/db/uri".path;
         storageSize = "5Gi";
         walStorageSize = "2Gi";
-        resources = {
-          requests = {
-            cpu = "100m";
-            memory = "512Mi";
-          };
-          limits = {
-            memory = "1Gi";
-          };
-        };
         backup = {
           enable = true;
           accessKeyIdFile = config.sops.secrets."atuin/backup/access_key_id".path;

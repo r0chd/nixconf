@@ -9,8 +9,6 @@ in
     ./garage
     ./system
     ./monitoring
-    ./database
-    ./kube-web
     ./metallb
     # ./cert-manager
     # ./vaultwarden
