@@ -10,6 +10,7 @@ in
     ./system
     ./monitoring
     ./metallb
+    #./vault
     # ./cert-manager
     # ./vaultwarden
     # ./nextcloud

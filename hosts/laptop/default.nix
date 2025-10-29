@@ -29,8 +29,6 @@
     "garage/admin-token" = { };
     "garage/metrics-token" = { };
 
-    "atuin/db/password" = { };
-    "atuin/db/uri" = { };
     "atuin/backup/access_key_id" = { };
     "atuin/backup/secret_access_key" = { };
 
@@ -152,9 +150,6 @@
       enable = true;
       ingressHost = "atuin.example.com";
       db = {
-        username = "r0chd";
-        passwordFile = config.sops.secrets."atuin/db/password".path;
-        uriFile = config.sops.secrets."atuin/db/uri".path;
         storageSize = "5Gi";
         walStorageSize = "2Gi";
         backup = {

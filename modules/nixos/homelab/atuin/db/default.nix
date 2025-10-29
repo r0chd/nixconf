@@ -40,21 +40,6 @@ in
         description = "Path to file containing S3 secret key";
       };
     };
-
-    username = lib.mkOption {
-      type = types.str;
-      description = "Database username";
-    };
-
-    passwordFile = lib.mkOption {
-      type = types.str;
-      description = "Path to file containing database password";
-    };
-
-    uriFile = lib.mkOption {
-      type = types.str;
-      description = "Path to file containing database URI";
-    };
   };
 
   config = lib.mkIf (config.homelab.enable && config.homelab.atuin.enable) {
@@ -276,23 +261,7 @@ in
         }
       ];
 
-      secrets = [
-        {
-          name = "atuin-db-credentials";
-          namespace = "atuin";
-          data = {
-            password = cfg.passwordFile;
-          };
-        }
-        {
-          name = "atuin-secrets";
-          namespace = "atuin";
-          data = {
-            ATUIN_DB_URI = cfg.uriFile;
-          };
-        }
-      ]
-      ++ lib.optionals cfg.backup.enable [
+      secrets = lib.mkIf cfg.backup.enable [
         {
           name = "atuin-backup-credentials";
           namespace = "atuin";
