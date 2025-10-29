@@ -28,7 +28,7 @@ in
               containers = [
                 {
                   name = "manager";
-                  inherit (cfg) image;
+                  image = "ghcr.io/cloudnative-pg/cloudnative-pg:1.24.4";
                   imagePullPolicy = "Always";
                   command = [ "/manager" ];
                   args = [
@@ -41,7 +41,7 @@ in
                   env = [
                     {
                       name = "OPERATOR_IMAGE_NAME";
-                      value = cfg.image;
+                      value = "ghcr.io/cloudnative-pg/cloudnative-pg:1.24.4";
                     }
                     {
                       name = "OPERATOR_NAMESPACE";
@@ -138,4 +138,3 @@ in
     ];
   };
 }
-

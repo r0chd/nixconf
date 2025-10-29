@@ -22,7 +22,7 @@ in
               containers = [
                 {
                   name = "garage";
-                  inherit (cfg) image;
+                  image = "dxflrs/garage:v1.0.1";
                   ports = [
                     {
                       containerPort = 3900;

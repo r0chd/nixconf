@@ -41,10 +41,11 @@ in
 # [ ] add quickwit for centralized logging
 # [x] add config reloader
 # [x] add kube web
-# [ ] add kube ops
+# [x] add kube ops
 # [x] add alertmanager
 # [x] add grafana
 # [ ] add vector
 # [x] add garage
 # [ ] finish cert-manager
 # [x] add flux
+# [ ] ass hashi vault

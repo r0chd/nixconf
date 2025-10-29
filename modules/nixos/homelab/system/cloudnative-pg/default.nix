@@ -23,11 +23,5 @@ in
       type = types.bool;
       default = true;
     };
-
-    image = lib.mkOption {
-      type = types.str;
-      default = "ghcr.io/cloudnative-pg/cloudnative-pg:1.24.4";
-      description = "CloudNativePG operator container image";
-    };
   };
 }

@@ -30,11 +30,6 @@ in
       default = 1;
     };
 
-    image = lib.mkOption {
-      type = types.str;
-      default = "dxflrs/garage:v1.0.1";
-    };
-
     replicationFactor = lib.mkOption {
       type = types.int;
       default = 1;

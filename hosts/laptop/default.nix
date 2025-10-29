@@ -168,6 +168,10 @@
       enable = true;
       ingressHost = "kube-web.example.com";
     };
+    kube-ops = {
+      enable = true;
+      ingressHost = "kube-ops.example.com";
+    };
   };
 
   time.timeZone = "Europe/Warsaw";

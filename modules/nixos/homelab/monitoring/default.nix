@@ -4,5 +4,6 @@
     ./grafana
     ./prometheus
     ./kube-web
+    ./kube-ops
   ];
 }
