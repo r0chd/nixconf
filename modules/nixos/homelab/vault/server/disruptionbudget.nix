@@ -1,8 +1,9 @@
-{ ... }:
+{ config, lib, ... }:
 {
-  services.k3s.manifests."vault-disruptionbudget".content = [
+  config = lib.mkIf (config.homelab.enable && config.homelab.vault.enable) {
+    services.k3s.manifests."vault-server-disruptionbudget".content = [
     {
-      apiVersion = "policy/v1beta1";
+      apiVersion = "policy/v1";
       kind = "PodDisruptionBudget";
       metadata = {
         name = "vault";
@@ -21,5 +22,6 @@
         };
       };
     }
-  ];
+    ];
+  };
 }

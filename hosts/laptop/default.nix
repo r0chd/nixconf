@@ -167,6 +167,10 @@
       enable = true;
       ingressHost = "kube-ops.example.com";
     };
+    vault = {
+      enable = true;
+      ingressHost = "vault.example.com";
+    };
   };
 
   time.timeZone = "Europe/Warsaw";

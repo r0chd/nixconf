@@ -1,6 +1,7 @@
-{ ... }:
+{ config, lib, ... }:
 {
-  services.k3s.manifests."vault-server-service".content = [
+  config = lib.mkIf (config.homelab.enable && config.homelab.vault.enable) {
+    services.k3s.manifests."vault-server-service".content = [
     {
       apiVersion = "v1";
       kind = "Service";
@@ -34,5 +35,6 @@
         };
       };
     }
-  ];
+    ];
+  };
 }
