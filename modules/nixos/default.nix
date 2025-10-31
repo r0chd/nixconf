@@ -4,6 +4,7 @@
   config,
   systemUsers,
   inputs,
+  system,
   ...
 }:
 {
@@ -31,7 +32,10 @@
     sockets.syslog.enable = false;
   };
 
-  nixpkgs.overlays = import ../overlays inputs config ++ import ../lib config;
+  nixpkgs = {
+    overlays = import ../overlays inputs config ++ import ../lib config;
+    hostPlatform = system;
+  };
 
   environment = {
     defaultPackages = lib.mkDefault [ ];
@@ -89,7 +93,8 @@
     users = {
       root = {
         isNormalUser = false;
-        hashedPassword = null;
+        #hashedPassword = null;
+        password = "1234";
       };
     }
     // (

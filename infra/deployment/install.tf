@@ -1,35 +1,16 @@
-variable "ssh_source_path" {
-  type        = string
-  description = "Path to ssh private key used to decrypt sops secrets (only required for fresh installs)"
-  default     = ""
-}
+module "deploy" {
+  for_each = local.hosts
 
-module "system-build" {
-  for_each = { for name, host in local.hosts : name => host if host.needs_install }
+  source = "github.com/nix-community/nixos-anywhere//terraform/all-in-one"
 
-  source    = "github.com/nix-community/nixos-anywhere//terraform/nix-build"
-  attribute = ".#nixosConfigurations.${each.value.hostname}.config.system.build.toplevel"
-}
+  nixos_system_attr      = ".#nixosConfigurations.${each.key}.config.system.build.toplevel"
+  nixos_partitioner_attr = ".#nixosConfigurations.${each.key}.config.system.build.diskoScript"
 
-module "disko" {
-  for_each = { for name, host in local.hosts : name => host if host.needs_install }
+  target_host = each.value.ip
+  target_user = "root"
 
-  source    = "github.com/nix-community/nixos-anywhere//terraform/nix-build"
-  attribute = ".#nixosConfigurations.${each.value.hostname}.config.system.build.diskoScript"
-}
-
-module "install" {
-  for_each = { for name, host in local.hosts : name => host if host.needs_install }
-
-  source                     = "github.com/nix-community/nixos-anywhere//terraform/install"
-  nixos_system               = module.system-build[each.key].result.out
-  nixos_partitioner          = module.disko[each.key].result.out
-  target_host                = each.value.hostname
-  nixos_generate_config_path = "../hosts/${each.value.hostname}/hardware-configuration.nix"
-
-  extra_environment = length(var.ssh_source_path) > 0 ? {
-    SSH_SOURCE_PATH = var.ssh_source_path
-  } : {}
+  instance_id                = each.key
+  nixos_generate_config_path = "../hosts/${each.key}/hardware-configuration.nix"
 
   extra_files_script = "${path.module}/copy.sh"
 }

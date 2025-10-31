@@ -1,0 +1,9 @@
+keys:
+  - &root age18fxxl00uxwjtu8ge0t4rpraguhtgcpt3f38j8lwt46q3pkr63p0s78zkfw
+  - &unixpariah_laptop-huawei age19kl6jcwqxwkv060nvmjgq8rze8dfjflc0un0evtwgvjqd6qa7p0s0mj8qr
+creation_rules:
+  - path_regex: secrets/secrets.yaml$
+    key_groups:
+      - age:
+        - *root
+        - *unixpariah_laptop-huawei

@@ -11,6 +11,7 @@
       "btrfs"
       "ext4"
       "zfs"
+      "xfs"
     ];
   };
 

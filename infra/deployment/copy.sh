@@ -6,6 +6,7 @@ mkdir -p root/.ssh
 mkdir -p var/lib/nixconf
 mkdir -p persist/system/root/.ssh
 mkdir -p persist/system/var/lib/nixconf
+mkdir tmp
 
 if [[ -z "${SSH_SOURCE_PATH:-}" ]]; then
     echo "Error: SSH_SOURCE_PATH environment variable not set"
@@ -13,6 +14,8 @@ if [[ -z "${SSH_SOURCE_PATH:-}" ]]; then
 fi
 
 NIXCONF_SOURCE_PATH="/var/lib/nixconf"
+
+SECRET_KEY_PATH="/tmp/secret.key"
 
 if [[ -f "$SSH_SOURCE_PATH" ]]; then
     KEY_FILENAME=$(basename "$SSH_SOURCE_PATH")
@@ -25,7 +28,8 @@ if [[ -f "$SSH_SOURCE_PATH" ]]; then
     chmod 600 "persist/system/root/.ssh/$KEY_FILENAME"
     echo "Copied SSH private key from $SSH_SOURCE_PATH to /persist/system/root/.ssh/$KEY_FILENAME"
 else
-    echo "Warning: SSH private key not found at $SSH_SOURCE_PATH"
+    echo "Error: SSH private key not found at $SSH_SOURCE_PATH"
+    exit 1
 fi
 
 if [[ -d "$NIXCONF_SOURCE_PATH" ]]; then

@@ -11,7 +11,6 @@
 let
   cfg = config.programs.gnome;
 in
-with lib.hm.gvariant;
 {
   options.programs.gnome.enable = lib.mkEnableOption "gnome";
 
@@ -107,7 +106,7 @@ with lib.hm.gvariant;
 
       "org/gnome/control-center" = {
         last-panel = "ubuntu";
-        window-state = mkTuple [
+        window-state = lib.hm.gvariant.mkTuple [
           980
           640
           true
@@ -165,7 +164,7 @@ with lib.hm.gvariant;
 
       "org/gnome/desktop/input-sources" = {
         sources = [
-          (mkTuple [
+          (lib.hm.gvariant.mkTuple [
             "xkb"
             "us"
           ])

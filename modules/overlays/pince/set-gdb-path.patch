@@ -25,7 +25,7 @@ index aa5da2f..b356458 100644
 --- a/PINCE.py
 +++ b/PINCE.py
 @@ -334,7 +334,7 @@ class MainForm(QMainWindow, MainWindow):
- 
+
          settings.init_settings()
          self.settings_changed()
 -        if os.environ.get("APPDIR"):
@@ -34,7 +34,7 @@ index aa5da2f..b356458 100644
          else:
              gdb_path = states.gdb_path
 @@ -1426,7 +1426,7 @@ class MainForm(QMainWindow, MainWindow):
- 
+
      # Returns: a bool value indicates whether the operation succeeded.
      def attach_to_pid(self, pid: int):
 -        attach_result = debugcore.attach(pid, states.gdb_path)
@@ -69,16 +69,16 @@ index 604aeb3..0569a7e 100644
 --- a/libpince/utils.py
 +++ b/libpince/utils.py
 @@ -881,10 +881,7 @@ def get_user_path(user_path):
- 
- 
+
+
  def get_default_gdb_path():
 -    appdir = os.environ.get("APPDIR")
 -    if appdir:
 -        return appdir + "/usr/bin/gdb"
 -    return typedefs.PATHS.GDB
 +    return "@gdb_exe_path@"
- 
- 
+
+
  def execute_script(file_path):
 diff --git a/tr/tr.py b/tr/tr.py
 index 81e156c..74aef4c 100644

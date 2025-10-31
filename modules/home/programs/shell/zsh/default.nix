@@ -5,8 +5,6 @@
   shell,
   ...
 }:
-with config.lib.stylix.colors.withHashtag;
-with config.stylix.fonts;
 {
   config = lib.mkIf (shell == "zsh") {
     home = {
@@ -25,7 +23,7 @@ with config.stylix.fonts;
       syntaxHighlighting.enable = true;
       history = {
         size = 10000;
-        path = "/home/${config.home.username}/.cache/zsh/history";
+        path = "${config.home.homeDirectory}/.cache/zsh/history";
         ignoreSpace = true;
         ignoreAllDups = true;
         ignoreDups = true;

@@ -15,37 +15,45 @@ let
   };
 
   baseHosts = {
-    "t851" = {
-      "os1" = [
+    t851 = {
+      os1 = [
         keys."unixpariah@laptop"
         keys."unixpariah@laptop-huawei"
       ];
     };
 
-    "laptop" = {
-      "unixpariah" = [
+    laptop = {
+      unixpariah = [
         keys."unixpariah@laptop-huawei"
         keys."os1@t851"
       ];
     };
 
-    "laptop-huawei" = {
-      "unixpariah" = [
+    laptop-huawei = {
+      unixpariah = [
         keys."unixpariah@laptop"
         keys."os1@t851"
       ];
     };
 
-    "agent-0" = {
-      "unixpariah" = [
+    agent-0 = {
+      unixpariah = [
         keys."unixpariah@laptop"
         keys."unixpariah@laptop-huawei"
         keys."os1@t851"
       ];
     };
 
-    "server-0" = {
-      "unixpariah" = [
+    server-0 = {
+      unixpariah = [
+        keys."unixpariah@laptop"
+        keys."unixpariah@laptop-huawei"
+        keys."os1@t851"
+      ];
+    };
+
+    "fi-srv-1" = {
+      root = [
         keys."unixpariah@laptop"
         keys."unixpariah@laptop-huawei"
         keys."os1@t851"

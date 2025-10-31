@@ -143,7 +143,7 @@ in
       ++ config.environment.persist.directories;
       inherit (config.environment.persist) files;
 
-      users = systemUsers |> lib.mapAttrs (name: value: config.environment.persist.users);
+      users = (systemUsers |> lib.mapAttrs (name: value: config.environment.persist.users));
     };
 
     systemd.services.activate-home-manager = {
@@ -156,16 +156,18 @@ in
         Type = "oneshot";
         RemainAfterExit = true;
       };
-      path = with pkgs; [
-        coreutils
-        nix
-        git
-        home-manager
-        ripgrep
-        gnused
-        findutils
-        sudo
-      ];
+      path = builtins.attrValues {
+        inherit (pkgs)
+          coreutils
+          nix
+          git
+          home-manager
+          ripgrep
+          gnused
+          findutils
+          sudo
+          ;
+      };
       script = lib.concatMapStrings (user: ''
         echo "========================================="
         echo "Processing user: ${user}"

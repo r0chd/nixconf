@@ -2,7 +2,6 @@
   pkgs,
   config,
   lib,
-  shell,
   profile,
   ...
 }:
@@ -24,15 +23,7 @@ in
         sensibleOnTop = true;
         escapeTime = 0;
         terminal = "screen-256color";
-        plugins = with pkgs.tmuxPlugins; [
-          yank
-          sensible
-          vim-tmux-navigator
-          {
-            plugin = resurrect;
-            extraConfig = "set -g @resurrect-strategy-nvim 'session'";
-          }
-        ];
+        plugins = builtins.attrValues { inherit (pkgs) yank sensible vim-tmux-navigator; };
         extraConfig = ''
           set -as terminal-features ",xterm-256color:RGB"
 

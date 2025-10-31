@@ -22,7 +22,7 @@ in
       };
     };
 
-    users.users =
+    users.users = (
       systemUsers
       |> lib.mapAttrs (
         _user: value: {
@@ -31,7 +31,8 @@ in
             ++ lib.optionals (value.root.enable && cfg.docker.enable) [ "docker" ]
             ++ lib.optionals (value.root.enable && cfg.podman.enable) [ "podman" ];
         }
-      );
+      )
+    );
 
     programs.virt-manager = { inherit (cfg.libvirtd) enable; };
   };

@@ -1,17 +1,11 @@
-# --- all hosts and whether they need fresh install ---
 locals {
   hosts = {
-    #"agent-0" = {
-    #  needs_install = false
-    #}
-    "laptop" = {
-      needs_install = false
+    "fi-srv-1" = {
+      ip = "157.180.30.62"
     }
-    #"laptop-huawei" = {
-    #  needs_install = false
-    #}
-    #"server-0" = {
-    #  needs_install = false
+    #"t851" = {
+    #ip = "192.168.0.23"
     #}
   }
 }
+

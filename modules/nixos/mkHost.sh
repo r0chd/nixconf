@@ -16,24 +16,6 @@ echo -n "Enter locale [en_US.UTF-8]: "
 read LOCALE
 LOCALE=${LOCALE:-en_US.UTF-8}
 
-echo -n "Use legacy bootloader? [Y/n]: "
-read USE_LEGACY
-USE_LEGACY=${USE_LEGACY:-Y}
-
-LEGACY_SETTING="false"
-if echo "$USE_LEGACY" | grep -iqE '^y(es)?$|^$'; then
-  LEGACY_SETTING="true"
-  BOOTLOADER="grub"
-else
-  echo -n "Choose bootloader [systemd-boot/grub] (default: systemd-boot): "
-  read BOOTLOADER
-  BOOTLOADER=${BOOTLOADER:-systemd-boot}
-  if [ "$BOOTLOADER" != "systemd-boot" ] && [ "$BOOTLOADER" != "grub" ]; then
-    echo "Error: Invalid bootloader choice"
-    exit 1
-  fi
-fi
-
 cat <<EOF > "$BASE_CONFIG_PATH/hardware-configuration.nix"
 { ... }: { }
 EOF
@@ -46,13 +28,7 @@ cat <<EOF > "$BASE_CONFIG_PATH/default.nix"
     ./disko.nix
   ];
 
-  system = {
-    bootloader = {
-      variant = "$BOOTLOADER";
-      legacy = $LEGACY_SETTING;
-    };
-    fileSystem = "btrfs";
-  };
+  system.fileSystem = "xfs";
 
   time.timeZone = "$TIMEZONE";
   i18n.defaultLocale = "$LOCALE";
@@ -82,7 +58,6 @@ EOF
 touch "$BASE_CONFIG_PATH/secrets/secrets.yaml"
 
 echo "Host $HOST initialized successfully!"
-echo "Bootloader: $BOOTLOADER (legacy: $LEGACY_SETTING)"
 echo "Private SSH key: $TMP_KEY"
 echo "Public SSH key: $TMP_KEY.pub"
 

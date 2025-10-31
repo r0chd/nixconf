@@ -54,15 +54,15 @@ let
     '';
   };
 in
-stdenv.mkDerivation (finalAttrs: {
+stdenv.mkDerivation rec {
   pname = "pince";
   version = "0.4.4";
 
   src = fetchFromGitHub {
     owner = "korcankaraokcu";
     repo = "PINCE";
-    rev = "v${finalAttrs.version}";
-    hash = "sha256-hGPENzcMbXTRZ57wxTDIGPK9dDvjKVeGwhgGX6fB25I=";
+    rev = "v${version}";
+    hash = "sha256-+EnM+CIyAucWQi/s/wSvyRMGDN39XSpThuL873ghB3w=";
     fetchSubmodules = true;
   };
 
@@ -93,31 +93,25 @@ stdenv.mkDerivation (finalAttrs: {
   # mostly taken from install.sh
   buildPhase = ''
     runHook preBuild
-
     pushd libscanmem-PINCE
     cmake -DCMAKE_BUILD_TYPE=Release .
     make -j"$NIX_BUILD_CORES"
     install -Dm755 libscanmem.so -t ../libpince/libscanmem
     install -Dm644 wrappers/scanmem.py -t ../libpince/libscanmem
     popd
-
     install -Dm755 ${libptrscan}/lib/libptrscan.so -t libpince/libptrscan/
     install -Dm644 ${libptrscan}/lib/ptrscan.py -t libpince/libptrscan/
-
     lrelease i18n/ts/*
     mkdir -p i18n/qm
     mv i18n/ts/*.qm i18n/qm/
-
     runHook postBuild
   '';
 
   # mostly taken from ci/package.sh
   installPhase = ''
     runHook preInstall
-
     mkdir -p "$out"/share/pince
     cp -r GUI i18n libpince media tr AUTHORS COPYING COPYING.CC-BY PINCE.py THANKS "$out"/share/pince/
-
     runHook postInstall
   '';
 
@@ -145,4 +139,4 @@ stdenv.mkDerivation (finalAttrs: {
     mainProgram = "PINCE";
     platforms = lib.platforms.linux;
   };
-})
+}

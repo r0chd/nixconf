@@ -19,7 +19,7 @@
     nano.enable = lib.mkDefault false;
   };
 
-  users.users =
+  users.users = (
     systemUsers
     |> lib.mapAttrs (
       _user: value: {
@@ -29,5 +29,6 @@
           && config.programs.nixos-anywhere.sshKeyFile != null
         ) [ "nixos-anywhere" ];
       }
-    );
+    )
+  );
 }

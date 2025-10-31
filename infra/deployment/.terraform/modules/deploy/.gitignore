@@ -1,0 +1,11 @@
+result*
+.direnv
+/docs/book
+
+# terraform
+.terraform.lock.hcl
+test_key
+test_key.pub
+errored_test.tfstate
+errored_test.tfstate.backup
+terraform.tfstate

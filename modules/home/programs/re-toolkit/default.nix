@@ -14,7 +14,7 @@ in
   };
   config = lib.mkIf cfg.enable {
     home.packages = [
-      #pkgs.pince
+      pkgs.pince
       (pkgs.ghidra.withExtensions (p: builtins.attrValues { inherit (p) ret-sync; }))
       (pkgs.lutris.override {
         extraLibraries = pkgs: [

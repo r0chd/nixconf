@@ -3,6 +3,7 @@ keys:
   - &laptop-huawei age14tnez5sz8j37864lfvrckslrn6sl34asy0m7cglpyy7rwaf27g3qhxl90l
   - &server-0 age1xn5a8wuwt3c7r5njtlzwfwuvryanrtr5uvcgzazwh77pap0vu38qsm24lg
   - &agent-0 age1npphzfaarxvv2flkmdkm777gafuhvmsh38020432ju9v0aznh55sd0ce3s
+  - &fi-srv-1 age18fxxl00uxwjtu8ge0t4rpraguhtgcpt3f38j8lwt46q3pkr63p0s78zkfw
 creation_rules:
   - path_regex: secrets/secrets.yaml$
     key_groups:
@@ -11,3 +12,4 @@ creation_rules:
           - *laptop-huawei
           - *server-0
           - *agent-0
+          - *fi-srv-1

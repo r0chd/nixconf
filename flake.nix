@@ -161,7 +161,7 @@
 
       homeConfigurations =
         config.hosts
-        |> lib.filterAttrs (_: attrs: attrs.platform != "mobile")
+        |> lib.filterAttrs (_: attrs: attrs.platform != "mobile" && attrs.users != null)
         |> builtins.attrNames
         |> builtins.map (
           host:
