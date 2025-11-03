@@ -75,26 +75,32 @@
                   }
                 ];
                 args = [ "agent-inject" ];
-                livenessProbe = {
-                  httpGet = {
-                    path = "/health";
+                startupProbe = {
+                  tcpSocket = {
                     port = 8080;
-                    scheme = "HTTP";
                   };
-                  failureThreshold = 3;
+                  failureThreshold = 30;
                   initialDelaySeconds = 10;
                   periodSeconds = 10;
                   successThreshold = 1;
                   timeoutSeconds = 5;
                 };
-                readinessProbe = {
-                  httpGet = {
-                    path = "/health";
+                livenessProbe = {
+                  tcpSocket = {
                     port = 8080;
-                    scheme = "HTTP";
                   };
                   failureThreshold = 3;
-                  initialDelaySeconds = 5;
+                  initialDelaySeconds = 30;
+                  periodSeconds = 10;
+                  successThreshold = 1;
+                  timeoutSeconds = 5;
+                };
+                readinessProbe = {
+                  tcpSocket = {
+                    port = 8080;
+                  };
+                  failureThreshold = 3;
+                  initialDelaySeconds = 30;
                   periodSeconds = 5;
                   successThreshold = 1;
                   timeoutSeconds = 5;

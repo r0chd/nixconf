@@ -1,10 +1,8 @@
 {
   lib,
-  config,
   ...
 }:
 let
-  cfg = config.homelab.vault;
   inherit (lib) types;
 in
 {
@@ -23,6 +21,5 @@ in
       default = null;
       description = "Hostname for vault ingress (e.g., example.com)";
     };
-
   };
 }

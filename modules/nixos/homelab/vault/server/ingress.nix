@@ -20,7 +20,7 @@ in
           ingressClassName = "nginx";
           rules = [
             {
-              host = "vault.${cfg.ingressHost}";
+              host = cfg.ingressHost;
               http = {
                 paths = [
                   {
