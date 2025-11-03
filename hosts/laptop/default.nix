@@ -125,6 +125,7 @@
 
   homelab = {
     enable = true;
+    system.reloader.enable = true;
     pihole = {
       domain = "pihole.example.com";
       dns = "192.168.0.1";

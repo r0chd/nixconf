@@ -36,6 +36,10 @@
 
     atuin = {
       enable = true;
+      distributed = {
+        enable = true;
+        address = "http://atuin.example.com";
+      };
     };
 
     vcs = {
