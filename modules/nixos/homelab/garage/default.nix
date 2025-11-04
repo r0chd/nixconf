@@ -57,7 +57,8 @@ in
 
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
-      default = null;
+      default = if config.homelab.domain != null then "garage.${config.homelab.domain}" else null;
+      description = "Hostname base for garage ingress (creates s3.garage.<domain> and admin.garage.<domain>, defaults to garage.<domain> if domain is set)";
     };
 
     rpcSecretFile = lib.mkOption {

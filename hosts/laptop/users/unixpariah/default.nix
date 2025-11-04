@@ -16,11 +16,22 @@
 
   sops.secrets = {
     access-token-github = { };
+
+    "minio-client/moxpaper/access-key" = { };
+    "minio-client/moxpaper/secret-key" = { };
   };
 
   nix.access-token-file = config.sops.secrets.access-token-github.path;
 
   services = {
+    moxpaper.settings.buckets = {
+      moxpaper = {
+        url = "http://s3.garage.local";
+        access_key_file = config.sops.placeholder."minio-client/moxpaper/access-key";
+        secret_key_file = config.sops.placeholder."minio-client/moxpaper/secret-key";
+        region = "garage";
+      };
+    };
     impermanence.enable = true;
     yubikey-touch-detector.enable = true;
   };
@@ -30,7 +41,15 @@
       enable = true;
       settings = {
         version = "10";
-        aliases = { };
+        aliases = {
+          moxpaper = {
+            url = "http://s3.garage.local";
+            accessKey = config.sops.placeholder."minio-client/moxpaper/access-key";
+            secretKey = config.sops.placeholder."minio-client/moxpaper/secret-key";
+            api = "s3v4";
+            path = "auto";
+          };
+        };
       };
     };
 
@@ -38,7 +57,7 @@
       enable = true;
       distributed = {
         enable = true;
-        address = "http://atuin.example.com";
+        address = "http://atuin.local";
       };
     };
 

@@ -127,9 +127,8 @@
 
   homelab = {
     enable = true;
-
+    domain = "local";
     garage = {
-      ingressHost = "example.com";
       rpcSecretFile = config.sops.secrets."garage/rpc-secret".path;
       adminTokenFile = config.sops.secrets."garage/admin-token".path;
       metricsTokenFile = config.sops.secrets."garage/metrics-token".path;
@@ -137,7 +136,6 @@
     metallb.addresses = [ "192.168.0.100-192.168.0.150" ];
     atuin = {
       enable = true;
-      ingressHost = "atuin.example.com";
       db = {
         storageSize = "5Gi";
         walStorageSize = "2Gi";
@@ -151,13 +149,11 @@
 
     vault = {
       enable = true;
-      ingressHost = "vault.example.com";
     };
 
     system = {
       reloader.enable = true;
       pihole = {
-        domain = "pihole.example.com";
         dns = "192.168.0.1";
         passwordFile = config.sops.secrets."pihole/password".path;
         adlists = [ "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt" ];
@@ -167,25 +163,16 @@
     };
 
     monitoring = {
-      prometheus.domain = "prometheus.example.com";
       thanos = {
         enable = true;
         thanosObjectStorageFile = config.sops.secrets."thanos-objectstorage".path;
-        ingressHost = "thanos.example.com";
       };
       grafana = {
-        domain = "grafana.example.com";
         usernameFile = config.sops.secrets."grafana/username".path;
         passwordFile = config.sops.secrets."grafana/password".path;
       };
-      kube-web = {
-        enable = true;
-        ingressHost = "kube-web.example.com";
-      };
-      kube-ops = {
-        enable = true;
-        ingressHost = "kube-ops.example.com";
-      };
+      kube-web.enable = true;
+      kube-ops.enable = true;
     };
   };
 

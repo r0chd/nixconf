@@ -1,0 +1,62 @@
+{ ... }:
+{
+  services.k3s.manifests."cert-manager-validating-webhook-configuration".content = [
+    {
+      apiVersion = "admissionregistration.k8s.io/v1";
+      kind = "ValidatingWebhookConfiguration";
+      metadata = {
+        name = "cert-manager-webhook";
+        labels = {
+          app = "webhook";
+          "app.kubernetes.io/name" = "webhook";
+          "app.kubernetes.io/instance" = "cert-manager";
+          "app.kubernetes.io/component" = "webhook";
+          "app.kubernetes.io/version" = "v1.15.3";
+        };
+        annotations = {
+          "cert-manager.io/inject-ca-from-secret" = "cert-manager/cert-manager-webhook-ca";
+        };
+      };
+      webhooks = [
+        {
+          name = "webhook.cert-manager.io";
+          namespaceSelector = {
+            matchExpressions = [
+              {
+                key = "cert-manager.io/disable-validation";
+                operator = "NotIn";
+                values = [ "true" ];
+              }
+            ];
+          };
+          rules = [
+            {
+              apiGroups = [
+                "cert-manager.io"
+                "acme.cert-manager.io"
+              ];
+              apiVersions = [ "v1" ];
+              operations = [
+                "CREATE"
+                "UPDATE"
+              ];
+              resources = [ "*/*" ];
+            }
+          ];
+          admissionReviewVersions = [ "v1" ];
+          matchPolicy = "Equivalent";
+          timeoutSeconds = 30;
+          failurePolicy = "Fail";
+          sideEffects = "None";
+          clientConfig = {
+            service = {
+              name = "cert-manager-webhook";
+              namespace = "cert-manager";
+              path = "/validate";
+            };
+          };
+        }
+      ];
+    }
+  ];
+}

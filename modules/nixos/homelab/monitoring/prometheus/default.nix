@@ -14,9 +14,10 @@ in
       type = types.bool;
       default = true;
     };
-    domain = lib.mkOption {
+    ingressHost = lib.mkOption {
       type = types.nullOr types.str;
-      default = null;
+      default = if config.homelab.domain != null then "prometheus.${config.homelab.domain}" else null;
+      description = "Hostname for prometheus ingress (defaults to prometheus.<domain> if domain is set)";
     };
   };
 
@@ -43,12 +44,17 @@ in
       values = {
         server = {
           ingress = {
-            enabled = cfg.domain != null;
+            enabled = cfg.ingressHost != null;
             ingressClassName = "nginx";
             annotations = {
               "nginx.ingress.kubernetes.io/rewrite-target" = "/";
+              "cert-manager.io/cluster-issuer" = "letsencrypt";
             };
-            hosts = lib.optional (cfg.domain != null) cfg.domain;
+            hosts = lib.optional (cfg.ingressHost != null) cfg.ingressHost;
+            tls = lib.optional (cfg.ingressHost != null) {
+              hosts = [ cfg.ingressHost ];
+              secretName = "prometheus-tls";
+            };
           };
         };
       };

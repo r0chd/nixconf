@@ -38,14 +38,6 @@ in
             0.1
             1.05
           ];
-          buckets = {
-            moxpaper = {
-              url = "http://localhost:3900";
-              access_key = "GK8946f79da1abd2f6dc87c24b";
-              secret_key = "f87a0e3f32106b8287bdcbda62d2fe33e67b880bed09d02df3d9a4a679388d5d";
-              region = "garage";
-            };
-          };
         };
       };
     };

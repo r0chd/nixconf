@@ -23,7 +23,7 @@ in
         sensibleOnTop = true;
         escapeTime = 0;
         terminal = "screen-256color";
-        plugins = builtins.attrValues { inherit (pkgs) yank sensible vim-tmux-navigator; };
+        plugins = builtins.attrValues { inherit (pkgs.tmuxPlugins) yank sensible vim-tmux-navigator; };
         extraConfig = ''
           set -as terminal-features ",xterm-256color:RGB"
 

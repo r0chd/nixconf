@@ -33,5 +33,11 @@ in
       default = "1Gi";
       description = "Storage size for atuin configuration volume";
     };
+
+    ingressHost = lib.mkOption {
+      type = types.nullOr types.str;
+      default = if config.homelab.domain != null then "atuin.${config.homelab.domain}" else null;
+      description = "Hostname for atuin ingress (defaults to atuin.<domain> if domain is set)";
+    };
   };
 }

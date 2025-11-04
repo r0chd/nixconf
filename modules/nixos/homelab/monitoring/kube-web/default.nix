@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, config, ... }:
 let
   inherit (lib) types;
 in
@@ -26,8 +26,9 @@ in
     };
 
     ingressHost = lib.mkOption {
-      type = types.str;
-      description = "Hostname for kube-web ingress";
+      type = types.nullOr types.str;
+      default = if config.homelab.domain != null then "kube-web.${config.homelab.domain}" else null;
+      description = "Hostname for kube-web ingress (defaults to kube-web.<domain> if domain is set)";
     };
   };
 }

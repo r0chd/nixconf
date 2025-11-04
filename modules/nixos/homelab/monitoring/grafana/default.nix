@@ -14,9 +14,10 @@ in
       type = types.bool;
       default = config.homelab.enable;
     };
-    domain = lib.mkOption {
+    ingressHost = lib.mkOption {
       type = types.nullOr types.str;
-      default = null;
+      default = if config.homelab.domain != null then "grafana.${config.homelab.domain}" else null;
+      description = "Hostname for grafana ingress (defaults to grafana.<domain> if domain is set)";
     };
     usernameFile = lib.mkOption {
       type = types.nullOr types.str;
@@ -52,19 +53,17 @@ in
         values = {
           service.port = 3000;
           ingress = {
-            enabled = true;
+            enabled = cfg.ingressHost != null;
             ingressClassName = "nginx";
             annotations = {
               "nginx.ingress.kubernetes.io/rewrite-target" = "/";
-              # "nginx.ingress.kubernetes.io/ssl-redirect" = "true";  # Commented out for no TLS
+              "cert-manager.io/cluster-issuer" = "letsencrypt";
             };
-            hosts = [ cfg.domain ];
-            # tls = [
-            #   {
-            #     secretName = "ssl-cert";
-            #     hosts = [ "grafana.your-domain.com" ];
-            #   }
-            # ];
+            hosts = lib.optional (cfg.ingressHost != null) cfg.ingressHost;
+            tls = lib.optional (cfg.ingressHost != null) {
+              hosts = [ cfg.ingressHost ];
+              secretName = "grafana-tls";
+            };
           };
           admin = {
             existingSecret = "grafana-admin-credentials";

@@ -1,14 +1,9 @@
 { config, lib, ... }:
 let
   cfg = config.homelab.atuin;
-  inherit (lib) types;
 in
 {
-  options.homelab.atuin.ingressHost = lib.mkOption {
-    type = types.str;
-  };
-
-  config = lib.mkIf (config.homelab.enable && cfg.enable) {
+  config = lib.mkIf (config.homelab.enable && cfg.enable && cfg.ingressHost != null) {
     services.k3s.manifests."atuin-ingress".content = [
       {
         apiVersion = "networking.k8s.io/v1";
@@ -16,9 +11,18 @@ in
         metadata = {
           name = "atuin-ingress";
           namespace = "atuin";
+          annotations = {
+            "cert-manager.io/cluster-issuer" = "letsencrypt";
+          };
         };
         spec = {
           ingressClassName = "nginx";
+          tls = [
+            {
+              hosts = [ cfg.ingressHost ];
+              secretName = "atuin-tls";
+            }
+          ];
           rules = [
             {
               host = cfg.ingressHost;

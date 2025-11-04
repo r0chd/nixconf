@@ -23,8 +23,6 @@ _: {
         AllowAgentForwarding yes
         AllowStreamLocalForwarding no
         AuthenticationMethods publickey
-        AcceptEnv *
-        PermitUserEnvironment yes
       '';
     };
   };

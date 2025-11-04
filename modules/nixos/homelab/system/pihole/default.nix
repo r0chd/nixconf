@@ -20,7 +20,11 @@ in
     };
     passwordFile = lib.mkOption { type = types.path; };
     dns = lib.mkOption { type = types.str; };
-    domain = lib.mkOption { type = types.str; };
+    ingressHost = lib.mkOption {
+      type = types.nullOr types.str;
+      default = if config.homelab.domain != null then "pihole.${config.homelab.domain}" else null;
+      description = "Hostname for pihole ingress (defaults to pihole.<domain> if domain is set)";
+    };
     webLoadBalancerIP = lib.mkOption { type = types.str; };
     dnsLoadBalancerIP = lib.mkOption { type = types.str; };
     adlists = lib.mkOption {
@@ -51,18 +55,17 @@ in
             storageClass = "local-path";
           };
           ingress = {
-            enabled = true;
+            enabled = cfg.ingressHost != null;
             annotations = {
-              "nginx.ingress.kubernetes.io/ssl-redirect" = "false";
+              "nginx.ingress.kubernetes.io/ssl-redirect" = if cfg.ingressHost != null then "true" else "false";
               "nginx.ingress.kubernetes.io/backend-protocol" = "HTTP";
+              "cert-manager.io/cluster-issuer" = "letsencrypt";
             };
-            hosts = [ cfg.domain ];
-            #tls = [
-            #  {
-            #    secretName = "pihole-tls-secret";
-            #    hosts = [ cfg.domain ];
-            #  }
-            #];
+            hosts = lib.optional (cfg.ingressHost != null) cfg.ingressHost;
+            tls = lib.optional (cfg.ingressHost != null) {
+              secretName = "pihole-tls";
+              hosts = [ cfg.ingressHost ];
+            };
           };
           serviceWeb = {
             loadBalancerIP = cfg.webLoadBalancerIP;

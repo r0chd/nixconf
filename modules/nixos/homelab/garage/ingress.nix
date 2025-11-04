@@ -11,9 +11,18 @@ in
         metadata = {
           name = "garage-ingress";
           namespace = "default";
+          annotations = {
+            "cert-manager.io/cluster-issuer" = "letsencrypt";
+          };
         };
         spec = {
           ingressClassName = "nginx";
+          tls = [
+            {
+              hosts = [ "s3.${cfg.ingressHost}" "admin.${cfg.ingressHost}" ];
+              secretName = "garage-tls";
+            }
+          ];
           rules = [
             {
               host = "s3.${cfg.ingressHost}";

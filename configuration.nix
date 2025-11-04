@@ -10,7 +10,7 @@ _: {
     t851 = {
       system = "x86_64-linux";
       profile = "desktop";
-      platform = "non-nixos";
+      platform = "nixos";
       users = {
         os1 = {
           root.enable = true;

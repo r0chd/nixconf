@@ -9,9 +9,27 @@
     enable = true;
     enableDefaultConfig = false;
 
+    # Disable ControlMaster for Hetzner VPS to avoid connection hangs
+    # This is a known issue with NixOS OpenSSH and Hetzner's network setup
+    matchBlocks."157.180.*" = {
+      forwardAgent = false;
+      serverAliveInterval = 60;
+      serverAliveCountMax = 3;
+      compression = false;
+      addKeysToAgent = "yes";
+      userKnownHostsFile =
+        if config.services.impermanence.enable then
+          "~/.ssh/persisted/known_hosts"
+        else
+          "~/.ssh/known_hosts";
+
+      controlMaster = "no";
+      tcpKeepAlive = true;
+    };
+
     matchBlocks."*" = {
       forwardAgent = false;
-      serverAliveInterval = 0;
+      serverAliveInterval = 60;
       serverAliveCountMax = 3;
       compression = false;
       addKeysToAgent = "yes";

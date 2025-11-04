@@ -11,7 +11,7 @@ in
     ./monitoring
     ./metallb
     ./vault
-    # ./cert-manager
+    ./cert-manager
     # ./vaultwarden
     # ./nextcloud
     # ./immich
@@ -19,6 +19,13 @@ in
 
   options.homelab = {
     enable = lib.mkEnableOption "homelab";
+
+    domain = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = "Global domain for homelab services. Services will default to <service>.<domain> if not explicitly configured.";
+      example = "r0chd.pl";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -38,7 +45,7 @@ in
 
 # TODO:
 # [x] add cloudnative-pg
-# [ ] add thanos for longer term metrics storage
+# [x] add thanos for longer term metrics storage
 # [ ] add quickwit for centralized logging
 # [x] add config reloader
 # [x] add kube web
@@ -47,6 +54,6 @@ in
 # [x] add grafana
 # [ ] add vector
 # [x] add garage
-# [ ] finish cert-manager
+# [x] finish cert-manager
 # [x] add flux
 # [ ] ass hashi vault

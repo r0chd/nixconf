@@ -90,7 +90,7 @@ cat <<EOF > "$CONFIG_PATH/default.nix"
 {
   programs = {
     editor = "$EDITOR";
-    git.email = "$EMAIL";
+    vcs.email = "$EMAIL";
   };
 }
 EOF

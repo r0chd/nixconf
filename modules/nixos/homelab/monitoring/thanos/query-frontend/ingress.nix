@@ -11,9 +11,18 @@ in
         metadata = {
           name = "thanos-query-frontend-ingress";
           namespace = "monitoring";
+          annotations = {
+            "cert-manager.io/cluster-issuer" = "letsencrypt";
+          };
         };
         spec = {
           ingressClassName = "nginx";
+          tls = [
+            {
+              hosts = [ cfg.ingressHost ];
+              secretName = "thanos-tls";
+            }
+          ];
           rules = [
             {
               host = cfg.ingressHost;

@@ -15,9 +15,18 @@ in
             "app.kubernetes.io/name" = "vault";
             "app.kubernetes.io/instance" = "vault";
           };
+          annotations = {
+            "cert-manager.io/cluster-issuer" = "letsencrypt";
+          };
         };
         spec = {
           ingressClassName = "nginx";
+          tls = [
+            {
+              hosts = [ cfg.ingressHost ];
+              secretName = "vault-tls";
+            }
+          ];
           rules = [
             {
               host = cfg.ingressHost;

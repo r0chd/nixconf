@@ -59,8 +59,8 @@ in
 
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
-      default = null;
-      description = "Hostname for thanos query-frontend ingress (e.g., thanos.example.com)";
+      default = if config.homelab.domain != null then "thanos.${config.homelab.domain}" else null;
+      description = "Hostname for thanos query-frontend ingress (defaults to thanos.<domain> if domain is set)";
     };
   };
 
