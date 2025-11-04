@@ -20,20 +20,6 @@
     ];
 
   sops.secrets = {
-    "pihole/password" = { };
-
-    "grafana/username" = { };
-    "grafana/password" = { };
-
-    "garage/rpc-secret" = { };
-    "garage/admin-token" = { };
-    "garage/metrics-token" = { };
-
-    "atuin/backup/access_key_id" = { };
-    "atuin/backup/secret_access_key" = { };
-
-    "thanos-objectstorage" = { };
-
     nixos-anywhere = {
       owner = "nixos-anywhere";
       group = "nixos-anywhere";
@@ -118,61 +104,6 @@
         helix
         cosmic-icons
         ;
-    };
-  };
-
-  users.users.unixpariah.extraGroups = [ "homelab" ];
-
-  networking.nameservers = lib.mkForce [ "192.168.0.103" ];
-
-  homelab = {
-    enable = true;
-    domain = "local";
-    garage = {
-      rpcSecretFile = config.sops.secrets."garage/rpc-secret".path;
-      adminTokenFile = config.sops.secrets."garage/admin-token".path;
-      metricsTokenFile = config.sops.secrets."garage/metrics-token".path;
-    };
-    metallb.addresses = [ "192.168.0.100-192.168.0.150" ];
-    atuin = {
-      enable = true;
-      db = {
-        storageSize = "5Gi";
-        walStorageSize = "2Gi";
-        backup = {
-          enable = true;
-          accessKeyIdFile = config.sops.secrets."atuin/backup/access_key_id".path;
-          secretAccessKeyFile = config.sops.secrets."atuin/backup/secret_access_key".path;
-        };
-      };
-    };
-
-    vault = {
-      enable = true;
-    };
-
-    system = {
-      reloader.enable = true;
-      pihole = {
-        dns = "192.168.0.1";
-        passwordFile = config.sops.secrets."pihole/password".path;
-        adlists = [ "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt" ];
-        webLoadBalancerIP = "192.168.0.102";
-        dnsLoadBalancerIP = "192.168.0.103";
-      };
-    };
-
-    monitoring = {
-      thanos = {
-        enable = true;
-        thanosObjectStorageFile = config.sops.secrets."thanos-objectstorage".path;
-      };
-      grafana = {
-        usernameFile = config.sops.secrets."grafana/username".path;
-        passwordFile = config.sops.secrets."grafana/password".path;
-      };
-      kube-web.enable = true;
-      kube-ops.enable = true;
     };
   };
 
