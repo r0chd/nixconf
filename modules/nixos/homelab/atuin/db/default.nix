@@ -84,7 +84,7 @@ in
               {
                 from = [
                   {
-                    namespaceSelector.matchLabels."kubernetes.io/metadata.name" = "cnpg-system";
+                    namespaceSelector.matchLabels."kubernetes.io/metadata.name" = "system";
                     podSelector.matchLabels."app.kubernetes.io/name" = "cloudnative-pg";
                   }
                 ];

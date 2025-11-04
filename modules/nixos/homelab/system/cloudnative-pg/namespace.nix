@@ -6,11 +6,10 @@
         apiVersion = "v1";
         kind = "Namespace";
         metadata = {
-          name = "cnpg-system";
+          name = "system";
           labels."app.kubernetes.io/name" = "cloudnative-pg";
         };
       }
     ];
   };
 }
-

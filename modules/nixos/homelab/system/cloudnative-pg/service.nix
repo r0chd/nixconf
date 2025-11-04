@@ -7,7 +7,7 @@
         kind = "Service";
         metadata = {
           name = "cnpg-webhook-service";
-          namespace = "cnpg-system";
+          namespace = "system";
         };
         spec = {
           ports = [
@@ -22,4 +22,3 @@
     ];
   };
 }
-

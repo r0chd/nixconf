@@ -262,11 +262,10 @@
           {
             kind = "ServiceAccount";
             name = "cnpg-manager";
-            namespace = "cnpg-system";
+            namespace = "system";
           }
         ];
       }
     ];
   };
 }
-

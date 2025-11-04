@@ -14,7 +14,7 @@
             clientConfig = {
               service = {
                 name = "cnpg-webhook-service";
-                namespace = "cnpg-system";
+                namespace = "system";
                 path = "/mutate-postgresql-cnpg-io-v1-backup";
               };
             };
@@ -38,7 +38,7 @@
             clientConfig = {
               service = {
                 name = "cnpg-webhook-service";
-                namespace = "cnpg-system";
+                namespace = "system";
                 path = "/mutate-postgresql-cnpg-io-v1-cluster";
               };
             };
@@ -62,7 +62,7 @@
             clientConfig = {
               service = {
                 name = "cnpg-webhook-service";
-                namespace = "cnpg-system";
+                namespace = "system";
                 path = "/mutate-postgresql-cnpg-io-v1-scheduledbackup";
               };
             };
@@ -94,7 +94,7 @@
             clientConfig = {
               service = {
                 name = "cnpg-webhook-service";
-                namespace = "cnpg-system";
+                namespace = "system";
                 path = "/validate-postgresql-cnpg-io-v1-backup";
               };
             };
@@ -118,7 +118,7 @@
             clientConfig = {
               service = {
                 name = "cnpg-webhook-service";
-                namespace = "cnpg-system";
+                namespace = "system";
                 path = "/validate-postgresql-cnpg-io-v1-cluster";
               };
             };
@@ -142,7 +142,7 @@
             clientConfig = {
               service = {
                 name = "cnpg-webhook-service";
-                namespace = "cnpg-system";
+                namespace = "system";
                 path = "/validate-postgresql-cnpg-io-v1-pooler";
               };
             };
@@ -166,7 +166,7 @@
             clientConfig = {
               service = {
                 name = "cnpg-webhook-service";
-                namespace = "cnpg-system";
+                namespace = "system";
                 path = "/validate-postgresql-cnpg-io-v1-scheduledbackup";
               };
             };
@@ -189,4 +189,3 @@
     ];
   };
 }
-

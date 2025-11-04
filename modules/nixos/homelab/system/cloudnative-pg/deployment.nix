@@ -10,7 +10,7 @@ in
         kind = "Deployment";
         metadata = {
           name = "cnpg-controller-manager";
-          namespace = "cnpg-system";
+          namespace = "system";
           labels."app.kubernetes.io/name" = "cloudnative-pg";
         };
         spec = {

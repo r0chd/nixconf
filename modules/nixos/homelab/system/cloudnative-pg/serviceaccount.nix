@@ -7,10 +7,9 @@
         kind = "ServiceAccount";
         metadata = {
           name = "cnpg-manager";
-          namespace = "cnpg-system";
+          namespace = "system";
         };
       }
     ];
   };
 }
-

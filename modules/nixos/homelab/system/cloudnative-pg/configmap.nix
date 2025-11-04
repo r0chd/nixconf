@@ -7,7 +7,7 @@
         kind = "ConfigMap";
         metadata = {
           name = "cnpg-default-monitoring";
-          namespace = "cnpg-system";
+          namespace = "system";
           labels."cnpg.io/reload" = "";
         };
         data.queries = builtins.readFile ./monitoring-queries.yaml;
@@ -15,4 +15,3 @@
     ];
   };
 }
-
