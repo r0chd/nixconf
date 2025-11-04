@@ -125,15 +125,35 @@
 
   homelab = {
     enable = true;
-    system.reloader.enable = true;
-    pihole = {
-      domain = "pihole.example.com";
-      dns = "192.168.0.1";
-      passwordFile = config.sops.secrets."pihole/password".path;
-      adlists = [ "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt" ];
-      webLoadBalancerIP = "192.168.0.102";
-      dnsLoadBalancerIP = "192.168.0.103";
+    system = {
+      reloader.enable = true;
+      pihole = {
+        domain = "pihole.example.com";
+        dns = "192.168.0.1";
+        passwordFile = config.sops.secrets."pihole/password".path;
+        adlists = [ "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt" ];
+        webLoadBalancerIP = "192.168.0.102";
+        dnsLoadBalancerIP = "192.168.0.103";
+      };
     };
+
+    monitoring = {
+      prometheus.domain = "prometheus.example.com";
+      grafana = {
+        domain = "grafana.example.com";
+        usernameFile = config.sops.secrets."grafana/username".path;
+        passwordFile = config.sops.secrets."grafana/password".path;
+      };
+      kube-web = {
+        enable = true;
+        ingressHost = "kube-web.example.com";
+      };
+      kube-ops = {
+        enable = true;
+        ingressHost = "kube-ops.example.com";
+      };
+    };
+
     garage = {
       ingressHost = "example.com";
       rpcSecretFile = config.sops.secrets."garage/rpc-secret".path;
@@ -141,12 +161,6 @@
       metricsTokenFile = config.sops.secrets."garage/metrics-token".path;
     };
     metallb.addresses = [ "192.168.0.100-192.168.0.150" ];
-    prometheus.domain = "prometheus.example.com";
-    grafana = {
-      domain = "grafana.example.com";
-      usernameFile = config.sops.secrets."grafana/username".path;
-      passwordFile = config.sops.secrets."grafana/password".path;
-    };
     atuin = {
       enable = true;
       ingressHost = "atuin.example.com";
@@ -160,14 +174,7 @@
         };
       };
     };
-    kube-web = {
-      enable = true;
-      ingressHost = "kube-web.example.com";
-    };
-    kube-ops = {
-      enable = true;
-      ingressHost = "kube-ops.example.com";
-    };
+
     vault = {
       enable = true;
       ingressHost = "vault.example.com";

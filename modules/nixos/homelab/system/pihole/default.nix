@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.homelab.pihole;
+  cfg = config.homelab.system.pihole;
   inherit (lib) types;
 in
 {
@@ -13,7 +13,7 @@ in
     ./external-dns-rbac.nix
   ];
 
-  options.homelab.pihole = {
+  options.homelab.system.pihole = {
     enable = lib.mkOption {
       type = types.bool;
       default = true;

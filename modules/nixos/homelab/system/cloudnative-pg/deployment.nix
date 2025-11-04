@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  cfg = config.homelab.cloudnative-pg;
+  cfg = config.homelab.system.cloudnative-pg;
 in
 {
   config = lib.mkIf (config.homelab.enable && cfg.enable) {

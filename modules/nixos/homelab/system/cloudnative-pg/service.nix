@@ -1,6 +1,6 @@
 { config, lib, ... }:
 {
-  config = lib.mkIf (config.homelab.enable && config.homelab.cloudnative-pg.enable) {
+  config = lib.mkIf (config.homelab.enable && config.homelab.system.cloudnative-pg.enable) {
     services.k3s.manifests.cnpg-service.content = [
       {
         apiVersion = "v1";

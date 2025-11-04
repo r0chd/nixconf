@@ -1,6 +1,6 @@
 { lib, config, ... }:
 {
-  config = lib.mkIf (config.homelab.enable && config.homelab.kube-web.enable) {
+  config = lib.mkIf (config.homelab.enable && config.homelab.monitoring.kube-web.enable) {
     services.k3s.manifests."kube-web-service".content = [
       {
         apiVersion = "v1";

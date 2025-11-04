@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.homelab.cloudnative-pg;
+  cfg = config.homelab.system.cloudnative-pg;
 
   cnpgManifest = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/v1.24.4/releases/cnpg-1.24.4.yaml";

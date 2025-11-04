@@ -1,6 +1,6 @@
 { lib, config, ... }:
 let
-  cfg = config.homelab.kube-ops;
+  cfg = config.homelab.monitoring.kube-ops;
 in
 {
   config = lib.mkIf (config.homelab.enable && cfg.enable) {
@@ -13,7 +13,7 @@ in
           namespace = "monitoring";
         };
         spec = {
-          replicas = 1;
+          replicas = cfg.replicas;
           selector.matchLabels.application = "kube-ops";
           template = {
             metadata.labels.application = "kube-ops";
@@ -22,7 +22,7 @@ in
               containers = [
                 {
                   name = "kube-ops";
-                  image = "hjacobs/kube-ops-view:23.2.0";
+                  image = cfg.image;
                   args = [
                     "--port=8080"
                   ];

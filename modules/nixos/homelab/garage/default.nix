@@ -9,7 +9,6 @@ let
 in
 {
   imports = [
-    ./namespace.nix
     ./configmap.nix
     ./statefulset.nix
     ./service.nix
@@ -25,9 +24,16 @@ in
       default = true;
     };
 
+    image = lib.mkOption {
+      type = types.str;
+      default = "dxflrs/garage:v1.0.1";
+      description = "Docker image for garage";
+    };
+
     replicas = lib.mkOption {
       type = types.int;
       default = 1;
+      description = "Number of garage replicas";
     };
 
     replicationFactor = lib.mkOption {
@@ -90,7 +96,7 @@ in
     services.k3s.secrets = [
       {
         name = "garage-secrets";
-        namespace = "garage";
+        namespace = "default";
         data = {
           rpc-secret = cfg.rpcSecretFile;
           admin-token = cfg.adminTokenFile;

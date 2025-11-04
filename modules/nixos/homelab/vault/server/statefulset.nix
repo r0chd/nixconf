@@ -17,7 +17,7 @@
         spec = {
           serviceName = "vault";
           podManagementPolicy = "Parallel";
-          replicas = 1;
+          replicas = config.homelab.vault.replicas;
           updateStrategy.type = "OnDelete";
           selector.matchLabels = {
             "app.kubernetes.io/name" = "vault";
@@ -56,6 +56,7 @@
               containers = [
                 {
                   name = "vault";
+                  image = config.homelab.vault.image;
                   resources = {
                     limits = {
                       cpu = "250m";
@@ -67,19 +68,18 @@
                     };
                   };
                   securityContext.capabilities.add = [ "IPC_LOCK" ];
-                  image = "vault:1.3.2";
                   imagePullPolicy = "IfNotPresent";
                   command = [
                     "/bin/sh"
                     "-ec"
                   ];
-                   args = [
-                     ''
-                       sed -E "s/HOST_IP/$HOST_IP/g" /vault/config/extraconfig-from-values.hcl | \
-                       sed -E "s/POD_IP/$POD_IP/g" > /tmp/storageconfig.hcl;
-                       /usr/local/bin/docker-entrypoint.sh vault server -config=/tmp/storageconfig.hcl
-                     ''
-                   ];
+                  args = [
+                    ''
+                      sed -E "s/HOST_IP/$HOST_IP/g" /vault/config/extraconfig-from-values.hcl | \
+                      sed -E "s/POD_IP/$POD_IP/g" > /tmp/storageconfig.hcl;
+                      /usr/local/bin/docker-entrypoint.sh vault server -config=/tmp/storageconfig.hcl
+                    ''
+                  ];
                   env = [
                     {
                       name = "HOST_IP";

@@ -1,6 +1,6 @@
 { lib, config, ... }:
 {
-  config = lib.mkIf (config.homelab.enable && config.homelab.kube-ops.enable) {
+  config = lib.mkIf (config.homelab.enable && config.homelab.monitoring.kube-ops.enable) {
     services.k3s.manifests."kube-ops-rbac".content = [
       {
         apiVersion = "v1";

@@ -1,6 +1,6 @@
 { lib, config, ... }:
 let
-  cfg = config.homelab.kube-ops;
+  cfg = config.homelab.monitoring.kube-ops;
 in
 {
   config = lib.mkIf (config.homelab.enable && cfg.enable) {

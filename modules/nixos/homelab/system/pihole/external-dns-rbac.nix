@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  cfg = config.homelab.pihole;
+  cfg = config.homelab.system.pihole;
 in
 {
   config = lib.mkIf (config.homelab.enable && cfg.enable) {

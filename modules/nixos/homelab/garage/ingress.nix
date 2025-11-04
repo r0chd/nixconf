@@ -4,13 +4,13 @@ let
 in
 {
   config = lib.mkIf (config.homelab.enable && cfg.enable && cfg.ingressHost != null) {
-    services.k3s.manifests.garage-namespace.content = [
+    services.k3s.manifests.garage-ingress.content = [
       {
         apiVersion = "networking.k8s.io/v1";
         kind = "Ingress";
         metadata = {
           name = "garage-ingress";
-          namespace = "garage";
+          namespace = "default";
         };
         spec = {
           ingressClassName = "nginx";

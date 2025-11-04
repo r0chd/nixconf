@@ -1,9 +1,9 @@
 { lib, config, ... }:
 let
-  cfg = config.homelab.kube-web;
+  cfg = config.homelab.monitoring.kube-web;
 in
 {
-  config = lib.mkIf (config.homelab.enable && config.homelab.kube-web.enable) {
+  config = lib.mkIf (config.homelab.enable && cfg.enable) {
     services.k3s.manifests."kube-web-ingress".content = [
       {
         apiVersion = "networking.k8s.io/v1";

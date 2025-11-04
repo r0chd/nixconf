@@ -5,11 +5,11 @@
   ...
 }:
 let
-  cfg = config.homelab.prometheus;
+  cfg = config.homelab.monitoring.prometheus;
   inherit (lib) types;
 in
 {
-  options.homelab.prometheus = {
+  options.homelab.monitoring.prometheus = {
     enable = lib.mkOption {
       type = types.bool;
       default = true;

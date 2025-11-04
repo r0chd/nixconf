@@ -32,6 +32,7 @@
             containers = [
               {
                 name = "sidecar-injector";
+                image = config.homelab.vault.injector.image;
                 resources = {
                   limits = {
                     cpu = "250m";
@@ -42,7 +43,6 @@
                     memory = "256Mi";
                   };
                 };
-                image = "hashicorp/vault-k8s:1.3.0";
                 imagePullPolicy = "IfNotPresent";
                 env = [
                   {

@@ -7,7 +7,7 @@
         kind = "Service";
         metadata = {
           name = "garage-rpc";
-          namespace = "garage";
+          namespace = "default";
         };
         spec = {
           clusterIP = "None";

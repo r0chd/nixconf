@@ -17,7 +17,7 @@
           };
         };
         spec = {
-          replicas = 1;
+          replicas = config.homelab.system.reloader.replicas;
           revisionHistoryLimit = 2;
           selector.matchLabels = {
             app = "reloader-reloader";
@@ -42,7 +42,7 @@
               containers = [
                 {
                   name = "reloader-reloader";
-                  image = "ghcr.io/stakater/reloader:v1.0.121";
+                  image = config.homelab.system.reloader.image;
                   imagePullPolicy = "IfNotPresent";
                   securityContext = { };
                   ports = [

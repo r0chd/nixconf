@@ -7,7 +7,7 @@
         kind = "Service";
         metadata = {
           name = "garage-s3";
-          namespace = "garage";
+          namespace = "default";
         };
         spec = {
           selector.app = "garage";

@@ -10,7 +10,7 @@ in
         kind = "ConfigMap";
         metadata = {
           name = "garage-config";
-          namespace = "garage";
+          namespace = "default";
         };
         data."garage.toml" = ''
           metadata_dir = "/meta"
@@ -24,7 +24,7 @@ in
           compression_level = 1
 
           rpc_bind_addr = "[::]:3901"
-          rpc_public_addr = "garage-0.garage.garage.svc.cluster.local:3901"
+          rpc_public_addr = "garage-0.garage.default.svc.cluster.local:3901"
           rpc_secret_file = "/secrets/rpc-secret"
 
           [s3_api]

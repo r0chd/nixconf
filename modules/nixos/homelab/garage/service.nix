@@ -7,7 +7,7 @@
         kind = "Service";
         metadata = {
           name = "garage";
-          namespace = "garage";
+          namespace = "default";
         };
         spec = {
           clusterIP = "None";
@@ -39,4 +39,3 @@
     ];
   };
 }
-

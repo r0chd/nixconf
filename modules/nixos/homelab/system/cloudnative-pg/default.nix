@@ -18,7 +18,7 @@ in
     ./cluster-image-catalog.nix
   ];
 
-  options.homelab.cloudnative-pg = {
+  options.homelab.system.cloudnative-pg = {
     enable = lib.mkOption {
       type = types.bool;
       default = true;

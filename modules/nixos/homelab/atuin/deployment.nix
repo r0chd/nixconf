@@ -1,4 +1,7 @@
 { config, lib, ... }:
+let
+  cfg = config.homelab.atuin;
+in
 {
   config = lib.mkIf (config.homelab.enable && config.homelab.atuin.enable) {
     services.k3s.manifests."atuin-deployment".content = [
@@ -10,7 +13,7 @@
           namespace = "atuin";
         };
         spec = {
-          replicas = 1;
+          replicas = cfg.replicas;
           selector.matchLabels."io.kompose.service" = "atuin";
           template = {
             metadata.labels = {
@@ -47,7 +50,7 @@
                     }
                   ];
 
-                  image = "ghcr.io/atuinsh/atuin:latest";
+                  image = cfg.image;
                   name = "atuin";
                   ports = [ { containerPort = 8888; } ];
                   readinessProbe = {

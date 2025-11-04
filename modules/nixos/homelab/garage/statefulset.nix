@@ -10,7 +10,7 @@ in
         kind = "StatefulSet";
         metadata = {
           name = "garage";
-          namespace = "garage";
+          namespace = "default";
         };
         spec = {
           serviceName = "garage";
@@ -22,7 +22,7 @@ in
               containers = [
                 {
                   name = "garage";
-                  image = "dxflrs/garage:v1.0.1";
+                  image = cfg.image;
                   ports = [
                     {
                       containerPort = 3900;

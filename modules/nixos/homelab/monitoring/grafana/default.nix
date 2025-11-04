@@ -5,11 +5,11 @@
   ...
 }:
 let
-  cfg = config.homelab.grafana;
+  cfg = config.homelab.monitoring.grafana;
   inherit (lib) types;
 in
 {
-  options.homelab.grafana = {
+  options.homelab.monitoring.grafana = {
     enable = lib.mkOption {
       type = types.bool;
       default = config.homelab.enable;
