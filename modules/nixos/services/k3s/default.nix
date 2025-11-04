@@ -58,9 +58,9 @@ in
                 name: ${secret.name}
                 ${lib.optionalString (secret.namespace != null) "namespace: ${secret.namespace}"}
               type: Opaque
-              stringData:
+              data:
                 ${lib.concatStringsSep "\n  " (
-                  lib.mapAttrsToList (key: path: "${key}: $(cat ${path})") secret.data
+                  lib.mapAttrsToList (key: path: "${key}: $(${pkgs.coreutils}/bin/cat ${path} | ${pkgs.coreutils}/bin/base64 -w 0)") secret.data
                 )}
               EOF
             '';

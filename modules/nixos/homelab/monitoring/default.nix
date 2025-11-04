@@ -5,5 +5,6 @@
     ./prometheus
     ./kube-web
     ./kube-ops
+    ./thanos
   ];
 }
