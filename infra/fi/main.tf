@@ -3,8 +3,8 @@ data "sops_file" "secrets" {
 }
 
 provider "garage" {
-  host   = "admin.example.com"
-  scheme = "http"
+  host   = "admin.garage.r0chd.pl"
+  scheme = "https"
   token  = data.sops_file.secrets.data["garage.admin_token"]
 }
 

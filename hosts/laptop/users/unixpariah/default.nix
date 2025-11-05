@@ -26,7 +26,7 @@
   services = {
     moxpaper.settings.buckets = {
       moxpaper = {
-        url = "http://s3.garage.local";
+        url = "https://s3.garage.r0chd.pl";
         access_key_file = config.sops.placeholder."minio-client/moxpaper/access-key";
         secret_key_file = config.sops.placeholder."minio-client/moxpaper/secret-key";
         region = "garage";
@@ -43,7 +43,7 @@
         version = "10";
         aliases = {
           moxpaper = {
-            url = "http://s3.garage.local";
+            url = "https://s3.garage.r0chd.pl";
             accessKey = config.sops.placeholder."minio-client/moxpaper/access-key";
             secretKey = config.sops.placeholder."minio-client/moxpaper/secret-key";
             api = "s3v4";
@@ -57,7 +57,7 @@
       enable = true;
       distributed = {
         enable = true;
-        address = "http://atuin.local";
+        address = "https://atuin.r0chd.pl";
       };
     };
 

@@ -23,9 +23,8 @@
           cluster_address = "[::]:8201"
         }
 
-        storage "consul" {
-          path = "vault"
-          address = "HOST_IP:8500"
+        storage "file" {
+          path = "/vault/data"
         }
       '';
     }

@@ -11,12 +11,15 @@ in
         metadata = {
           name = "wiki-ingress";
           namespace = "moxwiki";
+          annotations = {
+            "cert-manager.io/cluster-issuer" = "letsencrypt";
+          };
         };
         spec = {
           tls = [
             {
-              hosts = [ "moxwiki.your-domain.com" ];
-              secretName = "ssl-cert";
+              hosts = [ cfg.ingressHost ];
+              secretName = "moxwiki-tls";
             }
           ];
           ingressClassName = "ingress-nginx";

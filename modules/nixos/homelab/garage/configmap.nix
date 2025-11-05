@@ -12,36 +12,38 @@ in
           name = "garage-config";
           namespace = "default";
         };
-        data."garage.toml" = ''
-          metadata_dir = "/meta"
-          data_dir = "/data"
+        data."garage.toml" =
+          # toml
+          ''
+            metadata_dir = "/meta"
+            data_dir = "/data"
 
-          db_engine = "lmdb"
+            db_engine = "lmdb"
 
-          replication_factor = ${toString cfg.replicationFactor}
-          consistency_mode = "${cfg.consistencyMode}"
+            replication_factor = ${toString cfg.replicationFactor}
+            consistency_mode = "${cfg.consistencyMode}"
 
-          compression_level = 1
+            compression_level = 1
 
-          rpc_bind_addr = "[::]:3901"
-          rpc_public_addr = "garage-0.garage.default.svc.cluster.local:3901"
-          rpc_secret_file = "/secrets/rpc-secret"
+            rpc_bind_addr = "[::]:3901"
+            rpc_public_addr = "garage-0.garage.default.svc.cluster.local:3901"
+            rpc_secret_file = "/secrets/rpc-secret"
 
-          [s3_api]
-          s3_region = "${cfg.s3Region}"
-          api_bind_addr = "[::]:3900"
-          root_domain = ".s3.garage.localhost"
+            [s3_api]
+            s3_region = "${cfg.s3Region}"
+            api_bind_addr = "[::]:3900"
+            root_domain = ".s3.garage.localhost"
 
-          [s3_web]
-          bind_addr = "[::]:3903"
-          root_domain = ".web.garage.localhost"
-          index = "index.html"
+            [s3_web]
+            bind_addr = "[::]:3903"
+            root_domain = ".web.garage.localhost"
+            index = "index.html"
 
-          [admin]
-          api_bind_addr = "[::]:3902"
-          metrics_token_file = "/secrets/metrics-token"
-          admin_token_file = "/secrets/admin-token"
-        '';
+            [admin]
+            api_bind_addr = "[::]:3902"
+            metrics_token_file = "/secrets/metrics-token"
+            admin_token_file = "/secrets/admin-token"
+          '';
       }
     ];
   };

@@ -48,13 +48,14 @@ in
 # [x] add cloudnative-pg
 # [x] add thanos for longer term metrics storage
 # [ ] add quickwit for centralized logging
+# [ ] add vector
 # [x] add config reloader
 # [x] add kube web
 # [x] add kube ops
 # [x] add alertmanager
 # [x] add grafana
-# [ ] add vector
 # [x] add garage
 # [x] finish cert-manager
 # [x] add flux
-# [ ] ass hashi vault
+# [x] add hashi vault
+# [ ] configure auth-proxy

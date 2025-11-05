@@ -14,6 +14,11 @@
 
     "grafana/username" = { };
     "grafana/password" = { };
+
+    "atuin/backup/access_key_id" = { };
+    "atuin/backup/secret_access_key" = { };
+
+    "thanos-objectstorage" = { };
   };
 
   services.tailscale.enable = lib.mkForce false;
@@ -52,28 +57,26 @@
 
     kube-resource-report.enable = true;
 
-    #atuin = {
-    #  enable = true;
-    #  db = {
-    #    storageSize = "5Gi";
-    #    walStorageSize = "2Gi";
-    #    backup = {
-    #      enable = true;
-    #      accessKeyIdFile = config.sops.secrets."atuin/backup/access_key_id".path;
-    #      secretAccessKeyFile = config.sops.secrets."atuin/backup/secret_access_key".path;
-    #    };
-    #  };
-    #};
+    atuin = {
+      enable = true;
+      db = {
+        storageSize = "5Gi";
+        walStorageSize = "2Gi";
+        backup = {
+          enable = true;
+          accessKeyIdFile = config.sops.secrets."atuin/backup/access_key_id".path;
+          secretAccessKeyFile = config.sops.secrets."atuin/backup/secret_access_key".path;
+        };
+      };
+    };
 
-    #vault = {
-    #  enable = true;
-    #};
+    vault.enable = true;
 
     monitoring = {
-      #thanos = {
-      #  enable = true;
-      #  thanosObjectStorageFile = config.sops.secrets."thanos-objectstorage".path;
-      #};
+      thanos = {
+        enable = true;
+        thanosObjectStorageFile = config.sops.secrets."thanos-objectstorage".path;
+      };
       grafana = {
         usernameFile = config.sops.secrets."grafana/username".path;
         passwordFile = config.sops.secrets."grafana/password".path;

@@ -52,6 +52,10 @@
                   name = "config";
                   configMap.name = "vault-config";
                 }
+                {
+                  name = "data";
+                  persistentVolumeClaim.claimName = "vault-data";
+                }
               ];
               containers = [
                 {
@@ -75,9 +79,7 @@
                   ];
                   args = [
                     ''
-                      sed -E "s/HOST_IP/$HOST_IP/g" /vault/config/extraconfig-from-values.hcl | \
-                      sed -E "s/POD_IP/$POD_IP/g" > /tmp/storageconfig.hcl;
-                      /usr/local/bin/docker-entrypoint.sh vault server -config=/tmp/storageconfig.hcl
+                      /usr/local/bin/docker-entrypoint.sh vault server -config=/vault/config/extraconfig-from-values.hcl
                     ''
                   ];
                   env = [
@@ -106,6 +108,10 @@
                     {
                       name = "config";
                       mountPath = "/vault/config";
+                    }
+                    {
+                      name = "data";
+                      mountPath = "/vault/data";
                     }
                   ];
                 }
