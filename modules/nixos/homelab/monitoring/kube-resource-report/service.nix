@@ -9,10 +9,9 @@ in
         apiVersion = "v1";
         kind = "Service";
         metadata = {
-          labels = {
-            application = "kube-resource-report";
-          };
+          labels.application = "kube-resource-report";
           name = "kube-resource-report";
+          namespace = "monitoring";
         };
         spec = {
           selector = {

@@ -10,6 +10,7 @@ in
         kind = "ConfigMap";
         metadata = {
           name = "kube-resource-report";
+          namespace = "monitoring";
         };
         data = {
           "pricing.csv" = "dc-1,master,30.000\ndc-1,worker,500.000";

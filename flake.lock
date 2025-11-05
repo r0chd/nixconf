@@ -272,11 +272,11 @@
         "moxpaper": "moxpaper"
       },
       "locked": {
-        "lastModified": 1762299391,
-        "narHash": "sha256-PKoPElHx2IBRsGzrTYsTZD/17mDw/77Bq5usDjzzdgk=",
+        "lastModified": 1762376062,
+        "narHash": "sha256-4eNC3Q+X/kNWN7Yyl/nzbRlYcGTtOrcbw4mgINT3JVs=",
         "owner": "mox-desktop",
         "repo": "mox-flake",
-        "rev": "792973f3eeb906dd6c0c0bcbcaddbaa279e3023e",
+        "rev": "8f8aef171fd32fa13c50116a3385e625a9ad46f3",
         "type": "github"
       },
       "original": {
@@ -344,11 +344,11 @@
         "tooling": "tooling_4"
       },
       "locked": {
-        "lastModified": 1762299154,
-        "narHash": "sha256-KGuKNTgUsB77U61A674u1AcUXlKQdqPYT1DN8Jw6INQ=",
+        "lastModified": 1762375819,
+        "narHash": "sha256-dNMYree60KTKo/t4yyel/b1NBAMrqGXBqEs4o0D8Opg=",
         "owner": "mox-desktop",
         "repo": "moxpaper",
-        "rev": "253e9004d79a9547ad5c44a65c70a1f4f2fc94f4",
+        "rev": "397cffcb77b6c38190f0b39bbc758724112a8851",
         "type": "github"
       },
       "original": {

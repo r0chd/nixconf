@@ -10,6 +10,7 @@ in
         kind = "ServiceAccount";
         metadata = {
           name = "kube-resource-report";
+          namespace = "monitoring";
         };
       }
       {
@@ -17,6 +18,7 @@ in
         apiVersion = "rbac.authorization.k8s.io/v1";
         metadata = {
           name = "kube-resource-report";
+          namespace = "monitoring";
         };
         rules = [
           {
@@ -82,6 +84,7 @@ in
         apiVersion = "rbac.authorization.k8s.io/v1";
         metadata = {
           name = "kube-resource-report";
+          namespace = "monitoring";
         };
         roleRef = {
           apiGroup = "rbac.authorization.k8s.io";
@@ -92,7 +95,7 @@ in
           {
             kind = "ServiceAccount";
             name = "kube-resource-report";
-            namespace = "default";
+            namespace = "monitoring";
           }
         ];
       }

@@ -1,6 +1,5 @@
 { config, lib, ... }:
 let
-  cfg = config.homelab.atuin;
   inherit (lib) types;
 in
 {

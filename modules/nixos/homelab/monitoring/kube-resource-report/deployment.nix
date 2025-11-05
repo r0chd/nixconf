@@ -13,6 +13,7 @@ in
             application = "kube-resource-report";
           };
           name = "kube-resource-report";
+          namespace = "monitoring";
         };
         spec = {
           replicas = 1;

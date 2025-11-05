@@ -27,8 +27,8 @@
     moxpaper.settings.buckets = {
       moxpaper = {
         url = "https://s3.garage.r0chd.pl";
-        access_key_file = config.sops.placeholder."minio-client/moxpaper/access-key";
-        secret_key_file = config.sops.placeholder."minio-client/moxpaper/secret-key";
+        access_key_file = config.sops.secrets."minio-client/moxpaper/access-key".path;
+        secret_key_file = config.sops.secrets."minio-client/moxpaper/secret-key".path;
         region = "garage";
       };
     };
