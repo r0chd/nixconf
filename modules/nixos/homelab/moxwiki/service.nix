@@ -4,7 +4,7 @@ let
 in
 {
   config = lib.mkIf (config.homelab.enable && cfg.enable) {
-    services.k3s.manifests."thanos-query-deployment".content = [
+    services.k3s.manifests."moxwiki-service".content = [
       {
         apiVersion = "v1";
         kind = "Service";

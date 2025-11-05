@@ -1,23 +1,20 @@
 { config, lib, ... }:
 let
   cfg = config.homelab.ingress-nginx;
+  inherit (lib) types;
 in
 {
   options.homelab.ingress-nginx = {
-    serviceType = lib.mkOption {
-      type = lib.types.enum [ "LoadBalancer" "NodePort" ];
-      default = "LoadBalancer";
-      description = "Service type for ingress-nginx. Use NodePort for VPS without LoadBalancer support.";
-    };
-    nodePortHttp = lib.mkOption {
-      type = lib.types.nullOr lib.types.port;
+    loadBalancerIP = lib.mkOption {
+      type = types.nullOr types.str;
       default = null;
-      description = "NodePort for HTTP (80). If null, Kubernetes will assign automatically.";
+      description = "LoadBalancer IP address for ingress-nginx service. Should be a public IP from MetalLB address pool.";
+      example = "157.180.30.62";
     };
-    nodePortHttps = lib.mkOption {
-      type = lib.types.nullOr lib.types.port;
-      default = null;
-      description = "NodePort for HTTPS (443). If null, Kubernetes will assign automatically.";
+    hostNetwork = lib.mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable hostNetwork mode for ingress-nginx. Use this when the public IP is already assigned to the node's interface. This makes ingress-nginx bind directly to the host's network.";
     };
   };
 
@@ -42,13 +39,10 @@ in
             enabled = false;
             patch.enabled = false;
           };
-          service = {
-            type = cfg.serviceType;
-          } // lib.optionalAttrs (cfg.serviceType == "NodePort") {
-            nodePorts = {
-              http = cfg.nodePortHttp;
-              https = cfg.nodePortHttps;
-            };
+          hostNetwork = cfg.hostNetwork;
+          service = lib.mkIf (!cfg.hostNetwork) {
+            type = "LoadBalancer";
+            loadBalancerIP = lib.mkIf (cfg.loadBalancerIP != null) cfg.loadBalancerIP;
           };
         };
         ingressClass = "nginx";

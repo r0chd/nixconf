@@ -27,9 +27,10 @@
     enable = true;
     domain = "r0chd.pl";
     metallb.addresses = [
-      "157.180.30.62"
+      "157.180.30.62/32"
       "172.31.1.100-172.31.1.150"
     ];
+    ingress-nginx.hostNetwork = true;
     system = {
       reloader.enable = true;
       pihole = {
@@ -47,6 +48,10 @@
       metricsTokenFile = config.sops.secrets."garage/metrics-token".path;
     };
 
+    moxwiki.enable = true;
+
+    kube-resource-report.enable = true;
+
     #atuin = {
     #  enable = true;
     #  db = {
@@ -60,9 +65,9 @@
     #  };
     #};
 
-    vault = {
-      enable = true;
-    };
+    #vault = {
+    #  enable = true;
+    #};
 
     monitoring = {
       #thanos = {
@@ -78,7 +83,13 @@
     };
   };
 
-  networking.hostId = "36bfcfc1";
+  networking = {
+    hostId = "36bfcfc1";
+    firewall.allowedTCPPorts = [
+      80
+      443
+    ];
+  };
 
   system.fileSystem = "zfs";
 

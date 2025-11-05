@@ -4,7 +4,7 @@ let
 in
 {
   config = lib.mkIf (config.homelab.enable && cfg.enable && cfg.ingressHost != null) {
-    services.k3s.manifests."thanos-query-deployment".content = [
+    services.k3s.manifests."moxwiki-ingress".content = [
       {
         apiVersion = "networking.k8s.io/v1";
         kind = "Ingress";
