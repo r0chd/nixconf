@@ -110,7 +110,16 @@ in
                     failureThreshold = 20;
                     periodSeconds = 5;
                   };
-                  resources = { };
+                  resources = {
+                    limits = {
+                      cpu = "0.42";
+                      memory = "420Mi";
+                    };
+                    requests = {
+                      cpu = "0.123";
+                      memory = "123Mi";
+                    };
+                  };
                   securityContext = {
                     allowPrivilegeEscalation = false;
                     capabilities.drop = [ "ALL" ];

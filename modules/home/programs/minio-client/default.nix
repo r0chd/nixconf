@@ -33,13 +33,13 @@ in
               accessKey = lib.mkOption {
                 type = types.nullOr types.str;
                 default = null;
-                description = "Access key (use accessKeyFile for secrets)";
+                description = "Access key";
               };
 
               secretKey = lib.mkOption {
                 type = types.nullOr types.str;
                 default = null;
-                description = "Secret key (use secretKeyFile for secrets)";
+                description = "Secret key";
               };
 
               api = lib.mkOption {

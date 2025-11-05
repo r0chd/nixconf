@@ -61,6 +61,16 @@ in
                       readOnly = true;
                     }
                   ];
+                  resources = {
+                    limits = {
+                      cpu = "2";
+                      memory = "2Gi";
+                    };
+                    requests = {
+                      cpu = "100m";
+                      memory = "512Mi";
+                    };
+                  };
                 }
               ];
               volumes = [

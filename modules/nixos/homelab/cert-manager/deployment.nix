@@ -69,6 +69,16 @@
                   };
                   readOnlyRootFilesystem = true;
                 };
+                resources = {
+                  limits = {
+                    cpu = "100m";
+                    memory = "128Mi";
+                  };
+                  requests = {
+                    cpu = "10m";
+                    memory = "64Mi";
+                  };
+                };
               }
             ];
             nodeSelector = {
@@ -155,6 +165,16 @@
                     drop = [ "ALL" ];
                   };
                   readOnlyRootFilesystem = true;
+                };
+                resources = {
+                  limits = {
+                    cpu = "500m";
+                    memory = "512Mi";
+                  };
+                  requests = {
+                    cpu = "50m";
+                    memory = "128Mi";
+                  };
                 };
                 env = [
                   {
@@ -285,6 +305,16 @@
                     drop = [ "ALL" ];
                   };
                   readOnlyRootFilesystem = true;
+                };
+                resources = {
+                  limits = {
+                    cpu = "100m";
+                    memory = "128Mi";
+                  };
+                  requests = {
+                    cpu = "10m";
+                    memory = "64Mi";
+                  };
                 };
                 env = [
                   {

@@ -13,6 +13,7 @@ in
     ./vault
     ./cert-manager
     ./moxwiki
+    ./glance
     # ./vaultwarden
     # ./nextcloud
     # ./immich
@@ -25,7 +26,6 @@ in
       type = lib.types.nullOr lib.types.str;
       default = null;
       description = "Global domain for homelab services. Services will default to <service>.<domain> if not explicitly configured.";
-      example = "r0chd.pl";
     };
   };
 

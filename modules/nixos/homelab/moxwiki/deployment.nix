@@ -38,6 +38,10 @@ in
                     limits = {
                       memory = "512Mi";
                     };
+                    requests = {
+                      cpu = "50m";
+                      memory = "256Mi";
+                    };
                   };
                 }
               ];

@@ -71,6 +71,16 @@ in
             passwordKey = "password";
           };
           serviceMonitor.enabled = true;
+          resources = {
+            limits = {
+              cpu = "500m";
+              memory = "512Mi";
+            };
+            requests = {
+              cpu = "100m";
+              memory = "128Mi";
+            };
+          };
         };
       };
     };

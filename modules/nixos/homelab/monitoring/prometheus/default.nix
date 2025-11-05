@@ -56,6 +56,16 @@ in
               secretName = "prometheus-tls";
             };
           };
+          resources = {
+            limits = {
+              cpu = "2";
+              memory = "4Gi";
+            };
+            requests = {
+              cpu = "200m";
+              memory = "1Gi";
+            };
+          };
         };
       };
     };

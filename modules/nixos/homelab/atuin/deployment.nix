@@ -21,6 +21,17 @@ in
               "app.kubernetes.io/name" = "atuin";
             };
             spec = {
+              initContainers = [
+                {
+                  name = "wait-for-db";
+                  image = "postgres:15-alpine";
+                  command = [
+                    "sh"
+                    "-c"
+                    "until pg_isready -h atuin-db-rw.atuin.svc.cluster.local -p 5432; do echo 'Waiting for database...'; sleep 2; done"
+                  ];
+                }
+              ];
               containers = [
                 {
                   args = [

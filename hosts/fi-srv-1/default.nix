@@ -54,7 +54,6 @@
     };
 
     moxwiki.enable = true;
-
     kube-resource-report.enable = true;
 
     atuin = {
@@ -68,6 +67,11 @@
           secretAccessKeyFile = config.sops.secrets."atuin/backup/secret_access_key".path;
         };
       };
+    };
+
+    glance = {
+      enable = true;
+      ingressHost = "r0chd.pl";
     };
 
     vault = {

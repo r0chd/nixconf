@@ -66,6 +66,8 @@ in
               secretName = "pihole-tls";
               hosts = [ cfg.ingressHost ];
             };
+            serviceName = "pihole-web";
+            servicePort = 80;
           };
           serviceWeb = {
             loadBalancerIP = cfg.webLoadBalancerIP;
