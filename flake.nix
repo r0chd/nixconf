@@ -117,6 +117,7 @@
                       hashicorp_null
                       hashicorp_external
                       hashicorp_aws
+                      hashicorp_vault
                       carlpett_sops
                       ;
                   }

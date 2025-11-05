@@ -12,6 +12,7 @@ in
     ./server
     ./injector
     ./ui-service.nix
+    ./proxy
   ];
 
   options.homelab.vault = {
@@ -41,6 +42,26 @@ in
       type = types.nullOr types.str;
       default = if config.homelab.domain != null then "vault.${config.homelab.domain}" else null;
       description = "Hostname for vault ingress (defaults to vault.<domain> if domain is set)";
+    };
+
+    proxy = {
+      enable = lib.mkOption {
+        type = types.bool;
+        default = false;
+        description = "Enable vault-proxy service";
+      };
+
+      image = lib.mkOption {
+        type = types.str;
+        default = "vault:1.3.2";
+        description = "Docker image for vault-proxy (uses vault agent)";
+      };
+
+      replicas = lib.mkOption {
+        type = types.int;
+        default = 1;
+        description = "Number of vault-proxy replicas";
+      };
     };
   };
 }

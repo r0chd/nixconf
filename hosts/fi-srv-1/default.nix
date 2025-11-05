@@ -70,7 +70,10 @@
       };
     };
 
-    vault.enable = true;
+    vault = {
+      enable = true;
+      proxy.enable = true;
+    };
 
     monitoring = {
       thanos = {
