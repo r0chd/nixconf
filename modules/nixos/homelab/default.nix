@@ -12,6 +12,7 @@ in
     ./metallb
     ./vault
     ./cert-manager
+    ./moxwiki
     # ./vaultwarden
     # ./nextcloud
     # ./immich
