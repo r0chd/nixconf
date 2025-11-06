@@ -3,5 +3,3 @@
   # TODO: Convert compact manifests
   imports = [ ];
 }
-
-

@@ -1,7 +1,8 @@
 keys:
-  - &root age18fxxl00uxwjtu8ge0t4rpraguhtgcpt3f38j8lwt46q3pkr63p0s78zkfw
+  - &root age1e0mcqrfny3lkmnv6qgxel3p035frwm0kdf8cexgtktpkzmvaugrqw2u4ug
   - &unixpariah_laptop-huawei age19kl6jcwqxwkv060nvmjgq8rze8dfjflc0un0evtwgvjqd6qa7p0s0mj8qr
   - &unixpariah_laptop age1fsfxy6x7kh8m0usfmj52n22fhfw5859dks4jsj9pkz6pmk3wzvuqc8ghq9
+  - &os1_t851 age1nz3zrfup532rp0rt638wssnez4frpw8lnv7655svn0al0e0vevcqcpc7my
 creation_rules:
   - path_regex: secrets/secrets.yaml$
     key_groups:
@@ -9,3 +10,4 @@ creation_rules:
         - *root
         - *unixpariah_laptop-huawei
         - *unixpariah_laptop
+        - *os1_t851

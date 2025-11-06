@@ -22,8 +22,7 @@ in
   ];
 
   sops = {
-    secrets = (
-      systemUsers
+    secrets = systemUsers
       |> builtins.attrNames
       |> builtins.concatMap (user: [
         {
@@ -42,8 +41,7 @@ in
           };
         }
       ])
-      |> lib.listToAttrs
-    );
+      |> lib.listToAttrs;
 
     defaultSopsFile = ../../../../hosts/${config.networking.hostName}/secrets/secrets.yaml;
     defaultSopsFormat = "yaml";

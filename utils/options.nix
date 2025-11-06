@@ -29,8 +29,7 @@ in
             ];
           };
           users = lib.mkOption {
-            type = (
-              types.attrsOf (
+            type = types.attrsOf (
                 types.submodule (
                   { name, ... }:
                   {
@@ -51,8 +50,7 @@ in
                     };
                   }
                 )
-              )
-            );
+              );
             default = { };
           };
 

@@ -17,7 +17,7 @@ in
           };
         };
         spec = {
-          replicas = cfg.replicas;
+          inherit (cfg) replicas;
           selector.matchLabels = {
             "app.kubernetes.io/name" = "vault-proxy";
             "app.kubernetes.io/instance" = "vault";
@@ -42,7 +42,7 @@ in
               containers = [
                 {
                   name = "vault-proxy";
-                  image = cfg.image;
+                  inherit (cfg) image;
                   resources = {
                     limits = {
                       cpu = "100m";
@@ -106,5 +106,3 @@ in
     ];
   };
 }
-
-

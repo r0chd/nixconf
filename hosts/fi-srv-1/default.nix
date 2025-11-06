@@ -31,12 +31,14 @@
   homelab = {
     enable = true;
     domain = "r0chd.pl";
+    #storageClassName = "openebs-zfs-localpv";
+
     metallb.addresses = [
       "157.180.30.62/32"
       "172.31.1.100-172.31.1.150"
     ];
-    ingress-nginx.hostNetwork = true;
     system = {
+      zfs-localpv.poolname = "zroot";
       reloader.enable = true;
       pihole = {
         dns = "172.31.1.1";
@@ -62,7 +64,7 @@
         storageSize = "5Gi";
         walStorageSize = "2Gi";
         backup = {
-          enable = true;
+          enable = false;
           accessKeyIdFile = config.sops.secrets."atuin/backup/access_key_id".path;
           secretAccessKeyFile = config.sops.secrets."atuin/backup/secret_access_key".path;
         };
@@ -81,7 +83,7 @@
 
     monitoring = {
       thanos = {
-        enable = true;
+        enable = false;
         thanosObjectStorageFile = config.sops.secrets."thanos-objectstorage".path;
       };
       grafana = {
@@ -94,7 +96,7 @@
   };
 
   networking = {
-    hostId = "36bfcfc1";
+    hostId = "662febd7";
     firewall.allowedTCPPorts = [
       80
       443
@@ -103,6 +105,6 @@
 
   system.fileSystem = "zfs";
 
-  time.timeZone = "Europe/Berlin";
+  time.timeZone = "Europe/Helsinki";
   i18n.defaultLocale = "en_US.UTF-8";
 }

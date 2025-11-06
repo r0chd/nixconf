@@ -38,7 +38,7 @@ in
 
         storage = {
           size = "4Gi"; # TODO: make it an option
-          storageClass = "local-path";
+          storageClass = config.homelab.storageClass;
         };
 
         externalClusters = [

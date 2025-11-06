@@ -23,7 +23,10 @@
                 {
                   action = "replace";
                   separator = "/";
-                  sourceLabels = [ "namespace" "pod" ];
+                  sourceLabels = [
+                    "namespace"
+                    "pod"
+                  ];
                   targetLabel = "instance";
                 }
               ];
@@ -39,4 +42,3 @@
     ];
   };
 }
-

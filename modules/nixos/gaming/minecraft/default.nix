@@ -13,15 +13,15 @@ in
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs.prismlauncher.override {
-          additionalLibs = builtins.attrValues {
-            inherit (pkgs)
-              nss
-              nspr
-              cef-binary
-              libgbm
-              ;
-          };
+        additionalLibs = builtins.attrValues {
+          inherit (pkgs)
+            nss
+            nspr
+            cef-binary
+            libgbm
+            ;
         };
+      };
     };
   };
 

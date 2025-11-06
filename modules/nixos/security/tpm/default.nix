@@ -12,9 +12,7 @@
       tctiEnvironment.enable = true;
     };
 
-    users.users = (
-      systemUsers |> lib.mapAttrs (_name: value: { extraGroups = lib.mkIf value.root.enable [ "tss" ]; })
-    );
+    users.users = systemUsers |> lib.mapAttrs (_name: value: { extraGroups = lib.mkIf value.root.enable [ "tss" ]; });
 
     boot.initrd = {
       kernelModules = [ "tpm_crb" ];

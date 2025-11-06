@@ -27,6 +27,20 @@ in
       default = null;
       description = "Global domain for homelab services. Services will default to <service>.<domain> if not explicitly configured.";
     };
+
+    storageClassName = lib.mkOption {
+      type = lib.types.enum [
+        "local-path"
+        "openebs-zfs-localpv"
+      ];
+      default = "local-path";
+    };
+
+    storageClass = lib.mkOption {
+      type = lib.types.str;
+      internal = true;
+      description = "Actual Kubernetes storage class name (derived from storageClassName enum)";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -34,6 +48,7 @@ in
       inherit (cfg) enable;
       extraFlags = [
         "--disable traefik"
+        "--disable servicelb"
         "--write-kubeconfig-group ${config.users.groups.homelab.name}"
         "--write-kubeconfig-mode 0660"
         "--cluster-cidr 10.244.0.0/16"
@@ -41,6 +56,8 @@ in
     };
 
     users.groups.homelab = { };
+
+    homelab.storageClass = cfg.storageClassName;
   };
 }
 

@@ -6,5 +6,6 @@
     ./flux
     ./cloudnative-pg
     ./pihole
+    ./zfs-localpv
   ];
 }

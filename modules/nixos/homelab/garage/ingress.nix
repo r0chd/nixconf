@@ -19,7 +19,10 @@ in
           ingressClassName = "nginx";
           tls = [
             {
-              hosts = [ "s3.${cfg.ingressHost}" "admin.${cfg.ingressHost}" ];
+              hosts = [
+                "s3.${cfg.ingressHost}"
+                "admin.${cfg.ingressHost}"
+              ];
               secretName = "garage-tls";
             }
           ];

@@ -1,5 +1,4 @@
-_:
-{
+_: {
   programs.sway = {
     extraOptions = [ "--unsupported-gpu" ];
     extraPackages = [ ];

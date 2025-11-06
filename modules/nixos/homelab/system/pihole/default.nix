@@ -52,7 +52,7 @@ in
           DNS1 = [ cfg.dns ];
           persistentVolumeClaim = {
             enabled = true;
-            storageClass = "local-path";
+            storageClass = config.homelab.storageClass;
           };
           ingress = {
             enabled = cfg.ingressHost != null;
@@ -72,12 +72,12 @@ in
           serviceWeb = {
             loadBalancerIP = cfg.webLoadBalancerIP;
             annotations."metallb.universe.tf/allow-shared-ip" = "pihole-svc";
-            type = "LoadBalancer";
+            type = "ClusterIP";
           };
           serviceDns = {
             loadBalancerIP = cfg.dnsLoadBalancerIP;
             annotations."metallb.universe.tf/allow-shared-ip" = "pihole-svc";
-            type = "LoadBalancer";
+            type = "ClusterIP";
           };
           replicaCount = cfg.replicas;
           admin = {

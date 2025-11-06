@@ -198,13 +198,13 @@ in
             };
 
             storage = {
-              storageClass = "local-path";
+              storageClass = config.homelab.storageClass;
               resizeInUseVolumes = false;
               size = cfg.storageSize;
             };
 
             walStorage = {
-              storageClass = "local-path";
+              storageClass = config.homelab.storageClass;
               resizeInUseVolumes = false;
               size = cfg.walStorageSize;
             };

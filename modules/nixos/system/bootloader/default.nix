@@ -29,7 +29,7 @@ in
       loader = {
         timeout = null;
         limine = {
-          enable = platform == "nixos";
+          enable = true;
           enableEditor = true;
           biosSupport = cfg.legacy;
           biosDevice = lib.mkIf (!cfg.legacy) "nodev";

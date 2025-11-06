@@ -7,5 +7,3 @@
     ./servicemonitor.nix
   ];
 }
-
-

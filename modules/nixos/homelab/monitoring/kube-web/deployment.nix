@@ -13,7 +13,7 @@ in
           namespace = "monitoring";
         };
         spec = {
-          replicas = cfg.replicas;
+          inherit (cfg) replicas;
           selector.matchLabels.application = "kube-web-view";
           template = {
             metadata.labels.application = "kube-web-view";
@@ -22,7 +22,7 @@ in
               containers = [
                 {
                   name = "kube-web-view";
-                  image = cfg.image;
+                  inherit (cfg) image;
                   args = [
                     "--port=8080"
                     "--show-container-logs"

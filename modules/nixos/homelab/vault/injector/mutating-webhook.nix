@@ -15,7 +15,10 @@
         webhooks = [
           {
             name = "vault.hashicorp.com";
-            admissionReviewVersions = [ "v1" "v1beta1" ];
+            admissionReviewVersions = [
+              "v1"
+              "v1beta1"
+            ];
             sideEffects = "None";
             clientConfig = {
               service = {

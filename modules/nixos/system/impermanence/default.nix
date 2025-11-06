@@ -143,7 +143,7 @@ in
       ++ config.environment.persist.directories;
       inherit (config.environment.persist) files;
 
-      users = (systemUsers |> lib.mapAttrs (name: value: config.environment.persist.users));
+      users = systemUsers |> lib.mapAttrs (name: value: config.environment.persist.users);
     };
 
     systemd.services.activate-home-manager = {

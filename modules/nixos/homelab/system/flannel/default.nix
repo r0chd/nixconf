@@ -1,5 +1,4 @@
-_:
-{
+_: {
   config.services.k3s.autoDeployCharts.flannel = {
     name = "flannel";
     repo = "https://flannel-io.github.io/flannel";

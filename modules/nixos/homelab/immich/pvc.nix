@@ -10,7 +10,7 @@ in
       metadata.name = "vaultwarden-pvc";
       spec = {
         accessModes = [ "ReadWriteOnce" ];
-        storageClassName = "local-path";
+        storageClassName = config.homelab.storageClass;
         resources.requests.storage = "5G"; # TODO: make it into an option
       };
     }

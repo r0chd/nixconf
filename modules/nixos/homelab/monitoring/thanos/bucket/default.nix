@@ -3,5 +3,3 @@
   # TODO: Convert bucket manifests
   imports = [ ];
 }
-
-

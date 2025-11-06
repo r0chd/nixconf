@@ -1,9 +1,11 @@
 keys:
-  - &unixpariah age1fsfxy6x7kh8m0usfmj52n22fhfw5859dks4jsj9pkz6pmk3wzvuqc8ghq9
+  - &unixpariah_laptop age1fsfxy6x7kh8m0usfmj52n22fhfw5859dks4jsj9pkz6pmk3wzvuqc8ghq9
   - &root age1lpg2ahjc4ashmfc27f03sggwr7fy2x6lfemvsvutl49cgsdwvsysw7x4th
+  - &unixpariah_laptop-huawei age19kl6jcwqxwkv060nvmjgq8rze8dfjflc0un0evtwgvjqd6qa7p0s0mj8qr
 creation_rules:
   - path_regex: secrets/secrets.yaml$
     key_groups:
       - age:
-        - *unixpariah
+        - *unixpariah_laptop
+        - *unixpariah_laptop-huawei
         - *root

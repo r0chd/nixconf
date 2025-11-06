@@ -3,5 +3,3 @@
   # TODO: Convert rule manifests
   imports = [ ];
 }
-
-

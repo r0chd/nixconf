@@ -10,7 +10,7 @@ module "deploy" {
   target_user = "root"
 
   instance_id                = each.key
-  nixos_generate_config_path = "../hosts/${each.key}/hardware-configuration.nix"
+  nixos_generate_config_path = "../../hosts/${each.key}/hardware-configuration.nix"
 
   extra_files_script = "${path.module}/copy.sh"
 }

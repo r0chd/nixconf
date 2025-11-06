@@ -13,7 +13,7 @@ in
           namespace = "atuin";
         };
         spec = {
-          replicas = cfg.replicas;
+          inherit (cfg) replicas;
           selector.matchLabels."io.kompose.service" = "atuin";
           template = {
             metadata.labels = {
@@ -61,7 +61,7 @@ in
                     }
                   ];
 
-                  image = cfg.image;
+                  inherit (cfg) image;
                   name = "atuin";
                   ports = [ { containerPort = 8888; } ];
                   readinessProbe = {

@@ -7,5 +7,3 @@
     ./deployment.nix
   ];
 }
-
-

@@ -87,7 +87,7 @@ in
 
       storageClass = lib.mkOption {
         type = types.str;
-        default = "local-path";
+        default = config.homelab.storageClass;
         description = "Storage class for persistent volumes";
       };
     };

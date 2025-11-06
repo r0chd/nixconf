@@ -58,7 +58,7 @@ in
               containers = [
                 {
                   name = "thanos-store";
-                  image = cfg.image;
+                  inherit (cfg) image;
                   imagePullPolicy = "IfNotPresent";
                   args = [
                     "store"

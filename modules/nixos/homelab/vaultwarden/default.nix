@@ -272,7 +272,7 @@ in
           };
           spec = {
             accessModes = [ "ReadWriteOnce" ];
-            storageClassName = "local-path";
+            storageClassName = config.homelab.storageClass;
             resources.requests.storage = cfg.storage;
           };
         }

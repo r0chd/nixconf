@@ -13,7 +13,7 @@ in
           namespace = "monitoring";
         };
         spec = {
-          replicas = cfg.replicas;
+          inherit (cfg) replicas;
           selector.matchLabels.application = "kube-ops";
           template = {
             metadata.labels.application = "kube-ops";
@@ -22,7 +22,7 @@ in
               containers = [
                 {
                   name = "kube-ops";
-                  image = cfg.image;
+                  inherit (cfg) image;
                   args = [
                     "--port=8080"
                   ];

@@ -22,7 +22,7 @@ in
               containers = [
                 {
                   name = "garage";
-                  image = cfg.image;
+                  inherit (cfg) image;
                   ports = [
                     {
                       containerPort = 3900;

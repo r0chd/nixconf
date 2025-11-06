@@ -52,7 +52,7 @@ in
               containers = [
                 {
                   name = "thanos-query-frontend";
-                  image = cfg.image;
+                  inherit (cfg) image;
                   imagePullPolicy = "IfNotPresent";
                   args = [
                     "query-frontend"
@@ -143,4 +143,3 @@ in
     ];
   };
 }
-

@@ -13,7 +13,11 @@ in
           {
             apiGroups = [ "" ];
             resources = [ "endpoints" ];
-            verbs = [ "get" "list" "watch" ];
+            verbs = [
+              "get"
+              "list"
+              "watch"
+            ];
           }
         ];
       }
@@ -37,4 +41,3 @@ in
     ];
   };
 }
-

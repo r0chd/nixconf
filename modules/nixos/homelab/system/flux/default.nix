@@ -1,5 +1,4 @@
-_:
-{
+_: {
   config.services.k3s.autoDeployCharts.flux = {
     name = "flux2";
     repo = "https://fluxcd-community.github.io/helm-charts";

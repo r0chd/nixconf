@@ -3,5 +3,3 @@
   # TODO: Convert sidecar manifests
   imports = [ ];
 }
-
-
