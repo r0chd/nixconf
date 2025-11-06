@@ -26,6 +26,14 @@
   };
 
   programs = {
+    atuin = {
+      enable = true;
+      distributed = {
+        enable = true;
+        address = "https://atuin.r0chd.pl";
+      };
+    };
+
     minio-client = {
       enable = true;
       settings = {
@@ -57,9 +65,6 @@
     };
 
     obsidian = {
-      enable = true;
-    };
-    atuin = {
       enable = true;
     };
     waybar.enable = lib.mkForce false;

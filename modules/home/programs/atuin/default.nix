@@ -18,7 +18,6 @@ in
     settings = lib.mkIf cfg.distributed.enable {
       sync.records = true;
       sync_frequency = "1";
-      daemon.sync_frequency = "1";
       auto_sync = true;
       sync_address = cfg.distributed.address;
     };
