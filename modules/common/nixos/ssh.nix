@@ -9,7 +9,7 @@ let
     "unixpariah@laptop" =
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKC3KCUFx+9Q26DOYrzA/axbc9rSf6m/3DOvE5h/wApI unixpariah@laptop-huawei";
     "unixpariah@laptop-huawei" =
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF3XG/jXx/zYi7L8H3/KnePWbFg9t44JHHjAn1LZ2eyu unixpariah@laptop-huawei";
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOjC40jEUaRuZBbxfDVG/FZ99vk3bXwIob5RGIfKyfbB unixpariah@laptop-huawei";
     "os1@t851" =
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ/oAHQPuhH41A/PFgmF138j0eWkmZo0i2Jtl/OMBILD os1@qed.ai";
   };
