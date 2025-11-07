@@ -9,14 +9,6 @@ provider "registry.terraform.io/carlpett/sops" {
   ]
 }
 
-provider "registry.terraform.io/hashicorp/vault" {
-  version     = "5.3.0"
-  constraints = "5.3.0"
-  hashes = [
-    "h1:AUgF65R4yw5yU2AXaFe08oAPr4HGtJ07L38d2uQL5jo=",
-  ]
-}
-
 provider "registry.terraform.io/prologin/garage" {
   version     = "0.0.1"
   constraints = "0.0.1"

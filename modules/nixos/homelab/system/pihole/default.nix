@@ -14,10 +14,7 @@ in
   ];
 
   options.homelab.system.pihole = {
-    enable = lib.mkOption {
-      type = types.bool;
-      default = true;
-    };
+    enable = lib.mkEnableOption "pihole";
     passwordFile = lib.mkOption { type = types.path; };
     dns = lib.mkOption { type = types.str; };
     ingressHost = lib.mkOption {
@@ -119,7 +116,6 @@ in
             };
           };
 
-          # Health probes for automatic restart on failure
           livenessProbe = {
             enabled = true;
             initialDelaySeconds = 30;
@@ -138,10 +134,9 @@ in
             successThreshold = 1;
           };
 
-          # Logging and stability settings
           logLevel = "info";
           logFormat = "json";
-          interval = "2m"; # Increase interval to reduce load
+          interval = "2m";
 
           extraEnvVars = [
             {

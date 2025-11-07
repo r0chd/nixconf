@@ -19,10 +19,7 @@ in
   ];
 
   options.homelab.garage = {
-    enable = lib.mkOption {
-      type = types.bool;
-      default = true;
-    };
+    enable = lib.mkEnableOption "garage";
 
     image = lib.mkOption {
       type = types.str;

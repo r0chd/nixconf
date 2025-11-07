@@ -10,10 +10,7 @@ let
 in
 {
   options.homelab.monitoring.grafana = {
-    enable = lib.mkOption {
-      type = types.bool;
-      default = config.homelab.enable;
-    };
+    enable = lib.mkEnableOption "grafana";
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
       default = if config.homelab.domain != null then "grafana.${config.homelab.domain}" else null;
@@ -29,7 +26,7 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf (cfg.enable && config.homelab.enable) {
     services.k3s = {
       secrets = [
         {

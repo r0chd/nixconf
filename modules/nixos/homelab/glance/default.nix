@@ -91,126 +91,130 @@ let
                 type = "monitor";
                 cache = "1m";
                 title = "Services";
-                sites = lib.concatLists [
-                  (lib.optionals
-                    (config.homelab.system.pihole.enable && config.homelab.system.pihole.ingressHost != null)
-                    [
-                      {
-                        title = "Pi-Hole";
-                        url = "https://${config.homelab.system.pihole.ingressHost}";
-                        "check-url" = "http://pihole-web.system.svc.cluster.local:80";
-                        icon = "di:pi-hole";
-                      }
-                    ]
-                  )
-                  (lib.optionals
-                    (config.homelab.monitoring.grafana.enable && config.homelab.monitoring.grafana.ingressHost != null)
-                    [
-                      {
-                        title = "Grafana";
-                        url = "https://${config.homelab.monitoring.grafana.ingressHost}";
-                        "check-url" = "http://grafana.monitoring.svc.cluster.local:3000";
-                        icon = "di:grafana";
-                      }
-                    ]
-                  )
-                  (lib.optionals (config.homelab.atuin.enable && config.homelab.atuin.ingressHost != null) [
-                    {
-                      title = "atuin";
-                      url = "https://${config.homelab.atuin.ingressHost}";
-                      "check-url" = "http://atuin.atuin.svc.cluster.local:8888";
-                      icon = "di:atuin";
-                    }
-                  ])
-                  (lib.optionals
-                    (
-                      config.homelab.monitoring.kube-web.enable && config.homelab.monitoring.kube-web.ingressHost != null
+                sites =
+                  lib.concatLists [
+                    (lib.optionals
+                      (config.homelab.system.pihole.enable && config.homelab.system.pihole.ingressHost != null)
+                      [
+                        {
+                          title = "Pi-Hole";
+                          url = "https://${config.homelab.system.pihole.ingressHost}";
+                          "check-url" = "http://pihole-web.system.svc.cluster.local:80";
+                          icon = "di:pi-hole";
+                        }
+                      ]
                     )
-                    [
-                      {
-                        title = "Kube-Web";
-                        url = "https://${config.homelab.monitoring.kube-web.ingressHost}";
-                        "check-url" = "http://kube-web-view.monitoring.svc.cluster.local:80";
-                        icon = "di:kubernetes";
-                      }
-                    ]
-                  )
-                  (lib.optionals
-                    (
-                      config.homelab.monitoring.kube-ops.enable && config.homelab.monitoring.kube-ops.ingressHost != null
+                    (lib.optionals
+                      (config.homelab.monitoring.grafana.enable && config.homelab.monitoring.grafana.ingressHost != null)
+                      [
+                        {
+                          title = "Grafana";
+                          url = "https://${config.homelab.monitoring.grafana.ingressHost}";
+                          "check-url" = "http://grafana.monitoring.svc.cluster.local:3000";
+                          icon = "di:grafana";
+                        }
+                      ]
                     )
-                    [
+                    (lib.optionals (config.homelab.atuin.enable && config.homelab.atuin.ingressHost != null) [
                       {
-                        title = "Kube-Ops";
-                        url = "https://${config.homelab.monitoring.kube-ops.ingressHost}";
-                        "check-url" = "http://kube-ops.monitoring.svc.cluster.local:80";
-                        icon = "di:kubernetes";
+                        title = "atuin";
+                        url = "https://${config.homelab.atuin.ingressHost}";
+                        "check-url" = "http://atuin.atuin.svc.cluster.local:8888";
+                        icon = "di:atuin";
                       }
-                    ]
-                  )
-                  (lib.optionals
-                    (
-                      config.homelab.kube-resource-report.enable
-                      && config.homelab.kube-resource-report.ingressHost != null
+                    ])
+                    (lib.optionals
+                      (
+                        config.homelab.monitoring.kube-web.enable && config.homelab.monitoring.kube-web.ingressHost != null
+                      )
+                      [
+                        {
+                          title = "Kube-Web";
+                          url = "https://${config.homelab.monitoring.kube-web.ingressHost}";
+                          "check-url" = "http://kube-web-view.monitoring.svc.cluster.local:80";
+                          icon = "di:kubernetes";
+                        }
+                      ]
                     )
-                    [
-                      {
-                        title = "Kube Resource Report";
-                        url = "https://${config.homelab.kube-resource-report.ingressHost}";
-                        "check-url" = "http://kube-resource-report.monitoring.svc.cluster.local:80";
-                        icon = "di:kubernetes";
-                      }
-                    ]
-                  )
-                  (lib.optionals (config.homelab.vault.enable && config.homelab.vault.ingressHost != null) [
-                    {
-                      title = "Vault";
-                      url = "https://${config.homelab.vault.ingressHost}";
-                      "check-url" = "http://vault.vault.svc.cluster.local:8200";
-                      icon = "di:vault";
-                    }
-                  ])
-                  (lib.optionals
-                    (
-                      config.homelab.monitoring.prometheus.enable
-                      && config.homelab.monitoring.prometheus.ingressHost != null
+                    (lib.optionals
+                      (
+                        config.homelab.monitoring.kube-ops.enable && config.homelab.monitoring.kube-ops.ingressHost != null
+                      )
+                      [
+                        {
+                          title = "Kube-Ops";
+                          url = "https://${config.homelab.monitoring.kube-ops.ingressHost}";
+                          "check-url" = "http://kube-ops.monitoring.svc.cluster.local:80";
+                          icon = "di:kubernetes";
+                        }
+                      ]
                     )
-                    [
+                    (lib.optionals
+                      (
+                        config.homelab.kube-resource-report.enable
+                        && config.homelab.kube-resource-report.ingressHost != null
+                      )
+                      [
+                        {
+                          title = "Kube Resource Report";
+                          url = "https://${config.homelab.kube-resource-report.ingressHost}";
+                          "check-url" = "http://kube-resource-report.monitoring.svc.cluster.local:80";
+                          icon = "di:kubernetes";
+                        }
+                      ]
+                    )
+                    (lib.optionals (config.homelab.vault.enable && config.homelab.vault.ingressHost != null) [
                       {
-                        title = "Prometheus";
-                        url = "https://${config.homelab.monitoring.prometheus.ingressHost}";
-                        "check-url" = "http://prometheus-server.monitoring.svc.cluster.local:9090";
-                        icon = "di:prometheus";
+                        title = "Vault";
+                        url = "https://${config.homelab.vault.ingressHost}";
+                        "check-url" = "http://vault.vault.svc.cluster.local:8200";
+                        icon = "di:vault";
                       }
-                    ]
-                  )
-                  (lib.optionals
-                    (config.homelab.monitoring.thanos.enable && config.homelab.monitoring.thanos.ingressHost != null)
-                    [
-                      {
-                        title = "Thanos";
-                        url = "https://${config.homelab.monitoring.thanos.ingressHost}";
-                        "check-url" = "http://thanos-query-frontend.monitoring.svc.cluster.local:9090";
-                        icon = "di:prometheus";
-                      }
-                    ]
-                  )
-                ];
+                    ])
+                    (lib.optionals
+                      (
+                        config.homelab.monitoring.prometheus.enable
+                        && config.homelab.monitoring.prometheus.ingressHost != null
+                      )
+                      [
+                        {
+                          title = "Prometheus";
+                          url = "https://${config.homelab.monitoring.prometheus.ingressHost}";
+                          "check-url" = "http://prometheus-server.monitoring.svc.cluster.local:9090";
+                          icon = "di:prometheus";
+                        }
+                      ]
+                    )
+                    (lib.optionals
+                      (config.homelab.monitoring.thanos.enable && config.homelab.monitoring.thanos.ingressHost != null)
+                      [
+                        {
+                          title = "Thanos";
+                          url = "https://${config.homelab.monitoring.thanos.ingressHost}";
+                          "check-url" = "http://thanos-query-frontend.monitoring.svc.cluster.local:9090";
+                          icon = "di:prometheus";
+                        }
+                      ]
+                    )
+                  ]
+                  ++ cfg.additionalServices;
               }
               {
                 type = "monitor";
                 cache = "1m";
                 title = "Web apps";
-                sites = lib.concatLists [
-                  (lib.optionals (config.homelab.moxwiki.enable && config.homelab.moxwiki.ingressHost != null) [
-                    {
-                      title = "MoxWiki";
-                      url = "https://${config.homelab.moxwiki.ingressHost}";
-                      "check-url" = "http://moxwiki.moxwiki.svc.cluster.local:80";
-                      icon = "si:gitbook";
-                    }
-                  ])
-                ];
+                sites =
+                  lib.concatLists [
+                    (lib.optionals (config.homelab.moxwiki.enable && config.homelab.moxwiki.ingressHost != null) [
+                      {
+                        title = "MoxWiki";
+                        url = "https://${config.homelab.moxwiki.ingressHost}";
+                        "check-url" = "http://moxwiki.moxwiki.svc.cluster.local:80";
+                        icon = "si:gitbook";
+                      }
+                    ])
+                  ]
+                  ++ cfg.additionalWebsites;
               }
             ];
           }
@@ -318,6 +322,45 @@ in
       type = types.nullOr types.str;
       default = if config.homelab.domain != null then "glance.${config.homelab.domain}" else null;
       description = "Hostname for glance ingress (defaults to glance.<domain> if domain is set)";
+    };
+    additionalServices = lib.mkOption {
+      type = types.listOf (
+        types.submodule {
+          options = {
+            title = lib.mkOption {
+              type = types.str;
+            };
+            url = lib.mkOption {
+              type = types.str;
+            };
+            check-url = lib.mkOption {
+              type = types.str;
+            };
+            icon = lib.mkOption { type = types.str; };
+          };
+        }
+      );
+      default = [ ];
+    };
+    additionalWebsites = lib.mkOption {
+      type = types.listOf (
+        types.submodule {
+          options = {
+            title = lib.mkOption {
+              type = types.str;
+            };
+            url = lib.mkOption {
+              type = types.str;
+            };
+            check-url = lib.mkOption {
+              type = types.str;
+              default = null;
+            };
+            icon = lib.mkOption { type = types.str; };
+          };
+        }
+      );
+      default = [ ];
     };
   };
 

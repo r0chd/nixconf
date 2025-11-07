@@ -59,6 +59,14 @@ let
         keys."os1@t851"
       ];
     };
+
+    kms = {
+      root = [
+        keys."unixpariah@laptop"
+        keys."unixpariah@laptop-huawei"
+        keys."os1@t851"
+      ];
+    };
   };
 
   hosts = baseHosts |> lib.mapAttrs (_host: users: users // { inherit (keys) nixos-anywhere; });

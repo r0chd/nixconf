@@ -10,10 +10,7 @@ let
 in
 {
   options.homelab.monitoring.prometheus = {
-    enable = lib.mkOption {
-      type = types.bool;
-      default = true;
-    };
+    enable = lib.mkEnableOption "prometheus";
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
       default = if config.homelab.domain != null then "prometheus.${config.homelab.domain}" else null;
@@ -21,7 +18,7 @@ in
     };
   };
 
-  config.services.k3s.autoDeployCharts = lib.mkIf cfg.enable {
+  config.services.k3s.autoDeployCharts = lib.mkIf (cfg.enable && config.homelab.enable) {
     prometheus-crds = {
       package = pkgs.lib.downloadHelmChart {
         repo = "https://prometheus-community.github.io/helm-charts";

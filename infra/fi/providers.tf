@@ -9,10 +9,5 @@ terraform {
       source  = "carlpett/sops"
       version = "1.3.0"
     }
-
-    vault = {
-      source  = "hashicorp/vault"
-      version = "5.3.0"
-    }
   }
 }

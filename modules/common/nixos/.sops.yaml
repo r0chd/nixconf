@@ -4,6 +4,7 @@ keys:
   - &server-0 age1xn5a8wuwt3c7r5njtlzwfwuvryanrtr5uvcgzazwh77pap0vu38qsm24lg
   - &agent-0 age1npphzfaarxvv2flkmdkm777gafuhvmsh38020432ju9v0aznh55sd0ce3s
   - &fi-srv-1 age1e0mcqrfny3lkmnv6qgxel3p035frwm0kdf8cexgtktpkzmvaugrqw2u4ug
+  - &kms age1suyudkl2xlle4uu6e0ld7lughpr5ekg5vxh2ef0kv5wga5j0f3jscpxtz2
 creation_rules:
   - path_regex: secrets/secrets.yaml$
     key_groups:
@@ -13,3 +14,4 @@ creation_rules:
           - *server-0
           - *agent-0
           - *fi-srv-1
+          - *kms

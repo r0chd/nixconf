@@ -6,7 +6,7 @@
   ];
 
   sops.secrets = {
-    "pihole/password" = { };
+    #"pihole/password" = { };
 
     "garage/rpc-secret" = { };
     "garage/admin-token" = { };
@@ -30,7 +30,7 @@
 
   homelab = {
     enable = true;
-    domain = "r0chd.pl";
+    domain = "fi.r0chd.pl";
     #storageClassName = "openebs-zfs-localpv";
 
     metallb.addresses = [
@@ -40,16 +40,17 @@
     system = {
       zfs-localpv.poolname = "zroot";
       reloader.enable = true;
-      pihole = {
-        dns = "172.31.1.1";
-        passwordFile = config.sops.secrets."pihole/password".path;
-        adlists = [ "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt" ];
-        webLoadBalancerIP = "172.31.1.102";
-        dnsLoadBalancerIP = "172.31.1.103";
-      };
+      #pihole = {
+      #  dns = "172.31.1.1";
+      #  passwordFile = config.sops.secrets."pihole/password".path;
+      #  adlists = [ "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt" ];
+      #  webLoadBalancerIP = "172.31.1.102";
+      #  dnsLoadBalancerIP = "172.31.1.103";
+      #};
     };
 
     garage = {
+      enable = true;
       rpcSecretFile = config.sops.secrets."garage/rpc-secret".path;
       adminTokenFile = config.sops.secrets."garage/admin-token".path;
       metricsTokenFile = config.sops.secrets."garage/metrics-token".path;
@@ -64,7 +65,7 @@
         storageSize = "5Gi";
         walStorageSize = "2Gi";
         backup = {
-          enable = false;
+          enable = true;
           accessKeyIdFile = config.sops.secrets."atuin/backup/access_key_id".path;
           secretAccessKeyFile = config.sops.secrets."atuin/backup/secret_access_key".path;
         };
@@ -73,20 +74,25 @@
 
     glance = {
       enable = true;
-      ingressHost = "r0chd.pl";
-    };
-
-    vault = {
-      enable = true;
-      proxy.enable = true;
+      ingressHost = "fi.r0chd.pl";
+      additionalServices = [
+        {
+          title = "Vault";
+          url = "https://vault.kms.r0chd.pl";
+          check-url = "https://vault.kms.r0chd.pl";
+          icon = "di:vault";
+        }
+      ];
     };
 
     monitoring = {
+      prometheus.enable = true;
       thanos = {
-        enable = false;
+        enable = true;
         thanosObjectStorageFile = config.sops.secrets."thanos-objectstorage".path;
       };
       grafana = {
+        enable = true;
         usernameFile = config.sops.secrets."grafana/username".path;
         passwordFile = config.sops.secrets."grafana/password".path;
       };

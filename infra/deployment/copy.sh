@@ -20,13 +20,13 @@ SECRET_KEY_PATH="/tmp/secret.key"
 if [[ -f "$SSH_SOURCE_PATH" ]]; then
     KEY_FILENAME=$(basename "$SSH_SOURCE_PATH")
     
-    cp "$SSH_SOURCE_PATH" "root/.ssh/$KEY_FILENAME"
-    chmod 600 "root/.ssh/$KEY_FILENAME"
-    echo "Copied SSH private key from $SSH_SOURCE_PATH to /root/.ssh/$KEY_FILENAME"
+    cp "$SSH_SOURCE_PATH" "root/.ssh/id_ed25519"
+    chmod 600 "root/.ssh/id_ed25519"
+    echo "Copied SSH private key from $SSH_SOURCE_PATH to /root/.ssh/id_ed25519"
     
-    cp "$SSH_SOURCE_PATH" "persist/system/root/.ssh/$KEY_FILENAME"
-    chmod 600 "persist/system/root/.ssh/$KEY_FILENAME"
-    echo "Copied SSH private key from $SSH_SOURCE_PATH to /persist/system/root/.ssh/$KEY_FILENAME"
+    cp "$SSH_SOURCE_PATH" "persist/system/root/.ssh/id_ed25519"
+    chmod 600 "persist/system/root/.ssh/id_ed25519"
+    echo "Copied SSH private key from $SSH_SOURCE_PATH to /persist/system/root/.ssh/id_ed25519"
 else
     echo "Error: SSH private key not found at $SSH_SOURCE_PATH"
     exit 1
