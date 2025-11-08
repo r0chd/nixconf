@@ -2,7 +2,6 @@
   lib,
   config,
   profile,
-  platform,
   ...
 }:
 let

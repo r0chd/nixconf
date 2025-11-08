@@ -1,5 +1,5 @@
 keys:
-  - &root age1xn5a8wuwt3c7r5njtlzwfwuvryanrtr5uvcgzazwh77pap0vu38qsm24lg
+  - &root age1lxjm4l63pvayv6jxfre2zwsxg2cf7fx8zvdu4x5u7up93j9h3ghqa2f9hs
 creation_rules:
   - path_regex: secrets/secrets.yaml$
     key_groups:

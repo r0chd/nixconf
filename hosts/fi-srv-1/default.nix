@@ -9,7 +9,7 @@
     #"pihole/password" = { };
 
     "garage/rpc-secret" = { };
-    "garage/admin-token" = { };
+    "garage/admin-token".sopsFile = ../../infra/fi/secrets/secrets.yaml;
     "garage/metrics-token" = { };
 
     "grafana/username" = { };

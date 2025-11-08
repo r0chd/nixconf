@@ -147,6 +147,16 @@ in
             ];
           }
           {
+            name = "go";
+            roots = [
+              "go.work"
+              "go.mod"
+            ];
+            auto-format = true;
+            formatter = [ "gofmt" ];
+            comment-token = "//";
+          }
+          {
             name = "groovy";
             scope = "source.groovy";
             injection-regex = "groovy";

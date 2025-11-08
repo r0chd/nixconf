@@ -2,11 +2,23 @@ _: {
   imports = [ ./utils/options.nix ];
 
   hosts = {
-    "fi-srv-1" = {
+    fi-srv-1 = {
       system = "x86_64-linux";
       profile = "server";
       platform = "nixos";
     };
+
+    #pl-srv-1 = {
+    #  system = "x86_64-linux";
+    #  profile = "server";
+    #  platform = "nixos";
+    #};
+    #pl-srv-2 = {
+    #  system = "x86_64-linux";
+    #  profile = "server";
+    #  platform = "nixos";
+    #};
+
     kms = {
       system = "x86_64-linux";
       profile = "server";
@@ -50,32 +62,5 @@ _: {
         };
       };
     };
-    server-0 = {
-      system = "x86_64-linux";
-      profile = "server";
-      platform = "nixos";
-      users.unixpariah = {
-        root.enable = true;
-        shell = "bash";
-      };
-    };
-    agent-0 = {
-      system = "x86_64-linux";
-      profile = "server";
-      platform = "nixos";
-      users.unixpariah = {
-        root.enable = true;
-        shell = "bash";
-      };
-    };
-    #mi10lite = {
-    #  system = "aarch64-linux";
-    #  profile = "mobile";
-    #  platform = "non-nixos";
-    #  users.unixpariah = {
-    #    root.enable = true;
-    #    shell = "bash";
-    #  };
-    #};
   };
 }

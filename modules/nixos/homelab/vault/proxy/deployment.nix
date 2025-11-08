@@ -42,7 +42,7 @@ in
               containers = [
                 {
                   name = "vault-proxy";
-                  inherit (cfg) image;
+                  inherit (config.homelab.vault) image;
                   resources = {
                     limits = {
                       cpu = "100m";

@@ -20,7 +20,7 @@ in
 
     image = lib.mkOption {
       type = types.str;
-      default = "vault:1.3.2";
+      default = "vault:1.13.3";
       description = "Docker image for vault server";
     };
 
@@ -30,33 +30,18 @@ in
       description = "Number of vault server replicas";
     };
 
-    injector = {
-      image = lib.mkOption {
-        type = types.str;
-        default = "hashicorp/vault-k8s:1.3.0";
-        description = "Docker image for vault agent injector";
-      };
-    };
-
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
       default = if config.homelab.domain != null then "vault.${config.homelab.domain}" else null;
       description = "Hostname for vault ingress (defaults to vault.<domain> if domain is set)";
     };
 
+    injector = {
+      enable = lib.mkEnableOption "vault injector";
+    };
+
     proxy = {
-      enable = lib.mkOption {
-        type = types.bool;
-        default = false;
-        description = "Enable vault-proxy service";
-      };
-
-      image = lib.mkOption {
-        type = types.str;
-        default = "vault:1.3.2";
-        description = "Docker image for vault-proxy (uses vault agent)";
-      };
-
+      enable = lib.mkEnableOption "vault proxy";
       replicas = lib.mkOption {
         type = types.int;
         default = 1;

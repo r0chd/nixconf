@@ -1,0 +1,8 @@
+data "sops_file" "secrets" {
+  source_file = "secrets/secrets.yaml"
+}
+
+provider "vault" {
+  address = "https://vault.kms.r0chd.pl"
+  token   = data.sops_file.secrets.data["vault.root"]
+}

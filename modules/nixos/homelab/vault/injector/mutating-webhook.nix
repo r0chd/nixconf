@@ -1,48 +1,51 @@
 { config, lib, ... }:
 {
-  config = lib.mkIf (config.homelab.enable && config.homelab.vault.enable) {
-    services.k3s.manifests."vault-injector-mutating-webhook".content = [
+  config =
+    lib.mkIf
+      (config.homelab.enable && config.homelab.vault.enable && config.homelab.vault.injector.enable)
       {
-        apiVersion = "admissionregistration.k8s.io/v1";
-        kind = "MutatingWebhookConfiguration";
-        metadata = {
-          name = "vault-agent-injector-cfg";
-          labels = {
-            "app.kubernetes.io/name" = "vault-agent-injector";
-            "app.kubernetes.io/instance" = "vault";
-          };
-        };
-        webhooks = [
+        services.k3s.manifests."vault-injector-mutating-webhook".content = [
           {
-            name = "vault.hashicorp.com";
-            admissionReviewVersions = [
-              "v1"
-              "v1beta1"
-            ];
-            sideEffects = "None";
-            clientConfig = {
-              service = {
-                name = "vault-agent-injector-svc";
-                namespace = "vault";
-                path = "/mutate";
+            apiVersion = "admissionregistration.k8s.io/v1";
+            kind = "MutatingWebhookConfiguration";
+            metadata = {
+              name = "vault-agent-injector-cfg";
+              labels = {
+                "app.kubernetes.io/name" = "vault-agent-injector";
+                "app.kubernetes.io/instance" = "vault";
               };
-              caBundle = "";
             };
-            rules = [
+            webhooks = [
               {
-                operations = [
-                  "CREATE"
-                  "UPDATE"
+                name = "vault.hashicorp.com";
+                admissionReviewVersions = [
+                  "v1"
+                  "v1beta1"
                 ];
-                apiGroups = [ "" ];
-                apiVersions = [ "v1" ];
-                resources = [ "pods" ];
+                sideEffects = "None";
+                clientConfig = {
+                  service = {
+                    name = "vault-agent-injector-svc";
+                    namespace = "vault";
+                    path = "/mutate";
+                  };
+                  caBundle = "";
+                };
+                rules = [
+                  {
+                    operations = [
+                      "CREATE"
+                      "UPDATE"
+                    ];
+                    apiGroups = [ "" ];
+                    apiVersions = [ "v1" ];
+                    resources = [ "pods" ];
+                  }
+                ];
+                failurePolicy = "Ignore";
               }
             ];
-            failurePolicy = "Ignore";
           }
         ];
-      }
-    ];
-  };
+      };
 }

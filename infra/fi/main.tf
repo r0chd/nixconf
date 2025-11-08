@@ -3,12 +3,12 @@ data "sops_file" "secrets" {
 }
 
 provider "garage" {
-  host   = "admin.garage.r0chd.pl"
+  host   = "admin.garage.fi.r0chd.pl"
   scheme = "https"
-  token  = data.sops_file.secrets.data["garage.admin_token"]
+  token  = data.sops_file.secrets.data["garage.admin-token"]
 }
 
 output "garage_token" {
-  value     = data.sops_file.secrets.data["garage.admin_token"]
+  value     = data.sops_file.secrets.data["garage.admin-token"]
   sensitive = true
 }

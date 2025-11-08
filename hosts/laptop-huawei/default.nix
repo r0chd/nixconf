@@ -53,7 +53,6 @@
     steam.enable = true;
     minecraft.enable = true;
   };
-  networking.firewall.allowedTCPPorts = [ 25565 ];
 
   system = {
     bootloader = {
@@ -70,13 +69,14 @@
     variables.EDITOR = "hx";
     systemPackages = builtins.attrValues {
       inherit (pkgs)
-        #quickwit
         helix
         kubectl
         cosmic-icons
         ;
     };
   };
+
+  homelab.enable = true;
 
   security = {
     yubikey = {
@@ -88,7 +88,6 @@
         plug.enable = true;
       };
     };
-    root.timeout = 0;
   };
 
   stylix = {

@@ -24,13 +24,27 @@ let
         columns = [
           {
             size = "small";
-            widgets = [
-              {
-                type = "dns-stats";
-                service = "pihole";
-                url = "http://pihole-web.system.svc.cluster.local";
-                token = "19d8aacc17974b9767bba29e6c2409e989ad6485d11385b72e8cb7dd720dc766";
-              }
+            widgets = lib.concatLists [
+              (lib.optionals
+                (config.homelab.system.pihole.enable && config.homelab.system.pihole.ingressHost != null)
+                [
+                  {
+                    type = "dns-stats";
+                    service = "pihole";
+                    url = "http://pihole-web.system.svc.cluster.local";
+                    token = "19d8aacc17974b9767bba29e6c2409e989ad6485d11385b72e8cb7dd720dc766";
+                  }
+                ]
+              )
+              [
+                {
+                  type = "repository";
+                  repository = "r0chd/nixconf";
+                  "pull-requests-limit" = 5;
+                  "issues-limit" = 3;
+                  "commits-limit" = 3;
+                }
+              ]
               #{
               #  type = "custom-api";
               #  title = "Immich stats";
@@ -57,13 +71,6 @@ let
               #    </div>
               #  '';
               #}
-              {
-                type = "repository";
-                repository = "r0chd/nixconf";
-                "pull-requests-limit" = 5;
-                "issues-limit" = 3;
-                "commits-limit" = 3;
-              }
             ];
           }
           {
