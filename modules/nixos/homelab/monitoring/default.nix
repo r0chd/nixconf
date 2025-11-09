@@ -7,5 +7,6 @@
     ./kube-ops
     ./thanos
     ./kube-resource-report
+    ./namespace.nix
   ];
 }

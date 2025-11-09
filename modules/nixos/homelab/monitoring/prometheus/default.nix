@@ -27,7 +27,6 @@ in
         chartHash = "sha256-NWeTgwFukR8/MuC0VnlrMFRmaWpFxtrIt5ewWMueaig=";
       };
       targetNamespace = "monitoring";
-      createNamespace = true;
     };
 
     prometheus = {

@@ -11,7 +11,7 @@ in
     ./ingress.nix
   ];
 
-  options.homelab.kube-resource-report = {
+  options.homelab.monitoring.kube-resource-report = {
     enable = lib.mkEnableOption "kube-resource-report";
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;

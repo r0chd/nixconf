@@ -3,8 +3,8 @@ module "deploy" {
 
   source = "github.com/nix-community/nixos-anywhere//terraform/all-in-one"
 
-  nixos_system_attr      = ".#nixosConfigurations.${each.key}.config.system.build.toplevel"
-  nixos_partitioner_attr = ".#nixosConfigurations.${each.key}.config.system.build.diskoScript"
+  nixos_system_attr      = "../..#nixosConfigurations.${each.key}.config.system.build.toplevel"
+  nixos_partitioner_attr = "../..#nixosConfigurations.${each.key}.config.system.build.diskoScript"
 
   target_host = each.value.ip
   target_user = "root"

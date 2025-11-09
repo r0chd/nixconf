@@ -158,13 +158,13 @@ let
                     )
                     (lib.optionals
                       (
-                        config.homelab.kube-resource-report.enable
-                        && config.homelab.kube-resource-report.ingressHost != null
+                        config.homelab.monitoring.kube-resource-report.enable
+                        && config.homelab.monitoring.kube-resource-report.ingressHost != null
                       )
                       [
                         {
                           title = "Kube Resource Report";
-                          url = "https://${config.homelab.kube-resource-report.ingressHost}";
+                          url = "https://${config.homelab.monitoring.kube-resource-report.ingressHost}";
                           "check-url" = "http://kube-resource-report.monitoring.svc.cluster.local:80";
                           icon = "di:kubernetes";
                         }

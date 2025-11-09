@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  cfg = config.homelab.kube-resource-report;
+  cfg = config.homelab.monitoring.kube-resource-report;
 in
 {
   config = lib.mkIf (config.homelab.enable && cfg.enable && cfg.ingressHost != null) {

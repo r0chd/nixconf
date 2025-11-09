@@ -165,7 +165,7 @@
       reloader.enable = true;
     };
 
-    kube-resource-report.enable = true;
+    monitoring.kube-resource-report.enable = true;
 
     vault = {
       enable = true;
