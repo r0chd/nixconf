@@ -6,3 +6,8 @@ provider "vault" {
   address = "https://vault.kms.r0chd.pl"
   token   = data.sops_file.secrets.data["vault.root"]
 }
+
+module "userpass" {
+  source  = "./userpass"
+  secrets = data.sops_file.secrets.data
+}

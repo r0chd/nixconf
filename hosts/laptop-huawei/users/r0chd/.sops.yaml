@@ -1,0 +1,9 @@
+keys:
+  - &r0chd age144paegh7cvhyg5cwm6n56vuem5cp8w2v84faytp4vdh595jsfe4q25804a
+  - &root age14tnez5sz8j37864lfvrckslrn6sl34asy0m7cglpyy7rwaf27g3qhxl90l
+creation_rules:
+  - path_regex: secrets/secrets.yaml$
+    key_groups:
+      - age:
+        - *r0chd
+        - *root

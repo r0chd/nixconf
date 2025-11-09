@@ -60,6 +60,10 @@ _: {
           root.enable = true;
           shell = "nushell";
         };
+        r0chd = {
+          root.enable = true;
+          shell = "nushell";
+        };
       };
     };
   };

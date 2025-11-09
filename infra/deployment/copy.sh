@@ -15,8 +15,6 @@ fi
 
 NIXCONF_SOURCE_PATH="/var/lib/nixconf"
 
-SECRET_KEY_PATH="/tmp/secret.key"
-
 if [[ -f "$SSH_SOURCE_PATH" ]]; then
     KEY_FILENAME=$(basename "$SSH_SOURCE_PATH")
     

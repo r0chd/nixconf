@@ -187,7 +187,7 @@ let
                         {
                           title = "Prometheus";
                           url = "https://${config.homelab.monitoring.prometheus.ingressHost}";
-                          "check-url" = "http://prometheus-server.monitoring.svc.cluster.local:9090";
+                          "check-url" = "http://prometheus-server.monitoring.svc.cluster.local:80";
                           icon = "di:prometheus";
                         }
                       ]

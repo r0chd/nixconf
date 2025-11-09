@@ -1,7 +1,7 @@
 {
-  lib,
   pkgs,
   config,
+  lib,
   ...
 }:
 {
@@ -14,27 +14,7 @@
       "steam-unwrapped"
     ];
 
-  sops.secrets = {
-    "minio/username" = { };
-    "minio/password" = { };
-  };
-
   programs = {
-    minio-client = {
-      enable = true;
-      settings = {
-        version = "10";
-        aliases = {
-          tfstate-root = {
-            url = "https://s3.minio.kms.r0chd.pl";
-            accessKey = config.sops.placeholder."minio/username";
-            secretKey = config.sops.placeholder."minio/password";
-            api = "s3v4";
-            path = "auto";
-          };
-        };
-      };
-    };
     gcloud.enable = true;
     keepassxc.enable = true;
     atuin = {
@@ -96,9 +76,6 @@
     ];
     packages = builtins.attrValues {
       inherit (pkgs)
-        waypipe
-        slack
-        figma-linux
         obsidian
         devenv
         ;

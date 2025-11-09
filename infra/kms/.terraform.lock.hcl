@@ -16,10 +16,3 @@ provider "registry.terraform.io/hashicorp/vault" {
     "h1:AUgF65R4yw5yU2AXaFe08oAPr4HGtJ07L38d2uQL5jo=",
   ]
 }
-
-provider "registry.terraform.io/prologin/garage" {
-  version = "0.0.1"
-  hashes = [
-    "h1:OrXgbGogT+Z1AUrvHSXQurFrINMTio3370eUWr7odaA=",
-  ]
-}
