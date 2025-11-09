@@ -1,0 +1,48 @@
+{ ... }:
+{
+  services.k3s.manifests.ingress-nginc-validating-webhook.content = [
+    {
+      apiVersion = "admissionregistration.k8s.io/v1";
+      kind = "ValidatingWebhookConfiguration";
+      metadata = {
+        annotations = null;
+        labels = {
+          "app.kubernetes.io/name" = "ingress-nginx";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
+          "app.kubernetes.io/part-of" = "ingress-nginx";
+          "app.kubernetes.io/component" = "admission-webhook";
+        };
+        name = "ingress-nginx-admission";
+      };
+      webhooks = [
+        {
+          name = "validate.nginx.ingress.kubernetes.io";
+          matchPolicy = "Equivalent";
+          rules = [
+            {
+              apiGroups = [ "networking.k8s.io" ];
+              apiVersions = [ "v1" ];
+              operations = [
+                "CREATE"
+                "UPDATE"
+              ];
+              resources = [ "ingresses" ];
+            }
+          ];
+          failurePolicy = "Fail";
+          sideEffects = "None";
+          admissionReviewVersions = [ "v1" ];
+          clientConfig = {
+            service = {
+              name = "ingress-nginx-controller-admission";
+              namespace = "ingress-nginx";
+              port = 443;
+              path = "/networking/v1/ingresses";
+            };
+          };
+        }
+      ];
+    }
+  ];
+}

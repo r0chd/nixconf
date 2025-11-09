@@ -1,14 +1,10 @@
-_:
-{
+_: {
   services.k3s.manifests."cert-manager-crd".content = [
     {
       apiVersion = "apiextensions.k8s.io/v1";
       kind = "CustomResourceDefinition";
       metadata = {
         name = "certificaterequests.cert-manager.io";
-        annotations = {
-          "helm.sh/resource-policy" = "keep";
-        };
         labels = {
           app = "cert-manager";
           "app.kubernetes.io/name" = "cert-manager";
@@ -269,9 +265,6 @@ _:
       kind = "CustomResourceDefinition";
       metadata = {
         name = "certificates.cert-manager.io";
-        annotations = {
-          "helm.sh/resource-policy" = "keep";
-        };
         labels = {
           app = "cert-manager";
           "app.kubernetes.io/name" = "cert-manager";
@@ -872,9 +865,6 @@ _:
       kind = "CustomResourceDefinition";
       metadata = {
         name = "challenges.acme.cert-manager.io";
-        annotations = {
-          "helm.sh/resource-policy" = "keep";
-        };
         labels = {
           app = "cert-manager";
           "app.kubernetes.io/name" = "cert-manager";
@@ -2454,9 +2444,6 @@ _:
       kind = "CustomResourceDefinition";
       metadata = {
         name = "clusterissuers.cert-manager.io";
-        annotations = {
-          "helm.sh/resource-policy" = "keep";
-        };
         labels = {
           app = "cert-manager";
           "app.kubernetes.io/name" = "cert-manager";
@@ -4391,9 +4378,6 @@ _:
       kind = "CustomResourceDefinition";
       metadata = {
         name = "issuers.cert-manager.io";
-        annotations = {
-          "helm.sh/resource-policy" = "keep";
-        };
         labels = {
           app = "cert-manager";
           "app.kubernetes.io/name" = "cert-manager";
@@ -6329,9 +6313,6 @@ _:
       kind = "CustomResourceDefinition";
       metadata = {
         name = "orders.acme.cert-manager.io";
-        annotations = {
-          "helm.sh/resource-policy" = "keep";
-        };
         labels = {
           app = "cert-manager";
           "app.kubernetes.io/name" = "cert-manager";

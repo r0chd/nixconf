@@ -1,0 +1,264 @@
+{ ... }:
+{
+  services.k3s.manifests.ingress-nginx-rbac.content = [
+    {
+      apiVersion = "rbac.authorization.k8s.io/v1";
+      kind = "ClusterRole";
+      metadata = {
+        labels = {
+          "app.kubernetes.io/name" = "ingress-nginx";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
+          "app.kubernetes.io/part-of" = "ingress-nginx";
+        };
+        name = "ingress-nginx";
+      };
+      rules = [
+        {
+          apiGroups = [ "" ];
+          resources = [
+            "configmaps"
+            "endpoints"
+            "nodes"
+            "pods"
+            "secrets"
+            "namespaces"
+          ];
+          verbs = [
+            "list"
+            "watch"
+          ];
+        }
+        {
+          apiGroups = [ "coordination.k8s.io" ];
+          resources = [ "leases" ];
+          verbs = [
+            "list"
+            "watch"
+          ];
+        }
+        {
+          apiGroups = [ "" ];
+          resources = [ "nodes" ];
+          verbs = [ "get" ];
+        }
+        {
+          apiGroups = [ "" ];
+          resources = [ "services" ];
+          verbs = [
+            "get"
+            "list"
+            "watch"
+          ];
+        }
+        {
+          apiGroups = [ "networking.k8s.io" ];
+          resources = [ "ingresses" ];
+          verbs = [
+            "get"
+            "list"
+            "watch"
+          ];
+        }
+        {
+          apiGroups = [ "" ];
+          resources = [ "events" ];
+          verbs = [
+            "create"
+            "patch"
+          ];
+        }
+        {
+          apiGroups = [ "networking.k8s.io" ];
+          resources = [ "ingresses/status" ];
+          verbs = [ "update" ];
+        }
+        {
+          apiGroups = [ "networking.k8s.io" ];
+          resources = [ "ingressclasses" ];
+          verbs = [
+            "get"
+            "list"
+            "watch"
+          ];
+        }
+        {
+          apiGroups = [ "discovery.k8s.io" ];
+          resources = [ "endpointslices" ];
+          verbs = [
+            "list"
+            "watch"
+            "get"
+          ];
+        }
+      ];
+    }
+    {
+      apiVersion = "rbac.authorization.k8s.io/v1";
+      kind = "ClusterRoleBinding";
+      metadata = {
+        labels = {
+          "app.kubernetes.io/name" = "ingress-nginx";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
+          "app.kubernetes.io/part-of" = "ingress-nginx";
+        };
+        name = "ingress-nginx";
+      };
+      roleRef = {
+        apiGroup = "rbac.authorization.k8s.io";
+        kind = "ClusterRole";
+        name = "ingress-nginx";
+      };
+      subjects = [
+        {
+          kind = "ServiceAccount";
+          name = "ingress-nginx";
+          namespace = "ingress-nginx";
+        }
+      ];
+    }
+    {
+      apiVersion = "rbac.authorization.k8s.io/v1";
+      kind = "Role";
+      metadata = {
+        labels = {
+          "app.kubernetes.io/name" = "ingress-nginx";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
+          "app.kubernetes.io/part-of" = "ingress-nginx";
+          "app.kubernetes.io/component" = "controller";
+        };
+        name = "ingress-nginx";
+        namespace = "ingress-nginx";
+      };
+      rules = [
+        {
+          apiGroups = [ "" ];
+          resources = [ "namespaces" ];
+          verbs = [ "get" ];
+        }
+        {
+          apiGroups = [ "" ];
+          resources = [
+            "configmaps"
+            "pods"
+            "secrets"
+            "endpoints"
+          ];
+          verbs = [
+            "get"
+            "list"
+            "watch"
+          ];
+        }
+        {
+          apiGroups = [ "" ];
+          resources = [ "services" ];
+          verbs = [
+            "get"
+            "list"
+            "watch"
+          ];
+        }
+        {
+          apiGroups = [ "networking.k8s.io" ];
+          resources = [ "ingresses" ];
+          verbs = [
+            "get"
+            "list"
+            "watch"
+          ];
+        }
+        {
+          apiGroups = [ "networking.k8s.io" ];
+          resources = [ "ingresses/status" ];
+          verbs = [ "update" ];
+        }
+        {
+          apiGroups = [ "networking.k8s.io" ];
+          resources = [ "ingressclasses" ];
+          verbs = [
+            "get"
+            "list"
+            "watch"
+          ];
+        }
+        {
+          apiGroups = [ "coordination.k8s.io" ];
+          resources = [ "leases" ];
+          resourceNames = [ "ingress-nginx-leader" ];
+          verbs = [
+            "get"
+            "update"
+          ];
+        }
+        {
+          apiGroups = [ "coordination.k8s.io" ];
+          resources = [ "leases" ];
+          verbs = [ "create" ];
+        }
+        {
+          apiGroups = [ "" ];
+          resources = [ "events" ];
+          verbs = [
+            "create"
+            "patch"
+          ];
+        }
+        {
+          apiGroups = [ "discovery.k8s.io" ];
+          resources = [ "endpointslices" ];
+          verbs = [
+            "list"
+            "watch"
+            "get"
+          ];
+        }
+      ];
+    }
+    {
+      apiVersion = "rbac.authorization.k8s.io/v1";
+      kind = "RoleBinding";
+      metadata = {
+        labels = {
+          "app.kubernetes.io/name" = "ingress-nginx";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
+          "app.kubernetes.io/part-of" = "ingress-nginx";
+          "app.kubernetes.io/component" = "controller";
+        };
+        name = "ingress-nginx";
+        namespace = "ingress-nginx";
+      };
+      roleRef = {
+        apiGroup = "rbac.authorization.k8s.io";
+        kind = "Role";
+        name = "ingress-nginx";
+      };
+      subjects = [
+        {
+          kind = "ServiceAccount";
+          name = "ingress-nginx";
+          namespace = "ingress-nginx";
+        }
+      ];
+    }
+    {
+      apiVersion = "v1";
+      kind = "ServiceAccount";
+      metadata = {
+        labels = {
+          "app.kubernetes.io/name" = "ingress-nginx";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
+          "app.kubernetes.io/part-of" = "ingress-nginx";
+          "app.kubernetes.io/component" = "controller";
+        };
+        name = "ingress-nginx";
+        namespace = "ingress-nginx";
+      };
+      automountServiceAccountToken = true;
+    }
+  ];
+}
