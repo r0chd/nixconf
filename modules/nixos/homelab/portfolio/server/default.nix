@@ -1,9 +1,8 @@
 { ... }:
 {
   imports = [
-    ./serviceaccount.nix
+    ./db.nix
     ./service.nix
-    ./config-configmap.nix
     ./deployment.nix
   ];
 }

@@ -10,9 +10,7 @@ in
   imports = [
     ./namespace.nix
     ./server
-    ./injector
     ./ui-service.nix
-    ./proxy
   ];
 
   options.homelab.vault = {
@@ -34,19 +32,6 @@ in
       type = types.nullOr types.str;
       default = if config.homelab.domain != null then "vault.${config.homelab.domain}" else null;
       description = "Hostname for vault ingress (defaults to vault.<domain> if domain is set)";
-    };
-
-    injector = {
-      enable = lib.mkEnableOption "vault injector";
-    };
-
-    proxy = {
-      enable = lib.mkEnableOption "vault proxy";
-      replicas = lib.mkOption {
-        type = types.int;
-        default = 1;
-        description = "Number of vault-proxy replicas";
-      };
     };
   };
 }

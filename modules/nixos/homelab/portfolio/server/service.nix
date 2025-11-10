@@ -1,15 +1,15 @@
 { config, lib, ... }:
 {
-  config = lib.mkIf (config.homelab.enable && config.homelab.atuin.enable) {
-    services.k3s.manifests."atuin-service" = {
+  config = lib.mkIf (config.homelab.enable && config.homelab.portfolio.enable) {
+    services.k3s.manifests."portfolio-server-service" = {
       content = [
         {
           apiVersion = "v1";
           kind = "Service";
           metadata = {
-            labels."io.kompose.service" = "atuin";
-            name = "atuin";
-            namespace = "atuin";
+            labels."io.kompose.service" = "portfolio-server";
+            name = "portfolio-server";
+            namespace = "portfolio";
           };
           spec = {
             type = "NodePort";
@@ -20,7 +20,7 @@
                 targetPort = 8888;
               }
             ];
-            selector."io.kompose.service" = "atuin";
+            selector."io.kompose.service" = "portfolio-server";
           };
         }
       ];

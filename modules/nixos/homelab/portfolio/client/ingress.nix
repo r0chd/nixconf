@@ -1,16 +1,16 @@
 { config, lib, ... }:
 let
-  cfg = config.homelab.moxwiki;
+  cfg = config.homelab.portfolio;
 in
 {
-  config = lib.mkIf (config.homelab.enable && cfg.enable && cfg.ingressHost != null) {
-    services.k3s.manifests."moxwiki-ingress".content = [
+  config = lib.mkIf (config.homelab.enable && config.homelab.portfolio.enable) {
+    services.k3s.manifests."portfolio-client-ingress".content = [
       {
         apiVersion = "networking.k8s.io/v1";
         kind = "Ingress";
         metadata = {
-          name = "wiki-ingress";
-          namespace = "moxwiki";
+          name = "portfolio-client-ingress";
+          namespace = "portfolio";
           annotations = {
             "cert-manager.io/cluster-issuer" = "letsencrypt";
           };
@@ -19,7 +19,7 @@ in
           tls = [
             {
               hosts = [ cfg.ingressHost ];
-              secretName = "moxwiki-tls";
+              secretName = "portfolio-client-tls";
             }
           ];
           ingressClassName = "nginx";
@@ -33,7 +33,7 @@ in
                     pathType = "Prefix";
                     backend = {
                       service = {
-                        name = "moxwiki";
+                        name = "portfolio-client";
                         port = {
                           number = 80;
                         };

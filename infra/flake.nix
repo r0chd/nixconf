@@ -18,7 +18,12 @@
               let
                 pkgs = import parent.inputs.nixpkgs {
                   inherit system;
-                  config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "terraform" ];
+                  config.allowUnfreePredicate =
+                    pkg:
+                    builtins.elem (lib.getName pkg) [
+                      "terraform"
+                      "vault"
+                    ];
                 };
               in
               function pkgs
@@ -40,6 +45,7 @@
               in
               builtins.attrValues {
                 inherit (pkgs)
+                  vault
                   terraform-ls
                   jq
                   ;
@@ -63,6 +69,7 @@
             shellHook = ''
               export AWS_ACCESS_KEY_ID="$(sops -d --extract '["minio"]["access_key_id"]' ./secrets/secrets.yaml)"
               export AWS_SECRET_ACCESS_KEY="$(sops -d --extract '["minio"]["secret_access_key"]' ./secrets/secrets.yaml)"
+              export VAULT_ADDR="https://vault.kms.r0chd.pl"
             '';
           };
         });

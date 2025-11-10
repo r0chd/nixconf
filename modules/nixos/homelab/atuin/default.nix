@@ -9,7 +9,7 @@ in
     ./service.nix
     ./ingress.nix
     ./pvc.nix
-    ./db
+    ./db.nix
   ];
 
   options.homelab.atuin = {

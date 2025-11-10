@@ -220,6 +220,14 @@ let
                         icon = "si:gitbook";
                       }
                     ])
+                    (lib.optionals (config.homelab.portfolio.enable && config.homelab.portfolio.ingressHost != null) [
+                      {
+                        title = "Portfolio";
+                        url = "https://${config.homelab.portfolio.ingressHost}";
+                        "check-url" = "http://portfolio.moxwiki.svc.cluster.local:80";
+                        icon = "si:briefcase";
+                      }
+                    ])
                   ]
                   ++ cfg.additionalWebsites;
               }

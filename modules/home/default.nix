@@ -23,7 +23,10 @@
     inputs.mox-flake.homeManagerModules.moxpaper
   ];
 
-  targets.genericLinux.enable = platform == "non-nixos";
+  targets.genericLinux = {
+    enable = platform == "non-nixos";
+    nixGL.packages = inputs.nixGL.packages;
+  };
 
   xdg.configFile."environment.d/envvars.conf" = lib.mkIf (platform == "non-nixos") {
     text = ''
@@ -32,8 +35,6 @@
   };
 
   nixpkgs.overlays = import ../overlays inputs config ++ import ../lib config;
-
-  nixGL.packages = inputs.nixGL.packages;
 
   home.activation.switch-to-specialisation =
     lib.mkIf (config.specialisation != { } && platform != "non-nixos")

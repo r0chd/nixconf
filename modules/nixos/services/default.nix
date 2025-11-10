@@ -16,5 +16,11 @@
     userborn.enable = true;
     orca.enable = false;
     speechd.enable = false;
+    fail2ban.enable = profile == "server";
+    #endlessh = {
+    #  enable = profile == "server";
+    #  port = 22;
+    #  openFirewall = true;
+    #};
   };
 }

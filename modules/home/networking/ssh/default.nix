@@ -10,19 +10,11 @@
     enableDefaultConfig = false;
 
     matchBlocks."*" = {
-      forwardAgent = false;
-      serverAliveInterval = 60;
-      serverAliveCountMax = 3;
-      addKeysToAgent = "yes";
       userKnownHostsFile =
         if config.services.impermanence.enable then
           "~/.ssh/persisted/known_hosts"
         else
           "~/.ssh/known_hosts";
-
-      controlMaster = "auto";
-      controlPath = "~/.ssh/sockets/S.%r@%h:%p";
-      controlPersist = "10m";
     };
   };
 

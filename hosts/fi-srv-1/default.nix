@@ -8,6 +8,8 @@
   sops.secrets = {
     #"pihole/password" = { };
 
+    "github_api" = { };
+
     "garage/rpc-secret" = { };
     "garage/admin-token".sopsFile = ../../infra/fi/secrets/secrets.yaml;
     "garage/metrics-token" = { };
@@ -56,6 +58,10 @@
       metricsTokenFile = config.sops.secrets."garage/metrics-token".path;
     };
 
+    portfolio = {
+      enable = true;
+      githubApiTokenFile = config.sops.secrets."github_api".path;
+    };
     moxwiki.enable = true;
 
     atuin = {

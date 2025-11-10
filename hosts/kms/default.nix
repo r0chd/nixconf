@@ -167,10 +167,7 @@
 
     monitoring.kube-resource-report.enable = true;
 
-    vault = {
-      enable = true;
-      proxy.enable = true;
-    };
+    vault.enable = true;
   };
 
   system.fileSystem = "zfs";
