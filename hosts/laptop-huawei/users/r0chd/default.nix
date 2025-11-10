@@ -1,7 +1,7 @@
 {
+  lib,
   pkgs,
   config,
-  lib,
   ...
 }:
 {
@@ -14,7 +14,37 @@
       "steam-unwrapped"
     ];
 
+  sops.secrets = {
+    "minio/username" = { };
+    "minio/password" = { };
+
+    "garage/moxpaper/access_key_id" = { };
+    "garage/moxpaper/secret_access_key" = { };
+  };
+
   programs = {
+    minio-client = {
+      enable = true;
+      settings = {
+        version = "10";
+        aliases = {
+          tfstate-root = {
+            url = "https://s3.minio.kms.r0chd.pl";
+            accessKey = config.sops.placeholder."minio/username";
+            secretKey = config.sops.placeholder."minio/password";
+            api = "s3v4";
+            path = "auto";
+          };
+          moxpaper = {
+            url = "https://s3.garage.fi.r0chd.pl";
+            accessKey = config.sops.placeholder."garage/moxpaper/access_key_id";
+            secretKey = config.sops.placeholder."garage/moxpaper/secret_access_key";
+            api = "s3v4";
+            path = "auto";
+          };
+        };
+      };
+    };
     gcloud.enable = true;
     keepassxc.enable = true;
     atuin = {
@@ -76,6 +106,9 @@
     ];
     packages = builtins.attrValues {
       inherit (pkgs)
+        waypipe
+        slack
+        figma-linux
         obsidian
         devenv
         ;
@@ -83,6 +116,14 @@
   };
 
   services = {
+    moxpaper.settings.buckets = {
+      moxpaper = {
+        url = "https://s3.garage.fi.r0chd.pl";
+        access_key_file = config.sops.secrets."garage/moxpaper/access_key_id".path;
+        secret_key_file = config.sops.secrets."garage/moxpaper/secret_access_key".path;
+        region = "garage";
+      };
+    };
     impermanence.enable = true;
     yubikey-touch-detector.enable = true;
   };

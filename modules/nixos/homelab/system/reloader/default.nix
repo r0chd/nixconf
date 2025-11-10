@@ -8,6 +8,7 @@ in
     ./clusterrole.nix
     ./clusterrolebinding.nix
     ./deployment.nix
+    ./role.nix
   ];
 
   options.homelab.system.reloader = {
