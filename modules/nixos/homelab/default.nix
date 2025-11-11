@@ -15,7 +15,7 @@ in
     ./moxwiki
     ./glance
     ./portfolio
-    ./vaultwarden
+    # ./vaultwarden
     # ./immich
     # ./nextcloud
   ];
@@ -42,6 +42,18 @@ in
       internal = true;
       description = "Actual Kubernetes storage class name (derived from storageClassName enum)";
     };
+
+    primaryNode = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = "IP or hostname of the primary k3s server to join";
+    };
+
+    tokenFile = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = "Path to the token file to use when joining the cluster";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -53,6 +65,12 @@ in
         "--write-kubeconfig-group ${config.users.groups.homelab.name}"
         "--write-kubeconfig-mode 0660"
         "--cluster-cidr 10.244.0.0/16"
+      ]
+      ++ lib.optionals (cfg.primaryNode != null) [
+        "--server ${cfg.primaryNode}"
+      ]
+      ++ lib.optionals (cfg.tokenFile != null) [
+        "--token-file ${cfg.tokenFile}"
       ];
     };
 

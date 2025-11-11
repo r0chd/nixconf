@@ -27,7 +27,7 @@ in
         behavior = "own";
         backend = "ssh";
         key = cfg.signingKeyFile;
-        backends.ssh.allow-singers = "${config.home.homeDirectory}/.ssh/allowed_signers";
+        backends.ssh.allow-signers = "${config.home.homeDirectory}/.ssh/allowed_signers";
       };
 
       gerrit.default-remote-branch = "main";

@@ -8,7 +8,9 @@
   sops.secrets = {
     #"pihole/password" = { };
 
-    "github_api" = { };
+    alertmanager_webhook_url = { };
+
+    github_api = { };
 
     "garage/rpc-secret" = { };
     "garage/admin-token".sopsFile = ../../infra/fi/secrets/secrets.yaml;
@@ -20,7 +22,7 @@
     "atuin/backup/access_key_id" = { };
     "atuin/backup/secret_access_key" = { };
 
-    "thanos-objectstorage" = { };
+    thanos-objectstorage = { };
   };
 
   boot.loader = {
@@ -61,7 +63,6 @@
       githubApiTokenFile = config.sops.secrets."github_api".path;
     };
     moxwiki.enable = true;
-    vaultwarden.enable = true;
     atuin = {
       enable = true;
       db = {
@@ -90,9 +91,13 @@
 
     monitoring = {
       prometheus.enable = true;
+      alertmanager = {
+        enable = true;
+        discordWebhookUrlFile = config.sops.secrets.alertmanager_webhook_url.path;
+      };
       thanos = {
         enable = true;
-        thanosObjectStorageFile = config.sops.secrets."thanos-objectstorage".path;
+        thanosObjectStorageFile = config.sops.secrets.thanos-objectstorage.path;
       };
       grafana = {
         enable = true;
@@ -112,8 +117,6 @@
       443
     ];
   };
-
-  system.fileSystem = "zfs";
 
   time.timeZone = "Europe/Helsinki";
   i18n.defaultLocale = "en_US.UTF-8";

@@ -7,7 +7,6 @@ module "deploy" {
   nixos_partitioner_attr = "../..#nixosConfigurations.${each.key}.config.system.build.diskoScript"
 
   target_host = each.value.ip
-  target_user = "root"
 
   instance_id                = each.key
   nixos_generate_config_path = "../../hosts/${each.key}/hardware-configuration.nix"

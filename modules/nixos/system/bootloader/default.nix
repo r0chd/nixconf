@@ -22,7 +22,7 @@ in
       enableContainers = false;
       initrd = {
         systemd.enable = true;
-        supportedFilesystems = [ config.system.fileSystem ];
+        supportedFilesystems = [ config.fileSystems."/".fsType ];
       };
       plymouth.enable = profile == "desktop" && config.stylix.enable;
       loader = {
@@ -35,7 +35,7 @@ in
         };
         systemd-boot.enable = false;
       };
-      supportedFilesystems = [ config.system.fileSystem ];
+      supportedFilesystems = [ config.fileSystems."/".fsType ];
       kernelModules = [ "v4l2loopback" ];
 
       consoleLogLevel = lib.mkIf cfg.silent 0;

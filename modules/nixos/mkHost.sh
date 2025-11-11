@@ -42,7 +42,6 @@ cat <<EOF > "$BASE_CONFIG_PATH/default.nix"
 
   system = {
     bootloader.legacy = $LEGACY_BOOT_VALUE;
-    fileSystem = "$FILESYSTEM";
   };
 
   time.timeZone = "$TIMEZONE";

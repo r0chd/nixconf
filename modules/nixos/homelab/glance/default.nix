@@ -199,7 +199,21 @@ let
                           title = "Thanos";
                           url = "https://${config.homelab.monitoring.thanos.ingressHost}";
                           "check-url" = "http://thanos-query-frontend.monitoring.svc.cluster.local:9090";
-                          icon = "di:prometheus";
+                          icon = "di:thanos";
+                        }
+                      ]
+                    )
+                    (lib.optionals
+                      (
+                        config.homelab.monitoring.alertmanager.enable
+                        && config.homelab.monitoring.alertmanager.ingressHost != null
+                      )
+                      [
+                        {
+                          title = "Alertmanager";
+                          url = "https://${config.homelab.monitoring.thanos.ingressHost}";
+                          "check-url" = "http://thanos-query-frontend.monitoring.svc.cluster.local:9090";
+                          icon = "di:alertmanager";
                         }
                       ]
                     )

@@ -53,7 +53,7 @@ in
   config = lib.mkIf cfg.enable {
     boot.initrd = {
       systemd.services = {
-        btrfs-rollback = lib.mkIf (config.system.fileSystem == "btrfs") {
+        btrfs-rollback = lib.mkIf (config.fileSystems."/".fsType == "btrfs") {
           description = "Rollback BTRFS root subvolume to a pristine state";
           wantedBy = [ "initrd.target" ];
           after = [
@@ -100,7 +100,7 @@ in
           '';
         };
 
-        zfs-rollback = lib.mkIf (config.system.fileSystem == "zfs") {
+        zfs-rollback = lib.mkIf (config.fileSystems."/".fsType == "zfs") {
           description = "Rollback ZFS datasets to a pristine state";
           wantedBy = [ "initrd.target" ];
           after = [ "zfs-import-zroot.service" ];

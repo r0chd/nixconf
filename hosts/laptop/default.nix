@@ -70,10 +70,6 @@
     };
   };
 
-  system = {
-    fileSystem = "zfs";
-  };
-
   security = {
     yubikey = {
       enable = true;

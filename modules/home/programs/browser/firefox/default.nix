@@ -75,4 +75,6 @@
       };
     };
   };
+
+  home.persist.directories = [ ".mozilla" ];
 }

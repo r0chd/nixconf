@@ -82,7 +82,7 @@
 
   boot = {
     kernelPackages =
-      if config.system.fileSystem == "zfs" then
+      if config.fileSystems."/".fsType == "zfs" then
         lib.mkDefault pkgs.linuxPackages
       else
         lib.mkDefault pkgs.linuxPackages_latest;

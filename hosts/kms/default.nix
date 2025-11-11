@@ -12,6 +12,8 @@
   ];
 
   sops.secrets = {
+    alertmanager_webhook_url = { };
+
     "minio/credentials" = { };
   };
 
@@ -164,12 +166,17 @@
       reloader.enable = true;
     };
 
-    monitoring.kube-resource-report.enable = true;
+    monitoring = {
+      prometheus.enable = true;
+      alertmanager = {
+        enable = true;
+        discordWebhookUrlFile = config.sops.secrets.alertmanager_webhook_url.path;
+      };
+      kube-resource-report.enable = true;
+    };
 
     vault.enable = true;
   };
-
-  system.fileSystem = "zfs";
 
   time.timeZone = "Europe/Helsinki";
   i18n.defaultLocale = "en_US.UTF-8";

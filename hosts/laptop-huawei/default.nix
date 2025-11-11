@@ -59,7 +59,6 @@
     bootloader = {
       silent = true;
     };
-    fileSystem = "zfs";
   };
 
   hardware = {
@@ -76,8 +75,6 @@
         ;
     };
   };
-
-  homelab.enable = true;
 
   security = {
     yubikey = {
