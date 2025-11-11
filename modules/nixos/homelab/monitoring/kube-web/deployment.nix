@@ -36,13 +36,7 @@ in
                     path = "/health";
                     port = 8080;
                   };
-                  resources = {
-                    limits.memory = "100Mi";
-                    requests = {
-                      cpu = "5m";
-                      memory = "100Mi";
-                    };
-                  };
+                  inherit (cfg) resources;
                   securityContext = {
                     readOnlyRootFilesystem = true;
                     runAsNonRoot = true;

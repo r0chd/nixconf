@@ -1,0 +1,13 @@
+keys:
+  - &r0chd_laptop-huawei age144paegh7cvhyg5cwm6n56vuem5cp8w2v84faytp4vdh595jsfe4q25804a
+  - &unixpariah_laptop-huawei age19kl6jcwqxwkv060nvmjgq8rze8dfjflc0un0evtwgvjqd6qa7p0s0mj8qr
+  - &unixpariah_laptop age1fsfxy6x7kh8m0usfmj52n22fhfw5859dks4jsj9pkz6pmk3wzvuqc8ghq9
+  - &os1_t851 age1nz3zrfup532rp0rt638wssnez4frpw8lnv7655svn0al0e0vevcqcpc7my
+creation_rules:
+  - path_regex: secrets/secrets.yaml$
+    key_groups:
+      - age:
+        - *r0chd_laptop-huawei
+        - *unixpariah_laptop-huawei
+        - *unixpariah_laptop
+        - *os1_t851

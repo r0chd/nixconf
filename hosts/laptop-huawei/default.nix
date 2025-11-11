@@ -28,6 +28,7 @@
   programs.nixos-anywhere.sshKeyFile = config.sops.secrets.nixos-anywhere.path;
 
   services = {
+    tailscale.enable = true;
     sccache.enable = true;
   };
 

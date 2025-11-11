@@ -23,6 +23,12 @@ in
       description = "WAL storage size";
     };
 
+    resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      default = { };
+      description = "Optional Kubernetes resource requests/limits.";
+    };
+
     backup = {
       enable = lib.mkOption {
         type = types.bool;
@@ -209,16 +215,7 @@ in
               size = cfg.walStorageSize;
             };
 
-            resources = {
-              requests = {
-                cpu = "100m";
-                memory = "100Mi";
-              };
-              limits = {
-                cpu = "250m";
-                memory = "600Mi";
-              };
-            };
+            inherit (cfg) resources;
           }
           // lib.optionalAttrs cfg.backup.enable {
             backup = {

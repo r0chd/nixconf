@@ -1,0 +1,163 @@
+{ ... }:
+{
+  services.k3s.manifests."metallb-validating-webhook".content = [
+    {
+      apiVersion = "admissionregistration.k8s.io/v1";
+      kind = "ValidatingWebhookConfiguration";
+      metadata = {
+        name = "metallb-webhook-configuration";
+        labels = {
+          "app.kubernetes.io/name" = "metallb";
+          "app.kubernetes.io/instance" = "metallb";
+          "app.kubernetes.io/version" = "v0.15.2";
+        };
+      };
+      webhooks = [
+        {
+          admissionReviewVersions = [ "v1" ];
+          clientConfig = {
+            service = {
+              name = "metallb-webhook-service";
+              namespace = "default";
+              path = "/validate-metallb-io-v1beta2-bgppeer";
+            };
+          };
+          failurePolicy = "Fail";
+          name = "bgppeervalidationwebhook.metallb.io";
+          rules = [
+            {
+              apiGroups = [ "metallb.io" ];
+              apiVersions = [ "v1beta2" ];
+              operations = [
+                "CREATE"
+                "UPDATE"
+              ];
+              resources = [ "bgppeers" ];
+            }
+          ];
+          sideEffects = "None";
+        }
+        {
+          admissionReviewVersions = [ "v1" ];
+          clientConfig = {
+            service = {
+              name = "metallb-webhook-service";
+              namespace = "default";
+              path = "/validate-metallb-io-v1beta1-ipaddresspool";
+            };
+          };
+          failurePolicy = "Fail";
+          name = "ipaddresspoolvalidationwebhook.metallb.io";
+          rules = [
+            {
+              apiGroups = [ "metallb.io" ];
+              apiVersions = [ "v1beta1" ];
+              operations = [
+                "CREATE"
+                "UPDATE"
+              ];
+              resources = [ "ipaddresspools" ];
+            }
+          ];
+          sideEffects = "None";
+        }
+        {
+          admissionReviewVersions = [ "v1" ];
+          clientConfig = {
+            service = {
+              name = "metallb-webhook-service";
+              namespace = "default";
+              path = "/validate-metallb-io-v1beta1-bgpadvertisement";
+            };
+          };
+          failurePolicy = "Fail";
+          name = "bgpadvertisementvalidationwebhook.metallb.io";
+          rules = [
+            {
+              apiGroups = [ "metallb.io" ];
+              apiVersions = [ "v1beta1" ];
+              operations = [
+                "CREATE"
+                "UPDATE"
+              ];
+              resources = [ "bgpadvertisements" ];
+            }
+          ];
+          sideEffects = "None";
+        }
+        {
+          admissionReviewVersions = [ "v1" ];
+          clientConfig = {
+            service = {
+              name = "metallb-webhook-service";
+              namespace = "default";
+              path = "/validate-metallb-io-v1beta1-community";
+            };
+          };
+          failurePolicy = "Fail";
+          name = "communityvalidationwebhook.metallb.io";
+          rules = [
+            {
+              apiGroups = [ "metallb.io" ];
+              apiVersions = [ "v1beta1" ];
+              operations = [
+                "CREATE"
+                "UPDATE"
+              ];
+              resources = [ "communities" ];
+            }
+          ];
+          sideEffects = "None";
+        }
+        {
+          admissionReviewVersions = [ "v1" ];
+          clientConfig = {
+            service = {
+              name = "metallb-webhook-service";
+              namespace = "default";
+              path = "/validate-metallb-io-v1beta1-bfdprofile";
+            };
+          };
+          failurePolicy = "Fail";
+          name = "bfdprofilevalidationwebhook.metallb.io";
+          rules = [
+            {
+              apiGroups = [ "metallb.io" ];
+              apiVersions = [ "v1beta1" ];
+              operations = [
+                "CREATE"
+                "DELETE"
+              ];
+              resources = [ "bfdprofiles" ];
+            }
+          ];
+          sideEffects = "None";
+        }
+        {
+          admissionReviewVersions = [ "v1" ];
+          clientConfig = {
+            service = {
+              name = "metallb-webhook-service";
+              namespace = "default";
+              path = "/validate-metallb-io-v1beta1-l2advertisement";
+            };
+          };
+          failurePolicy = "Fail";
+          name = "l2advertisementvalidationwebhook.metallb.io";
+          rules = [
+            {
+              apiGroups = [ "metallb.io" ];
+              apiVersions = [ "v1beta1" ];
+              operations = [
+                "CREATE"
+                "UPDATE"
+              ];
+              resources = [ "l2advertisements" ];
+            }
+          ];
+          sideEffects = "None";
+        }
+      ];
+    }
+  ];
+}

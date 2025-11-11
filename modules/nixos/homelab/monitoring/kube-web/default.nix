@@ -30,5 +30,11 @@ in
       default = if config.homelab.domain != null then "kube-web.${config.homelab.domain}" else null;
       description = "Hostname for kube-web ingress (defaults to kube-web.<domain> if domain is set)";
     };
+
+    resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      default = { };
+      description = "Optional Kubernetes resource requests/limits.";
+    };
   };
 }

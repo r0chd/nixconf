@@ -224,8 +224,8 @@ let
                       {
                         title = "Portfolio";
                         url = "https://${config.homelab.portfolio.ingressHost}";
-                        "check-url" = "http://portfolio.moxwiki.svc.cluster.local:80";
-                        icon = "si:briefcase";
+                        "check-url" = "http://portfolio-client.portfolio.svc.cluster.local:3000";
+                        icon = "mdi:briefcase-variant";
                       }
                     ])
                   ]

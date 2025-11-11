@@ -44,11 +44,5 @@
     };
   };
 
-  home = {
-    persist.directories = [ ".ssh/persisted" ];
-    file = {
-      ".ssh/config.d/.keep".text = "# Managed by Home Manager";
-      ".ssh/sockets/.keep".text = "# Managed by Home Manager";
-    };
-  };
+  home.persist.directories = [ ".ssh/persisted" ];
 }

@@ -23,5 +23,10 @@ in
       type = types.bool;
       default = true;
     };
+    resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      default = { };
+      description = "Optional Kubernetes resource requests/limits.";
+    };
   };
 }

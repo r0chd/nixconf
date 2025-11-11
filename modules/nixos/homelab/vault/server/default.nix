@@ -9,5 +9,6 @@
     ./pvc.nix
     ./statefulset.nix
     ./ingress.nix
+    ./rbac.nix
   ];
 }

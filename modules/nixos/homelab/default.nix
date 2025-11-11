@@ -15,9 +15,9 @@ in
     ./moxwiki
     ./glance
     ./portfolio
-    # ./vaultwarden
-    # ./nextcloud
+    ./vaultwarden
     # ./immich
+    # ./nextcloud
   ];
 
   options.homelab = {

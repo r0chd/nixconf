@@ -97,7 +97,7 @@ EOF
 
 echo "Generating SSH and Age keys..."
 
-SSH_KEY=$(ssh-keygen -t ed25519 -N "" -f /tmp/temp_ed25519_key <<< y >/dev/null 2>&1 && cat /tmp/temp_ed25519_key && rm /tmp/temp_ed25519_key)
+SSH_KEY=$(ssh-keygen -t ed25519 -N "" -C "$USERNAME@$HOST" -f /tmp/temp_ed25519_key <<< y >/dev/null 2>&1 && cat /tmp/temp_ed25519_key && rm /tmp/temp_ed25519_key)
 if [ $? -ne 0 ] || [ -z "$SSH_KEY" ]; then
   echo "Error: Failed to generate SSH key"
   exit 1
@@ -148,5 +148,67 @@ fi
 
 echo "User $USERNAME created successfully!"
 echo "Now run \"nh os switch\""
+
+COMMON_SOPS_PATH="/var/lib/nixconf/modules/common/home/.sops.yaml"
+
+if [ ! -f "$COMMON_SOPS_PATH" ]; then
+  echo "Error: Common SOPS file not found at $COMMON_SOPS_PATH"
+  exit 1
+fi
+
+echo "Updating common .sops.yaml with new user $USERNAME..."
+
+# Add the new Age key under the keys: list (before creation_rules:)
+awk -v uname="$USERNAME" -v agekey="$AGE_PUBLIC_KEY" '
+BEGIN {added=0}
+(/^creation_rules:/ && !added) {
+  print "  - &" uname " " agekey
+  added=1
+}
+{ print }
+END {
+  if (!added) {
+    print "  - &" uname " " agekey
+  }
+}
+' "$COMMON_SOPS_PATH" > "${COMMON_SOPS_PATH}.tmp" && mv "${COMMON_SOPS_PATH}.tmp" "$COMMON_SOPS_PATH"
+
+# Add user reference under key_groups → age:
+awk -v uname="$USERNAME" '
+BEGIN {inserted=0}
+/^- path_regex: secrets\/secrets.yaml\$/ {
+  print
+  getline
+  if ($0 ~ /key_groups:/) {
+    print $0
+    getline
+    if ($0 ~ /- age:/) {
+      print $0
+      print "        - *" uname
+      inserted=1
+      next
+    }
+  }
+}
+{ print }
+END {
+  if (!inserted) {
+    print "  - path_regex: secrets/secrets.yaml$"
+    print "    key_groups:"
+    print "      - age:"
+    print "        - *" uname
+  }
+}
+' "$COMMON_SOPS_PATH" > "${COMMON_SOPS_PATH}.tmp" && mv "${COMMON_SOPS_PATH}.tmp" "$COMMON_SOPS_PATH"
+
+# Run sops updatekeys specifically for this file
+echo "Running sops updatekeys on $COMMON_SOPS_PATH..."
+sops updatekeys "$COMMON_SOPS_PATH"
+if [ $? -ne 0 ]; then
+  echo "Warning: sops updatekeys failed for $COMMON_SOPS_PATH"
+else
+  echo "Common SOPS configuration updated successfully."
+fi
+
 
 exit 0

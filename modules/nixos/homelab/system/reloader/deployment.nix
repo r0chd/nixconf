@@ -1,4 +1,7 @@
 { config, lib, ... }:
+let
+  cfg = config.homelab.system.reloader;
+in
 {
   config = lib.mkIf (config.homelab.enable && config.homelab.system.reloader.enable) {
     services.k3s.manifests."reloader-deployment".content = [
@@ -17,7 +20,7 @@
           };
         };
         spec = {
-          replicas = config.homelab.system.reloader.replicas;
+          inherit (cfg) replicas;
           revisionHistoryLimit = 2;
           selector.matchLabels = {
             app = "reloader-reloader";
@@ -42,8 +45,15 @@
               containers = [
                 {
                   name = "reloader-reloader";
-                  image = config.homelab.system.reloader.image;
+                  inherit (cfg) image;
                   imagePullPolicy = "IfNotPresent";
+                  args = [
+                    "--auto-reload-all=true"
+                    "--reload-strategy=annotations"
+                    "--log-format=json"
+                    "--log-level=info"
+
+                  ];
                   securityContext = { };
                   ports = [
                     {
@@ -61,16 +71,7 @@
                       valueFrom.resourceFieldRef.resource = "limits.memory";
                     }
                   ];
-                  resources = {
-                    limits = {
-                      cpu = "1";
-                      memory = "128Mi";
-                    };
-                    requests = {
-                      cpu = "10m";
-                      memory = "128Mi";
-                    };
-                  };
+                  inherit (cfg) resources;
                   livenessProbe = {
                     httpGet = {
                       path = "/live";

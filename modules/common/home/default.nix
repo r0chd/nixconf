@@ -1,4 +1,17 @@
-_: {
+{ ... }:
+{
+  sops.secrets = {
+    atuin_key = {
+      path = ".local/share/atuin/key";
+      sopsFile = ./secrets/secrets.yaml;
+    };
+  };
+
+  programs.atuin.distributed = {
+    enable = true;
+    address = "https://atuin.fi.r0chd.pl";
+  };
+
   services = {
     syncthing = {
       enable = true;

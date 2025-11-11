@@ -55,10 +55,7 @@
 
     atuin = {
       enable = true;
-      distributed = {
-        enable = true;
-        address = "https://atuin.r0chd.pl";
-      };
+      distributed.enable = true;
     };
 
     vcs = {

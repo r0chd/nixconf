@@ -35,15 +35,7 @@ in
                   image = "ghcr.io/mox-desktop/moxwiki:latest";
                   imagePullPolicy = "Always";
                   ports = [ { containerPort = 3000; } ];
-                  resources = {
-                    limits = {
-                      memory = "512Mi";
-                    };
-                    requests = {
-                      cpu = "50m";
-                      memory = "256Mi";
-                    };
-                  };
+                  inherit (cfg) resources;
                 }
               ];
             };

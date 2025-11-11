@@ -23,8 +23,6 @@
     "thanos-objectstorage" = { };
   };
 
-  services.tailscale.enable = lib.mkForce false;
-
   boot.loader = {
     limine.enable = lib.mkForce false;
     grub.enable = true;
@@ -63,7 +61,7 @@
       githubApiTokenFile = config.sops.secrets."github_api".path;
     };
     moxwiki.enable = true;
-
+    vaultwarden.enable = true;
     atuin = {
       enable = true;
       db = {

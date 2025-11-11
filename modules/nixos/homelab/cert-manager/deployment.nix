@@ -1,4 +1,7 @@
-_:
+{ config, ... }:
+let
+  cfg = config.homelab.cert-manager;
+in
 {
   services.k3s.manifests."cert-manager-deployment".content = [
     {
@@ -69,16 +72,7 @@ _:
                   };
                   readOnlyRootFilesystem = true;
                 };
-                resources = {
-                  limits = {
-                    cpu = "100m";
-                    memory = "128Mi";
-                  };
-                  requests = {
-                    cpu = "10m";
-                    memory = "64Mi";
-                  };
-                };
+                inherit (cfg.injector) resources;
               }
             ];
             nodeSelector = {
@@ -166,16 +160,7 @@ _:
                   };
                   readOnlyRootFilesystem = true;
                 };
-                resources = {
-                  limits = {
-                    cpu = "500m";
-                    memory = "512Mi";
-                  };
-                  requests = {
-                    cpu = "50m";
-                    memory = "128Mi";
-                  };
-                };
+                inherit (cfg.controller) resources;
                 env = [
                   {
                     name = "POD_NAMESPACE";
@@ -306,16 +291,7 @@ _:
                   };
                   readOnlyRootFilesystem = true;
                 };
-                resources = {
-                  limits = {
-                    cpu = "100m";
-                    memory = "128Mi";
-                  };
-                  requests = {
-                    cpu = "10m";
-                    memory = "64Mi";
-                  };
-                };
+                inherit (cfg.webhook) resources;
                 env = [
                   {
                     name = "POD_NAMESPACE";

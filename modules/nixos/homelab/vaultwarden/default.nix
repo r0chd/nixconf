@@ -11,15 +11,15 @@ in
 {
   options.homelab.vaultwarden = {
     enable = lib.mkEnableOption "vaultwarden";
-    hostname = lib.mkOption { type = types.str; };
     replicas = lib.mkOption {
       type = types.int;
       default = 1;
     };
-    storage = lib.mkOption { type = types.str; };
-    yubikey = {
-      enable = lib.mkEnableOption "yubikey auth";
-      keyFile = lib.mkOption { type = types.path; };
+
+    ingressHost = lib.mkOption {
+      type = types.nullOr types.str;
+      default = if config.homelab.domain != null then "thanos.${config.homelab.domain}" else null;
+      description = "Hostname for thanos query-frontend ingress (defaults to thanos.<domain> if domain is set)";
     };
   };
 
@@ -29,7 +29,7 @@ in
         repo = "https://guerzon.github.io/vaultwarden";
         chart = "vaultwarden";
         version = "0.32.1";
-        chartHash = "sha256-tseCtu9MZxVHmqvlIg67WYQvPtKDk+L0rodoIIcWYnU=";
+        chartHash = "sha256-gt3b+NELrMgnxaUxD3SzZShPaQr2Fzv+DZ7DAGK1vVI=";
       };
       targetNamespace = "vaultwarden";
       createNamespace = true;
@@ -193,11 +193,12 @@ in
           timeZone = "";
           orgGroupsEnabled = false;
 
-          yubico = lib.mkIf cfg.yubikey.enable {
-            clientId = 112701;
-            existingSecret = "yubisecret";
-            secretKey.existingSecretKey = "YUBI";
-          };
+          # TODO: once I get a yubikey
+          #yubico = lib.mkIf cfg.yubikey.enable {
+          #  clientId = 112701;
+          #  existingSecret = "yubisecret";
+          #  secretKey.existingSecretKey = "YUBI";
+          #};
 
           duo = {
             iKey = "";
@@ -246,12 +247,12 @@ in
 
           ingress = {
             enabled = true;
-            class = "ingress-nginx";
+            class = "nginx";
             nginxIngressAnnotations = true;
             additionalAnnotations = { };
             labels = { };
             tls = true;
-            inherit (cfg) hostname;
+            hostname = cfg.ingressHost;
             additionalHostnames = [ ];
             path = "/";
             pathType = "Prefix";
@@ -273,17 +274,18 @@ in
           spec = {
             accessModes = [ "ReadWriteOnce" ];
             storageClassName = config.homelab.storageClass;
-            resources.requests.storage = cfg.storage;
+            resources.requests.storage = "5Gi";
           };
         }
       ];
     };
-    secrets = lib.mkIf cfg.yubikey.enable [
-      {
-        name = "yubisecret";
-        namespace = "vaultwarden";
-        data.YUBI = cfg.yubikey.keyFile;
-      }
-    ];
+
+    #secrets = lib.mkIf cfg.yubikey.enable [
+    #  {
+    #    name = "yubisecret";
+    #    namespace = "vaultwarden";
+    #    data.YUBI = cfg.yubikey.keyFile;
+    #  }
+    #];
   };
 }

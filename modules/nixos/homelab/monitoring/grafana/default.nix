@@ -24,6 +24,11 @@ in
       type = types.nullOr types.str;
       default = null;
     };
+    resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      default = { };
+      description = "Optional Kubernetes resource requests/limits.";
+    };
   };
 
   config = lib.mkIf (cfg.enable && config.homelab.enable) {
@@ -68,16 +73,7 @@ in
             passwordKey = "password";
           };
           serviceMonitor.enabled = true;
-          resources = {
-            limits = {
-              cpu = "500m";
-              memory = "512Mi";
-            };
-            requests = {
-              cpu = "100m";
-              memory = "128Mi";
-            };
-          };
+          inherit (cfg) resources;
         };
       };
     };

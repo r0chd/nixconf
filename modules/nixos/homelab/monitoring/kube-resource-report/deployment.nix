@@ -45,15 +45,7 @@ in
                       name = "report-data";
                     }
                   ];
-                  resources = {
-                    limits = {
-                      memory = "100Mi";
-                    };
-                    requests = {
-                      cpu = "5m";
-                      memory = "50Mi";
-                    };
-                  };
+                  inherit (cfg) resources;
                   securityContext = {
                     allowPrivilegeEscalation = false;
                     readOnlyRootFilesystem = true;
@@ -81,15 +73,7 @@ in
                       port = 80;
                     };
                   };
-                  resources = {
-                    limits = {
-                      memory = "50Mi";
-                    };
-                    requests = {
-                      cpu = "5m";
-                      memory = "20Mi";
-                    };
-                  };
+                  inherit (cfg.nginx) resources;
                 }
               ];
               volumes = [

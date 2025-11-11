@@ -1,6 +1,9 @@
 { config, lib, ... }:
+let
+  cfg = config.homelab.portfolio;
+in
 {
-  config = lib.mkIf (config.homelab.enable && config.homelab.portfolio.enable) {
+  config = lib.mkIf (config.homelab.enable && cfg.enable) {
     services.k3s.manifests."portfolio-client-deployment".content = [
       {
         apiVersion = "apps/v1";
@@ -37,11 +40,7 @@
                   ];
                   image = "ghcr.io/r0chd/portfolio-client:main-a05f342";
                   ports = [ { containerPort = 3000; } ];
-                  resources = {
-                    limits = {
-                      memory = "512Mi";
-                    };
-                  };
+                  inherit (cfg.client) resources;
                 }
               ];
             };

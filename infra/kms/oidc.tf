@@ -2,7 +2,7 @@ resource "vault_identity_oidc_client" "ingress" {
   name = "ingress"
 
   redirect_uris = [
-    "https://your-ingress-domain.com/oauth2/callback"
+    "https://fi.r0chd.pl.com/oauth2/callback"
   ]
 
   assignments = ["allow_all"]

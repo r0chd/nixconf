@@ -47,9 +47,7 @@
     };
     gcloud.enable = true;
     keepassxc.enable = true;
-    atuin = {
-      enable = true;
-    };
+    atuin.enable = true;
     vcs = {
       signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
       email = "100892812+unixpariah@users.noreply.github.com";
@@ -61,7 +59,6 @@
     };
     vesktop.enable = true;
     firefox.enable = true;
-    chromium.enable = true;
     fastfetch.enable = true;
     starship.enable = true;
     zoxide.enable = true;

@@ -16,6 +16,11 @@ in
       default = if config.homelab.domain != null then "prometheus.${config.homelab.domain}" else null;
       description = "Hostname for prometheus ingress (defaults to prometheus.<domain> if domain is set)";
     };
+    resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      default = { };
+      description = "Optional Kubernetes resource requests/limits.";
+    };
   };
 
   config.services.k3s.autoDeployCharts = lib.mkIf (cfg.enable && config.homelab.enable) {
@@ -52,16 +57,7 @@ in
               secretName = "prometheus-tls";
             };
           };
-          resources = {
-            limits = {
-              cpu = "2";
-              memory = "4Gi";
-            };
-            requests = {
-              cpu = "200m";
-              memory = "1Gi";
-            };
-          };
+          inherit (cfg) resources;
         };
       };
     };

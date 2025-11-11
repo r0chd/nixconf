@@ -8,6 +8,8 @@ let
 
     "unixpariah@laptop" =
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKC3KCUFx+9Q26DOYrzA/axbc9rSf6m/3DOvE5h/wApI unixpariah@laptop-huawei";
+    "r0chd@laptop-huawei" =
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFzGyCCsIMMkGLrvrSpuoTEPXE78riV8bSEk8XWHCe8u unixpariah@laptop-huawei";
     "unixpariah@laptop-huawei" =
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOjC40jEUaRuZBbxfDVG/FZ99vk3bXwIob5RGIfKyfbB unixpariah@laptop-huawei";
     "os1@t851" =
@@ -19,12 +21,14 @@ let
       os1 = [
         keys."unixpariah@laptop"
         keys."unixpariah@laptop-huawei"
+        keys."r0chd@laptop-huawei"
       ];
     };
 
     laptop = {
       unixpariah = [
         keys."unixpariah@laptop-huawei"
+        keys."r0chd@laptop-huawei"
         keys."os1@t851"
       ];
     };
@@ -32,6 +36,7 @@ let
     laptop-huawei = {
       unixpariah = [
         keys."unixpariah@laptop"
+        keys."r0chd@laptop-huawei"
         keys."os1@t851"
       ];
     };
@@ -40,6 +45,7 @@ let
       unixpariah = [
         keys."unixpariah@laptop"
         keys."unixpariah@laptop-huawei"
+        keys."r0chd@laptop-huawei"
         keys."os1@t851"
       ];
     };
@@ -48,6 +54,7 @@ let
       unixpariah = [
         keys."unixpariah@laptop"
         keys."unixpariah@laptop-huawei"
+        keys."r0chd@laptop-huawei"
         keys."os1@t851"
       ];
     };
@@ -56,6 +63,7 @@ let
       root = [
         keys."unixpariah@laptop"
         keys."unixpariah@laptop-huawei"
+        keys."r0chd@laptop-huawei"
         keys."os1@t851"
       ];
     };
@@ -64,6 +72,7 @@ let
       root = [
         keys."unixpariah@laptop"
         keys."unixpariah@laptop-huawei"
+        keys."r0chd@laptop-huawei"
         keys."os1@t851"
       ];
     };
@@ -79,4 +88,15 @@ in
   boot.initrd.network.ssh.authorizedKeys = lib.flatten (
     lib.mapAttrsToList (_user: userConfig: userConfig.openssh.authorizedKeys.keys) config.users.users
   );
+
+  #programs.ssh.knownHosts = {
+  #fi-srv-1 = {
+  #hostNames = [ "fi.r0chd.pl" ];
+  #publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBrCcuE1xwc60qNd0svAey/s6jlg6tk+tpFdT68VZ1Jq";
+  #};
+  #kms = {
+  #hostNames = [ "kms.r0chd.pl" ];
+  #publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIhdMskGDM+nOmKVlgUk50BU2/eSa7+DbyEs9R8oZnQs";
+  #};
+  #};
 }

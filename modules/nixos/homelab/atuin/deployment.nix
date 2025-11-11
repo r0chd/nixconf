@@ -84,16 +84,7 @@ in
                     timeoutSeconds = 5;
                     failureThreshold = 3;
                   };
-                  resources = {
-                    limits = {
-                      cpu = "250m";
-                      memory = "1Gi";
-                    };
-                    requests = {
-                      cpu = "250m";
-                      memory = "1Gi";
-                    };
-                  };
+                  inherit (cfg) resources;
                   volumeMounts = [
                     {
                       mountPath = "/config";

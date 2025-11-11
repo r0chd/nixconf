@@ -45,8 +45,6 @@ in
       persist.directories = [ "/var/lib/tailscale" ];
     };
 
-    services.tailscale.enable = true;
-
     boot.initrd = {
       systemd = {
         packages = [ cfg.package ];

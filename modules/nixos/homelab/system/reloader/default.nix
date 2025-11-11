@@ -25,5 +25,11 @@ in
       default = 1;
       description = "Number of reloader replicas";
     };
+
+    resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      default = { };
+      description = "Optional Kubernetes resource requests/limits.";
+    };
   };
 }

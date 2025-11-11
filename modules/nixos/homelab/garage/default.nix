@@ -70,6 +70,12 @@ in
       type = types.path;
     };
 
+    resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      default = { };
+      description = "Optional Kubernetes resource requests/limits.";
+    };
+
     storage = {
       dataSize = lib.mkOption {
         type = types.str;

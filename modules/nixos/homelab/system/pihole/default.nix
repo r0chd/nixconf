@@ -32,6 +32,11 @@ in
       type = types.int;
       default = 1;
     };
+    resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      default = { };
+      description = "Optional Kubernetes resource requests/limits.";
+    };
   };
 
   config.services.k3s = lib.mkIf (config.homelab.enable && cfg.enable) {
@@ -104,17 +109,7 @@ in
           txtOwnerId = "homelab";
           pihole.server = "http://pihole-web.system.svc.cluster.local";
 
-          # Resource limits to prevent OOM kills
-          resources = {
-            limits = {
-              cpu = "200m";
-              memory = "256Mi";
-            };
-            requests = {
-              cpu = "50m";
-              memory = "128Mi";
-            };
-          };
+          inherit (cfg) resources;
 
           livenessProbe = {
             enabled = true;

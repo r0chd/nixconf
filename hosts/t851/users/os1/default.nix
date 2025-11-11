@@ -26,13 +26,7 @@
   };
 
   programs = {
-    atuin = {
-      enable = true;
-      distributed = {
-        enable = true;
-        address = "https://atuin.r0chd.pl";
-      };
-    };
+    atuin.enable = true;
 
     minio-client = {
       enable = true;

@@ -19,12 +19,19 @@
 
           listener "tcp" {
             tls_disable = 1
-            address = "[::]:8200"
-            cluster_address = "[::]:8201"
+            address = "0.0.0.0:8200"
+            cluster_address = "0.0.0.0:8201"
           }
 
-          storage "file" {
+          api_addr = "http://vault-0.vault.svc.cluster.local:8200"
+          cluster_addr = "http://vault-0.vault-internal:8201"
+
+          storage "raft" {
             path = "/vault/data"
+            retry_join {
+              auto_join_scheme = "http"
+              auto_join = "provider=k8s namespace=vault label_selector=\"app.kubernetes.io/name=vault\""
+            }
           }
         '';
       }

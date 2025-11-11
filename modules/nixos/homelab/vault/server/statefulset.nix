@@ -1,6 +1,9 @@
 { config, lib, ... }:
+let
+  cfg = config.homelab.vault;
+in
 {
-  config = lib.mkIf (config.homelab.enable && config.homelab.vault.enable) {
+  config = lib.mkIf (config.homelab.enable && cfg.enable) {
     services.k3s.manifests."vault-server-statefulset".content = [
       {
         apiVersion = "apps/v1";
@@ -17,7 +20,7 @@
         spec = {
           serviceName = "vault";
           podManagementPolicy = "Parallel";
-          replicas = config.homelab.vault.replicas;
+          inherit (cfg) replicas;
           updateStrategy.type = "OnDelete";
           selector.matchLabels = {
             "app.kubernetes.io/name" = "vault";
@@ -60,17 +63,8 @@
               containers = [
                 {
                   name = "vault";
-                  image = config.homelab.vault.image;
-                  resources = {
-                    limits = {
-                      cpu = "250m";
-                      memory = "256Mi";
-                    };
-                    requests = {
-                      cpu = "250m";
-                      memory = "256Mi";
-                    };
-                  };
+                  inherit (cfg) image;
+                  inherit (cfg) resources;
                   securityContext.capabilities.add = [ "IPC_LOCK" ];
                   imagePullPolicy = "IfNotPresent";
                   command = [

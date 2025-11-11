@@ -24,7 +24,6 @@
   };
 
   services = {
-    tailscale.enable = lib.mkForce false;
     minio = {
       enable = true;
       region = "eu-central-1";

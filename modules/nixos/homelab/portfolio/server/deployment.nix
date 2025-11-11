@@ -1,6 +1,9 @@
 { config, lib, ... }:
+let
+  cfg = config.homelab.portfolio;
+in
 {
-  config = lib.mkIf (config.homelab.enable && config.homelab.portfolio.enable) {
+  config = lib.mkIf (config.homelab.enable && cfg.enable) {
     services.k3s.manifests."portfolio-deployment-service" = {
       content = [
         {
@@ -41,11 +44,7 @@
                     ];
                     image = "ghcr.io/r0chd/portfolio-server:latest";
                     ports = [ { containerPort = 8000; } ];
-                    resources = {
-                      limits = {
-                        memory = "100Mi";
-                      };
-                    };
+                    inherit (cfg.server) resources;
                     volumeMounts = [
                       {
                         name = "github-secret";

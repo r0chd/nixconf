@@ -20,6 +20,16 @@ in
     githubApiTokenFile = lib.mkOption {
       type = types.str;
     };
+    client.resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      default = { };
+      description = "Optional Kubernetes resource requests/limits.";
+    };
+    server.resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      default = { };
+      description = "Optional Kubernetes resource requests/limits.";
+    };
   };
 
   config = lib.mkIf cfg.enable {

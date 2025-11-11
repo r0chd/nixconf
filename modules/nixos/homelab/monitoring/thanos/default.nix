@@ -62,6 +62,24 @@ in
       default = if config.homelab.domain != null then "thanos.${config.homelab.domain}" else null;
       description = "Hostname for thanos query-frontend ingress (defaults to thanos.<domain> if domain is set)";
     };
+
+    query.resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      default = { };
+      description = "Optional Kubernetes resource requests/limits.";
+    };
+
+    store.resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      default = { };
+      description = "Optional Kubernetes resource requests/limits.";
+    };
+
+    query-frontend.resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      default = { };
+      description = "Optional Kubernetes resource requests/limits.";
+    };
   };
 
   config = lib.mkIf cfg.enable {

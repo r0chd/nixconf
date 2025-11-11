@@ -87,16 +87,7 @@ in
                       scheme = "HTTPS";
                     };
                   };
-                  resources = {
-                    requests = {
-                      cpu = "100m";
-                      memory = "100Mi";
-                    };
-                    limits = {
-                      cpu = "100m";
-                      memory = "200Mi";
-                    };
-                  };
+                  inherit (cfg) resources;
                   securityContext = {
                     allowPrivilegeEscalation = false;
                     readOnlyRootFilesystem = true;
