@@ -117,7 +117,7 @@ let
                         {
                           title = "Grafana";
                           url = "https://${config.homelab.monitoring.grafana.ingressHost}";
-                          "check-url" = "http://grafana.monitoring.svc.cluster.local:3000";
+                          "check-url" = "http://prometheus-stack-grafana.monitoring.svc.cluster.local:3000";
                           icon = "di:grafana";
                         }
                       ]
@@ -187,7 +187,7 @@ let
                         {
                           title = "Prometheus";
                           url = "https://${config.homelab.monitoring.prometheus.ingressHost}";
-                          "check-url" = "http://prometheus-server.monitoring.svc.cluster.local:80";
+                          "check-url" = "http://prometheus-stack-kube-prom-prometheus.monitoring.svc.cluster.local:9090";
                           icon = "di:prometheus";
                         }
                       ]
@@ -238,7 +238,7 @@ let
                       {
                         title = "Portfolio";
                         url = "https://${config.homelab.portfolio.ingressHost}";
-                        "check-url" = "http://portfolio-client.portfolio.svc.cluster.local:3000";
+                        "check-url" = "http://portfolio-client.portfolio.svc.cluster.local:80";
                         icon = "mdi:briefcase-variant";
                       }
                     ])

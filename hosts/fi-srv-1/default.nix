@@ -107,6 +107,7 @@
       kube-web.enable = true;
       kube-ops.enable = true;
       kube-resource-report.enable = true;
+      vector.enable = true;
     };
   };
 

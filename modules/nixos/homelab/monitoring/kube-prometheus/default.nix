@@ -48,8 +48,21 @@ in
       hash = "sha256-rUZcfcB+O7hrr2swEARXFujN7VvfC0IkaaAeJTi0mN0=";
       targetNamespace = "monitoring";
       values = {
-        alertmanager = lib.mkIf cfg.alertmanager.enable {
-          alertmanagerSpec.secrets = [ "alertmanager-config-secrets" ];
+        # TODO: figure out how to allow prometheus to discover these services.
+        # disable monitoring for these, i believe since they are not
+        # deployed as a pod prometheus cannot discover them?
+        kubeControllerManager.enable = false;
+        kubeScheduler.enable = false;
+        kubeProxy.enable = false;
+        defaultRules.rules = {
+          kubeControllerManager = false;
+          kubeSchedulerAlerting = false;
+          kubeSchedulerRecording = false;
+          kubeProxy = false;
+        };
+
+        alertmanager = {
+          enabled = cfg.alertmanager.enable;
           config = {
             receivers = [
               { name = "null"; }
@@ -57,18 +70,12 @@ in
                 name = "default";
                 discord_configs = [
                   {
-                    webhook_url = "\${DISCORD_WEBHOOK_URL}";
-                    content = "<@307952129958477824>";
+                    apiURL = {
+                      name = "alertmanager-config-secrets";
+                      key = "DISCORD_WEBHOOK_URL";
+                    };
                   }
                 ];
-
-                # email_configs = [
-                #   {
-                #     to = "kurumi-alerts@danielraybone.com";
-                #     send_resolved = true;
-                #     html = true;
-                #   }
-                # ];
               }
             ];
             global = {
@@ -99,7 +106,10 @@ in
               { target_matchers = [ "alertname = InfoInhibitor" ]; }
             ];
             route = {
-              group_by = [ "job" ];
+              group_by = [
+                "alertname"
+                "cluster"
+              ];
               group_wait = "30s";
               group_interval = "5m";
               repeat_interval = "1h";
@@ -114,19 +124,27 @@ in
 
             templates = [ "/etc/alertmanager/config/*.tmpl" ];
           };
-          ingress = {
-            enabled = cfg.alertmanager.ingressHost != null;
-            ingressClassName = "nginx";
-            annotations = {
-              "nginx.ingress.kubernetes.io/rewrite-target" = "/";
-              "cert-manager.io/cluster-issuer" = "letsencrypt";
-            };
-            hosts = lib.optional (cfg.alertmanager.ingressHost != null) cfg.alertmanager.ingressHost;
-            tls = lib.optional (cfg.alertmanager.ingressHost != null) {
-              secretName = "alertmanager-tls";
-              hosts = [ cfg.alertmanager.ingressHost ];
-            };
-          };
+          ingress =
+            if cfg.alertmanager.ingressHost != null then
+              {
+                enabled = true;
+                ingressClassName = "nginx";
+                annotations = {
+                  "nginx.ingress.kubernetes.io/rewrite-target" = "/";
+                  "cert-manager.io/cluster-issuer" = "letsencrypt";
+                };
+                hosts = [ cfg.alertmanager.ingressHost ];
+                paths = [ "/" ];
+                pathType = "Prefix";
+                tls = [
+                  {
+                    secretName = "alertmanager-tls";
+                    hosts = [ cfg.alertmanager.ingressHost ];
+                  }
+                ];
+              }
+            else
+              { };
         };
 
         grafana = {
@@ -138,35 +156,51 @@ in
           };
           initChownData.enabled = false;
           service.port = 3000;
-          ingress = {
-            enabled = cfg.grafana.ingressHost != null;
-            ingressClassName = "nginx";
-            annotations = {
-              "nginx.ingress.kubernetes.io/rewrite-target" = "/";
-              "cert-manager.io/cluster-issuer" = "letsencrypt";
-            };
-            hosts = lib.optional (cfg.grafana.ingressHost != null) cfg.grafana.ingressHost;
-            tls = lib.optional (cfg.grafana.ingressHost != null) {
-              secretName = "grafana-tls";
-              hosts = [ cfg.grafana.ingressHost ];
-            };
-          };
+          ingress =
+            if cfg.grafana.ingressHost != null then
+              {
+                enabled = true;
+                ingressClassName = "nginx";
+                annotations = {
+                  "nginx.ingress.kubernetes.io/rewrite-target" = "/";
+                  "cert-manager.io/cluster-issuer" = "letsencrypt";
+                };
+                hosts = [ cfg.grafana.ingressHost ];
+                paths = [ "/" ];
+                pathType = "Prefix";
+                tls = [
+                  {
+                    secretName = "grafana-tls";
+                    hosts = [ cfg.grafana.ingressHost ];
+                  }
+                ];
+              }
+            else
+              { };
         };
         prometheus-node-exporter.prometheusSpec.scrapeInterval = "10s";
         prometheus = {
-          ingress = {
-            enabled = cfg.prometheus.ingressHost != null;
-            ingressClassName = "nginx";
-            annotations = {
-              "nginx.ingress.kubernetes.io/rewrite-target" = "/";
-              "cert-manager.io/cluster-issuer" = "letsencrypt";
-            };
-            hosts = lib.optional (cfg.prometheus.ingressHost != null) cfg.prometheus.ingressHost;
-            tls = lib.optional (cfg.prometheus.ingressHost != null) {
-              secretName = "prometheus-tls";
-              hosts = [ cfg.prometheus.ingressHost ];
-            };
-          };
+          ingress =
+            if cfg.prometheus.ingressHost != null then
+              {
+                enabled = true;
+                ingressClassName = "nginx";
+                annotations = {
+                  "nginx.ingress.kubernetes.io/rewrite-target" = "/";
+                  "cert-manager.io/cluster-issuer" = "letsencrypt";
+                };
+                hosts = [ cfg.prometheus.ingressHost ];
+                paths = [ "/" ];
+                pathType = "Prefix";
+                tls = [
+                  {
+                    secretName = "prometheus-tls";
+                    hosts = [ cfg.prometheus.ingressHost ];
+                  }
+                ];
+              }
+            else
+              { };
           prometheusSpec = {
             podMonitorNamespaceSelector.matchLabels = { };
             podMonitorSelectorNilUsesHelmValues = false;
@@ -177,21 +211,20 @@ in
       };
     };
 
-    secrets =
-      (lib.optional (cfg.grafana.enable) {
+    secrets = (
+      lib.optional (cfg.grafana.enable) {
         name = "grafana-admin-credentials";
         namespace = "monitoring";
         data = {
           password = cfg.grafana.passwordFile;
           username = cfg.grafana.usernameFile;
         };
-      })
-      ++ (lib.optional (cfg.alertmanager.enable) {
-        name = "alertmanager-config-secrets";
+      }
+      ++ lib.optional (cfg.alertmanager.enable) {
+        name = "alertmanager-config-secret";
         namespace = "monitoring";
-        data = {
-          DISCORD_WEBHOOK_URL = cfg.alertmanager.discordWebhookUrlFile;
-        };
-      });
+        data.DISCORD_WEBHOOK_URL = cfg.alertmanager.discordWebhookUrlFile;
+      }
+    );
   };
 }

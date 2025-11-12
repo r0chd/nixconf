@@ -7,5 +7,6 @@
     ./kube-resource-report
     ./namespace.nix
     ./kube-prometheus
+    ./vector
   ];
 }
