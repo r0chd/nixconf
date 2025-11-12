@@ -25,6 +25,8 @@
     };
   };
 
+  homelab.enable = true;
+
   programs.nixos-anywhere.sshKeyFile = config.sops.secrets.nixos-anywhere.path;
 
   services = {

@@ -1,12 +1,11 @@
-_: {
+{ lib, ... }:
+{
   services.openssh = {
     enable = true;
     settings = {
-      PasswordAuthentication = false;
+      AuthenticationMethods = "publickey";
+      PermitRootLogin = "prohibit-password";
     };
-    extraConfig = ''
-      AuthenticationMethods publickey
-    '';
   };
 
   environment.persist.directories = [

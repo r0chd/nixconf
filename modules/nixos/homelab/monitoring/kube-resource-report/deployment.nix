@@ -36,7 +36,6 @@ in
                   image = "hjacobs/kube-resource-report:22.11.0";
                   args = [
                     "--update-interval-minutes=1"
-                    "--additional-cost-per-cluster=30.0"
                     "/output"
                   ];
                   volumeMounts = [

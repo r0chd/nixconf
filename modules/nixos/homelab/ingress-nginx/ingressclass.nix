@@ -6,16 +6,13 @@
       kind = "IngressClass";
       metadata = {
         labels = {
-          "app.kubernetes.io/name" = "ingress-nginx";
-          "app.kubernetes.io/instance" = "ingress-nginx";
-          "app.kubernetes.io/version" = "1.14.0";
-          "app.kubernetes.io/part-of" = "ingress-nginx";
           "app.kubernetes.io/component" = "controller";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/name" = "ingress-nginx";
+          "app.kubernetes.io/part-of" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
         };
         name = "nginx";
-        annotations = {
-          "ingressclass.kubernetes.io/is-default-class" = "true";
-        };
       };
       spec = {
         controller = "k8s.io/ingress-nginx";

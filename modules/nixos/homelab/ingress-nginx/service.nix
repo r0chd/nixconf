@@ -6,72 +6,72 @@
       kind = "Service";
       metadata = {
         labels = {
-          "app.kubernetes.io/name" = "ingress-nginx";
-          "app.kubernetes.io/instance" = "ingress-nginx";
-          "app.kubernetes.io/version" = "1.14.0";
-          "app.kubernetes.io/part-of" = "ingress-nginx";
           "app.kubernetes.io/component" = "controller";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/name" = "ingress-nginx";
+          "app.kubernetes.io/part-of" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
         };
-        name = "ingress-nginx-controller-admission";
+        name = "ingress-nginx-controller";
         namespace = "ingress-nginx";
       };
       spec = {
-        type = "ClusterIP";
+        externalTrafficPolicy = "Local";
+        ipFamilies = [ "IPv4" ];
+        ipFamilyPolicy = "SingleStack";
         ports = [
           {
-            name = "https-webhook";
-            port = 443;
-            targetPort = "webhook";
+            appProtocol = "http";
+            name = "http";
+            port = 80;
+            protocol = "TCP";
+            targetPort = "http";
+          }
+          {
             appProtocol = "https";
+            name = "https";
+            port = 443;
+            protocol = "TCP";
+            targetPort = "https";
           }
         ];
         selector = {
-          "app.kubernetes.io/name" = "ingress-nginx";
-          "app.kubernetes.io/instance" = "ingress-nginx";
           "app.kubernetes.io/component" = "controller";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/name" = "ingress-nginx";
         };
+        type = "LoadBalancer";
       };
     }
     {
       apiVersion = "v1";
       kind = "Service";
       metadata = {
-        annotations = null;
         labels = {
-          "app.kubernetes.io/name" = "ingress-nginx";
-          "app.kubernetes.io/instance" = "ingress-nginx";
-          "app.kubernetes.io/version" = "1.14.0";
-          "app.kubernetes.io/part-of" = "ingress-nginx";
           "app.kubernetes.io/component" = "controller";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/name" = "ingress-nginx";
+          "app.kubernetes.io/part-of" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
         };
-        name = "ingress-nginx-controller";
+        name = "ingress-nginx-controller-admission";
         namespace = "ingress-nginx";
       };
       spec = {
-        type = "LoadBalancer";
-        ipFamilyPolicy = "SingleStack";
-        ipFamilies = [ "IPv4" ];
         ports = [
           {
-            name = "http";
-            port = 80;
-            protocol = "TCP";
-            targetPort = "http";
-            appProtocol = "http";
-          }
-          {
-            name = "https";
-            port = 443;
-            protocol = "TCP";
-            targetPort = "https";
             appProtocol = "https";
+            name = "https-webhook";
+            port = 443;
+            targetPort = "webhook";
           }
         ];
         selector = {
-          "app.kubernetes.io/name" = "ingress-nginx";
-          "app.kubernetes.io/instance" = "ingress-nginx";
           "app.kubernetes.io/component" = "controller";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/name" = "ingress-nginx";
         };
+        type = "ClusterIP";
       };
     }
   ];

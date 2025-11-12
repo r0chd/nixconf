@@ -4,12 +4,14 @@ let
 in
 {
   imports = [
-    ./ingressclass.nix
-    ./configmap.nix
     ./rbac.nix
+    ./configmap.nix
     ./deployment.nix
     ./service.nix
-    ./admission-webhooks
+    ./job.nix
+    ./namespace.nix
+    ./validating-webhook.nix
+    ./ingressclass.nix
   ];
 
   options.homelab.ingress = {

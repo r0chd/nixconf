@@ -34,8 +34,8 @@ in
       };
       ingressHost = lib.mkOption {
         type = types.nullOr types.str;
-        default = if config.homelab.domain != null then "grafana.${config.homelab.domain}" else null;
-        description = "Hostname for grafana ingress (defaults to grafana.<domain> if domain is set)";
+        default = if config.homelab.domain != null then "alertmanager.${config.homelab.domain}" else null;
+        description = "Hostname for alertmanager ingress (defaults to alertmanager.<domain> if domain is set)";
       };
     };
   };
@@ -123,8 +123,8 @@ in
             };
             hosts = lib.optional (cfg.alertmanager.ingressHost != null) cfg.alertmanager.ingressHost;
             tls = lib.optional (cfg.alertmanager.ingressHost != null) {
-              hosts = [ cfg.alertmanager.ingressHost ];
               secretName = "alertmanager-tls";
+              hosts = [ cfg.alertmanager.ingressHost ];
             };
           };
         };
@@ -147,16 +147,12 @@ in
             };
             hosts = lib.optional (cfg.grafana.ingressHost != null) cfg.grafana.ingressHost;
             tls = lib.optional (cfg.grafana.ingressHost != null) {
-              hosts = [ cfg.grafana.ingressHost ];
               secretName = "grafana-tls";
+              hosts = [ cfg.grafana.ingressHost ];
             };
           };
         };
-        prometheus-node-exporter = {
-          prometheusSpec = {
-            scrapeInterval = "10s";
-          };
-        };
+        prometheus-node-exporter.prometheusSpec.scrapeInterval = "10s";
         prometheus = {
           ingress = {
             enabled = cfg.prometheus.ingressHost != null;
@@ -167,8 +163,8 @@ in
             };
             hosts = lib.optional (cfg.prometheus.ingressHost != null) cfg.prometheus.ingressHost;
             tls = lib.optional (cfg.prometheus.ingressHost != null) {
-              hosts = [ cfg.prometheus.ingressHost ];
               secretName = "prometheus-tls";
+              hosts = [ cfg.prometheus.ingressHost ];
             };
           };
           prometheusSpec = {

@@ -98,10 +98,10 @@
       kind = "ClusterRoleBinding";
       metadata = {
         labels = {
-          "app.kubernetes.io/name" = "ingress-nginx";
           "app.kubernetes.io/instance" = "ingress-nginx";
-          "app.kubernetes.io/version" = "1.14.0";
+          "app.kubernetes.io/name" = "ingress-nginx";
           "app.kubernetes.io/part-of" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
         };
         name = "ingress-nginx";
       };
@@ -120,14 +120,40 @@
     }
     {
       apiVersion = "rbac.authorization.k8s.io/v1";
+      kind = "ClusterRoleBinding";
+      metadata = {
+        labels = {
+          "app.kubernetes.io/component" = "admission-webhook";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/name" = "ingress-nginx";
+          "app.kubernetes.io/part-of" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
+        };
+        name = "ingress-nginx-admission";
+      };
+      roleRef = {
+        apiGroup = "rbac.authorization.k8s.io";
+        kind = "ClusterRole";
+        name = "ingress-nginx-admission";
+      };
+      subjects = [
+        {
+          kind = "ServiceAccount";
+          name = "ingress-nginx-admission";
+          namespace = "ingress-nginx";
+        }
+      ];
+    }
+    {
+      apiVersion = "rbac.authorization.k8s.io/v1";
       kind = "Role";
       metadata = {
         labels = {
-          "app.kubernetes.io/name" = "ingress-nginx";
-          "app.kubernetes.io/instance" = "ingress-nginx";
-          "app.kubernetes.io/version" = "1.14.0";
-          "app.kubernetes.io/part-of" = "ingress-nginx";
           "app.kubernetes.io/component" = "controller";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/name" = "ingress-nginx";
+          "app.kubernetes.io/part-of" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
         };
         name = "ingress-nginx";
         namespace = "ingress-nginx";
@@ -186,8 +212,8 @@
         }
         {
           apiGroups = [ "coordination.k8s.io" ];
-          resources = [ "leases" ];
           resourceNames = [ "ingress-nginx-leader" ];
+          resources = [ "leases" ];
           verbs = [
             "get"
             "update"
@@ -219,14 +245,39 @@
     }
     {
       apiVersion = "rbac.authorization.k8s.io/v1";
+      kind = "Role";
+      metadata = {
+        labels = {
+          "app.kubernetes.io/component" = "admission-webhook";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/name" = "ingress-nginx";
+          "app.kubernetes.io/part-of" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
+        };
+        name = "ingress-nginx-admission";
+        namespace = "ingress-nginx";
+      };
+      rules = [
+        {
+          apiGroups = [ "" ];
+          resources = [ "secrets" ];
+          verbs = [
+            "get"
+            "create"
+          ];
+        }
+      ];
+    }
+    {
+      apiVersion = "rbac.authorization.k8s.io/v1";
       kind = "RoleBinding";
       metadata = {
         labels = {
-          "app.kubernetes.io/name" = "ingress-nginx";
-          "app.kubernetes.io/instance" = "ingress-nginx";
-          "app.kubernetes.io/version" = "1.14.0";
-          "app.kubernetes.io/part-of" = "ingress-nginx";
           "app.kubernetes.io/component" = "controller";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/name" = "ingress-nginx";
+          "app.kubernetes.io/part-of" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
         };
         name = "ingress-nginx";
         namespace = "ingress-nginx";
@@ -240,6 +291,33 @@
         {
           kind = "ServiceAccount";
           name = "ingress-nginx";
+          namespace = "ingress-nginx";
+        }
+      ];
+    }
+    {
+      apiVersion = "rbac.authorization.k8s.io/v1";
+      kind = "RoleBinding";
+      metadata = {
+        labels = {
+          "app.kubernetes.io/component" = "admission-webhook";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/name" = "ingress-nginx";
+          "app.kubernetes.io/part-of" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
+        };
+        name = "ingress-nginx-admission";
+        namespace = "ingress-nginx";
+      };
+      roleRef = {
+        apiGroup = "rbac.authorization.k8s.io";
+        kind = "Role";
+        name = "ingress-nginx-admission";
+      };
+      subjects = [
+        {
+          kind = "ServiceAccount";
+          name = "ingress-nginx-admission";
           namespace = "ingress-nginx";
         }
       ];
@@ -259,6 +337,22 @@
         namespace = "ingress-nginx";
       };
       automountServiceAccountToken = true;
+    }
+    {
+      apiVersion = "v1";
+      automountServiceAccountToken = true;
+      kind = "ServiceAccount";
+      metadata = {
+        labels = {
+          "app.kubernetes.io/component" = "admission-webhook";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/name" = "ingress-nginx";
+          "app.kubernetes.io/part-of" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
+        };
+        name = "ingress-nginx-admission";
+        namespace = "ingress-nginx";
+      };
     }
   ];
 }

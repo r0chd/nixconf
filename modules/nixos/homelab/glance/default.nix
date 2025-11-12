@@ -211,7 +211,7 @@ let
                       [
                         {
                           title = "Alertmanager";
-                          url = "https://${config.homelab.monitoring.thanos.ingressHost}";
+                          url = "https://${config.homelab.monitoring.alertmanager.ingressHost}";
                           "check-url" = "http://thanos-query-frontend.monitoring.svc.cluster.local:9090";
                           icon = "di:alertmanager";
                         }

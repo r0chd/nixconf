@@ -4,12 +4,13 @@
   ...
 }:
 {
-  services.ssh-agent.enable = true;
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
 
     matchBlocks."*" = {
+      serverAliveInterval = 60;
+      serverAliveCountMax = 3;
       userKnownHostsFile =
         if config.services.impermanence.enable then
           "~/.ssh/persisted/known_hosts"
