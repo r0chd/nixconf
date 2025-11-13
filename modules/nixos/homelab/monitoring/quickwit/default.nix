@@ -8,7 +8,7 @@ in
 
   options.homelab.monitoring.quickwit = {
     enable = lib.mkEnableOption "quickwit";
-    storageConfigFile = lib.mkOption {
+    storageConfig = lib.mkOption {
       type = types.str;
     };
     ingressHost = lib.mkOption {
@@ -289,10 +289,12 @@ in
 
       secrets = [
         {
-          name = "quickwit-config";
-          namespace = "monitoring";
-          data = {
-            "quickwit.yaml" = cfg.storageConfigFile;
+          metadata = {
+            name = "quickwit-config";
+            namespace = "monitoring";
+          };
+          stringData = {
+            "quickwit.yaml" = cfg.storageConfig;
           };
         }
       ];

@@ -36,14 +36,12 @@ in
         description = "Enable database backups";
       };
 
-      accessKeyIdFile = lib.mkOption {
+      accessKeyId = lib.mkOption {
         type = types.str;
-        description = "Path to file containing S3 access key";
       };
 
-      secretAccessKeyFile = lib.mkOption {
+      secretAccessKey = lib.mkOption {
         type = types.str;
-        description = "Path to file containing S3 secret key";
       };
     };
   };
@@ -260,11 +258,13 @@ in
 
       secrets = lib.mkIf cfg.backup.enable [
         {
-          name = "atuin-backup-credentials";
-          namespace = "atuin";
-          data = {
-            "access-key-id" = cfg.backup.accessKeyIdFile;
-            "secret-access-key" = cfg.backup.secretAccessKeyFile;
+          metadata = {
+            name = "atuin-backup-credentials";
+            namespace = "atuin";
+          };
+          stringData = {
+            "access-key-id" = cfg.backup.accessKeyId;
+            "secret-access-key" = cfg.backup.secretAccessKey;
           };
         }
       ];

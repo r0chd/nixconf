@@ -25,7 +25,11 @@
     "vaultwarden/access_key_id" = { };
     "vaultwarden/secret_access_key" = { };
 
-    thanos-objectstorage = { };
+    "vaultwarden/backup/access_key_id" = { };
+    "vaultwarden/backup/secret_access_key" = { };
+
+    "thanos/access_key" = { };
+    "thanos/secret_key" = { };
 
     quickwit-config = { };
   };
@@ -58,15 +62,20 @@
 
     garage = {
       enable = true;
-      rpcSecretFile = config.sops.secrets."garage/rpc-secret".path;
-      adminTokenFile = config.sops.secrets."garage/admin-token".path;
-      metricsTokenFile = config.sops.secrets."garage/metrics-token".path;
+      rpcSecret = config.sops.placeholder."garage/rpc-secret";
+      adminToken = config.sops.placeholder."garage/admin-token";
+      metricsToken = config.sops.placeholder."garage/metrics-token";
     };
 
     vaultwarden = {
       enable = true;
-      accessKeyIdFile = config.sops.secrets."vaultwarden/access_key_id".path;
-      secretAccessKeyFile = config.sops.secrets."vaultwarden/secret_access_key".path;
+      accessKeyId = config.sops.placeholder."vaultwarden/access_key_id";
+      secretAccessKey = config.sops.placeholder."vaultwarden/secret_access_key";
+      db.backup = {
+        enable = true;
+        accessKeyId = config.sops.placeholder."vaultwarden/backup/access_key_id";
+        secretAccessKey = config.sops.placeholder."vaultwarden/backup/secret_access_key";
+      };
     };
 
     moxwiki.enable = true;
@@ -77,8 +86,8 @@
         walStorageSize = "2Gi";
         backup = {
           enable = true;
-          accessKeyIdFile = config.sops.secrets."atuin/backup/access_key_id".path;
-          secretAccessKeyFile = config.sops.secrets."atuin/backup/secret_access_key".path;
+          accessKeyId = config.sops.placeholder."atuin/backup/access_key_id";
+          secretAccessKey = config.sops.placeholder."atuin/backup/secret_access_key";
         };
       };
     };
@@ -92,16 +101,18 @@
       prometheus.enable = true;
       alertmanager = {
         enable = true;
-        discordWebhookUrlFile = config.sops.secrets.alertmanager_webhook_url.path;
+        discordWebhookUrl = config.sops.placeholder.alertmanager_webhook_url;
       };
       thanos = {
         enable = true;
-        thanosObjectStorageFile = config.sops.secrets.thanos-objectstorage.path;
+        bucket = "thanos";
+        access_key = config.sops.placeholder."thanos/access_key";
+        secret_key = config.sops.placeholder."thanos/secret_key";
       };
       grafana = {
         enable = true;
-        usernameFile = config.sops.secrets."grafana/username".path;
-        passwordFile = config.sops.secrets."grafana/password".path;
+        username = config.sops.placeholder."grafana/username";
+        password = config.sops.placeholder."grafana/password";
       };
       kube-web.enable = true;
       kube-ops.enable = true;
@@ -109,7 +120,7 @@
       vector.enable = true;
       quickwit = {
         enable = true;
-        storageConfigFile = config.sops.secrets."quickwit-config".path;
+        storageConfig = config.sops.placeholder."quickwit-config";
         retention = {
           period = "7 days";
           schedule = "daily";

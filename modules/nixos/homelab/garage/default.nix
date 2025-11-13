@@ -58,16 +58,16 @@ in
       description = "Hostname base for garage ingress (defaults to garage.<domain> if domain is set)";
     };
 
-    rpcSecretFile = lib.mkOption {
-      type = types.path;
+    rpcSecret = lib.mkOption {
+      type = types.str;
     };
 
-    adminTokenFile = lib.mkOption {
-      type = types.path;
+    adminToken = lib.mkOption {
+      type = types.str;
     };
 
-    metricsTokenFile = lib.mkOption {
-      type = types.path;
+    metricsToken = lib.mkOption {
+      type = types.str;
     };
 
     resources = lib.mkOption {
@@ -99,12 +99,14 @@ in
   config = lib.mkIf (config.homelab.enable && cfg.enable) {
     services.k3s.secrets = [
       {
-        name = "garage-secrets";
-        namespace = "default";
-        data = {
-          rpc-secret = cfg.rpcSecretFile;
-          admin-token = cfg.adminTokenFile;
-          metrics-token = cfg.metricsTokenFile;
+        metadata = {
+          name = "garage-secrets";
+          namespace = "default";
+        };
+        stringData = {
+          rpc-secret = cfg.rpcSecret;
+          admin-token = cfg.adminToken;
+          metrics-token = cfg.metricsToken;
         };
       }
     ];

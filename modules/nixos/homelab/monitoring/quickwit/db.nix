@@ -260,11 +260,13 @@ in
 
       secrets = lib.mkIf cfg.backup.enable [
         {
-          name = "quickwit-backup-credentials";
-          namespace = "monitoring";
-          data = {
-            "access-key-id" = cfg.backup.accessKeyIdFile;
-            "secret-access-key" = cfg.backup.secretAccessKeyFile;
+          metadata = {
+            name = "quickwit-backup-credentials";
+            namespace = "monitoring";
+          };
+          stringData = {
+            "access-key-id" = cfg.backup.accessKeyId;
+            "secret-access-key" = cfg.backup.secretAccessKey;
           };
         }
       ];

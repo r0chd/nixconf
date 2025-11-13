@@ -15,7 +15,7 @@ in
 
   options.homelab.system.pihole = {
     enable = lib.mkEnableOption "pihole";
-    passwordFile = lib.mkOption { type = types.path; };
+    password = lib.mkOption { type = types.path; };
     dns = lib.mkOption { type = types.str; };
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
@@ -153,10 +153,12 @@ in
     };
     secrets = [
       {
-        name = "pihole";
-        namespace = "system";
-        data = {
-          password = cfg.passwordFile;
+        metadata = {
+          name = "pihole";
+          namespace = "system";
+        };
+        stringData = {
+          password = cfg.password;
         };
       }
     ];

@@ -24,14 +24,12 @@ in
       description = "Hostname for vaultwarden ingress (defaults to vaultwarden.<domain> if domain is set)";
     };
 
-    accessKeyIdFile = lib.mkOption {
+    accessKeyId = lib.mkOption {
       type = types.str;
-      description = "Path to file containing S3 access key";
     };
 
-    secretAccessKeyFile = lib.mkOption {
+    secretAccessKey = lib.mkOption {
       type = types.str;
-      description = "Path to file containing S3 secret key";
     };
   };
 
@@ -131,11 +129,13 @@ in
 
     secrets = [
       {
-        name = "garage-s3-credentials";
-        namespace = "vaultwarden";
-        data = {
-          access-key = cfg.accessKeyIdFile;
-          secret-key = cfg.secretAccessKeyFile;
+        metadata = {
+          name = "garage-s3-credentials";
+          namespace = "vaultwarden";
+        };
+        stringData = {
+          access-key = cfg.accessKeyId;
+          secret-key = cfg.secretAccessKey;
         };
       }
     ];

@@ -22,16 +22,16 @@ in
         default = if config.homelab.domain != null then "grafana.${config.homelab.domain}" else null;
         description = "Hostname for grafana ingress (defaults to grafana.<domain> if domain is set)";
       };
-      usernameFile = lib.mkOption {
-        type = types.nullOr types.str;
+      username = lib.mkOption {
+        type = types.str;
       };
-      passwordFile = lib.mkOption {
-        type = types.nullOr types.str;
+      password = lib.mkOption {
+        type = types.str;
       };
     };
     alertmanager = {
       enable = lib.mkEnableOption "alertmanager";
-      discordWebhookUrlFile = lib.mkOption {
+      discordWebhookUrl = lib.mkOption {
         type = types.str;
       };
       ingressHost = lib.mkOption {
@@ -47,7 +47,13 @@ in
         default = if config.homelab.domain != null then "thanos.${config.homelab.domain}" else null;
         description = "Hostname for thanos ingress (defaults to thanos.<domain> if domain is set)";
       };
-      thanosObjectStorageFile = lib.mkOption {
+      bucket = lib.mkOption {
+        type = types.str;
+      };
+      access_key = lib.mkOption {
+        type = types.str;
+      };
+      secret_key = lib.mkOption {
         type = types.str;
       };
     };
@@ -283,22 +289,34 @@ in
 
     secrets = (
       lib.optional (cfg.grafana.enable) {
-        name = "grafana-admin-credentials";
-        namespace = "monitoring";
-        data = {
-          password = cfg.grafana.passwordFile;
-          username = cfg.grafana.usernameFile;
+        metadata = {
+          name = "grafana-admin-credentials";
+          namespace = "monitoring";
+        };
+        stringData = {
+          password = cfg.grafana.password;
+          username = cfg.grafana.username;
         };
       }
       ++ lib.optional (cfg.alertmanager.enable) {
-        name = "alertmanager-config-secret";
-        namespace = "monitoring";
-        data.DISCORD_WEBHOOK_URL = cfg.alertmanager.discordWebhookUrlFile;
+        metadata = {
+          name = "alertmanager-config-secret";
+          namespace = "monitoring";
+        };
+        stringData.DISCORD_WEBHOOK_URL = cfg.alertmanager.discordWebhookUrl;
       }
       ++ lib.optional (cfg.thanos.enable) {
-        name = "thanos-objectstorage";
-        namespace = "monitoring";
-        data."thanos.yaml" = cfg.thanos.thanosObjectStorageFile;
+        metadata = {
+          name = "thanos-objectstorage";
+          namespace = "monitoring";
+        };
+        stringData."thanos.yaml" = lib.generators.toYAML { } {
+          type = "s3";
+          bucket = cfg.thanos.bucket;
+          endpoint = "https://s3.${config.homelab.garage.ingressHost}";
+          access_key = cfg.thanos.access_key;
+          secret_key = cfg.thanos.secret_key;
+        };
       }
     );
   };

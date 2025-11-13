@@ -182,15 +182,15 @@ in
               
               echo "Found $NUM_GEN generations for ${user}"
               
-              if [ "$NUM_GEN" -ge 2 ]; then
-                PREV_GEN=$(echo "$GENERATIONS" | tail -n 2 | head -n 1)
+              if [ "$NUM_GEN" -ge 1 ]; then
+                GEN=$(echo "$GENERATIONS" | tail -n 1)
                 
-                echo "Previous generation: $PREV_GEN"
+                echo "Previous generation: $GEN"
                 
-                if [ -n "$PREV_GEN" ] && [ -x "$PREV_GEN/activate" ]; then
+                if [ -n "$GEN" ] && [ -x "$GEN/activate" ]; then
                   echo "Activating previous Home Manager generation for ${user}..."
                   
-                  if sudo -u ${user} "$PREV_GEN/activate" 2>&1; then
+                  if sudo -u ${user} "$GEN/activate" 2>&1; then
                     echo "Successfully activated generation for ${user}"
                   else
                     ACTIVATE_EXIT=$?
@@ -201,7 +201,7 @@ in
                   echo "No valid activate script in previous generation for ${user}"
                 fi
               else
-                echo "Not enough Home Manager generations yet for ${user} (need at least 2)"
+                echo "Home Manager generation not found for user ${user}"
               fi
             else
               echo "Home Manager profiles directory does not exist for user ${user}, skipping."
