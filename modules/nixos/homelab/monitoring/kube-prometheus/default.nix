@@ -38,6 +38,17 @@ in
         description = "Hostname for alertmanager ingress (defaults to alertmanager.<domain> if domain is set)";
       };
     };
+    thanos = {
+      enable = lib.mkEnableOption "thanos";
+      ingressHost = lib.mkOption {
+        type = types.nullOr types.str;
+        default = if config.homelab.domain != null then "alertmanager.${config.homelab.domain}" else null;
+        description = "Hostname for alertmanager ingress (defaults to alertmanager.<domain> if domain is set)";
+      };
+      thanosObjectStorageFile = lib.mkOption {
+        type = types.str;
+      };
+    };
   };
 
   config.services.k3s = {
@@ -224,6 +235,11 @@ in
         name = "alertmanager-config-secret";
         namespace = "monitoring";
         data.DISCORD_WEBHOOK_URL = cfg.alertmanager.discordWebhookUrlFile;
+      }
+      ++ lib.optional (cfg.thanos.enable) {
+        name = "thanos-objectstorage";
+        namespace = "monitoring";
+        data."thanos.yaml" = cfg.thanos.thanosObjectStorageFile;
       }
     );
   };

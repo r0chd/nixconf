@@ -20,6 +20,8 @@
 
     "garage/moxpaper/access_key_id" = { };
     "garage/moxpaper/secret_access_key" = { };
+    "garage/quickwit/access_key_id" = { };
+    "garage/quickwit/secret_access_key" = { };
   };
 
   programs = {
@@ -39,6 +41,13 @@
             url = "https://s3.garage.fi.r0chd.pl";
             accessKey = config.sops.placeholder."garage/moxpaper/access_key_id";
             secretKey = config.sops.placeholder."garage/moxpaper/secret_access_key";
+            api = "s3v4";
+            path = "auto";
+          };
+          quickwit = {
+            url = "https://s3.garage.fi.r0chd.pl";
+            accessKey = config.sops.placeholder."garage/quickwit/access_key_id";
+            secretKey = config.sops.placeholder."garage/quickwit/secret_access_key";
             api = "s3v4";
             path = "auto";
           };

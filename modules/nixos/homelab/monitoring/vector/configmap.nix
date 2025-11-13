@@ -1,6 +1,9 @@
 { lib, config, ... }:
+let
+  cfg = config.homelab.monitoring.vector;
+in
 {
-  config = lib.mkIf (config.homelab.enable && config.homelab.monitoring.vector.enable) {
+  config = lib.mkIf (config.homelab.enable && cfg.enable) {
     services.k3s.manifests."vector-configmap".content = [
       {
         apiVersion = "v1";
@@ -120,7 +123,7 @@
                     codec: "json"
                   framing:
                     method: "newline_delimited"
-                  uri: "http://quickwit-indexer.monitoring.svc.cluster.local:7280/api/v1/logs/ingest"
+                  uri: ${cfg.sinkUri}
             '';
         };
       }

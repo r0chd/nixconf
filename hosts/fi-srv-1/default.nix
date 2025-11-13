@@ -23,6 +23,8 @@
     "atuin/backup/secret_access_key" = { };
 
     thanos-objectstorage = { };
+
+    quickwit-config = { };
   };
 
   boot.loader = {
@@ -79,14 +81,6 @@
     glance = {
       enable = true;
       ingressHost = "fi.r0chd.pl";
-      additionalServices = [
-        {
-          title = "Vault";
-          url = "https://vault.kms.r0chd.pl";
-          check-url = "https://vault.kms.r0chd.pl";
-          icon = "di:vault";
-        }
-      ];
     };
 
     monitoring = {
@@ -108,6 +102,14 @@
       kube-ops.enable = true;
       kube-resource-report.enable = true;
       vector.enable = true;
+      quickwit = {
+        enable = true;
+        storageConfigFile = config.sops.secrets."quickwit-config".path;
+        retention = {
+          period = "7 days";
+          schedule = "daily";
+        };
+      };
     };
   };
 

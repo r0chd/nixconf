@@ -15,6 +15,9 @@
     alertmanager_webhook_url = { };
 
     "minio/credentials" = { };
+
+    "grafana/username" = { };
+    "grafana/password" = { };
   };
 
   networking = {
@@ -166,13 +169,26 @@
       reloader.enable = true;
     };
 
+    glance = {
+      enable = true;
+      ingressHost = "kms.r0chd.pl";
+    };
+
     monitoring = {
       prometheus.enable = true;
       alertmanager = {
         enable = true;
         discordWebhookUrlFile = config.sops.secrets.alertmanager_webhook_url.path;
       };
+      grafana = {
+        enable = true;
+        usernameFile = config.sops.secrets."grafana/username".path;
+        passwordFile = config.sops.secrets."grafana/password".path;
+      };
+      kube-web.enable = true;
+      kube-ops.enable = true;
       kube-resource-report.enable = true;
+      #vector.enable = true;
     };
 
     vault.enable = true;
