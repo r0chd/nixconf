@@ -21,7 +21,6 @@
                   config.allowUnfreePredicate =
                     pkg:
                     builtins.elem (lib.getName pkg) [
-                      "terraform"
                       "vault"
                     ];
                 };
@@ -51,7 +50,7 @@
                   ;
               }
               ++ [
-                (pkgs.terraform.withPlugins (
+                (pkgs.opentofu.withPlugins (
                   p:
                   builtins.attrValues {
                     inherit (p)

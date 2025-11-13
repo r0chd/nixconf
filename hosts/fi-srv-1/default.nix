@@ -22,6 +22,9 @@
     "atuin/backup/access_key_id" = { };
     "atuin/backup/secret_access_key" = { };
 
+    "vaultwarden/access_key_id" = { };
+    "vaultwarden/secret_access_key" = { };
+
     thanos-objectstorage = { };
 
     quickwit-config = { };
@@ -60,10 +63,12 @@
       metricsTokenFile = config.sops.secrets."garage/metrics-token".path;
     };
 
-    portfolio = {
+    vaultwarden = {
       enable = true;
-      githubApiTokenFile = config.sops.secrets."github_api".path;
+      accessKeyIdFile = config.sops.secrets."vaultwarden/access_key_id".path;
+      secretAccessKeyFile = config.sops.secrets."vaultwarden/secret_access_key".path;
     };
+
     moxwiki.enable = true;
     atuin = {
       enable = true;

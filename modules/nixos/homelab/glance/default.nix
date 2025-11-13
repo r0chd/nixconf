@@ -97,20 +97,10 @@ let
               {
                 type = "monitor";
                 cache = "1m";
-                title = "Services";
+                title = "Monitoring";
                 sites =
                   lib.concatLists [
-                    (lib.optionals
-                      (config.homelab.system.pihole.enable && config.homelab.system.pihole.ingressHost != null)
-                      [
-                        {
-                          title = "Pi-Hole";
-                          url = "https://${config.homelab.system.pihole.ingressHost}";
-                          "check-url" = "http://pihole-web.system.svc.cluster.local:80";
-                          icon = "di:pi-hole";
-                        }
-                      ]
-                    )
+                    # Monitoring stack
                     (lib.optionals
                       (config.homelab.monitoring.grafana.enable && config.homelab.monitoring.grafana.ingressHost != null)
                       [
@@ -122,14 +112,45 @@ let
                         }
                       ]
                     )
-                    (lib.optionals (config.homelab.atuin.enable && config.homelab.atuin.ingressHost != null) [
-                      {
-                        title = "atuin";
-                        url = "https://${config.homelab.atuin.ingressHost}";
-                        "check-url" = "http://atuin.atuin.svc.cluster.local:8888";
-                        icon = "di:atuin";
-                      }
-                    ])
+                    (lib.optionals
+                      (
+                        config.homelab.monitoring.prometheus.enable
+                        && config.homelab.monitoring.prometheus.ingressHost != null
+                      )
+                      [
+                        {
+                          title = "Prometheus";
+                          url = "https://${config.homelab.monitoring.prometheus.ingressHost}";
+                          "check-url" = "http://prometheus-stack-kube-prom-prometheus.monitoring.svc.cluster.local:9090";
+                          icon = "di:prometheus";
+                        }
+                      ]
+                    )
+                    (lib.optionals
+                      (config.homelab.monitoring.thanos.enable && config.homelab.monitoring.thanos.ingressHost != null)
+                      [
+                        {
+                          title = "Thanos";
+                          url = "https://${config.homelab.monitoring.thanos.ingressHost}";
+                          "check-url" = "http://thanos-query-frontend.monitoring.svc.cluster.local:9090";
+                          icon = "di:thanos";
+                        }
+                      ]
+                    )
+                    (lib.optionals
+                      (
+                        config.homelab.monitoring.alertmanager.enable
+                        && config.homelab.monitoring.alertmanager.ingressHost != null
+                      )
+                      [
+                        {
+                          title = "Alertmanager";
+                          url = "https://${config.homelab.monitoring.alertmanager.ingressHost}";
+                          "check-url" = "http://prometheus-stack-kube-prom-alertmanager.monitoring.svc.cluster.local:9093";
+                          icon = "di:alertmanager";
+                        }
+                      ]
+                    )
                     (lib.optionals
                       (
                         config.homelab.monitoring.kube-web.enable && config.homelab.monitoring.kube-web.ingressHost != null
@@ -170,50 +191,16 @@ let
                         }
                       ]
                     )
-                    (lib.optionals (config.homelab.vault.enable && config.homelab.vault.ingressHost != null) [
-                      {
-                        title = "Vault";
-                        url = "https://${config.homelab.vault.ingressHost}";
-                        "check-url" = "http://vault.vault.svc.cluster.local:8200";
-                        icon = "di:vault";
-                      }
-                    ])
                     (lib.optionals
                       (
-                        config.homelab.monitoring.prometheus.enable
-                        && config.homelab.monitoring.prometheus.ingressHost != null
+                        config.homelab.monitoring.quickwit.enable && config.homelab.monitoring.quickwit.ingressHost != null
                       )
                       [
                         {
-                          title = "Prometheus";
-                          url = "https://${config.homelab.monitoring.prometheus.ingressHost}";
-                          "check-url" = "http://prometheus-stack-kube-prom-prometheus.monitoring.svc.cluster.local:9090";
-                          icon = "di:prometheus";
-                        }
-                      ]
-                    )
-                    (lib.optionals
-                      (config.homelab.monitoring.thanos.enable && config.homelab.monitoring.thanos.ingressHost != null)
-                      [
-                        {
-                          title = "Thanos";
-                          url = "https://${config.homelab.monitoring.thanos.ingressHost}";
-                          "check-url" = "http://thanos-query-frontend.monitoring.svc.cluster.local:9090";
-                          icon = "di:thanos";
-                        }
-                      ]
-                    )
-                    (lib.optionals
-                      (
-                        config.homelab.monitoring.alertmanager.enable
-                        && config.homelab.monitoring.alertmanager.ingressHost != null
-                      )
-                      [
-                        {
-                          title = "Alertmanager";
-                          url = "https://${config.homelab.monitoring.alertmanager.ingressHost}";
-                          "check-url" = "http://thanos-query-frontend.monitoring.svc.cluster.local:9090";
-                          icon = "di:alertmanager";
+                          title = "Quickwit";
+                          url = "https://${config.homelab.monitoring.quickwit.ingressHost}";
+                          "check-url" = "http://quickwit-control-plane.monitoring.svc.cluster.local:7280";
+                          icon = "sh:quickwit";
                         }
                       ]
                     )
@@ -234,16 +221,52 @@ let
                         icon = "si:gitbook";
                       }
                     ])
-                    (lib.optionals (config.homelab.portfolio.enable && config.homelab.portfolio.ingressHost != null) [
+                    (lib.optionals (config.homelab.atuin.enable && config.homelab.atuin.ingressHost != null) [
                       {
-                        title = "Portfolio";
-                        url = "https://${config.homelab.portfolio.ingressHost}";
-                        "check-url" = "http://portfolio-client.portfolio.svc.cluster.local:80";
-                        icon = "mdi:briefcase-variant";
+                        title = "atuin";
+                        url = "https://${config.homelab.atuin.ingressHost}";
+                        "check-url" = "http://atuin.atuin.svc.cluster.local:8888";
+                        icon = "di:atuin";
                       }
                     ])
+                    (lib.optionals (config.homelab.vaultwarden.enable && config.homelab.vaultwarden.ingressHost != null)
+                      [
+                        {
+                          title = "Vaultwarden";
+                          url = "https://${config.homelab.vaultwarden.ingressHost}";
+                          "check-url" = "http://vaultwarden.vaultwarden.svc.cluster.local:80";
+                          icon = "sh:vaultwarden";
+                        }
+                      ]
+                    )
                   ]
                   ++ cfg.additionalWebsites;
+              }
+              {
+                type = "monitor";
+                cache = "1m";
+                title = "Security";
+                sites = lib.concatLists [
+                  (lib.optionals
+                    (config.homelab.system.pihole.enable && config.homelab.system.pihole.ingressHost != null)
+                    [
+                      {
+                        title = "Pi-Hole";
+                        url = "https://${config.homelab.system.pihole.ingressHost}";
+                        "check-url" = "http://pihole-web.system.svc.cluster.local:80";
+                        icon = "di:pi-hole";
+                      }
+                    ]
+                  )
+                  (lib.optionals (config.homelab.vault.enable && config.homelab.vault.ingressHost != null) [
+                    {
+                      title = "Vault";
+                      url = "https://${config.homelab.vault.ingressHost}";
+                      "check-url" = "http://vault.vault.svc.cluster.local:8200";
+                      icon = "di:vault";
+                    }
+                  ])
+                ];
               }
             ];
           }

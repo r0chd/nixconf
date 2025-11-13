@@ -14,8 +14,7 @@ in
     ./cert-manager
     ./moxwiki
     ./glance
-    ./portfolio
-    # ./vaultwarden
+    ./vaultwarden
     # ./immich
     # ./nextcloud
   ];

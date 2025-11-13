@@ -3,6 +3,7 @@
 set -euo pipefail
 
 mkdir -p root/.ssh
+mkdir -p boot
 mkdir -p persist/system/root/.ssh
 mkdir tmp
 

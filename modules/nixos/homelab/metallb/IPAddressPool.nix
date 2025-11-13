@@ -8,7 +8,6 @@ in
       apiVersion = "metallb.io/v1beta1";
       kind = "IPAddressPool";
       metadata = {
-
         name = "k3s-nuc-pool";
         namespace = "default";
       };

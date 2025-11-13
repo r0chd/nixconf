@@ -22,6 +22,7 @@
           darkreader
           vimium
           youtube-shorts-block
+          bitwarden
           ;
       };
 

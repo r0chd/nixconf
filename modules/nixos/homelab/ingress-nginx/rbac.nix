@@ -354,5 +354,33 @@
         namespace = "ingress-nginx";
       };
     }
+    {
+      apiVersion = "rbac.authorization.k8s.io/v1";
+      kind = "ClusterRole";
+      metadata = {
+        name = "ingress-nginx-admission";
+        labels = {
+          "app.kubernetes.io/name" = "ingress-nginx";
+          "app.kubernetes.io/component" = "admission-webhook";
+          "app.kubernetes.io/instance" = "ingress-nginx";
+          "app.kubernetes.io/part-of" = "ingress-nginx";
+          "app.kubernetes.io/version" = "1.14.0";
+        };
+      };
+      rules = [
+        {
+          apiGroups = [ "admissionregistration.k8s.io" ];
+          resources = [
+            "mutatingwebhookconfigurations"
+            "validatingwebhookconfigurations"
+          ];
+          verbs = [
+            "get"
+            "update"
+            "patch"
+          ];
+        }
+      ];
+    }
   ];
 }

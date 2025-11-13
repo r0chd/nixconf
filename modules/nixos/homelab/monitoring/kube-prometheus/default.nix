@@ -4,6 +4,8 @@ let
   inherit (lib) types;
 in
 {
+  imports = [ ./dashboards ];
+
   options.homelab.monitoring = {
     prometheus = {
       enable = lib.mkEnableOption "prometheus";
@@ -42,8 +44,8 @@ in
       enable = lib.mkEnableOption "thanos";
       ingressHost = lib.mkOption {
         type = types.nullOr types.str;
-        default = if config.homelab.domain != null then "alertmanager.${config.homelab.domain}" else null;
-        description = "Hostname for alertmanager ingress (defaults to alertmanager.<domain> if domain is set)";
+        default = if config.homelab.domain != null then "thanos.${config.homelab.domain}" else null;
+        description = "Hostname for thanos ingress (defaults to thanos.<domain> if domain is set)";
       };
       thanosObjectStorageFile = lib.mkOption {
         type = types.str;
@@ -160,6 +162,54 @@ in
 
         grafana = {
           enabled = cfg.grafana.enable;
+
+          plugins = (
+            if config.homelab.monitoring.quickwit.enable then
+              [
+                "quickwit-quickwit-datasource 0.4.5"
+              ]
+            else
+              [ ]
+          );
+
+          additionalDataSources = builtins.concatLists [
+            (
+              if cfg.thanos.enable then
+                [
+                  {
+                    name = "thanos";
+                    type = "prometheus";
+                    access = "proxy";
+                    orgID = 1;
+                    url = "http://thanos-query.monitoring.svc:9090";
+                    version = 1;
+                    editable = false;
+                  }
+                ]
+              else
+                [ ]
+            )
+
+            (
+              if config.homelab.monitoring.quickwit.enable then
+                [
+                  {
+                    name = "quickwit";
+                    type = "quickwit-quickwit-datasource";
+                    url = "http://quickwit-control-plane.monitoring.svc.cluster.local:7280/api/v1";
+                    uid = "quickwit";
+                    jsonData = {
+                      index = "logs";
+                      logMessageField = "body.message.text";
+                      logLevelField = "severity";
+                    };
+                  }
+                ]
+              else
+                [ ]
+            )
+          ];
+
           admin = {
             existingSecret = "grafana-admin-credentials";
             userKey = "username";
@@ -191,6 +241,14 @@ in
         };
         prometheus-node-exporter.prometheusSpec.scrapeInterval = "10s";
         prometheus = {
+          thanosService = {
+            enabled = cfg.thanos.enable;
+          };
+
+          thanosServiceMonitor = {
+            enabled = cfg.thanos.enable;
+          };
+
           ingress =
             if cfg.prometheus.ingressHost != null then
               {
@@ -212,6 +270,7 @@ in
               }
             else
               { };
+
           prometheusSpec = {
             podMonitorNamespaceSelector.matchLabels = { };
             podMonitorSelectorNilUsesHelmValues = false;

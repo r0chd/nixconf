@@ -1,10 +1,10 @@
 { config, lib, ... }:
 let
-  cfg = config.homelab.portfolio.db;
+  cfg = config.homelab.vaultwarden.db;
   inherit (lib) types;
 in
 {
-  options.homelab.portfolio.db = {
+  options.homelab.vaultwarden.db = {
     instances = lib.mkOption {
       type = types.int;
       default = 1;
@@ -48,23 +48,23 @@ in
     };
   };
 
-  config = lib.mkIf (config.homelab.enable && config.homelab.portfolio.enable) {
+  config = lib.mkIf (config.homelab.enable && config.homelab.vaultwarden.enable) {
     services.k3s = {
       manifests.cnpg-databases.content = [
         {
           apiVersion = "networking.k8s.io/v1";
           kind = "NetworkPolicy";
           metadata = {
-            name = "portfolio-db-allow-app";
-            namespace = "portfolio";
+            name = "vaultwarden-db-allow-app";
+            namespace = "vaultwarden";
           };
           spec = {
-            podSelector.matchLabels."cnpg.io/cluster" = "portfolio-db";
+            podSelector.matchLabels."cnpg.io/cluster" = "vaultwarden-db";
             ingress = [
               {
                 from = [
                   {
-                    podSelector.matchLabels.app = "portfolio-server";
+                    podSelector.matchLabels."app.kubernetes.io/name" = "vaultwarden";
                   }
                 ];
                 ports = [
@@ -81,11 +81,11 @@ in
           apiVersion = "networking.k8s.io/v1";
           kind = "NetworkPolicy";
           metadata = {
-            name = "portfolio-db-allow-operator";
-            namespace = "portfolio";
+            name = "vaultwarden-db-allow-operator";
+            namespace = "vaultwarden";
           };
           spec = {
-            podSelector.matchLabels."cnpg.io/cluster" = "portfolio-db";
+            podSelector.matchLabels."cnpg.io/cluster" = "vaultwarden-db";
             ingress = [
               {
                 from = [
@@ -107,11 +107,11 @@ in
           apiVersion = "networking.k8s.io/v1";
           kind = "NetworkPolicy";
           metadata = {
-            name = "portfolio-db-allow-monitoring";
-            namespace = "portfolio";
+            name = "vaultwarden-db-allow-monitoring";
+            namespace = "vaultwarden";
           };
           spec = {
-            podSelector.matchLabels."cnpg.io/cluster" = "portfolio-db";
+            podSelector.matchLabels."cnpg.io/cluster" = "vaultwarden-db";
             ingress = [
               {
                 from = [
@@ -133,16 +133,16 @@ in
           apiVersion = "networking.k8s.io/v1";
           kind = "NetworkPolicy";
           metadata = {
-            name = "portfolio-db-allow-inter-node";
-            namespace = "portfolio";
+            name = "vaultwarden-db-allow-inter-node";
+            namespace = "vaultwarden";
           };
           spec = {
-            podSelector.matchLabels."cnpg.io/cluster" = "portfolio-db";
+            podSelector.matchLabels."cnpg.io/cluster" = "vaultwarden-db";
             ingress = [
               {
                 from = [
                   {
-                    podSelector.matchLabels."cnpg.io/cluster" = "portfolio-db";
+                    podSelector.matchLabels."cnpg.io/cluster" = "vaultwarden-db";
                   }
                 ];
                 ports = [
@@ -159,8 +159,8 @@ in
           apiVersion = "postgresql.cnpg.io/v1";
           kind = "Cluster";
           metadata = {
-            name = "portfolio-db";
-            namespace = "portfolio";
+            name = "vaultwarden-db";
+            namespace = "vaultwarden";
             #annotations."cnpg.io/fencesInstances" = [ "*" ];
           };
           spec = {
@@ -220,15 +220,15 @@ in
           // lib.optionalAttrs cfg.backup.enable {
             backup = {
               barmanObjectStore = {
-                destinationPath = "s3://portfolio-backup";
+                destinationPath = "s3://vaultwarden-backup";
                 endpointURL = "http://s3.${config.homelab.garage.ingressHost}";
                 s3Credentials = {
                   accessKeyId = {
-                    name = "portfolio-backup-credentials";
+                    name = "vaultwarden-backup-credentials";
                     key = "access-key-id";
                   };
                   secretAccessKey = {
-                    name = "portfolio-backup-credentials";
+                    name = "vaultwarden-backup-credentials";
                     key = "secret-access-key";
                   };
                 };
@@ -246,22 +246,22 @@ in
           apiVersion = "postgresql.cnpg.io/v1";
           kind = "ScheduledBackup";
           metadata = {
-            name = "portfolio-db";
-            namespace = "portfolio";
+            name = "vaultwarden-db";
+            namespace = "vaultwarden";
           };
           spec = {
             schedule = "0 0 1 * * 0";
             immediate = true;
             backupOwnerReference = "self";
-            cluster.name = "portfolio-db";
+            cluster.name = "vaultwarden-db";
           };
         }
       ];
 
       secrets = lib.mkIf cfg.backup.enable [
         {
-          name = "portfolio-backup-credentials";
-          namespace = "portfolio";
+          name = "vaultwarden-backup-credentials";
+          namespace = "vaultwarden";
           data = {
             "access-key-id" = cfg.backup.accessKeyIdFile;
             "secret-access-key" = cfg.backup.secretAccessKeyFile;
