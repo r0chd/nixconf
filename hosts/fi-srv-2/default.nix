@@ -10,9 +10,12 @@
   };
 
   homelab = {
-    enable = true;
-    primaryNode = "10.0.0.3";
-    tokenFile = config.sops.secrets.primary_node_token.path;
+    enable = false;
+    nodeType = "connecting";
+    connecting = {
+      primaryNodeIp = "https://10.0.0.3:6443";
+      tokenFile = config.sops.secrets.primary_node_token.path;
+    };
   };
 
   boot.loader = {

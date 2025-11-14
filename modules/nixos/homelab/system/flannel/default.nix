@@ -6,7 +6,7 @@ _: {
     hash = "sha256-On3FTOrpXBdAyNJi3DI0CY0IJ4yQ9S8sd+rW9jmm9xg=";
     targetNamespace = "system";
     extraFieldDefinitions = {
-      podCidr = "10.244.0.0/16";
+      podCidr = "10.42.0.0/16";
     };
   };
 }

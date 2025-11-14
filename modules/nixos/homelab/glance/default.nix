@@ -45,6 +45,26 @@ let
                   "commits-limit" = 3;
                 }
               ]
+              [
+                {
+                  type = "markets";
+                  "symbol-link-template" = "https://www.tradingview.com/symbols/{SYMBOL}/news";
+                  markets = [
+                    {
+                      symbol = "BTC-USD";
+                      name = "Bitcoin";
+                    }
+                    {
+                      symbol = "ETH-USD";
+                      name = "Ethereum";
+                    }
+                    {
+                      symbol = "SOL-USD";
+                      name = "Solana";
+                    }
+                  ];
+                }
+              ]
               #{
               #  type = "custom-api";
               #  title = "Immich stats";
@@ -266,98 +286,6 @@ let
                       icon = "di:vault";
                     }
                   ])
-                ];
-              }
-            ];
-          }
-        ];
-      }
-      {
-        name = "Home";
-        columns = [
-          {
-            size = "small";
-            widgets = [
-              {
-                type = "calendar";
-                "first-day-of-week" = "monday";
-              }
-              {
-                type = "rss";
-                limit = 10;
-                "collapse-after" = 3;
-                cache = "12h";
-                feeds = [
-                  {
-                    url = "https://omgubuntu.co.uk/feed";
-                    title = "OmgUbuntu";
-                    limit = 4;
-                  }
-                  {
-                    url = "https://9to5linux.com/feed/atom";
-                    title = "9to5Linux";
-                    limit = 4;
-                  }
-                ];
-              }
-            ];
-          }
-          {
-            size = "full";
-            widgets = [
-              {
-                type = "group";
-                widgets = [
-                  {
-                    type = "hacker-news";
-                  }
-                ];
-              }
-              {
-                type = "videos";
-                channels = [
-                  "UCXuqSBlHAE6Xw-yeJA0Tunw" # Linus Tech Tips
-                  "UCR-DXc1voovS8nhAvccRZhg" # Jeff Geerling
-                  "UCsBjURrPoezykLs9EqgamOA" # Fireship
-                  "UCBJycsmduvYEL83R_U4JriQ" # Marques Brownlee
-                ];
-              }
-            ];
-          }
-          {
-            size = "small";
-            widgets = [
-              {
-                type = "weather";
-                location = 98664;
-                units = "imperial";
-                "hour-format" = "12h";
-              }
-              {
-                type = "markets";
-                "symbol-link-template" = "https://www.tradingview.com/symbols/{SYMBOL}/news";
-                markets = [
-                  {
-                    symbol = "BTC-USD";
-                    name = "Bitcoin";
-                  }
-                  {
-                    symbol = "ETH-USD";
-                    name = "Ethereum";
-                  }
-                  {
-                    symbol = "SOL-USD";
-                    name = "Solana";
-                  }
-                ];
-              }
-              {
-                type = "releases";
-                cache = "1d";
-                repositories = [
-                  "glanceapp/glance"
-                  "r0chd/nixconf"
-                  "immich-app/immich"
                 ];
               }
             ];

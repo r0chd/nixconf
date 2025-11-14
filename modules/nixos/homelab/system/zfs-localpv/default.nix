@@ -4,22 +4,10 @@
   ...
 }:
 let
+  cfg = config.homelab.system.zfs-localpv;
   inherit (lib) types;
 in
 {
-  imports = [
-    ./priorityclass.nix
-    ./serviceaccount.nix
-    ./configmap.nix
-    ./crds.nix
-    ./clusterrole.nix
-    ./clusterrolebinding.nix
-    ./daemonset.nix
-    ./deployment.nix
-    ./csidriver.nix
-    ./storageclass.nix
-  ];
-
   options.homelab.system.zfs-localpv = {
     enable = lib.mkOption {
       type = types.bool;
@@ -28,6 +16,16 @@ in
     };
     poolname = lib.mkOption {
       type = types.str;
+    };
+  };
+
+  config.services.k3s.autoDeployCharts.zfs-localpv = lib.mkIf cfg.enable {
+    name = "zfs-localpv";
+    repo = "https://openebs.github.io/openebs";
+    version = "4.2.0";
+    hash = "sha256-rUZcfcB+O7hrr2swEARXFujN7VvfC0IkaaAeJTi0mN0=";
+    targetNamespace = "system";
+    values = {
     };
   };
 }

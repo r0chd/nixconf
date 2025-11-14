@@ -19,19 +19,14 @@
     "grafana/username" = { };
     "grafana/password" = { };
 
-    "atuin/backup/access_key_id" = { };
-    "atuin/backup/secret_access_key" = { };
+    "atuin_backup/access_key_id" = { };
+    "atuin_backup/secret_access_key" = { };
 
-    "vaultwarden/access_key_id" = { };
-    "vaultwarden/secret_access_key" = { };
+    "vaultwarden_backup/access_key_id" = { };
+    "vaultwarden_backup/secret_access_key" = { };
 
-    "vaultwarden/backup/access_key_id" = { };
-    "vaultwarden/backup/secret_access_key" = { };
-
-    "thanos/access_key" = { };
-    "thanos/secret_key" = { };
-
-    quickwit-config = { };
+    "quickwit/access_key_id" = { };
+    "quickwit/secret_access_key" = { };
   };
 
   boot.loader = {
@@ -39,9 +34,17 @@
     grub.enable = true;
   };
 
+  services.k3s.extraFlags = [
+    "--tls-san 157.180.30.62"
+    "--tls-san 10.0.0.3"
+  ];
+
   homelab = {
     enable = true;
     domain = "fi.r0chd.pl";
+
+    nodeType = "primary";
+
     #storageClassName = "openebs-zfs-localpv";
 
     metallb.addresses = [
@@ -49,6 +52,7 @@
       "172.31.1.100-172.31.1.150"
     ];
     system = {
+      dragonfly.enable = true;
       zfs-localpv.poolname = "zroot";
       reloader.enable = true;
       #pihole = {
@@ -69,8 +73,6 @@
 
     vaultwarden = {
       enable = true;
-      accessKeyId = config.sops.placeholder."vaultwarden/access_key_id";
-      secretAccessKey = config.sops.placeholder."vaultwarden/secret_access_key";
       db.backup = {
         enable = true;
         accessKeyId = config.sops.placeholder."vaultwarden/backup/access_key_id";
@@ -120,7 +122,11 @@
       vector.enable = true;
       quickwit = {
         enable = true;
-        storageConfig = config.sops.placeholder."quickwit-config";
+        s3 = {
+          region = "eu-central-1";
+          access_key_id = config.sops.placeholder."quickwit/access_key_id";
+          secret_access_key = config.sops.placeholder."quickwit/secret_access_key";
+        };
         retention = {
           period = "7 days";
           schedule = "daily";

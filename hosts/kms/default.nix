@@ -160,6 +160,8 @@
     domain = "kms.r0chd.pl";
     #storageClassName = "openebs-zfs-localpv";
 
+    nodeType = "only";
+
     metallb.addresses = [
       "46.62.204.148/32"
       "172.31.1.100-172.31.1.150"

@@ -23,14 +23,6 @@ in
       default = if config.homelab.domain != null then "vaultwarden.${config.homelab.domain}" else null;
       description = "Hostname for vaultwarden ingress (defaults to vaultwarden.<domain> if domain is set)";
     };
-
-    accessKeyId = lib.mkOption {
-      type = types.str;
-    };
-
-    secretAccessKey = lib.mkOption {
-      type = types.str;
-    };
   };
 
   config.services.k3s = lib.mkIf cfg.enable {
@@ -91,19 +83,6 @@ in
             { };
       };
     };
-
-    secrets = [
-      {
-        metadata = {
-          name = "garage-s3-credentials";
-          namespace = "vaultwarden";
-        };
-        stringData = {
-          access-key = cfg.accessKeyId;
-          secret-key = cfg.secretAccessKey;
-        };
-      }
-    ];
 
     #secrets = lib.mkIf cfg.yubikey.enable [
     #  {

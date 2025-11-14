@@ -8,9 +8,19 @@ in
 
   options.homelab.monitoring.quickwit = {
     enable = lib.mkEnableOption "quickwit";
-    storageConfig = lib.mkOption {
-      type = types.str;
+
+    s3 = {
+      region = lib.mkOption {
+        type = types.str;
+      };
+      access_key_id = lib.mkOption {
+        type = types.str;
+      };
+      secret_access_key = lib.mkOption {
+        type = types.str;
+      };
     };
+
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
       default = if config.homelab.domain != null then "quickwit.${config.homelab.domain}" else null;
@@ -294,7 +304,19 @@ in
             namespace = "monitoring";
           };
           stringData = {
-            "quickwit.yaml" = cfg.storageConfig;
+            "quickwit.yaml" =
+              # yaml
+              ''
+                version: 0.8
+                default_index_root_uri: s3://quickwit/indexes
+                storage:
+                  s3:
+                    flavor: garage
+                    region: ${cfg.s3.region}
+                    endpoint: https://s3.${config.homelab.garage.ingressHost}
+                    access_key_id: ${cfg.s3.access_key_id}
+                    secret_access_key: ${cfg.s3.secret_access_key}
+              '';
           };
         }
       ];

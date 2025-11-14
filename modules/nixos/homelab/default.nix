@@ -15,12 +15,33 @@ in
     ./moxwiki
     ./glance
     ./vaultwarden
+    # ./forgejo
     # ./immich
     # ./nextcloud
   ];
 
   options.homelab = {
     enable = lib.mkEnableOption "homelab";
+
+    nodeType = lib.mkOption {
+      type = lib.types.enum [
+        "primary"
+        "connecting"
+        "only"
+      ];
+      default = "primary";
+      description = "Whether this node is the initial node or a node that joins the cluster";
+    };
+
+    connecting = {
+      primaryNodeIp = lib.mkOption {
+        type = lib.types.str;
+      };
+
+      tokenFile = lib.mkOption {
+        type = lib.types.str;
+      };
+    };
 
     domain = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
@@ -39,39 +60,32 @@ in
     storageClass = lib.mkOption {
       type = lib.types.str;
       internal = true;
-      description = "Actual Kubernetes storage class name (derived from storageClassName enum)";
-    };
-
-    primaryNode = lib.mkOption {
-      type = lib.types.nullOr lib.types.str;
-      default = null;
-      description = "IP or hostname of the primary k3s server to join";
-    };
-
-    tokenFile = lib.mkOption {
-      type = lib.types.nullOr lib.types.str;
-      default = null;
-      description = "Path to the token file to use when joining the cluster";
     };
   };
 
   config = lib.mkIf cfg.enable {
     services.k3s = lib.mkDefault {
       inherit (cfg) enable;
+      disableAgent = false;
       extraFlags = [
         "--disable traefik"
         "--disable servicelb"
         "--write-kubeconfig-group ${config.users.groups.homelab.name}"
         "--write-kubeconfig-mode 0660"
-        "--cluster-cidr 10.244.0.0/16"
-      ]
-      ++ lib.optionals (cfg.primaryNode != null) [
-        "--server ${cfg.primaryNode}"
-      ]
-      ++ lib.optionals (cfg.tokenFile != null) [
-        "--token-file ${cfg.tokenFile}"
+        "--cluster-cidr 10.42.0.0/16"
       ];
+
+      clusterInit = cfg.nodeType == "primary";
+
+      serverAddr = if cfg.nodeType == "connecting" then cfg.connecting.primaryNodeIp else "";
+      tokenFile = if cfg.nodeType == "connecting" then cfg.connecting.tokenFile else null;
     };
+
+    networking.firewall.allowedTCPPorts = [
+      2379
+      2380
+      6443
+    ];
 
     users.groups.homelab = { };
 
