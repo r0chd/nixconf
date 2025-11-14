@@ -24,10 +24,6 @@ else
   LEGACY_BOOT_VALUE=false
 fi
 
-echo -n "Enter filesystem type (e.g., xfs, ext4, btrfs): "
-read FILESYSTEM
-[ -z "$FILESYSTEM" ] && { echo "Error: Filesystem type cannot be empty"; exit 1; }
-
 cat <<EOF > "$BASE_CONFIG_PATH/hardware-configuration.nix"
 { ... }: { }
 EOF

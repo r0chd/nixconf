@@ -300,7 +300,7 @@ in
       }
       ++ lib.optional (cfg.alertmanager.enable) {
         metadata = {
-          name = "alertmanager-config-secret";
+          name = "alertmanager-config-secrets";
           namespace = "monitoring";
         };
         stringData.DISCORD_WEBHOOK_URL = cfg.alertmanager.discordWebhookUrl;
@@ -310,13 +310,14 @@ in
           name = "thanos-objectstorage";
           namespace = "monitoring";
         };
-        stringData."thanos.yaml" = lib.generators.toYAML { } {
-          type = "s3";
-          bucket = cfg.thanos.bucket;
-          endpoint = "https://s3.${config.homelab.garage.ingressHost}";
-          access_key = cfg.thanos.access_key;
-          secret_key = cfg.thanos.secret_key;
-        };
+        stringData."thanos.yaml" = ''
+          type: s3
+          config:
+            bucket: ${cfg.thanos.bucket}
+            endpoint: "s3.${config.homelab.garage.ingressHost}"
+            access_key: ${cfg.thanos.access_key}
+            secret_key: ${cfg.thanos.secret_key}
+        '';
       }
     );
   };

@@ -82,8 +82,8 @@ in
 # TODO:
 # [x] add cloudnative-pg
 # [x] add thanos for longer term metrics storage
-# [ ] add quickwit for centralized logging
-# [ ] add vector
+# [x] add quickwit for centralized logging
+# [x] add vector
 # [x] add config reloader
 # [x] add kube web
 # [x] add kube ops

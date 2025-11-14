@@ -10,8 +10,9 @@
   };
 
   homelab = {
+    enable = true;
     primaryNode = "10.0.0.3";
-    tokenFile = config.sops.secrets.primary-token-file.path;
+    tokenFile = config.sops.secrets.primary_node_token.path;
   };
 
   boot.loader = {

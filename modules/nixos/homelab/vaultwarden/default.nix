@@ -45,41 +45,6 @@ in
       createNamespace = true;
 
       values = {
-        env = [
-          {
-            name = "AWS_ACCESS_KEY_ID";
-            valueFrom = {
-              secretKeyRef = {
-                name = "garage-s3-credentials";
-                key = "access-key";
-              };
-            };
-          }
-          {
-            name = "AWS_SECRET_ACCESS_KEY";
-            valueFrom = {
-              secretKeyRef = {
-                name = "garage-s3-credentials";
-                key = "secret-key";
-              };
-            };
-          }
-          {
-            name = "AWS_ENDPOINT_URL";
-            value = "https://s3.${config.homelab.garage.ingressHost}";
-          }
-          {
-            name = "AWS_REGION";
-            value = "garage";
-          }
-        ];
-
-        folders = {
-          data_folder = "s3://vaultwarden";
-          tmp_folder = "/tmp";
-          templates_folder = "/templates";
-        };
-
         inherit (cfg) replicas;
 
         serviceAccount = {

@@ -5,5 +5,3 @@ creation_rules:
     key_groups:
       - age:
         - *root
-        hc_vault:
-          - "https://vault.kms.r0chd.pl/v1/transit/keys/fi-sops"

@@ -111,7 +111,7 @@
       };
       grafana = {
         enable = true;
-        username = config.sops.placeholder."grafana/username";
+        username = "r0chd";
         password = config.sops.placeholder."grafana/password";
       };
       kube-web.enable = true;
