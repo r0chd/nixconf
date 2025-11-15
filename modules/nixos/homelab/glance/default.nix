@@ -276,7 +276,7 @@ let
                         title = "Vaultwarden";
                         url = "https://${config.homelab.forgejo.ingressHost}";
                         "check-url" = "http://forgejo-http.forgejo.svc.cluster.local:3000";
-                        icon = "sh:vaultwarden";
+                        icon = "si:forgejo";
                       }
                     ])
                   ]

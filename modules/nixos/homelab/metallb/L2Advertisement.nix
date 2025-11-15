@@ -6,7 +6,7 @@
       kind = "L2Advertisement";
       metadata = {
         name = "k3s-nuc-l2advertisment";
-        namespace = "default";
+        namespace = "metallb-system";
       };
       spec = {
         ipAddressPools = [ "k3s-nuc-pool" ];

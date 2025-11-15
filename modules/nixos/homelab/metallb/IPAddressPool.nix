@@ -9,7 +9,7 @@ in
       kind = "IPAddressPool";
       metadata = {
         name = "k3s-nuc-pool";
-        namespace = "default";
+        namespace = "metallb-system";
       };
       spec = { inherit (cfg) addresses; };
     }

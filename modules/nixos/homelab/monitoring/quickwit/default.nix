@@ -11,6 +11,7 @@ in
 
     s3 = {
       region = lib.mkOption {
+        default = config.homelab.garage.s3Region;
         type = types.str;
       };
       access_key_id = lib.mkOption {

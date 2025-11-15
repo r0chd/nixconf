@@ -14,6 +14,7 @@ in
     ./crd.nix
     ./deployment.nix
     ./configmap.nix
+    ./namespace.nix
   ];
 
   options.homelab.metallb.addresses = lib.mkOption {

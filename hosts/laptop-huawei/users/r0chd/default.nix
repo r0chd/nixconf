@@ -24,6 +24,8 @@
     "garage/quickwit/secret_access_key" = { };
     "garage/vaultwarden/access_key_id" = { };
     "garage/vaultwarden/secret_access_key" = { };
+    "garage/forgejo/access_key_id" = { };
+    "garage/forgejo/secret_access_key" = { };
   };
 
   programs = {
@@ -57,6 +59,13 @@
             url = "https://s3.garage.fi.r0chd.pl";
             accessKey = config.sops.placeholder."garage/vaultwarden/access_key_id";
             secretKey = config.sops.placeholder."garage/vaultwarden/secret_access_key";
+            api = "s3v4";
+            path = "auto";
+          };
+          forgejo = {
+            url = "https://s3.garage.fi.r0chd.pl";
+            accessKey = config.sops.placeholder."garage/forgejo/access_key_id";
+            secretKey = config.sops.placeholder."garage/forgejo/secret_access_key";
             api = "s3v4";
             path = "auto";
           };

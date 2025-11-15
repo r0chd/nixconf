@@ -24,6 +24,22 @@ in
         type = types.str;
       };
     };
+    s3 = {
+      region = lib.mkOption {
+        default = config.homelab.garage.s3Region;
+        type = types.str;
+      };
+      bucket = lib.mkOption {
+        type = types.str;
+        default = "forgejo";
+      };
+      access_key_id = lib.mkOption {
+        type = types.str;
+      };
+      secret_access_key = lib.mkOption {
+        type = types.str;
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -74,7 +90,7 @@ in
             create = true;
             mount = true;
             claimName = "gitea-shared-storage";
-            size = "10Gi";
+            size = "1Gi";
             accessModes = [ "ReadWriteOnce" ];
             labels = { };
             storageClass = null;
@@ -105,6 +121,7 @@ in
           gitea = {
             admin = {
               existingSecret = "forgejo-admin";
+              inherit (cfg.admin) email;
               passwordMode = "keepUpdated";
             };
             metrics.enabled = true;
@@ -141,6 +158,20 @@ in
                   key = "password";
                 };
               }
+              {
+                name = "FORGEJO__storage__MINIO_ACCESS_KEY_ID";
+                valueFrom.secretKeyRef = {
+                  name = "forgejo-s3-credentials";
+                  key = "access_key_id";
+                };
+              }
+              {
+                name = "FORGEJO__storage__MINIO_SECRET_ACCESS_KEY";
+                valueFrom.secretKeyRef = {
+                  name = "forgejo-s3-credentials";
+                  key = "secret_access_key";
+                };
+              }
             ];
             ssh = {
               logLevel = "INFO";
@@ -148,6 +179,14 @@ in
             config = {
               APP_NAME = "Forgejo: Beyond coding. We forge.";
               RUN_MODE = "prod";
+              storage = {
+                STORAGE_TYPE = "minio";
+                MINIO_ENDPOINT = "s3.${config.homelab.garage.ingressHost}";
+                MINIO_BUCKET = cfg.s3.bucket;
+                MINIO_USE_SSL = true;
+                MINIO_FORCE_PATH_STYLE = true;
+                MINIO_LOCATION = cfg.s3.region;
+              };
               queue = {
                 TYPE = "redis";
                 CONN_STR = "redis://forgejo-dragonfly.forgejo.svc.cluster.local:6379";
@@ -197,7 +236,16 @@ in
           stringData = {
             inherit (cfg.admin) username;
             inherit (cfg.admin) password;
-            inherit (cfg.admin) email;
+          };
+        }
+        {
+          metadata = {
+            name = "forgejo-s3-credentials";
+            namespace = "forgejo";
+          };
+          stringData = {
+            inherit (cfg.s3) access_key_id;
+            inherit (cfg.s3) secret_access_key;
           };
         }
       ];

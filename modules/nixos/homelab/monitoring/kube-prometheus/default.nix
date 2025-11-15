@@ -259,7 +259,6 @@ in
                     name = "alertmanager-config-secrets";
                     key = "DISCORD_WEBHOOK_URL";
                   };
-                  content = "<@307952129958477824>";
                   message = ''
                     {{ range .Alerts.Firing }}
                         Alert: **{{ printf "%.150s" .Annotations.summary }}** ({{ .Labels.severity }})

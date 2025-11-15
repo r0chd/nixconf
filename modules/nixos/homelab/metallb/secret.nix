@@ -6,7 +6,7 @@
       kind = "Secret";
       metadata = {
         name = "metallb-webhook-cert";
-        namespace = "default";
+        namespace = "metallb-system";
         labels = {
           "app.kubernetes.io/name" = "metallb";
           "app.kubernetes.io/instance" = "metallb";

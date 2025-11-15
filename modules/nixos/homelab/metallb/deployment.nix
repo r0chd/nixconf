@@ -6,7 +6,7 @@
       kind = "Deployment";
       metadata = {
         name = "metallb-controller";
-        namespace = "default";
+        namespace = "metallb-system";
         labels = {
           "app.kubernetes.io/name" = "metallb";
           "app.kubernetes.io/instance" = "metallb";

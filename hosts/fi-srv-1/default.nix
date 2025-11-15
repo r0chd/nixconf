@@ -28,7 +28,10 @@
     "quickwit/access_key_id" = { };
     "quickwit/secret_access_key" = { };
 
-    forgejo_admin_password = { };
+    "forgejo/access_key_id" = { };
+    "forgejo/secret_access_key" = { };
+
+    "forgejo/admin_password" = { };
   };
 
   boot.loader = {
@@ -87,7 +90,11 @@
       admin = {
         username = "r0chd";
         email = "oskarrochowiak@gmail.com";
-        password = config.sops.placeholder."forgejo_admin_password";
+        password = config.sops.placeholder."forgejo/admin_password";
+      };
+      s3 = {
+        access_key_id = config.sops.placeholder."forgejo/access_key_id";
+        secret_access_key = config.sops.placeholder."forgejo/secret_access_key";
       };
     };
     moxwiki.enable = true;
@@ -121,7 +128,6 @@
       quickwit = {
         enable = true;
         s3 = {
-          region = "eu-central-1";
           access_key_id = config.sops.placeholder."quickwit/access_key_id";
           secret_access_key = config.sops.placeholder."quickwit/secret_access_key";
         };

@@ -18,7 +18,7 @@
           clientConfig = {
             service = {
               name = "metallb-webhook-service";
-              namespace = "default";
+              namespace = "metallb-system";
               path = "/validate-metallb-io-v1beta2-bgppeer";
             };
           };
@@ -42,7 +42,7 @@
           clientConfig = {
             service = {
               name = "metallb-webhook-service";
-              namespace = "default";
+              namespace = "metallb-system";
               path = "/validate-metallb-io-v1beta1-ipaddresspool";
             };
           };
@@ -66,7 +66,7 @@
           clientConfig = {
             service = {
               name = "metallb-webhook-service";
-              namespace = "default";
+              namespace = "metallb-system";
               path = "/validate-metallb-io-v1beta1-bgpadvertisement";
             };
           };
@@ -90,7 +90,7 @@
           clientConfig = {
             service = {
               name = "metallb-webhook-service";
-              namespace = "default";
+              namespace = "metallb-system";
               path = "/validate-metallb-io-v1beta1-community";
             };
           };
@@ -114,7 +114,7 @@
           clientConfig = {
             service = {
               name = "metallb-webhook-service";
-              namespace = "default";
+              namespace = "metallb-system";
               path = "/validate-metallb-io-v1beta1-bfdprofile";
             };
           };
@@ -138,7 +138,7 @@
           clientConfig = {
             service = {
               name = "metallb-webhook-service";
-              namespace = "default";
+              namespace = "metallb-system";
               path = "/validate-metallb-io-v1beta1-l2advertisement";
             };
           };

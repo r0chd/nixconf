@@ -6,7 +6,7 @@
       kind = "ConfigMap";
       metadata = {
         name = "metallb-excludel2";
-        namespace = "default";
+        namespace = "metallb-system";
         labels = {
           "app.kubernetes.io/name" = "metallb";
           "app.kubernetes.io/instance" = "metallb";
@@ -23,7 +23,7 @@
       kind = "ConfigMap";
       metadata = {
         name = "metallb-frr-startup";
-        namespace = "default";
+        namespace = "metallb-system";
         labels = {
           "app.kubernetes.io/name" = "metallb";
           "app.kubernetes.io/instance" = "metallb";

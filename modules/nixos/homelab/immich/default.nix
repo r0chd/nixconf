@@ -10,108 +10,86 @@ in
 {
   imports = [
     ./db.nix
-    ./pvc.nix
   ];
 
   options.homelab.immich = {
     enable = lib.mkEnableOption "immich";
   };
 
-  config.services.k3s.autoDeployCharts.immich = lib.mkIf cfg.enable {
-    package = pkgs.lib.downloadHelmChart {
-      repo = "https://immich-app.github.io/immich-charts";
-      chart = "immich";
-      version = "0.9.3";
-      chartHash = "";
-    };
-    targetNamespace = "vaultwarden";
-    createNamespace = true;
-
-    values = {
-      env = {
-        REDIS_HOSTNAME = ''{{ printf "%s-redis-master" .Release.Name }}'';
-        DB_HOSTNAME = "{{ .Release.Name }}-postgresql";
-        DB_USERNAME = "{{ .Values.postgresql.global.postgresql.auth.username }}";
-        DB_DATABASE_NAME = "{{ .Values.postgresql.global.postgresql.auth.database }}";
-        # TODO: -- You should provide your own secret outside of this helm-chart and use `postgresql.global.postgresql.auth.existingSecret` to provide credentials to the postgresql instance
-        DB_PASSWORD = "{{ .Values.postgresql.global.postgresql.auth.password }}";
-        IMMICH_MACHINE_LEARNING_URL = ''{{ printf "http://%s-machine-learning:3003" .Release.Name }}'';
+  config.services.k3s = lib.mkIf cfg.enable {
+    autoDeployCharts.immich = {
+      package = pkgs.lib.downloadHelmChart {
+        repo = "https://immich-app.github.io/immich-charts";
+        chart = "immich";
+        version = "0.9.3";
+        chartHash = "";
       };
+      targetNamespace = "immich";
+      createNamespace = true;
 
-      image.tag = "v1.119.0";
-      immich = {
-        metrics.enabled = true;
-        persistence.library.existingClaim = "immich-pvc";
-        configuration = {
-          # trash:
-          #   enabled: false
-          #   days: 30
-          # storageTemplate:
-          #   enabled: true
-          #   template: "{{y}}/{{y}}-{{MM}}-{{dd}}/{{filename}}"
+      values = {
+        env = {
+          REDIS_HOSTNAME = "redis://immich-dragonfly.immich.svc.cluster.local:6379";
+          DB_HOSTNAME = "{{ .Release.Name }}-postgresql";
+          DB_USERNAME = "{{ .Values.postgresql.global.postgresql.auth.username }}";
+          DB_DATABASE_NAME = "{{ .Values.postgresql.global.postgresql.auth.database }}";
+          # TODO: -- You should provide your own secret outside of this helm-chart and use `postgresql.global.postgresql.auth.existingSecret` to provide credentials to the postgresql instance
+          DB_PASSWORD = "{{ .Values.postgresql.global.postgresql.auth.password }}";
         };
-      };
 
-      postgresql = {
-        enabled = true;
-        image = {
-          repository = "tensorchord/pgvecto-rs";
-          tag = "pg14-v0.2.0@sha256:739cdd626151ff1f796dc95a6591b55a714f341c737e27f045019ceabf8e8c52";
+        image.tag = "v1.119.0";
+        immich = {
+          metrics.enabled = true;
+          persistence.library.existingClaim = "immich-pvc";
+          configuration = {
+            trash = {
+              enabled = true;
+              days = "30";
+            };
+          };
         };
-        global.postgresql.auth = {
-          username = "immich";
-          database = "immich";
-          password = "immich";
-        };
-        primary = {
-          containerSecurityContext.readOnlyRootFilesystem = false;
-          initdb.scripts."create-extensions.sql" = ''
-            CREATE EXTENSION cube;
-            CREATE EXTENSION earthdistance;
-            CREATE EXTENSION vectors;
-          '';
-        };
-      };
 
-      redis = {
-        enabled = true;
-        architecture = "standalone";
-        auth.enabled = false;
-      };
-
-      server = {
-        enabled = true;
-        image = {
-          repository = "ghcr.io/immich-app/immich-server";
-          pullPolicy = "IfNotPresent";
-        };
-        ingress.main = {
-          enabled = false;
-          annotations."nginx.ingress.kubernetes.io/proxy-body-size" = 0;
-          hosts = [
-            {
-              host = "immich.local";
-              paths = [ { path = "/"; } ];
-            }
-          ];
-          tls = [ ];
-        };
-      };
-
-      machine-learning = {
-        enabled = true; # TODO: optionally enable
-        image = {
-          repository = "ghcr.io/immich-app/immich-machine-learning";
-          pullPolicy = "IfNotPresent";
-        };
-        env.TRANSFORMERS_CACHE = "/cache";
-        persistence.cache = {
-          # TODO: optionally enable and cfg.size
+        server = {
           enabled = true;
-          size = "10Gi";
-          type = "emptyDir";
-          accessMode = "ReadWriteMany";
-          storageClass = "immich-pvc";
+          image = {
+            repository = "ghcr.io/immich-app/immich-server";
+            pullPolicy = "IfNotPresent";
+          };
+          ingress.main = {
+            enabled = false;
+            annotations."nginx.ingress.kubernetes.io/proxy-body-size" = 0;
+            hosts = [
+              {
+                host = "immich.local";
+                paths = [ { path = "/"; } ];
+              }
+            ];
+            tls = [ ];
+          };
+        };
+
+        machine-learning.enabled = false;
+      };
+    };
+
+    manifests.immich-dragonfly.content = {
+      apiVersion = "dragonflydb.io/v1alpha1";
+      kind = "Dragonfly";
+      metadata = {
+        name = "immich-dragonfly";
+        namespace = "immich";
+      };
+      spec = {
+        replicas = 1;
+        resources = {
+          requests = {
+            cpu = "500m";
+            memory = "500Mi";
+          };
+          limits = {
+            cpu = "600m";
+            memory = "750Mi";
+          };
         };
       };
     };

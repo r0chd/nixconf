@@ -360,7 +360,7 @@
             clientConfig = {
               service = {
                 name = "metallb-webhook-service";
-                namespace = "default";
+                namespace = "metallb-system";
                 path = "/convert";
               };
             };

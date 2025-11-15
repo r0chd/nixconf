@@ -6,7 +6,7 @@
       kind = "ServiceAccount";
       metadata = {
         name = "metallb-controller";
-        namespace = "default";
+        namespace = "metallb-system";
         labels = {
           "app.kubernetes.io/name" = "metallb";
           "app.kubernetes.io/instance" = "metallb";
@@ -20,7 +20,7 @@
       kind = "ServiceAccount";
       metadata = {
         name = "metallb-speaker";
-        namespace = "default";
+        namespace = "metallb-system";
         labels = {
           "app.kubernetes.io/name" = "metallb";
           "app.kubernetes.io/instance" = "metallb";
@@ -192,7 +192,7 @@
         {
           kind = "ServiceAccount";
           name = "metallb-controller";
-          namespace = "default";
+          namespace = "metallb-system";
         }
       ];
       roleRef = {
@@ -216,7 +216,7 @@
         {
           kind = "ServiceAccount";
           name = "metallb-speaker";
-          namespace = "default";
+          namespace = "metallb-system";
         }
       ];
       roleRef = {
@@ -230,7 +230,7 @@
       kind = "Role";
       metadata = {
         name = "metallb-pod-lister";
-        namespace = "default";
+        namespace = "metallb-system";
         labels = {
           "app.kubernetes.io/name" = "metallb";
           "app.kubernetes.io/instance" = "metallb";
@@ -333,7 +333,7 @@
       kind = "Role";
       metadata = {
         name = "metallb-controller";
-        namespace = "default";
+        namespace = "metallb-system";
         labels = {
           "app.kubernetes.io/name" = "metallb";
           "app.kubernetes.io/instance" = "metallb";
@@ -439,7 +439,7 @@
       kind = "RoleBinding";
       metadata = {
         name = "metallb-pod-lister";
-        namespace = "default";
+        namespace = "metallb-system";
         labels = {
           "app.kubernetes.io/name" = "metallb";
           "app.kubernetes.io/instance" = "metallb";
@@ -463,7 +463,7 @@
       kind = "RoleBinding";
       metadata = {
         name = "metallb-controller";
-        namespace = "default";
+        namespace = "metallb-system";
         labels = {
           "app.kubernetes.io/name" = "metallb";
           "app.kubernetes.io/instance" = "metallb";

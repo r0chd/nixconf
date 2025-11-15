@@ -58,5 +58,21 @@ in
         };
       }) cfg.secrets
     );
+
+    #system.postDeploy =
+    #  let
+    #    declaredSecrets = map (s: s.metadata.name) cfg.secrets;
+    #  in
+    #  lib.optionalString (cfg.secrets != [ ])
+    #    # bash
+    #    ''
+    #      for f in /var/lib/rancher/k3s/server/manifests/*.json; do
+    #        name=$(basename "$f" .json)
+    #        if ! [[ " ${declaredSecrets}[*] " =~ " $name " ]]; then
+    #          echo "Removing stale secret: $f"
+    #          rm -f "$f"
+    #        fi
+    #      done
+    #    '';
   };
 }

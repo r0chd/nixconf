@@ -10,7 +10,7 @@
   };
 
   homelab = {
-    enable = false;
+    enable = true;
     nodeType = "connecting";
     connecting = {
       primaryNodeIp = "https://10.0.0.3:6443";
