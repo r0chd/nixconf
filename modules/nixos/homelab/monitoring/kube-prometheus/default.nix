@@ -80,91 +80,44 @@ in
           kubeProxy = false;
         };
 
-        alertmanager = {
-          enabled = cfg.alertmanager.enable;
-          config = {
-            receivers = [
-              { name = "null"; }
-              {
-                name = "default";
-                discord_configs = [
-                  {
-                    apiURL = {
-                      name = "alertmanager-config-secrets";
-                      key = "DISCORD_WEBHOOK_URL";
-                    };
-                  }
-                ];
-              }
-            ];
-            global = {
-              resolve_timeout = "5m";
-            };
-            inhibit_rules = [
-              {
-                source_matchers = [ "severity = critical" ];
-                target_matchers = [ "severity =~ warning|info" ];
-                equal = [
-                  "namespace"
-                  "alertname"
-                ];
-              }
-              {
-                source_matchers = [ "severity = warning" ];
-                target_matchers = [ "severity = info" ];
-                equal = [
-                  "namespace"
-                  "alertname"
-                ];
-              }
-              {
-                source_matchers = [ "alertname = InfoInhibitor" ];
-                target_matchers = [ "severity = info" ];
-                equal = [ "namespace" ];
-              }
-              { target_matchers = [ "alertname = InfoInhibitor" ]; }
-            ];
-            route = {
-              group_by = [
-                "alertname"
-                "cluster"
-              ];
-              group_wait = "30s";
-              group_interval = "5m";
-              repeat_interval = "1h";
-              receiver = "default";
-              routes = [
-                {
-                  receiver = "null";
-                  matchers = [ "alertname = \"Watchdog\"" ];
-                }
-              ];
-            };
-
-            templates = [ "/etc/alertmanager/config/*.tmpl" ];
-          };
-          ingress =
-            if cfg.alertmanager.ingressHost != null then
-              {
-                enabled = true;
-                ingressClassName = "nginx";
-                annotations = {
-                  "nginx.ingress.kubernetes.io/rewrite-target" = "/";
-                  "cert-manager.io/cluster-issuer" = "letsencrypt";
+        alertmanager =
+          if cfg.alertmanager.enable then
+            {
+              alertmanagerSpec = {
+                alertmanagerConfiguration = {
+                  name = "alertmanager-config";
                 };
-                hosts = [ cfg.alertmanager.ingressHost ];
-                paths = [ "/" ];
-                pathType = "Prefix";
-                tls = [
+              };
+
+              config = {
+                global.resolve_timeout = "5m";
+                templates = [ "/etc/alertmanager/config/*.tmpl" ];
+              };
+
+              ingress =
+                if cfg.alertmanager.ingressHost != null then
                   {
-                    secretName = "alertmanager-tls";
+                    enabled = true;
+                    ingressClassName = "nginx";
+                    annotations = {
+                      "nginx.ingress.kubernetes.io/rewrite-target" = "/";
+                      "cert-manager.io/cluster-issuer" = "letsencrypt";
+                    };
                     hosts = [ cfg.alertmanager.ingressHost ];
+                    paths = [ "/" ];
+                    pathType = "Prefix";
+                    tls = [
+                      {
+                        secretName = "alertmanager-tls";
+                        hosts = [ cfg.alertmanager.ingressHost ];
+                      }
+                    ];
                   }
-                ];
-              }
-            else
-              { };
-        };
+                else
+                  { };
+            }
+          else
+            { };
 
         grafana = {
           enabled = cfg.grafana.enable;
@@ -282,6 +235,78 @@ in
             podMonitorSelectorNilUsesHelmValues = false;
             serviceMonitorNamespaceSelector.matchLabels = { };
             serviceMonitorSelectorNilUsesHelmValues = false;
+          };
+        };
+      };
+    };
+
+    manifests = {
+      alertmanager-config.content = {
+        apiVersion = "monitoring.coreos.com/v1alpha1";
+        kind = "AlertmanagerConfig";
+        metadata = {
+          name = "alertmanager-config";
+          namespace = "monitoring";
+        };
+        spec = {
+          receivers = [
+            { name = "null"; }
+            {
+              name = "default";
+              discordConfigs = [
+                {
+                  apiURL = {
+                    name = "alertmanager-config-secrets";
+                    key = "DISCORD_WEBHOOK_URL";
+                  };
+                  content = "<@307952129958477824>";
+                  message = ''
+                    {{ range .Alerts.Firing }}
+                        Alert: **{{ printf "%.150s" .Annotations.summary }}** ({{ .Labels.severity }})
+                        Description: {{ printf "%.150s" .Annotations.description }}
+                        Alertname: {{ .Labels.alertname }}
+                        Namespace: {{ .Labels.namespace }}
+                        Service: {{ .Labels.service }}
+                    {{ end }}
+                    {{ range .Alerts.Resolved }}
+                        Alert: **{{ printf "%.150s" .Annotations.summary }}** ({{ .Labels.severity }})
+                        Description: {{ printf "%.150s" .Annotations.description }}
+                        Alertname: {{ .Labels.alertname }}
+                        Namespace: {{ .Labels.namespace }}
+                        Service: {{ .Labels.service }}
+                    {{ end }}
+                  '';
+                }
+              ];
+            }
+          ];
+          route = {
+            receiver = "default";
+            groupWait = "30s";
+            groupInterval = "5m";
+            repeatInterval = "10m";
+            routes = [
+              {
+                receiver = "null";
+                matchers = [
+                  {
+                    name = "alertname";
+                    value = "Watchdog";
+                    matchType = "=";
+                  }
+                ];
+              }
+              {
+                receiver = "null";
+                matchers = [
+                  {
+                    name = "alertname";
+                    value = "InfoInhibitor";
+                    matchType = "=";
+                  }
+                ];
+              }
+            ];
           };
         };
       };

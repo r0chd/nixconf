@@ -1,10 +1,10 @@
 { config, lib, ... }:
 let
-  cfg = config.homelab.atuin.db;
+  cfg = config.homelab.forgejo.db;
   inherit (lib) types;
 in
 {
-  options.homelab.atuin.db = {
+  options.homelab.forgejo.db = {
     instances = lib.mkOption {
       type = types.int;
       default = 1;
@@ -46,23 +46,23 @@ in
     };
   };
 
-  config = lib.mkIf (config.homelab.enable && config.homelab.atuin.enable) {
+  config = lib.mkIf (config.homelab.enable && config.homelab.forgejo.enable) {
     services.k3s = {
       manifests.cnpg-databases.content = [
         {
           apiVersion = "networking.k8s.io/v1";
           kind = "NetworkPolicy";
           metadata = {
-            name = "atuin-db-allow-app";
-            namespace = "atuin";
+            name = "forgejo-db-allow-app";
+            namespace = "forgejo";
           };
           spec = {
-            podSelector.matchLabels."cnpg.io/cluster" = "atuin-db";
+            podSelector.matchLabels."cnpg.io/cluster" = "forgejo-db";
             ingress = [
               {
                 from = [
                   {
-                    podSelector.matchLabels."app.kubernetes.io/name" = "atuin";
+                    podSelector.matchLabels."app.kubernetes.io/name" = "forgejo";
                   }
                 ];
                 ports = [
@@ -79,11 +79,11 @@ in
           apiVersion = "networking.k8s.io/v1";
           kind = "NetworkPolicy";
           metadata = {
-            name = "atuin-db-allow-operator";
-            namespace = "atuin";
+            name = "forgejo-db-allow-operator";
+            namespace = "forgejo";
           };
           spec = {
-            podSelector.matchLabels."cnpg.io/cluster" = "atuin-db";
+            podSelector.matchLabels."cnpg.io/cluster" = "forgejo-db";
             ingress = [
               {
                 from = [
@@ -105,11 +105,11 @@ in
           apiVersion = "networking.k8s.io/v1";
           kind = "NetworkPolicy";
           metadata = {
-            name = "atuin-db-allow-monitoring";
-            namespace = "atuin";
+            name = "forgejo-db-allow-monitoring";
+            namespace = "forgejo";
           };
           spec = {
-            podSelector.matchLabels."cnpg.io/cluster" = "atuin-db";
+            podSelector.matchLabels."cnpg.io/cluster" = "forgejo-db";
             ingress = [
               {
                 from = [
@@ -131,16 +131,16 @@ in
           apiVersion = "networking.k8s.io/v1";
           kind = "NetworkPolicy";
           metadata = {
-            name = "atuin-db-allow-inter-node";
-            namespace = "atuin";
+            name = "forgejo-db-allow-inter-node";
+            namespace = "forgejo";
           };
           spec = {
-            podSelector.matchLabels."cnpg.io/cluster" = "atuin-db";
+            podSelector.matchLabels."cnpg.io/cluster" = "forgejo-db";
             ingress = [
               {
                 from = [
                   {
-                    podSelector.matchLabels."cnpg.io/cluster" = "atuin-db";
+                    podSelector.matchLabels."cnpg.io/cluster" = "forgejo-db";
                   }
                 ];
                 ports = [
@@ -157,8 +157,8 @@ in
           apiVersion = "postgresql.cnpg.io/v1";
           kind = "Cluster";
           metadata = {
-            name = "atuin-db";
-            namespace = "atuin";
+            name = "forgejo-db";
+            namespace = "forgejo";
             #annotations."cnpg.io/fencesInstances" = [ "*" ];
           };
           spec = {
@@ -218,15 +218,15 @@ in
           // lib.optionalAttrs cfg.backup.enable {
             backup = {
               barmanObjectStore = {
-                destinationPath = "s3://atuin-backup";
+                destinationPath = "s3://forgejo-backup";
                 endpointURL = "http://s3.${config.homelab.garage.ingressHost}";
                 s3Credentials = {
                   accessKeyId = {
-                    name = "atuin-backup-credentials";
+                    name = "forgejo-backup-credentials";
                     key = "access-key-id";
                   };
                   secretAccessKey = {
-                    name = "atuin-backup-credentials";
+                    name = "forgejo-backup-credentials";
                     key = "secret-access-key";
                   };
                 };
@@ -244,14 +244,14 @@ in
           apiVersion = "postgresql.cnpg.io/v1";
           kind = "ScheduledBackup";
           metadata = {
-            name = "atuin-db";
-            namespace = "atuin";
+            name = "forgejo-db";
+            namespace = "forgejo";
           };
           spec = {
             schedule = "0 0 1 * * 0";
             immediate = true;
             backupOwnerReference = "self";
-            cluster.name = "atuin-db";
+            cluster.name = "forgejo-db";
           };
         }
       ];
@@ -259,8 +259,8 @@ in
       secrets = lib.mkIf cfg.backup.enable [
         {
           metadata = {
-            name = "atuin-backup-credentials";
-            namespace = "atuin";
+            name = "forgejo-backup-credentials";
+            namespace = "forgejo";
           };
           stringData = {
             "access-key-id" = cfg.backup.accessKeyId;

@@ -19,14 +19,16 @@
     "grafana/username" = { };
     "grafana/password" = { };
 
-    "atuin_backup/access_key_id" = { };
-    "atuin_backup/secret_access_key" = { };
-
     "vaultwarden_backup/access_key_id" = { };
     "vaultwarden_backup/secret_access_key" = { };
 
+    "thanos/access_key" = { };
+    "thanos/secret_key" = { };
+
     "quickwit/access_key_id" = { };
     "quickwit/secret_access_key" = { };
+
+    forgejo_admin_password = { };
   };
 
   boot.loader = {
@@ -75,24 +77,20 @@
       enable = true;
       db.backup = {
         enable = true;
-        accessKeyId = config.sops.placeholder."vaultwarden/backup/access_key_id";
-        secretAccessKey = config.sops.placeholder."vaultwarden/backup/secret_access_key";
+        accessKeyId = config.sops.placeholder."vaultwarden_backup/access_key_id";
+        secretAccessKey = config.sops.placeholder."vaultwarden_backup/secret_access_key";
       };
     };
 
-    moxwiki.enable = true;
-    atuin = {
+    forgejo = {
       enable = true;
-      db = {
-        storageSize = "5Gi";
-        walStorageSize = "2Gi";
-        backup = {
-          enable = true;
-          accessKeyId = config.sops.placeholder."atuin/backup/access_key_id";
-          secretAccessKey = config.sops.placeholder."atuin/backup/secret_access_key";
-        };
+      admin = {
+        username = "r0chd";
+        email = "oskarrochowiak@gmail.com";
+        password = config.sops.placeholder."forgejo_admin_password";
       };
     };
+    moxwiki.enable = true;
 
     glance = {
       enable = true;

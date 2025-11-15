@@ -65,6 +65,26 @@ let
                   ];
                 }
               ]
+              [
+                {
+                  type = "server-stats";
+                  servers = [
+                    {
+                      type = "local";
+                      name = "local";
+                      hide-mountpoints-by-default = true;
+                      mountpoints = {
+                        "/" = {
+                          hide = false;
+                        };
+                        "/opt/data" = {
+                          hide = false;
+                        };
+                      };
+                    }
+                  ];
+                }
+              ]
               #{
               #  type = "custom-api";
               #  title = "Immich stats";
@@ -241,14 +261,6 @@ let
                         icon = "si:gitbook";
                       }
                     ])
-                    (lib.optionals (config.homelab.atuin.enable && config.homelab.atuin.ingressHost != null) [
-                      {
-                        title = "atuin";
-                        url = "https://${config.homelab.atuin.ingressHost}";
-                        "check-url" = "http://atuin.atuin.svc.cluster.local:8888";
-                        icon = "di:atuin";
-                      }
-                    ])
                     (lib.optionals (config.homelab.vaultwarden.enable && config.homelab.vaultwarden.ingressHost != null)
                       [
                         {
@@ -259,6 +271,14 @@ let
                         }
                       ]
                     )
+                    (lib.optionals (config.homelab.forgejo.enable && config.homelab.forgejo.ingressHost != null) [
+                      {
+                        title = "Vaultwarden";
+                        url = "https://${config.homelab.forgejo.ingressHost}";
+                        "check-url" = "http://forgejo-http.forgejo.svc.cluster.local:3000";
+                        icon = "sh:vaultwarden";
+                      }
+                    ])
                   ]
                   ++ cfg.additionalWebsites;
               }
