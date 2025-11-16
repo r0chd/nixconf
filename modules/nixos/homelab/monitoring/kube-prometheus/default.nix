@@ -259,20 +259,45 @@ in
                     name = "alertmanager-config-secrets";
                     key = "DISCORD_WEBHOOK_URL";
                   };
+                  content = ''
+                    {{- if gt (.Alerts.Firing | len) 0 -}}
+                      **Firing:** {{ .Alerts.Firing | len }}
+                    {{- end }}
+                    {{- if and (gt (.Alerts.Firing | len) 0) (gt (.Alerts.Resolved | len) 0) }} | {{ end -}}
+                    {{- if gt (.Alerts.Resolved | len) 0 -}}
+                      **Resolved:** {{ .Alerts.Resolved | len }}
+                    {{- end -}}
+                  '';
                   message = ''
+                    {{- if and (gt (.Alerts.Firing | len) 0) (gt (.Alerts.Resolved | len) 0) -}}
+                    **Firing:**
+                    {{- end }}
                     {{ range .Alerts.Firing }}
-                        Alert: **{{ printf "%.150s" .Annotations.summary }}** ({{ .Labels.severity }})
-                        Description: {{ printf "%.150s" .Annotations.description }}
-                        Alertname: {{ .Labels.alertname }}
-                        Namespace: {{ .Labels.namespace }}
-                        Service: {{ .Labels.service }}
+                    **‼️ Alert:** {{ .Annotations.summary }}
+                    **Severity:** `{{ .Labels.severity }}`
+                    **Description:** {{ .Annotations.description }}
+                    [**Graph 📈**]({{ .GeneratorURL }})
+                    {{- if .Annotations.runbook_url }} [**Runbook 📝**]({{ .Annotations.runbook_url }}){{ end }}
+                    **Details:**
+                    {{ range (.Labels.Remove (stringSlice "cluster" "provider" "region" "monitor_type" "prometheus")).SortedPairs -}}
+                    - **{{ .Name }}:** `{{ .Value }}`
                     {{ end }}
+                    {{ end }}
+
+
+                    {{- if and (gt (.Alerts.Firing | len) 0) (gt (.Alerts.Resolved | len) 0) -}}
+                    **Resolved:**
+                    {{- end }}
                     {{ range .Alerts.Resolved }}
-                        Alert: **{{ printf "%.150s" .Annotations.summary }}** ({{ .Labels.severity }})
-                        Description: {{ printf "%.150s" .Annotations.description }}
-                        Alertname: {{ .Labels.alertname }}
-                        Namespace: {{ .Labels.namespace }}
-                        Service: {{ .Labels.service }}
+                    **✅ Alert:** {{ .Annotations.summary }}
+                    **Severity:** `{{ .Labels.severity }}`
+                    **Description:** {{ .Annotations.description }}
+                    [**Graph 📈**]({{ .GeneratorURL }})
+                    {{- if .Annotations.runbook_url }} [**Runbook 📝**]({{ .Annotations.runbook_url }}){{ end }}
+                    **Details:**
+                    {{ range (.Labels.Remove (stringSlice "cluster" "provider" "region" "monitor_type" "prometheus")).SortedPairs -}}
+                    - **{{ .Name }}:** `{{ .Value }}`
+                    {{ end }}
                     {{ end }}
                   '';
                 }
