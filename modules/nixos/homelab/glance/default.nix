@@ -273,7 +273,7 @@ let
                     )
                     (lib.optionals (config.homelab.forgejo.enable && config.homelab.forgejo.ingressHost != null) [
                       {
-                        title = "Vaultwarden";
+                        title = "Forgejo";
                         url = "https://${config.homelab.forgejo.ingressHost}";
                         "check-url" = "http://forgejo-http.forgejo.svc.cluster.local:3000";
                         icon = "si:forgejo";

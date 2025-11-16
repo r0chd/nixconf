@@ -17,7 +17,7 @@
     orca.enable = false;
     speechd.enable = false;
     fail2ban = {
-      enable = profile == "server";
+      #enable = profile == "server";
       maxretry = 5;
       ignoreIP = [
         "10.0.0.0/8"

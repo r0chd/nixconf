@@ -1,7 +1,4 @@
-{ config, ... }:
-let
-  cfg = config.homelab.ingress;
-in
+{ ... }:
 {
   services.k3s.manifests.ingress-nginx-deployment.content = [
     {

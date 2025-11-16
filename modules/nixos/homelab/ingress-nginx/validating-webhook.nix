@@ -1,6 +1,6 @@
 { ... }:
 {
-  services.k3s.manifests.ingress-nginc-validating-webhook.content = [
+  services.k3s.manifests.ingress-nginx-validating-webhook.content = [
     {
       apiVersion = "admissionregistration.k8s.io/v1";
       kind = "ValidatingWebhookConfiguration";

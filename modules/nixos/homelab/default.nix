@@ -15,6 +15,7 @@ in
     ./glance
     ./vaultwarden
     ./forgejo
+    ./flux
     # ./immich
     # ./nextcloud
   ];
@@ -63,7 +64,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    services.k3s = lib.mkDefault {
+    services.k3s = {
       inherit (cfg) enable;
       disableAgent = false;
       extraFlags = [

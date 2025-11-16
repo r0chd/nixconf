@@ -1,0 +1,33 @@
+{ ... }:
+{
+  services.k3s.manifests.flux-config.content = [
+    {
+      apiVersion = "kustomize.toolkit.fluxcd.io/v1";
+      kind = "Kustomization";
+      metadata = {
+        name = "config";
+        namespace = "flux-system";
+      };
+      spec = {
+        interval = "5m";
+        timeout = "1m";
+        retryInterval = "30s";
+        dependsOn = [ { name = "namespaces"; } ];
+        path = "./kubernetes/config";
+        force = true;
+        prune = true;
+        wait = true;
+        sourceRef = {
+          kind = "GitRepository";
+          name = "flux-system";
+        };
+        decryption = {
+          provider = "sops";
+          secretRef = {
+            name = "sops-age";
+          };
+        };
+      };
+    }
+  ];
+}

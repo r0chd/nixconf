@@ -77,6 +77,15 @@ let
       ];
     };
 
+    fi-srv-3 = {
+      root = [
+        keys."unixpariah@laptop"
+        keys."unixpariah@laptop-huawei"
+        keys."r0chd@laptop-huawei"
+        keys."os1@t851"
+      ];
+    };
+
     kms = {
       root = [
         keys."unixpariah@laptop"

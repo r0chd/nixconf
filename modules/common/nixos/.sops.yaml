@@ -5,6 +5,7 @@ keys:
   - &agent-0 age1npphzfaarxvv2flkmdkm777gafuhvmsh38020432ju9v0aznh55sd0ce3s
   - &fi-srv-1 age1e0mcqrfny3lkmnv6qgxel3p035frwm0kdf8cexgtktpkzmvaugrqw2u4ug
   - &fi-srv-2 age1u2t7mjcvf93ugh22hqvnmyrd4qkd2xp34jpevv478mcehfvu39wszxa0d9
+  - &fi-srv-3 age1rkekh5js4arrnfch9gf8n2h5rcup8jqunw33t75pj5h3y3dzdgqsn0n87y
   - &kms age1suyudkl2xlle4uu6e0ld7lughpr5ekg5vxh2ef0kv5wga5j0f3jscpxtz2
 creation_rules:
   - path_regex: secrets/secrets.yaml$
@@ -16,4 +17,5 @@ creation_rules:
           - *agent-0
           - *fi-srv-1
           - *fi-srv-2
+          - *fi-srv-3
           - *kms

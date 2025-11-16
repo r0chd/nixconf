@@ -23,6 +23,7 @@
       group = "nixos-anywhere";
       mode = "0400";
     };
+    proton = { };
   };
 
   homelab.enable = true;
@@ -30,6 +31,16 @@
   programs.nixos-anywhere.sshKeyFile = config.sops.secrets.nixos-anywhere.path;
 
   services = {
+    protonvpn = {
+      enable = true;
+      interface = {
+        privateKeyFile = config.sops.secrets.proton.path;
+      };
+      endpoint = {
+        publicKey = "U6Jj/WjvFjeGa4ub7Sbqv7082Ex6l4AoBtsGTnw4glY=";
+        ip = "149.34.244.129";
+      };
+    };
     tailscale.enable = true;
     sccache.enable = true;
   };
