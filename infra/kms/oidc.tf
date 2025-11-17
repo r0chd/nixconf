@@ -1,7 +1,3 @@
-resource "vault_auth_backend" "userpass" {
- type = "userpass"
-}
-
 resource "vault_identity_oidc_key" "oidc_key" {
  name               = "oidc-key"
  rotation_period    = 3600

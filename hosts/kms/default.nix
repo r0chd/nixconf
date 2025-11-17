@@ -178,19 +178,19 @@
     };
 
     monitoring = {
-      prometheus.enable = true;
-      alertmanager = {
-        enable = true;
-        discordWebhookUrl = config.sops.placeholder.alertmanager_webhook_url;
-      };
-      grafana = {
-        enable = true;
-        username = config.sops.placeholder."grafana/username";
-        password = config.sops.placeholder."grafana/password";
-      };
-      kube-web.enable = true;
-      kube-ops.enable = true;
-      kube-resource-report.enable = true;
+      #prometheus.enable = true;
+      #alertmanager = {
+      #  enable = true;
+      #  discordWebhookUrl = config.sops.placeholder.alertmanager_webhook_url;
+      #};
+      #grafana = {
+      #  enable = true;
+      #  username = config.sops.placeholder."grafana/username";
+      #  password = config.sops.placeholder."grafana/password";
+      #};
+      #kube-web.enable = true;
+      #kube-ops.enable = true;
+      #kube-resource-report.enable = true;
       #vector.enable = true;
     };
 
