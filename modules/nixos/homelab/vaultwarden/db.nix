@@ -114,6 +114,7 @@ in
               {
                 from = [
                   {
+                    namespaceSelector.matchLabels."kubernetes.io/metadata.name" = "monitoring";
                     podSelector.matchLabels."app.kubernetes.io/name" = "prometheus";
                   }
                 ];

@@ -167,6 +167,7 @@
       "172.31.1.100-172.31.1.150"
     ];
     system = {
+      cloudnative-pg.enable = false;
       zfs-localpv.poolname = "zroot";
       reloader.enable = true;
     };

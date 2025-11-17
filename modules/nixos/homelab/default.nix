@@ -89,6 +89,12 @@ in
     users.groups.homelab = { };
 
     homelab.storageClass = cfg.storageClassName;
+
+    services.gitDaemon = {
+      enable = cfg.nodeType == "only" || cfg.nodeType == "primary";
+      basePath = "/var/lib";
+      exportAll = true;
+    };
   };
 }
 

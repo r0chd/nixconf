@@ -39,15 +39,10 @@
     grub.enable = true;
   };
 
-  services = {
-    forgejo = {
-      enable = true;
-    };
-    k3s.extraFlags = [
-      "--tls-san 157.180.30.62"
-      "--tls-san 10.0.0.3"
-    ];
-  };
+  services.k3s.extraFlags = [
+    "--tls-san 157.180.30.62"
+    "--tls-san 10.0.0.3"
+  ];
 
   homelab = {
     enable = true;

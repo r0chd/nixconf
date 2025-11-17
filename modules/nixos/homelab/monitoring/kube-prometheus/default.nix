@@ -4,7 +4,10 @@ let
   inherit (lib) types;
 in
 {
-  imports = [ ./dashboards ];
+  imports = [
+    ./dashboards
+    ./thanos
+  ];
 
   options.homelab.monitoring = {
     prometheus = {
@@ -55,6 +58,41 @@ in
       };
       secret_key = lib.mkOption {
         type = types.str;
+      };
+
+      image = lib.mkOption {
+        type = types.str;
+        default = "quay.io/thanos/thanos:v0.30.2";
+        description = "Docker image for thanos components";
+      };
+
+      query = {
+        replicas = lib.mkOption {
+          type = types.int;
+          default = 1;
+          description = "Number of thanos-query replicas";
+        };
+      };
+
+      queryFrontend = {
+        replicas = lib.mkOption {
+          type = types.int;
+          default = 1;
+          description = "Number of thanos-query-frontend replicas";
+        };
+      };
+
+      store = {
+        replicas = lib.mkOption {
+          type = types.int;
+          default = 1;
+          description = "Number of thanos-store replicas";
+        };
+        storageSize = lib.mkOption {
+          type = types.str;
+          default = "10Gi";
+          description = "Storage size for thanos-store data volume";
+        };
       };
     };
   };
@@ -235,6 +273,13 @@ in
             podMonitorSelectorNilUsesHelmValues = false;
             serviceMonitorNamespaceSelector.matchLabels = { };
             serviceMonitorSelectorNilUsesHelmValues = false;
+
+            thanos = lib.mkIf cfg.thanos.enable {
+              objectStorageConfig = {
+                name = "thanos-objectstorage";
+                key = "thanos.yaml";
+              };
+            };
           };
         };
       };
