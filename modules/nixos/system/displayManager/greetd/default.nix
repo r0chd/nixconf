@@ -3,7 +3,7 @@ let
   cfg = config.system.displayManager;
 in
 {
-  imports = [ ./tuigreet ];
+  imports = [ ./tuigreet.nix ];
 
   config = lib.mkIf cfg.enable {
     services.greetd.enable = true;
