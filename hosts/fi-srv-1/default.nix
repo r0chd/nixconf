@@ -1,4 +1,8 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  ...
+}:
 {
   imports = [
     ./hardware-configuration.nix
@@ -32,6 +36,9 @@
     "forgejo/secret_access_key" = { };
 
     "forgejo/admin_password" = { };
+
+    "github-client/client-id" = { };
+    "github-client/client-secret" = { };
   };
 
   boot.loader = {
@@ -102,6 +109,11 @@
     glance = {
       enable = true;
       ingressHost = "fi.r0chd.pl";
+    };
+    dex = {
+      enable = true;
+      clientId = config.sops.placeholder."github-client/client-id";
+      clientSecret = config.sops.placeholder."github-client/client-secret";
     };
 
     monitoring = {

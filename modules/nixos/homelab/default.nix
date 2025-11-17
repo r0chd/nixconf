@@ -16,6 +16,7 @@ in
     ./vaultwarden
     ./forgejo
     ./flux
+    ./dex
     # ./immich
     # ./nextcloud
   ];

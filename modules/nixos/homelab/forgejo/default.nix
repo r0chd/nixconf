@@ -54,6 +54,17 @@ in
 
         values = {
           replicaCount = 1;
+
+          service = {
+            ssh = {
+              type = "NodePort";
+              # nodePort = 30022;
+            };
+            http = {
+              type = "ClusterIP";
+            };
+          };
+
           ingress =
             if cfg.ingressHost != null then
               {
