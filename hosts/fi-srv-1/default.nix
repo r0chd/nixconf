@@ -37,8 +37,10 @@
 
     "forgejo/admin_password" = { };
 
-    "github-client/client-id" = { };
     "github-client/client-secret" = { };
+
+    "oauth2-proxy/cookie-secret" = { };
+    "oauth2-proxy/client-secret" = { };
   };
 
   boot.loader = {
@@ -110,10 +112,16 @@
       enable = true;
       ingressHost = "r0chd.pl";
     };
-    dex = {
+    auth = {
       enable = true;
-      clientId = config.sops.placeholder."github-client/client-id";
-      clientSecret = config.sops.placeholder."github-client/client-secret";
+      github = {
+        enable = true;
+        clientId = "Iv23lizZfPiAiIbzNLmS";
+        clientSecret = config.sops.placeholder."github-client/client-secret";
+      };
+      dex.ingressHost = "dex-test.r0chd.pl";
+      clientSecret = config.sops.placeholder."oauth2-proxy/client-secret";
+      oauth2ProxyCookie = config.sops.placeholder."oauth2-proxy/cookie-secret";
     };
 
     monitoring = {

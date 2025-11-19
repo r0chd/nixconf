@@ -53,14 +53,17 @@ let
                     {
                       symbol = "BTC-USD";
                       name = "Bitcoin";
+                      chart-link = "https://www.tradingview.com/chart/?symbol=KRAKEN:BTCUSD";
                     }
                     {
                       symbol = "ETH-USD";
                       name = "Ethereum";
+                      chart-link = "https://www.tradingview.com/chart/?symbol=KRAKEN:ETHUSD";
                     }
                     {
                       symbol = "SOL-USD";
                       name = "Solana";
+                      chart-link = "https://www.tradingview.com/chart/?symbol=KRAKEN:SOLUSD";
                     }
                   ];
                 }

@@ -1,0 +1,12 @@
+{ config, lib, ... }:
+{
+  config = lib.mkIf config.homelab.enable {
+    services.k3s.manifests."auth-namespace".content = [
+      {
+        apiVersion = "v1";
+        kind = "Namespace";
+        metadata.name = "auth";
+      }
+    ];
+  };
+}

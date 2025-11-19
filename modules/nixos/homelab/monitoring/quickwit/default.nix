@@ -272,7 +272,6 @@ in
                 enabled = true;
                 className = "nginx";
                 annotations = {
-                  "nginx.ingress.kubernetes.io/rewrite-target" = "/";
                   "cert-manager.io/cluster-issuer" = "letsencrypt";
                 };
                 hosts = [

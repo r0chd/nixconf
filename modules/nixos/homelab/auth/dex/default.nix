@@ -1,73 +1,28 @@
 { lib, config, ... }:
 let
-  cfg = config.homelab.dex;
+  cfg = config.homelab.auth.dex;
   inherit (lib) types;
 in
 {
-  options.homelab.dex = {
-    enable = lib.mkEnableOption "dex";
-
+  options.homelab.auth.dex = {
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
       default = if config.homelab.domain != null then "dex.${config.homelab.domain}" else null;
       description = "Hostname for dex ingress (defaults to dex.<domain> if domain is set)";
     };
-
-    clientId = lib.mkOption {
-      type = types.str;
-    };
-
-    clientSecret = lib.mkOption {
-      type = types.str;
-    };
   };
 
-  config = lib.mkIf (config.homelab.enable && cfg.enable) {
+  config = lib.mkIf config.homelab.auth.enable {
     services.k3s = {
       autoDeployCharts.dex = {
         name = "dex";
         repo = "https://charts.dexidp.io";
         version = "0.24.0";
         hash = "sha256-JNSGrCGCuRlIOphAM5mXRDeTzmN+PxDTerMoTqoinTM=";
-        targetNamespace = "dex";
-        createNamespace = true;
+        targetNamespace = "auth";
 
         values = {
           replicaCount = 1;
-          https = {
-            enabled = false;
-          };
-          grpc = {
-            enabled = false;
-          };
-
-          config = {
-            issuer = "https://${cfg.ingressHost}";
-
-            storage = {
-              type = "kubernetes";
-              config = {
-                inCluster = true;
-              };
-            };
-
-            web = {
-              http = "0.0.0.0:5556";
-            };
-
-            connectors = [
-              {
-                type = "github";
-                id = "github";
-                name = "GitHub";
-                config = {
-                  clientID = "$GITHUB_CLIENT_ID";
-                  clientSecret = "$GITHUB_CLIENT_SECRET";
-                  redirectURI = "https://${cfg.ingressHost}/callback";
-                };
-              }
-            ];
-          };
 
           envFrom = [
             {
@@ -75,10 +30,16 @@ in
                 name = "github-client-credentials";
               };
             }
+            {
+              secretRef = {
+                name = "dex-oauth2-client-secret";
+              };
+            }
           ];
 
           configSecret = {
-            create = true;
+            create = false;
+            name = "dex-config";
           };
 
           serviceAccount = {
@@ -112,7 +73,7 @@ in
                 ];
                 tls = [
                   {
-                    secretName = "forgejo-tls";
+                    secretName = "dex-tls";
                     hosts = [ cfg.ingressHost ];
                   }
                 ];
@@ -125,12 +86,36 @@ in
       secrets = [
         {
           metadata = {
-            name = "github-client-credentials";
-            namespace = "dex";
+            name = "dex-config";
+            namespace = "auth";
           };
           stringData = {
-            GITHUB_CLIENT_ID = cfg.clientId;
-            GITHUB_CLIENT_SECRET = cfg.clientSecret;
+            "config.yaml" = ''
+              issuer: https://${cfg.ingressHost}
+              staticClients:
+                - id: oauth2-proxy
+                  secret: '${config.homelab.auth.clientSecret}'
+                  name: 'OAuth2 Proxy'
+                  redirectURIs:
+                    - 'https://${config.homelab.auth.oauth2-proxy.ingressHost}/oauth2/callback'
+              storage:
+                type: kubernetes
+                config:
+                  inCluster: true
+              web:
+                http: "0.0.0.0:5556"
+
+              connectors:  
+              ${lib.optionalString config.homelab.auth.github.enable ''
+                - type: github  
+                  id: github  
+                  name: GitHub  
+                  config:  
+                    clientID: ${config.homelab.auth.github.clientId}  
+                    clientSecret: $GITHUB_CLIENT_SECRET  
+                    redirectURI: https://${cfg.ingressHost}/callback  
+              ''}  
+            '';
           };
         }
       ];
