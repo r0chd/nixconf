@@ -192,8 +192,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    mox-flake.url = "github:mox-desktop/mox-flake";
-    whydotool.url = "github:r0chd/whydotool";
+    mox-flake.url = "git+https://forgejo.r0chd.pl/mox-desktop/mox-flake.git";
+    whydotool.url = "git+https://forgejo.r0chd.pl/r0chd/whydotool.git";
 
     # To be ditched
 

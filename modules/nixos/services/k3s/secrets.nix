@@ -35,7 +35,7 @@ in
             namespace = lib.mkOption { type = lib.types.nullOr lib.types.str; };
           };
           stringData = lib.mkOption {
-            type = lib.types.attrsOf lib.types.str;
+            type = lib.types.anything;
           };
         };
       }

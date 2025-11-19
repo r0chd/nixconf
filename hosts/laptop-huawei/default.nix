@@ -32,7 +32,7 @@
 
   services = {
     protonvpn = {
-      enable = true;
+      enable = false;
       interface = {
         privateKeyFile = config.sops.secrets.proton.path;
       };
@@ -53,10 +53,8 @@
     };
   };
 
-  users.groups.wl-clicker = { };
   users.users.unixpariah.extraGroups = [
     "podman"
-    "wl-clicker"
   ];
 
   documentation.enable = true;

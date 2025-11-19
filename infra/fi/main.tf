@@ -3,7 +3,7 @@ data "sops_file" "secrets" {
 }
 
 provider "garage" {
-  host   = "admin.garage.fi.r0chd.pl"
+  host   = "admin.garage.r0chd.pl"
   scheme = "https"
   token  = data.sops_file.secrets.data["garage.admin-token"]
 }

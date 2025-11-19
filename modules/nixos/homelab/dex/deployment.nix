@@ -79,7 +79,7 @@ in
                     httpGet = {
                       path = "/healthz";
                       port = 5556;
-                      scheme = "HTTPS";
+                      scheme = "HTTP";
                     };
                   };
                 }

@@ -14,7 +14,7 @@ in
         };
         data = {
           "config.yaml" = ''
-            issuer: ${cfg.ingressHost}
+            issuer: https://${cfg.ingressHost}
             storage:
               type: kubernetes
               config:

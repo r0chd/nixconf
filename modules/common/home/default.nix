@@ -7,11 +7,6 @@
     };
   };
 
-  programs.atuin.distributed = {
-    enable = true;
-    address = "https://atuin.fi.r0chd.pl";
-  };
-
   services = {
     syncthing = {
       enable = true;

@@ -53,7 +53,7 @@
 
   homelab = {
     enable = true;
-    domain = "fi.r0chd.pl";
+    domain = "r0chd.pl";
 
     nodeType = "primary";
 
@@ -108,7 +108,7 @@
 
     glance = {
       enable = true;
-      ingressHost = "fi.r0chd.pl";
+      ingressHost = "r0chd.pl";
     };
     dex = {
       enable = true;
