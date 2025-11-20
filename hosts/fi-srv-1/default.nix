@@ -43,6 +43,8 @@
 
     "oauth2-proxy/cookie-secret" = { };
     "oauth2-proxy/client-secret" = { };
+
+    "vault_client_secret".sopsFile = ../../infra/kms/secrets/secrets.yaml;
   };
 
   services = {
@@ -240,7 +242,10 @@
     };
     auth = {
       enable = true;
-      vault.enable = true;
+      vault = {
+        enable = true;
+        clientSecret = config.sops.placeholder."vault_client_secret";
+      };
 
       github = {
         enable = true;

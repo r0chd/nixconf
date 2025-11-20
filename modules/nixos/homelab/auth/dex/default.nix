@@ -27,6 +27,11 @@ in
           envFrom = [
             {
               secretRef = {
+                name = "vault-client-credentials";
+              };
+            }
+            {
+              secretRef = {
                 name = "github-client-credentials";
               };
             }
@@ -98,6 +103,13 @@ in
                   name: 'OAuth2 Proxy'
                   redirectURIs:
                     - 'https://${config.homelab.auth.oauth2-proxy.ingressHost}/oauth2/callback'
+                - id: vault
+                  secret: '${config.homelab.auth.vault.clientSecret}'
+                  name: 'Vault'
+                  redirectURIs:
+                    - https://${config.homelab.auth.vault.ingressHost}/ui/vault/auth/oidc/callback
+                    - https://${config.homelab.auth.vault.ingressHost}/v1/auth/oidc/oidc/callback
+                    - http://localhost:8250/oidc/callback
               storage:
                 type: kubernetes
                 config:

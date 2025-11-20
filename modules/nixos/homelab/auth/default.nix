@@ -46,6 +46,12 @@ in
         default = null;
       };
     };
+
+    vault = {
+      clientSecret = lib.mkOption {
+        type = types.str;
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -66,6 +72,15 @@ in
         };
         stringData = {
           OAUTH2_PROXY_CLIENT_SECRET = cfg.clientSecret;
+        };
+      }
+      {
+        metadata = {
+          name = "vault-client-credentials";
+          namespace = "auth";
+        };
+        stringData = {
+          GITHUB_CLIENT_SECRET = cfg.vault.clientSecret;
         };
       }
     ]
