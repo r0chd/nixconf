@@ -17,6 +17,7 @@ in
     ./flux
     ./auth
     ./immich
+    ./portfolio
     # ./nextcloud
   ];
 

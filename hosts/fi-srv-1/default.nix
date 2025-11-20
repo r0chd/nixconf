@@ -205,6 +205,7 @@
     };
 
     immich.enable = false;
+    portfolio.enable = true;
 
     garage = {
       enable = true;

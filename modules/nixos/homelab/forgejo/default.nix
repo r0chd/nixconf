@@ -16,9 +16,14 @@ in
 
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
-      default = if config.homelab.domain != null then
-        if config.homelab.forgejo.gated then "forgejo.i.${config.homelab.domain}" else "forgejo.${config.homelab.domain}"
-      else null;
+      default =
+        if config.homelab.domain != null then
+          if config.homelab.forgejo.gated then
+            "forgejo.i.${config.homelab.domain}"
+          else
+            "forgejo.${config.homelab.domain}"
+        else
+          null;
       description = "Hostname for forgejo ingress (defaults to forgejo.i.<domain> if gated, forgejo.<domain> otherwise)";
     };
     admin = {
@@ -81,7 +86,8 @@ in
                 annotations = {
                   "nginx.ingress.kubernetes.io/rewrite-target" = "/";
                   "cert-manager.io/cluster-issuer" = "letsencrypt";
-                } // lib.optionalAttrs cfg.gated {
+                }
+                // lib.optionalAttrs cfg.gated {
                   "nginx.ingress.kubernetes.io/auth-signin" =
                     "https://${config.homelab.auth.oauth2-proxy.ingressHost}/oauth2/start?rd=https://$host$escaped_request_uri";
                   "nginx.ingress.kubernetes.io/auth-url" = "http://oauth2-proxy.auth.svc.cluster.local/oauth2/auth";
@@ -203,6 +209,14 @@ in
             config = {
               APP_NAME = "Forgejo: Beyond coding. We forge.";
               RUN_MODE = "prod";
+
+              service = {
+                DEFAULT_ALLOW_CREATE_ORGANIZATION = false;
+              };
+              repository = {
+                MAX_CREATION_LIMIT = 0;
+              };
+
               storage = {
                 STORAGE_TYPE = "minio";
                 MINIO_ENDPOINT = "s3.${config.homelab.garage.ingressHost}";
@@ -223,7 +237,7 @@ in
                 PROVIDER = "redis";
                 PROVIDER_CONFIG = "redis://forgejo-dragonfly.forgejo.svc.cluster.local:6379";
               };
-              mirror = { };
+
             };
           };
         };

@@ -244,6 +244,14 @@ let
                   lib.concatLists [
                     (lib.optionals (config.homelab.moxwiki.enable && config.homelab.moxwiki.ingressHost != null) [
                       {
+                        title = "Portfolio";
+                        url = "https://${config.homelab.portfolio.ingressHost}";
+                        "check-url" = "http://portfolio.portfolio.svc.cluster.local:80";
+                        icon = "si:briefcase";
+                      }
+                    ])
+                    (lib.optionals (config.homelab.moxwiki.enable && config.homelab.moxwiki.ingressHost != null) [
+                      {
                         title = "MoxWiki";
                         url = "https://${config.homelab.moxwiki.ingressHost}";
                         "check-url" = "http://moxwiki.moxwiki.svc.cluster.local:80";
