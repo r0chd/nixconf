@@ -6,5 +6,7 @@
     ./cert-manager.nix
     ./quickwit.nix
     ./pihole.nix
+    ./redis.nix
+    ./resources-usage.nix
   ];
 }

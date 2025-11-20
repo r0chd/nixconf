@@ -278,17 +278,17 @@
         "moxpaper": "moxpaper"
       },
       "locked": {
-        "lastModified": 1763263452,
-        "narHash": "sha256-dw+D2xG5Pl7ImQCUmAv2T+I2i0JGiMEycXfkkB5X7PM=",
-        "owner": "mox-desktop",
-        "repo": "mox-flake",
-        "rev": "800233c2a267be85d029cc24c149010017225397",
-        "type": "github"
+        "lastModified": 1763521223,
+        "narHash": "sha256-EMim5JFaF6I2EYAusgFPgwFQ4oM4IIX+mMAaOV6ObRs=",
+        "ref": "refs/heads/master",
+        "rev": "6f3c067eb8c57f2a2d34f21ac17207a7156698b0",
+        "revCount": 121,
+        "type": "git",
+        "url": "https://forgejo.r0chd.pl/mox-desktop/mox-flake.git"
       },
       "original": {
-        "owner": "mox-desktop",
-        "repo": "mox-flake",
-        "type": "github"
+        "type": "git",
+        "url": "https://forgejo.r0chd.pl/mox-desktop/mox-flake.git"
       }
     },
     "moxctl": {
@@ -298,15 +298,15 @@
       "locked": {
         "lastModified": 1763262733,
         "narHash": "sha256-dqU7HQbMBTHggBttq/qcpYrsEfvZUkHxt3JrxS7mKvI=",
-        "owner": "mox-desktop",
-        "repo": "moxctl",
+        "ref": "refs/heads/master",
         "rev": "afe61ef5b74bfcc538440c39b74e729e03f4f541",
-        "type": "github"
+        "revCount": 26,
+        "type": "git",
+        "url": "https://forgejo.r0chd.pl/mox-desktop/moxctl.git"
       },
       "original": {
-        "owner": "mox-desktop",
-        "repo": "moxctl",
-        "type": "github"
+        "type": "git",
+        "url": "https://forgejo.r0chd.pl/mox-desktop/moxctl.git"
       }
     },
     "moxidle": {
@@ -316,15 +316,15 @@
       "locked": {
         "lastModified": 1763263324,
         "narHash": "sha256-+YJbS1CUUOGbc1UQG2Q96OM+dJ8ncOv8SEm1YraUDIE=",
-        "owner": "mox-desktop",
-        "repo": "moxidle",
+        "ref": "refs/heads/master",
         "rev": "18863c0943c278c79d0045b905ce0958baea7641",
-        "type": "github"
+        "revCount": 87,
+        "type": "git",
+        "url": "https://forgejo.r0chd.pl/mox-desktop/moxidle.git"
       },
       "original": {
-        "owner": "mox-desktop",
-        "repo": "moxidle",
-        "type": "github"
+        "type": "git",
+        "url": "https://forgejo.r0chd.pl/mox-desktop/moxidle.git"
       }
     },
     "moxnotify": {
@@ -334,15 +334,15 @@
       "locked": {
         "lastModified": 1763262627,
         "narHash": "sha256-4UnN0jz6cfmje2ILVorPt3L1LV3YJWbW487TyPacd0c=",
-        "owner": "mox-desktop",
-        "repo": "moxnotify",
+        "ref": "refs/heads/master",
         "rev": "450bd388329a437594fec0e33554fbd2e2706136",
-        "type": "github"
+        "revCount": 300,
+        "type": "git",
+        "url": "https://forgejo.r0chd.pl/mox-desktop/moxnotify.git"
       },
       "original": {
-        "owner": "mox-desktop",
-        "repo": "moxnotify",
-        "type": "github"
+        "type": "git",
+        "url": "https://forgejo.r0chd.pl/mox-desktop/moxnotify.git"
       }
     },
     "moxpaper": {
@@ -352,15 +352,15 @@
       "locked": {
         "lastModified": 1763262849,
         "narHash": "sha256-aOpzCek1bPY+bqvWz0k2d1tyYHr7I6g5VtQA7yEIcbg=",
-        "owner": "mox-desktop",
-        "repo": "moxpaper",
+        "ref": "refs/heads/master",
         "rev": "cd2dd67a13a91d4909574935bef4ca67c198c37e",
-        "type": "github"
+        "revCount": 132,
+        "type": "git",
+        "url": "https://forgejo.r0chd.pl/mox-desktop/moxpaper.git"
       },
       "original": {
-        "owner": "mox-desktop",
-        "repo": "moxpaper",
-        "type": "github"
+        "type": "git",
+        "url": "https://forgejo.r0chd.pl/mox-desktop/moxpaper.git"
       }
     },
     "nh": {
@@ -717,8 +717,8 @@
         "whydotool": "whydotool"
       },
       "locked": {
-        "lastModified": 1763506786,
-        "narHash": "sha256-Fb276kCuwzbEuCxqyRI3s2OqgjtyYKzwrTrUMdgxDDY=",
+        "lastModified": 1763665339,
+        "narHash": "sha256-BryG/CC/T0GhgfkVMLPmkwIa7Dow+jc9pLxRjEfkc54=",
         "path": "/var/lib/nixconf",
         "type": "path"
       },
@@ -1120,15 +1120,15 @@
       "locked": {
         "lastModified": 1761585676,
         "narHash": "sha256-pzUIQrIv70YsluOtqJn+iWumJmgf8MdHobDWIuWjlqA=",
-        "owner": "r0chd",
-        "repo": "whydotool",
+        "ref": "refs/heads/master",
         "rev": "e9d022eb1b160929ce8ff4424a9b8ef92aaf0aa2",
-        "type": "github"
+        "revCount": 41,
+        "type": "git",
+        "url": "https://forgejo.r0chd.pl/r0chd/whydotool.git"
       },
       "original": {
-        "owner": "r0chd",
-        "repo": "whydotool",
-        "type": "github"
+        "type": "git",
+        "url": "https://forgejo.r0chd.pl/r0chd/whydotool.git"
       }
     },
     "xwayland-satellite-stable": {
