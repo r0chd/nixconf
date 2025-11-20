@@ -1,13 +1,16 @@
 { config, lib, ... }:
+let
+  cfg = config.homelab.auth.vault;
+in
 {
-  config = lib.mkIf (config.homelab.enable && config.homelab.vault.enable) {
-    services.k3s.manifests."vault-ui-service".content = [
+  config = lib.mkIf cfg.enable {
+    services.k3s.manifests.vault-ui-service.content = [
       {
         apiVersion = "v1";
         kind = "Service";
         metadata = {
           name = "vault-ui";
-          namespace = "vault";
+          namespace = "auth";
           labels = {
             "app.kubernetes.io/name" = "vault-ui";
             "app.kubernetes.io/instance" = "vault";

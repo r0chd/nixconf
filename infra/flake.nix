@@ -68,7 +68,7 @@
             shellHook = ''
               export AWS_ACCESS_KEY_ID="$(sops -d --extract '["minio"]["access_key_id"]' ./secrets/secrets.yaml)"
               export AWS_SECRET_ACCESS_KEY="$(sops -d --extract '["minio"]["secret_access_key"]' ./secrets/secrets.yaml)"
-              export VAULT_ADDR="https://vault.kms.r0chd.pl"
+              export VAULT_ADDR="https://vault.r0chd.pl"
             '';
           };
         });

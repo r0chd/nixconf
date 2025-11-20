@@ -35,35 +35,28 @@
         version = "10";
         aliases = {
           tfstate-root = {
-            url = "https://s3.minio.kms.r0chd.pl";
+            url = "https://s3.minio.r0chd.pl";
             accessKey = config.sops.placeholder."minio/username";
             secretKey = config.sops.placeholder."minio/password";
             api = "s3v4";
             path = "auto";
           };
           moxpaper = {
-            url = "https://s3.garage.fi.r0chd.pl";
+            url = "https://s3.garage.r0chd.pl";
             accessKey = config.sops.placeholder."garage/moxpaper/access_key_id";
             secretKey = config.sops.placeholder."garage/moxpaper/secret_access_key";
             api = "s3v4";
             path = "auto";
           };
-          quickwit = {
-            url = "https://s3.garage.fi.r0chd.pl";
-            accessKey = config.sops.placeholder."garage/quickwit/access_key_id";
-            secretKey = config.sops.placeholder."garage/quickwit/secret_access_key";
-            api = "s3v4";
-            path = "auto";
-          };
           vaultwarden = {
-            url = "https://s3.garage.fi.r0chd.pl";
+            url = "https://s3.garage.r0chd.pl";
             accessKey = config.sops.placeholder."garage/vaultwarden/access_key_id";
             secretKey = config.sops.placeholder."garage/vaultwarden/secret_access_key";
             api = "s3v4";
             path = "auto";
           };
           forgejo = {
-            url = "https://s3.garage.fi.r0chd.pl";
+            url = "https://s3.garage.r0chd.pl";
             accessKey = config.sops.placeholder."garage/forgejo/access_key_id";
             secretKey = config.sops.placeholder."garage/forgejo/secret_access_key";
             api = "s3v4";
@@ -142,7 +135,7 @@
   services = {
     moxpaper.settings.buckets = {
       moxpaper = {
-        url = "https://s3.garage.fi.r0chd.pl";
+        url = "https://s3.garage.r0chd.pl";
         access_key_file = config.sops.secrets."garage/moxpaper/access_key_id".path;
         secret_key_file = config.sops.secrets."garage/moxpaper/secret_access_key".path;
         region = "garage";

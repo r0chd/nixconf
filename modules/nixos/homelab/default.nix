@@ -9,7 +9,6 @@ in
     ./system
     ./monitoring
     ./metallb
-    ./vault
     ./cert-manager
     ./moxwiki
     ./glance

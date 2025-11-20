@@ -170,7 +170,7 @@ in
                       "cert-manager.io/cluster-issuer" = "letsencrypt";
                     } // lib.optionalAttrs cfg.alertmanager.gated {
                       "nginx.ingress.kubernetes.io/auth-signin" =
-                        "https://oauth2-proxy.${config.homelab.domain}/oauth2/start?rd=https://$host$escaped_request_uri";
+                        "https://${config.homelab.auth.oauth2-proxy.ingressHost}/oauth2/start?rd=https://$host$escaped_request_uri";
                       "nginx.ingress.kubernetes.io/auth-url" = "http://oauth2-proxy.auth.svc.cluster.local/oauth2/auth";
                       "nginx.ingress.kubernetes.io/auth-response-headers" = "X-Auth-Request-User,X-Auth-Request-Email";
                     };
@@ -257,7 +257,7 @@ in
                   "cert-manager.io/cluster-issuer" = "letsencrypt";
                 } // lib.optionalAttrs cfg.grafana.gated {
                   "nginx.ingress.kubernetes.io/auth-signin" =
-                    "https://oauth2-proxy.${config.homelab.domain}/oauth2/start?rd=https://$host$escaped_request_uri";
+                    "https://${config.homelab.auth.oauth2-proxy.ingressHost}/oauth2/start?rd=https://$host$escaped_request_uri";
                   "nginx.ingress.kubernetes.io/auth-url" = "http://oauth2-proxy.auth.svc.cluster.local/oauth2/auth";
                   "nginx.ingress.kubernetes.io/auth-response-headers" = "X-Auth-Request-User,X-Auth-Request-Email";
                 };
@@ -294,7 +294,7 @@ in
                   "cert-manager.io/cluster-issuer" = "letsencrypt";
                 } // lib.optionalAttrs cfg.prometheus.gated {
                   "nginx.ingress.kubernetes.io/auth-signin" =
-                    "https://oauth2-proxy.${config.homelab.domain}/oauth2/start?rd=https://$host$escaped_request_uri";
+                    "https://${config.homelab.auth.oauth2-proxy.ingressHost}/oauth2/start?rd=https://$host$escaped_request_uri";
                   "nginx.ingress.kubernetes.io/auth-url" = "http://oauth2-proxy.auth.svc.cluster.local/oauth2/auth";
                   "nginx.ingress.kubernetes.io/auth-response-headers" = "X-Auth-Request-User,X-Auth-Request-Email";
                 };

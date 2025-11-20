@@ -5,14 +5,14 @@ provider "registry.opentofu.org/carlpett/sops" {
   version     = "1.3.0"
   constraints = "1.3.0"
   hashes = [
-    "h1:2YS/UjoM78/3CTIBDEgF/yDLElLo7PeCCDwXj2ZFP1U=",
+    "h1:0f+ms54eMWG7AUBTVDFzrqPcNHvZpXojLpmllMldj/o=",
   ]
 }
 
 provider "registry.opentofu.org/hashicorp/vault" {
-  version     = "5.3.0"
-  constraints = "5.3.0"
+  version     = "5.4.0"
+  constraints = "5.4.0"
   hashes = [
-    "h1:AUgF65R4yw5yU2AXaFe08oAPr4HGtJ07L38d2uQL5jo=",
+    "h1:rjuIk8YvO3siE/h2hc0S6UBrSt7Lc6jOTfovfhkLW44=",
   ]
 }

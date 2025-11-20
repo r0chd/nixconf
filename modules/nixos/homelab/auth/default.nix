@@ -5,6 +5,7 @@ let
 in
 {
   imports = [
+    ./vault
     ./dex
     ./oauth2-proxy
     ./namespace.nix

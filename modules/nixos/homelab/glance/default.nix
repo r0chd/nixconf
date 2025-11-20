@@ -301,11 +301,11 @@ let
                       }
                     ]
                   )
-                  (lib.optionals (config.homelab.vault.enable && config.homelab.vault.ingressHost != null) [
+                  (lib.optionals (config.homelab.auth.vault.enable && config.homelab.auth.vault.ingressHost != null) [
                     {
                       title = "Vault";
-                      url = "https://${config.homelab.vault.ingressHost}";
-                      "check-url" = "http://vault.vault.svc.cluster.local:8200";
+                      url = "https://${config.homelab.auth.vault.ingressHost}";
+                      "check-url" = "http://vault.auth.svc.cluster.local:8200";
                       icon = "di:vault";
                     }
                   ])

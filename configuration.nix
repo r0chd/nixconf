@@ -7,22 +7,6 @@ _: {
       profile = "server";
       platform = "nixos";
     };
-    fi-srv-2 = {
-      system = "x86_64-linux";
-      profile = "server";
-      platform = "nixos";
-    };
-    fi-srv-3 = {
-      system = "x86_64-linux";
-      profile = "server";
-      platform = "nixos";
-    };
-
-    kms = {
-      system = "x86_64-linux";
-      profile = "server";
-      platform = "nixos";
-    };
 
     t851 = {
       system = "x86_64-linux";

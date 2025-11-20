@@ -8,12 +8,11 @@ let
 in
 {
   imports = [
-    ./namespace.nix
     ./server
     ./ui-service.nix
   ];
 
-  options.homelab.vault = {
+  options.homelab.auth.vault = {
     enable = lib.mkEnableOption "vault k3s service";
 
     image = lib.mkOption {
@@ -36,9 +35,14 @@ in
 
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
-      default = if config.homelab.domain != null then
-        if config.homelab.vault.gated then "vault.i.${config.homelab.domain}" else "vault.${config.homelab.domain}"
-      else null;
+      default =
+        if config.homelab.domain != null then
+          if config.homelab.auth.vault.gated then
+            "vault.i.${config.homelab.domain}"
+          else
+            "vault.${config.homelab.domain}"
+        else
+          null;
       description = "Hostname for vault ingress (defaults to vault.i.<domain> if gated, vault.<domain> otherwise)";
     };
 

@@ -12,6 +12,8 @@
   sops.secrets = {
     #"pihole/password" = { };
 
+    "minio/credentials" = { };
+
     alertmanager_webhook_url = { };
 
     github_api = { };
@@ -41,6 +43,128 @@
 
     "oauth2-proxy/cookie-secret" = { };
     "oauth2-proxy/client-secret" = { };
+  };
+
+  services = {
+    minio = {
+      enable = true;
+      region = "eu-central-1";
+      rootCredentialsFile = config.sops.secrets."minio/credentials".path;
+    };
+  };
+
+  services.k3s.manifests = {
+    minio-service.content = [
+      {
+        apiVersion = "v1";
+        kind = "Service";
+        metadata = {
+          name = "minio-external";
+          namespace = "default";
+        };
+        spec = {
+          type = "ClusterIP";
+          ports = [
+            {
+              port = 9000;
+              name = "s3";
+            }
+            {
+              port = 9001;
+              name = "console";
+            }
+          ];
+        };
+      }
+    ];
+    minio-external-endpoints.content = [
+      {
+        apiVersion = "v1";
+        kind = "Endpoints";
+        metadata = {
+          name = "minio-external";
+          namespace = "default";
+        };
+        subsets = [
+          {
+            addresses = [
+              {
+                ip = "157.180.30.62";
+              }
+            ];
+            ports = [
+              {
+                port = 9000;
+                name = "s3";
+              }
+              {
+                port = 9001;
+                name = "console";
+              }
+            ];
+          }
+        ];
+      }
+    ];
+    minio-ingress.content = [
+      {
+        apiVersion = "networking.k8s.io/v1";
+        kind = "Ingress";
+        metadata = {
+          name = "minio-ingress";
+          namespace = "default";
+          annotations."cert-manager.io/cluster-issuer" = "letsencrypt";
+        };
+        spec = {
+          ingressClassName = "nginx";
+          tls = [
+            {
+              hosts = [
+                "s3.minio.r0chd.pl"
+                "console.minio.r0chd.pl"
+              ];
+              secretName = "minio-tls";
+            }
+          ];
+          rules = [
+            {
+              host = "s3.minio.r0chd.pl";
+              http = {
+                paths = [
+                  {
+                    path = "/";
+                    pathType = "Prefix";
+                    backend = {
+                      service = {
+                        name = "minio-external";
+                        port.number = 9000;
+                      };
+                    };
+                  }
+                ];
+              };
+            }
+            {
+              host = "console.minio.r0chd.pl";
+              http = {
+                paths = [
+                  {
+                    path = "/";
+                    pathType = "Prefix";
+                    backend = {
+                      service = {
+                        name = "minio-external";
+                        port.number = 9001;
+                      };
+                    };
+                  }
+                ];
+              };
+            }
+          ];
+        };
+      }
+    ];
   };
 
   boot.loader = {
@@ -114,13 +238,14 @@
     };
     auth = {
       enable = true;
+      vault.enable = true;
+
       github = {
         enable = true;
         clientId = "Iv23lizZfPiAiIbzNLmS";
         clientSecret = config.sops.placeholder."github-client/client-secret";
         org = "mox-desktop";
       };
-      dex.ingressHost = "dex-test.r0chd.pl";
       clientSecret = config.sops.placeholder."oauth2-proxy/client-secret";
       oauth2ProxyCookie = config.sops.placeholder."oauth2-proxy/cookie-secret";
     };

@@ -3,7 +3,7 @@ data "sops_file" "secrets" {
 }
 
 provider "vault" {
-  address = "https://vault.kms.r0chd.pl"
+  address = "https://vault.r0chd.pl"
   token   = data.sops_file.secrets.data["vault.root"]
 }
 

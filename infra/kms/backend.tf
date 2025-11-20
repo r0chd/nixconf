@@ -4,7 +4,7 @@ terraform {
     key    = "terraform.tfstate"
     region = "eu-central-1"
     endpoints = {
-      s3 = "https://s3.minio.kms.r0chd.pl"
+      s3 = "https://s3.minio.r0chd.pl"
     }
 
     use_path_style              = true
