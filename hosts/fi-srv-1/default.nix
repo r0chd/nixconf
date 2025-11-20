@@ -202,6 +202,8 @@
       #};
     };
 
+    immich.enable = false;
+
     garage = {
       enable = true;
       rpcSecret = config.sops.placeholder."garage/rpc-secret";
@@ -278,10 +280,6 @@
         gated = true;
       };
       kube-ops = {
-        enable = true;
-        gated = true;
-      };
-      kube-resource-report = {
         enable = true;
         gated = true;
       };

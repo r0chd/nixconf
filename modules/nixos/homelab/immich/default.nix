@@ -21,8 +21,8 @@ in
       package = pkgs.lib.downloadHelmChart {
         repo = "https://immich-app.github.io/immich-charts";
         chart = "immich";
-        version = "0.9.3";
-        chartHash = "";
+        version = "0.10.3";
+        chartHash = "sha256-E9lqIjUe1WVEV8IDrMAbBTJMKj8AzpigJ7fNDCYYo8Y=";
       };
       targetNamespace = "immich";
       createNamespace = true;

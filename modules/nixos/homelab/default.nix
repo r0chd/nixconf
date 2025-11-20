@@ -16,7 +16,7 @@ in
     ./forgejo
     ./flux
     ./auth
-    # ./immich
+    ./immich
     # ./nextcloud
   ];
 

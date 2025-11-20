@@ -19,9 +19,14 @@ in
       };
       ingressHost = lib.mkOption {
         type = types.nullOr types.str;
-        default = if config.homelab.domain != null then
-          if config.homelab.monitoring.prometheus.gated then "prometheus.i.${config.homelab.domain}" else "prometheus.${config.homelab.domain}"
-        else null;
+        default =
+          if config.homelab.domain != null then
+            if config.homelab.monitoring.prometheus.gated then
+              "prometheus.i.${config.homelab.domain}"
+            else
+              "prometheus.${config.homelab.domain}"
+          else
+            null;
         description = "Hostname for prometheus ingress (defaults to prometheus.i.<domain> if gated, prometheus.<domain> otherwise)";
       };
     };
@@ -34,9 +39,14 @@ in
       };
       ingressHost = lib.mkOption {
         type = types.nullOr types.str;
-        default = if config.homelab.domain != null then
-          if config.homelab.monitoring.grafana.gated then "grafana.i.${config.homelab.domain}" else "grafana.${config.homelab.domain}"
-        else null;
+        default =
+          if config.homelab.domain != null then
+            if config.homelab.monitoring.grafana.gated then
+              "grafana.i.${config.homelab.domain}"
+            else
+              "grafana.${config.homelab.domain}"
+          else
+            null;
         description = "Hostname for grafana ingress (defaults to grafana.i.<domain> if gated, grafana.<domain> otherwise)";
       };
       username = lib.mkOption {
@@ -58,9 +68,14 @@ in
       };
       ingressHost = lib.mkOption {
         type = types.nullOr types.str;
-        default = if config.homelab.domain != null then
-          if config.homelab.monitoring.alertmanager.gated then "alertmanager.i.${config.homelab.domain}" else "alertmanager.${config.homelab.domain}"
-        else null;
+        default =
+          if config.homelab.domain != null then
+            if config.homelab.monitoring.alertmanager.gated then
+              "alertmanager.i.${config.homelab.domain}"
+            else
+              "alertmanager.${config.homelab.domain}"
+          else
+            null;
         description = "Hostname for alertmanager ingress (defaults to alertmanager.i.<domain> if gated, alertmanager.<domain> otherwise)";
       };
     };
@@ -73,9 +88,14 @@ in
       };
       ingressHost = lib.mkOption {
         type = types.nullOr types.str;
-        default = if config.homelab.domain != null then
-          if config.homelab.monitoring.thanos.gated then "thanos.i.${config.homelab.domain}" else "thanos.${config.homelab.domain}"
-        else null;
+        default =
+          if config.homelab.domain != null then
+            if config.homelab.monitoring.thanos.gated then
+              "thanos.i.${config.homelab.domain}"
+            else
+              "thanos.${config.homelab.domain}"
+          else
+            null;
         description = "Hostname for thanos ingress (defaults to thanos.i.<domain> if gated, thanos.<domain> otherwise)";
       };
       bucket = lib.mkOption {
@@ -168,7 +188,8 @@ in
                     annotations = {
                       "nginx.ingress.kubernetes.io/rewrite-target" = "/";
                       "cert-manager.io/cluster-issuer" = "letsencrypt";
-                    } // lib.optionalAttrs cfg.alertmanager.gated {
+                    }
+                    // lib.optionalAttrs cfg.alertmanager.gated {
                       "nginx.ingress.kubernetes.io/auth-signin" =
                         "https://${config.homelab.auth.oauth2-proxy.ingressHost}/oauth2/start?rd=https://$host$escaped_request_uri";
                       "nginx.ingress.kubernetes.io/auth-url" = "http://oauth2-proxy.auth.svc.cluster.local/oauth2/auth";
@@ -192,6 +213,20 @@ in
 
         grafana = {
           enabled = cfg.grafana.enable;
+
+          grafanaIni = {
+            auth.disable_login_form = true;
+            auth.disable_signout_menu = true;
+
+            auth.basic.enabled = false;
+
+            auth.proxy = {
+              enabled = true;
+              header_name = "X-Email";
+              header_property = "email";
+              auto_sign_up = true;
+            };
+          };
 
           plugins = (
             if config.homelab.monitoring.quickwit.enable then
@@ -255,7 +290,8 @@ in
                 annotations = {
                   "nginx.ingress.kubernetes.io/rewrite-target" = "/";
                   "cert-manager.io/cluster-issuer" = "letsencrypt";
-                } // lib.optionalAttrs cfg.grafana.gated {
+                }
+                // lib.optionalAttrs cfg.grafana.gated {
                   "nginx.ingress.kubernetes.io/auth-signin" =
                     "https://${config.homelab.auth.oauth2-proxy.ingressHost}/oauth2/start?rd=https://$host$escaped_request_uri";
                   "nginx.ingress.kubernetes.io/auth-url" = "http://oauth2-proxy.auth.svc.cluster.local/oauth2/auth";
@@ -292,7 +328,8 @@ in
                 annotations = {
                   "nginx.ingress.kubernetes.io/rewrite-target" = "/";
                   "cert-manager.io/cluster-issuer" = "letsencrypt";
-                } // lib.optionalAttrs cfg.prometheus.gated {
+                }
+                // lib.optionalAttrs cfg.prometheus.gated {
                   "nginx.ingress.kubernetes.io/auth-signin" =
                     "https://${config.homelab.auth.oauth2-proxy.ingressHost}/oauth2/start?rd=https://$host$escaped_request_uri";
                   "nginx.ingress.kubernetes.io/auth-url" = "http://oauth2-proxy.auth.svc.cluster.local/oauth2/auth";
