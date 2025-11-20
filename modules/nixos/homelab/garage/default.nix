@@ -52,10 +52,18 @@ in
       default = "garage";
     };
 
+    gated = lib.mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether to gate this service behind oauth2-proxy";
+    };
+
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
-      default = if config.homelab.domain != null then "garage.${config.homelab.domain}" else null;
-      description = "Hostname base for garage ingress (defaults to garage.<domain> if domain is set)";
+      default = if config.homelab.domain != null then
+        if cfg.gated then "garage.i.${config.homelab.domain}" else "garage.${config.homelab.domain}"
+      else null;
+      description = "Hostname base for garage ingress (defaults to garage.i.<domain> if gated, garage.<domain> otherwise)";
     };
 
     rpcSecret = lib.mkOption {

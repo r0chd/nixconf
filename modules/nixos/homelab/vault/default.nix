@@ -28,10 +28,18 @@ in
       description = "Number of vault server replicas";
     };
 
+    gated = lib.mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether to gate this service behind oauth2-proxy";
+    };
+
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
-      default = if config.homelab.domain != null then "vault.${config.homelab.domain}" else null;
-      description = "Hostname for vault ingress (defaults to vault.<domain> if domain is set)";
+      default = if config.homelab.domain != null then
+        if config.homelab.vault.gated then "vault.i.${config.homelab.domain}" else "vault.${config.homelab.domain}"
+      else null;
+      description = "Hostname for vault ingress (defaults to vault.i.<domain> if gated, vault.<domain> otherwise)";
     };
 
     resources = lib.mkOption {

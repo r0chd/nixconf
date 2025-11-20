@@ -118,6 +118,7 @@
         enable = true;
         clientId = "Iv23lizZfPiAiIbzNLmS";
         clientSecret = config.sops.placeholder."github-client/client-secret";
+        org = "mox-desktop";
       };
       dex.ingressHost = "dex-test.r0chd.pl";
       clientSecret = config.sops.placeholder."oauth2-proxy/client-secret";
@@ -125,28 +126,44 @@
     };
 
     monitoring = {
-      prometheus.enable = true;
+      prometheus = {
+        enable = true;
+        gated = true;
+      };
       alertmanager = {
         enable = true;
+        gated = true;
         discordWebhookUrl = config.sops.placeholder.alertmanager_webhook_url;
       };
       thanos = {
         enable = true;
+        gated = true;
         bucket = "thanos";
         access_key = config.sops.placeholder."thanos/access_key";
         secret_key = config.sops.placeholder."thanos/secret_key";
       };
       grafana = {
         enable = true;
+        gated = true;
         username = "r0chd";
         password = config.sops.placeholder."grafana/password";
       };
-      kube-web.enable = true;
-      kube-ops.enable = true;
-      kube-resource-report.enable = true;
+      kube-web = {
+        enable = true;
+        gated = true;
+      };
+      kube-ops = {
+        enable = true;
+        gated = true;
+      };
+      kube-resource-report = {
+        enable = true;
+        gated = true;
+      };
       vector.enable = true;
       quickwit = {
         enable = true;
+        gated = true;
         s3 = {
           access_key_id = config.sops.placeholder."quickwit/access_key_id";
           secret_access_key = config.sops.placeholder."quickwit/secret_access_key";

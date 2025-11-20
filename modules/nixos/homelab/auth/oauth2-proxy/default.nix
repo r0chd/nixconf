@@ -32,17 +32,17 @@ in
         kubeVersion = null;
         config = {
           configFile = ''
-            provider = "oidc"  
+            provider = "oidc"
             oidc_issuer_url = "https://${config.homelab.auth.dex.ingressHost}"
 
             client_id = "oauth2-proxy"
-              
-            redirect_url = "https://${cfg.ingressHost}/oauth2/callback"  
-            cookie_secure = "true"  
-            cookie_domains = [".${config.homelab.domain}"]  
+
+            redirect_url = "https://${cfg.ingressHost}/oauth2/callback"
+            cookie_secure = "true"
+            cookie_domains = [".${config.homelab.domain}"]
             whitelist_domains = [".${config.homelab.domain}"]
-            email_domains = ["*"]  
-            upstreams = ["file:///dev/null"]  
+            email_domains = ["*"]
+            upstreams = ["file:///dev/null"]
             set_xauthrequest = true
           '';
         };

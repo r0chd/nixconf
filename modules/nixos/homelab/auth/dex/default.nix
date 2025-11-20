@@ -114,6 +114,8 @@ in
                     clientID: ${config.homelab.auth.github.clientId}  
                     clientSecret: $GITHUB_CLIENT_SECRET  
                     redirectURI: https://${cfg.ingressHost}/callback  
+                    orgs:
+                      - name: ${config.homelab.auth.github.org}
               ''}  
             '';
           };

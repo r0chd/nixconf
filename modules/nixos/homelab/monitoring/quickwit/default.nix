@@ -22,10 +22,18 @@ in
       };
     };
 
+    gated = lib.mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether to gate this service behind oauth2-proxy";
+    };
+
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
-      default = if config.homelab.domain != null then "quickwit.${config.homelab.domain}" else null;
-      description = "Hostname for quickwit ingress (defaults to quickwit.<domain> if domain is set)";
+      default = if config.homelab.domain != null then
+        if config.homelab.monitoring.quickwit.gated then "quickwit.i.${config.homelab.domain}" else "quickwit.${config.homelab.domain}"
+      else null;
+      description = "Hostname for quickwit ingress (defaults to quickwit.i.<domain> if gated, quickwit.<domain> otherwise)";
     };
     retention = lib.mkOption {
       type = types.submodule {
@@ -273,6 +281,11 @@ in
                 className = "nginx";
                 annotations = {
                   "cert-manager.io/cluster-issuer" = "letsencrypt";
+                } // lib.optionalAttrs cfg.gated {
+                  "nginx.ingress.kubernetes.io/auth-signin" =
+                    "https://oauth2-proxy.${config.homelab.domain}/oauth2/start?rd=https://$host$escaped_request_uri";
+                  "nginx.ingress.kubernetes.io/auth-url" = "http://oauth2-proxy.auth.svc.cluster.local/oauth2/auth";
+                  "nginx.ingress.kubernetes.io/auth-response-headers" = "X-Auth-Request-User,X-Auth-Request-Email";
                 };
                 hosts = [
                   {

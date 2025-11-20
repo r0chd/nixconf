@@ -25,10 +25,18 @@ in
       description = "Number of kube-web replicas";
     };
 
+    gated = lib.mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether to gate this service behind oauth2-proxy";
+    };
+
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
-      default = if config.homelab.domain != null then "kube-web.${config.homelab.domain}" else null;
-      description = "Hostname for kube-web ingress (defaults to kube-web.<domain> if domain is set)";
+      default = if config.homelab.domain != null then
+        if config.homelab.monitoring.kube-web.gated then "kube-web.i.${config.homelab.domain}" else "kube-web.${config.homelab.domain}"
+      else null;
+      description = "Hostname for kube-web ingress (defaults to kube-web.i.<domain> if gated, kube-web.<domain> otherwise)";
     };
 
     resources = lib.mkOption {

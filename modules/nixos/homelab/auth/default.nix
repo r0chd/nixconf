@@ -29,6 +29,21 @@ in
       clientSecret = lib.mkOption {
         type = types.str;
       };
+
+      org = lib.mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+
+      teams = lib.mkOption {
+        type = types.nullOr (types.listOf types.str);
+        default = null;
+      };
+
+      users = lib.mkOption {
+        type = types.nullOr (types.listOf types.str);
+        default = null;
+      };
     };
   };
 

@@ -8,10 +8,18 @@ in
 
   options.homelab.forgejo = {
     enable = lib.mkEnableOption "forgejo";
+    gated = lib.mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether to gate this service behind oauth2-proxy";
+    };
+
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
-      default = if config.homelab.domain != null then "forgejo.${config.homelab.domain}" else null;
-      description = "Hostname for forgejo ingress (defaults to forgejo.<domain> if domain is set)";
+      default = if config.homelab.domain != null then
+        if config.homelab.forgejo.gated then "forgejo.i.${config.homelab.domain}" else "forgejo.${config.homelab.domain}"
+      else null;
+      description = "Hostname for forgejo ingress (defaults to forgejo.i.<domain> if gated, forgejo.<domain> otherwise)";
     };
     admin = {
       username = lib.mkOption {
@@ -73,6 +81,11 @@ in
                 annotations = {
                   "nginx.ingress.kubernetes.io/rewrite-target" = "/";
                   "cert-manager.io/cluster-issuer" = "letsencrypt";
+                } // lib.optionalAttrs cfg.gated {
+                  "nginx.ingress.kubernetes.io/auth-signin" =
+                    "https://oauth2-proxy.${config.homelab.domain}/oauth2/start?rd=https://$host$escaped_request_uri";
+                  "nginx.ingress.kubernetes.io/auth-url" = "http://oauth2-proxy.auth.svc.cluster.local/oauth2/auth";
+                  "nginx.ingress.kubernetes.io/auth-response-headers" = "X-Auth-Request-User,X-Auth-Request-Email";
                 };
                 hosts = [
                   {
