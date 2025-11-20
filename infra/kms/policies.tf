@@ -29,8 +29,8 @@ resource "vault_policy" "admin_vault_policy" {
 EOT
 }
 
-resource "vault_policy" "developer_vault_policy" {
-  name = "developer-vault-policy"
+resource "vault_policy" "homelab_vault_policy" {
+  name = "homelab-vault-policy"
 
   policy = <<EOT
     path "transit/decrypt/fi-sops" {  

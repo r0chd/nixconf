@@ -17,7 +17,7 @@ resource "vault_jwt_auth_backend_role" "dex" {
   ]  
   bound_audiences = ["vault"]  
   user_claim      = "email"  
-  token_policies  = ["default", "developer-vault-policy"]
+  token_policies  = ["default", "homelab-vault-policy"]
   oidc_scopes     = ["email"]
     
   depends_on = [vault_jwt_auth_backend.oidc]  

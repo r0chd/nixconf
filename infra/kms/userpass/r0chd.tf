@@ -3,7 +3,7 @@ resource "vault_generic_endpoint" "r0chd" {
   ignore_absent_fields = true
 
   data_json = jsonencode({
-    token_policies = ["developer-vault-policy"]
+    token_policies = ["homelab-vault-policy"]
     password       = var.secrets["vault.users.r0chd"]
   })
 }

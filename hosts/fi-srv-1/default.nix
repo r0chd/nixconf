@@ -251,7 +251,7 @@
         enable = true;
         clientId = "Iv23lizZfPiAiIbzNLmS";
         clientSecret = config.sops.placeholder."github-client/client-secret";
-        org = "mox-desktop";
+        org = "r0chd-homelab";
       };
       clientSecret = config.sops.placeholder."oauth2-proxy/client-secret";
       oauth2ProxyCookie = config.sops.placeholder."oauth2-proxy/cookie-secret";
