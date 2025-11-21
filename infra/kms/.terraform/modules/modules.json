@@ -1,1 +1,1 @@
-{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"userpass","Source":"./userpass","Dir":"userpass"}]}
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"oidc","Source":"./oidc","Dir":"oidc"},{"Key":"policies","Source":"./policies","Dir":"policies"},{"Key":"transit","Source":"./transit","Dir":"transit"},{"Key":"userpass","Source":"./userpass","Dir":"userpass"}]}

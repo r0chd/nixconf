@@ -95,41 +95,60 @@ in
             namespace = "auth";
           };
           stringData = {
-            "config.yaml" = ''
-              issuer: https://${cfg.ingressHost}
-              staticClients:
-                - id: oauth2-proxy
-                  secret: '${config.homelab.auth.clientSecret}'
-                  name: 'OAuth2 Proxy'
-                  redirectURIs:
-                    - 'https://${config.homelab.auth.oauth2-proxy.ingressHost}/oauth2/callback'
-                - id: vault
-                  secret: '${config.homelab.auth.vault.clientSecret}'
-                  name: 'Vault'
-                  redirectURIs:
-                    - https://${config.homelab.auth.vault.ingressHost}/ui/vault/auth/oidc/callback
-                    - https://${config.homelab.auth.vault.ingressHost}/v1/auth/oidc/oidc/callback
-                    - http://localhost:8250/oidc/callback
-              storage:
-                type: kubernetes
-                config:
-                  inCluster: true
-              web:
-                http: "0.0.0.0:5556"
+            "config.json" = builtins.toJSON {
+              issuer = "https://${cfg.ingressHost}";
+              staticClients = [
+                {
+                  id = "oauth2-proxy";
+                  secret = "${config.homelab.auth.clientSecret}";
+                  name = "OAuth2 Proxy";
+                  redirectURIs = [
+                    "https://${config.homelab.auth.oauth2-proxy.ingressHost}/oauth2/callback"
+                  ];
+                }
+                {
+                  id = "vault";
+                  secret = "${config.homelab.auth.vault.clientSecret}";
+                  name = "Vault";
+                  redirectURIs = [
+                    "https://${config.homelab.auth.vault.ingressHost}/ui/vault/auth/oidc/callback"
+                    "https://${config.homelab.auth.vault.ingressHost}/v1/auth/oidc/oidc/callback"
+                    "http://localhost:8250/oidc/callback"
+                  ];
+                  scopes = [
+                    "email"
+                    "groups"
+                    "openid"
+                    "profile"
+                  ];
+                }
+              ];
+              storage = {
+                type = "kubernetes";
+                config.inCluster = true;
+              };
+              web.http = "0.0.0.0:5556";
 
-              connectors:  
-              ${lib.optionalString config.homelab.auth.github.enable ''
-                - type: github  
-                  id: github  
-                  name: GitHub  
-                  config:  
-                    clientID: ${config.homelab.auth.github.clientId}  
-                    clientSecret: $GITHUB_CLIENT_SECRET  
-                    redirectURI: https://${cfg.ingressHost}/callback  
-                    orgs:
-                      - name: ${config.homelab.auth.github.org}
-              ''}  
-            '';
+              connectors = lib.concatLists [
+                (lib.optionals config.homelab.auth.github.enable [
+                  {
+                    type = "github";
+                    id = "github";
+                    name = "GitHub";
+                    config = {
+                      clientID = config.homelab.auth.github.clientId;
+                      clientSecret = "$GITHUB_CLIENT_SECRET";
+                      redirectURI = "https://${cfg.ingressHost}/callback";
+                      inherit (config.homelab.auth.github) orgs;
+                      loadAllGroups = true;
+                      scopes = [
+                        "read:org"
+                      ];
+                    };
+                  }
+                ])
+              ];
+            };
           };
         }
       ];

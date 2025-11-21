@@ -252,7 +252,11 @@
         enable = true;
         clientId = "Iv23lizZfPiAiIbzNLmS";
         clientSecret = config.sops.placeholder."github-client/client-secret";
-        org = "r0chd-homelab";
+        orgs = [
+          {
+            name = "r0chd-homelab";
+          }
+        ];
       };
       clientSecret = config.sops.placeholder."oauth2-proxy/client-secret";
       oauth2ProxyCookie = config.sops.placeholder."oauth2-proxy/cookie-secret";
@@ -278,8 +282,7 @@
       grafana = {
         enable = true;
         gated = true;
-        username = "r0chd";
-        password = config.sops.placeholder."grafana/password";
+        passwordAuth.enable = false;
       };
       kube-web = {
         enable = true;

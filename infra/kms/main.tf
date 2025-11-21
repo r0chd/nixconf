@@ -11,3 +11,16 @@ module "userpass" {
   source  = "./userpass"
   secrets = data.sops_file.secrets.data
 }
+
+module "policies" {
+  source = "./policies"
+}
+
+module "oidc" {
+  source = "./oidc"
+  secrets = data.sops_file.secrets.data
+}
+
+module "transit" {
+  source = "./transit"
+}

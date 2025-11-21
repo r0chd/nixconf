@@ -7,6 +7,7 @@ in
   imports = [
     ./dashboards
     ./thanos
+    ./alerts
   ];
 
   options.homelab.monitoring = {
@@ -49,11 +50,14 @@ in
             null;
         description = "Hostname for grafana ingress (defaults to grafana.i.<domain> if gated, grafana.<domain> otherwise)";
       };
-      username = lib.mkOption {
-        type = types.str;
-      };
-      password = lib.mkOption {
-        type = types.str;
+      passwordAuth = {
+        enable = lib.mkEnableOption "password auth";
+        username = lib.mkOption {
+          type = types.str;
+        };
+        password = lib.mkOption {
+          type = types.str;
+        };
       };
     };
     alertmanager = {
@@ -214,17 +218,14 @@ in
         grafana = {
           enabled = cfg.grafana.enable;
 
-          grafanaIni = {
-            auth.disable_login_form = true;
-            auth.disable_signout_menu = true;
-
-            auth.basic.enabled = false;
-
-            auth.proxy = {
+          "grafana.ini" = {
+            auth = {
+              disable_login_form = true;
+            };
+            "auth.anonymous" = {
               enabled = true;
-              header_name = "X-Email";
-              header_property = "email";
-              auto_sign_up = true;
+              org_name = "Main Org.";
+              org_role = "Viewer";
             };
           };
 
@@ -275,11 +276,15 @@ in
             )
           ];
 
-          admin = {
-            existingSecret = "grafana-admin-credentials";
-            userKey = "username";
-            passwordKey = "password";
-          };
+          admin =
+            if cfg.grafana.passwordAuth.enable then
+              {
+                existingSecret = "grafana-admin-credentials";
+                userKey = "username";
+                passwordKey = "password";
+              }
+            else
+              { };
           initChownData.enabled = false;
           service.port = 3000;
           ingress =
@@ -355,6 +360,7 @@ in
             serviceMonitorSelectorNilUsesHelmValues = false;
 
             thanos = lib.mkIf cfg.thanos.enable {
+              image = cfg.thanos.image;
               objectStorageConfig = {
                 name = "thanos-objectstorage";
                 key = "thanos.yaml";
@@ -462,14 +468,14 @@ in
     };
 
     secrets = (
-      lib.optional (cfg.grafana.enable) {
+      lib.optional (cfg.grafana.enable && cfg.grafana.passwordAuth.enable) {
         metadata = {
           name = "grafana-admin-credentials";
           namespace = "monitoring";
         };
         stringData = {
-          password = cfg.grafana.password;
-          username = cfg.grafana.username;
+          password = cfg.grafana.passwordAuth.password;
+          username = cfg.grafana.passwordAuth.username;
         };
       }
       ++ lib.optional (cfg.alertmanager.enable) {
