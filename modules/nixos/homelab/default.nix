@@ -18,7 +18,7 @@ in
     ./auth
     ./immich
     ./portfolio
-    # ./nextcloud
+    ./nextcloud
   ];
 
   options.homelab = {

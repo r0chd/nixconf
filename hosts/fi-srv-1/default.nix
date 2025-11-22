@@ -36,8 +36,11 @@
 
     "forgejo/access_key_id" = { };
     "forgejo/secret_access_key" = { };
-
     "forgejo/admin_password" = { };
+
+    "nextcloud/access_key_id" = { };
+    "nextcloud/secret_access_key" = { };
+    "nextcloud/admin_password" = { };
 
     "github-client/client-secret" = { };
 
@@ -194,7 +197,6 @@
     system = {
       dragonfly.enable = true;
       zfs-localpv.poolname = "zroot";
-      reloader.enable = true;
       #pihole = {
       #  dns = "172.31.1.1";
       #  passwordFile = config.sops.secrets."pihole/password".path;
@@ -206,6 +208,17 @@
 
     immich.enable = false;
     portfolio.enable = true;
+    nextcloud = {
+      enable = true;
+      s3 = {
+        access_key_id = config.sops.placeholder."nextcloud/access_key_id";
+        secret_access_key = config.sops.placeholder."nextcloud/secret_access_key";
+      };
+      admin = {
+        username = "admin";
+        password = config.sops.placeholder."nextcloud/admin_password";
+      };
+    };
 
     garage = {
       enable = true;

@@ -223,7 +223,7 @@ in
             backup = {
               barmanObjectStore = {
                 destinationPath = "s3://immich-backup";
-                endpointURL = "http://s3.${config.homelab.garage.ingressHost}";
+                endpointURL = "https://s3.${config.homelab.garage.ingressHost}";
                 s3Credentials = {
                   accessKeyId = {
                     name = "immich-backup-credentials";

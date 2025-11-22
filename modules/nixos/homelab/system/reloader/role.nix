@@ -1,48 +1,46 @@
-{ config, lib, ... }:
+{ ... }:
 {
-  config = lib.mkIf (config.homelab.enable && config.homelab.system.reloader.enable) {
-    services.k3s.manifests."reloader-role".content = [
-      {
-        apiVersion = "rbac.authorization.k8s.io/v1";
+  services.k3s.manifests."reloader-role".content = [
+    {
+      apiVersion = "rbac.authorization.k8s.io/v1";
+      kind = "Role";
+      metadata = {
+        name = "reloader-reloader-metadata-role";
+        namespace = "default";
+      };
+      rules = [
+        {
+          apiGroups = [ "" ];
+          resources = [ "configmaps" ];
+          verbs = [
+            "list"
+            "get"
+            "watch"
+            "create"
+            "update"
+          ];
+        }
+      ];
+    }
+    {
+      apiVersion = "rbac.authorization.k8s.io/v1";
+      kind = "RoleBinding";
+      metadata = {
+        name = "reloader-reloader-metadata-rolebinding";
+        namespace = "default";
+      };
+      subjects = [
+        {
+          kind = "ServiceAccount";
+          name = "reloader-reloader";
+          namespace = "default";
+        }
+      ];
+      roleRef = {
         kind = "Role";
-        metadata = {
-          name = "reloader-reloader-metadata-role";
-          namespace = "default";
-        };
-        rules = [
-          {
-            apiGroups = [ "" ];
-            resources = [ "configmaps" ];
-            verbs = [
-              "list"
-              "get"
-              "watch"
-              "create"
-              "update"
-            ];
-          }
-        ];
-      }
-      {
-        apiVersion = "rbac.authorization.k8s.io/v1";
-        kind = "RoleBinding";
-        metadata = {
-          name = "reloader-reloader-metadata-rolebinding";
-          namespace = "default";
-        };
-        subjects = [
-          {
-            kind = "ServiceAccount";
-            name = "reloader-reloader";
-            namespace = "default";
-          }
-        ];
-        roleRef = {
-          kind = "Role";
-          name = "reloader-reloader-metadata-role";
-          apiGroup = "rbac.authorization.k8s.io";
-        };
-      }
-    ];
-  };
+        name = "reloader-reloader-metadata-role";
+        apiGroup = "rbac.authorization.k8s.io";
+      };
+    }
+  ];
 }

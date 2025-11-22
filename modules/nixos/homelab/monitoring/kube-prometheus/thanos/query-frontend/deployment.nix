@@ -70,6 +70,7 @@ in
                     "--labels.response-cache-config=\"config\":\n  \"addresses\":\n  - \"dnssrv+_client._tcp.<MEMCACHED_SERVICE>.monitoring.svc.cluster.local\"\n  \"dns_provider_update_interval\": \"10s\"\n  \"max_async_buffer_size\": 10000\n  \"max_async_concurrency\": 20\n  \"max_get_multi_batch_size\": 0\n  \"max_get_multi_concurrency\": 100\n  \"max_idle_connections\": 100\n  \"timeout\": \"500ms\"\n\"type\": \"memcached\""
                     "--tracing.config=\"config\":\n  \"sampler_param\": 2\n  \"sampler_type\": \"ratelimiting\"\n  \"service_name\": \"thanos-query-frontend\"\n\"type\": \"JAEGER\""
                   ];
+
                   env = [
                     {
                       name = "HOST_IP_ADDRESS";

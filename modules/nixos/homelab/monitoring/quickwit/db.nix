@@ -222,7 +222,7 @@ in
             backup = {
               barmanObjectStore = {
                 destinationPath = "s3://quickwit-backup";
-                endpointURL = "http://s3.${config.homelab.garage.ingressHost}";
+                endpointURL = "https://s3.${config.homelab.garage.ingressHost}";
                 s3Credentials = {
                   accessKeyId = {
                     name = "quickwit-backup-credentials";

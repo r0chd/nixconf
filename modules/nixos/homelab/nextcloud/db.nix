@@ -1,10 +1,10 @@
 { config, lib, ... }:
 let
-  cfg = config.homelab.forgejo.db;
+  cfg = config.homelab.nextcloud.db;
   inherit (lib) types;
 in
 {
-  options.homelab.forgejo.db = {
+  options.homelab.nextcloud.db = {
     instances = lib.mkOption {
       type = types.int;
       default = 1;
@@ -46,23 +46,23 @@ in
     };
   };
 
-  config = lib.mkIf (config.homelab.enable && config.homelab.forgejo.enable) {
+  config = lib.mkIf (config.homelab.enable && config.homelab.nextcloud.enable) {
     services.k3s = {
       manifests.cnpg-databases.content = [
         {
           apiVersion = "networking.k8s.io/v1";
           kind = "NetworkPolicy";
           metadata = {
-            name = "forgejo-db-allow-app";
-            namespace = "forgejo";
+            name = "nextcloud-db-allow-app";
+            namespace = "nextcloud";
           };
           spec = {
-            podSelector.matchLabels."cnpg.io/cluster" = "forgejo-db";
+            podSelector.matchLabels."cnpg.io/cluster" = "nextcloud-db";
             ingress = [
               {
                 from = [
                   {
-                    podSelector.matchLabels."app.kubernetes.io/name" = "forgejo";
+                    podSelector.matchLabels."app.kubernetes.io/name" = "nextcloud";
                   }
                 ];
                 ports = [
@@ -79,11 +79,11 @@ in
           apiVersion = "networking.k8s.io/v1";
           kind = "NetworkPolicy";
           metadata = {
-            name = "forgejo-db-allow-operator";
-            namespace = "forgejo";
+            name = "nextcloud-db-allow-operator";
+            namespace = "nextcloud";
           };
           spec = {
-            podSelector.matchLabels."cnpg.io/cluster" = "forgejo-db";
+            podSelector.matchLabels."cnpg.io/cluster" = "nextcloud-db";
             ingress = [
               {
                 from = [
@@ -105,11 +105,11 @@ in
           apiVersion = "networking.k8s.io/v1";
           kind = "NetworkPolicy";
           metadata = {
-            name = "forgejo-db-allow-monitoring";
-            namespace = "forgejo";
+            name = "nextcloud-db-allow-monitoring";
+            namespace = "nextcloud";
           };
           spec = {
-            podSelector.matchLabels."cnpg.io/cluster" = "forgejo-db";
+            podSelector.matchLabels."cnpg.io/cluster" = "nextcloud-db";
             ingress = [
               {
                 from = [
@@ -132,16 +132,16 @@ in
           apiVersion = "networking.k8s.io/v1";
           kind = "NetworkPolicy";
           metadata = {
-            name = "forgejo-db-allow-inter-node";
-            namespace = "forgejo";
+            name = "nextcloud-db-allow-inter-node";
+            namespace = "nextcloud";
           };
           spec = {
-            podSelector.matchLabels."cnpg.io/cluster" = "forgejo-db";
+            podSelector.matchLabels."cnpg.io/cluster" = "nextcloud-db";
             ingress = [
               {
                 from = [
                   {
-                    podSelector.matchLabels."cnpg.io/cluster" = "forgejo-db";
+                    podSelector.matchLabels."cnpg.io/cluster" = "nextcloud-db";
                   }
                 ];
                 ports = [
@@ -158,8 +158,8 @@ in
           apiVersion = "postgresql.cnpg.io/v1";
           kind = "Cluster";
           metadata = {
-            name = "forgejo-db";
-            namespace = "forgejo";
+            name = "nextcloud-db";
+            namespace = "nextcloud";
             #annotations."cnpg.io/fencesInstances" = [ "*" ];
           };
           spec = {
@@ -219,15 +219,15 @@ in
           // lib.optionalAttrs cfg.backup.enable {
             backup = {
               barmanObjectStore = {
-                destinationPath = "s3://forgejo-backup";
+                destinationPath = "s3://nextcloud-backup";
                 endpointURL = "https://s3.${config.homelab.garage.ingressHost}";
                 s3Credentials = {
                   accessKeyId = {
-                    name = "forgejo-backup-credentials";
+                    name = "nextcloud-backup-credentials";
                     key = "access-key-id";
                   };
                   secretAccessKey = {
-                    name = "forgejo-backup-credentials";
+                    name = "nextcloud-backup-credentials";
                     key = "secret-access-key";
                   };
                 };
@@ -245,14 +245,14 @@ in
           apiVersion = "postgresql.cnpg.io/v1";
           kind = "ScheduledBackup";
           metadata = {
-            name = "forgejo-db";
-            namespace = "forgejo";
+            name = "nextcloud-db";
+            namespace = "nextcloud";
           };
           spec = {
             schedule = "0 0 1 * * 0";
             immediate = true;
             backupOwnerReference = "self";
-            cluster.name = "forgejo-db";
+            cluster.name = "nextcloud-db";
           };
         }
       ];
@@ -260,8 +260,8 @@ in
       secrets = lib.mkIf cfg.backup.enable [
         {
           metadata = {
-            name = "forgejo-backup-credentials";
-            namespace = "forgejo";
+            name = "nextcloud-backup-credentials";
+            namespace = "nextcloud";
           };
           stringData = {
             "access-key-id" = cfg.backup.accessKeyId;

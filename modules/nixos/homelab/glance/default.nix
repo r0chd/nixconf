@@ -276,6 +276,14 @@ let
                         icon = "si:forgejo";
                       }
                     ])
+                    (lib.optionals (config.homelab.nextcloud.enable && config.homelab.nextcloud.ingressHost != null) [
+                      {
+                        title = "Nextcloud";
+                        url = "https://${config.homelab.nextcloud.ingressHost}";
+                        "check-url" = "http://nextcloud.nextcloud.svc.cluster.local:8080";
+                        icon = "si:nextcloud";
+                      }
+                    ])
                   ]
                   ++ cfg.additionalWebsites;
               }

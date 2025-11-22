@@ -12,8 +12,6 @@ in
   ];
 
   options.homelab.system.reloader = {
-    enable = lib.mkEnableOption "reloader";
-
     image = lib.mkOption {
       type = types.str;
       default = "ghcr.io/stakater/reloader:v1.0.121";
