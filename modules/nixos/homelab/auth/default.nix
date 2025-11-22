@@ -85,17 +85,6 @@ in
           GITHUB_CLIENT_SECRET = cfg.vault.clientSecret;
         };
       }
-    ]
-    ++ lib.optionals cfg.github.enable [
-      {
-        metadata = {
-          name = "github-client-credentials";
-          namespace = "auth";
-        };
-        stringData = {
-          GITHUB_CLIENT_SECRET = cfg.github.clientSecret;
-        };
-      }
     ];
   };
 }

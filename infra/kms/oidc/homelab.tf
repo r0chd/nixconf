@@ -11,12 +11,13 @@ resource "vault_jwt_auth_backend_role" "homelab" {
   user_claim      = "email"
   groups_claim    = "groups"
 
-  bound_claims = {
-    groups = "r0chd-homelab"
-  }
+  oidc_scopes = ["email", "groups"]
 
-  token_policies  = ["homelab-vault-policy"]
-  oidc_scopes     = ["email", "groups"]
+  bound_claims = {  
+    groups = "r0chd-homelab:admin"
+  }  
+
+  token_policies = ["homelab-vault-policy"]
 
   depends_on = [vault_jwt_auth_backend.oidc]
 }

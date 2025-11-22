@@ -11,12 +11,13 @@ resource "vault_jwt_auth_backend_role" "csgo" {
   user_claim      = "email"
   groups_claim    = "groups"
 
+  oidc_scopes = ["email", "groups"]
+
   bound_claims = {
     groups = "test"
   }
 
   token_policies  = ["csgo-vault-policy"]
-  oidc_scopes     = ["email"]
 
   depends_on = [vault_jwt_auth_backend.oidc]
 }

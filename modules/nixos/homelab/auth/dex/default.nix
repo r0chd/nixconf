@@ -32,11 +32,6 @@ in
             }
             {
               secretRef = {
-                name = "github-client-credentials";
-              };
-            }
-            {
-              secretRef = {
                 name = "dex-oauth2-client-secret";
               };
             }
@@ -95,7 +90,7 @@ in
             namespace = "auth";
           };
           stringData = {
-            "config.json" = builtins.toJSON {
+            "config.yaml" = builtins.toJSON {
               issuer = "https://${cfg.ingressHost}";
               staticClients = [
                 {
@@ -115,12 +110,6 @@ in
                     "https://${config.homelab.auth.vault.ingressHost}/v1/auth/oidc/oidc/callback"
                     "http://localhost:8250/oidc/callback"
                   ];
-                  scopes = [
-                    "email"
-                    "groups"
-                    "openid"
-                    "profile"
-                  ];
                 }
               ];
               storage = {
@@ -137,10 +126,9 @@ in
                     name = "GitHub";
                     config = {
                       clientID = config.homelab.auth.github.clientId;
-                      clientSecret = "$GITHUB_CLIENT_SECRET";
+                      clientSecret = config.homelab.auth.github.clientSecret;
                       redirectURI = "https://${cfg.ingressHost}/callback";
                       inherit (config.homelab.auth.github) orgs;
-                      loadAllGroups = true;
                       scopes = [
                         "read:org"
                       ];

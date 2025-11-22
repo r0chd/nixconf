@@ -250,7 +250,7 @@
 
       github = {
         enable = true;
-        clientId = "Iv23lizZfPiAiIbzNLmS";
+        clientId = "Ov23lioBYc4Eh1GmUp6T";
         clientSecret = config.sops.placeholder."github-client/client-secret";
         orgs = [
           {
