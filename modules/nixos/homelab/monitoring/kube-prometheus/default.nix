@@ -157,17 +157,22 @@ in
       hash = "sha256-rUZcfcB+O7hrr2swEARXFujN7VvfC0IkaaAeJTi0mN0=";
       targetNamespace = "monitoring";
       values = {
-        # TODO: figure out how to allow prometheus to discover these services.
-        # disable monitoring for these, i believe since they are not
-        # deployed as a pod prometheus cannot discover them?
-        kubeControllerManager.enable = false;
-        kubeScheduler.enable = false;
-        kubeProxy.enable = false;
-        defaultRules.rules = {
-          kubeControllerManager = false;
-          kubeSchedulerAlerting = false;
-          kubeSchedulerRecording = false;
-          kubeProxy = false;
+        kubeControllerManager = {
+          enabled = true;
+          endpoints = [ "127.0.0.1" ];
+          service.enabled = true;
+        };
+
+        kubeScheduler = {
+          enabled = true;
+          endpoints = [ "127.0.0.1" ];
+          service.enabled = true;
+        };
+
+        kubeProxy = {
+          enabled = true;
+          endpoints = [ "127.0.0.1" ];
+          service.enabled = true;
         };
 
         alertmanager =
