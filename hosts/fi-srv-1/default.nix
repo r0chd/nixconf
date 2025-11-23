@@ -206,7 +206,6 @@
       #};
     };
 
-    immich.enable = false;
     portfolio.enable = true;
     nextcloud = {
       enable = true;

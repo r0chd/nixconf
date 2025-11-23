@@ -70,6 +70,13 @@ in
       createNamespace = true;
 
       values = {
+        configs."logging.config.php" = ''
+          <?php  
+          $CONFIG = array (  
+            'loglevel' => 3,  
+          );
+        '';
+
         replicaCount = 1;
 
         ingress =

@@ -86,7 +86,7 @@ let
       ];
     };
 
-    kms = {
+    homelab-1 = {
       root = [
         keys."unixpariah@laptop"
         keys."unixpariah@laptop-huawei"
