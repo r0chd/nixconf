@@ -33,9 +33,14 @@ in
 
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
-      default = if config.homelab.domain != null then
-        if config.homelab.monitoring.kube-web.gated then "kube-web.i.${config.homelab.domain}" else "kube-web.${config.homelab.domain}"
-      else null;
+      default =
+        if config.homelab.domain != null then
+          if config.homelab.monitoring.kube-web.gated then
+            "kube-web.i.${config.homelab.domain}"
+          else
+            "kube-web.${config.homelab.domain}"
+        else
+          null;
       description = "Hostname for kube-web ingress (defaults to kube-web.i.<domain> if gated, kube-web.<domain> otherwise)";
     };
 

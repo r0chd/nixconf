@@ -1,5 +1,4 @@
-_:
-{
+_: {
   services.k3s.manifests."cert-manager-service".content = [
     {
       apiVersion = "v1";

@@ -24,6 +24,7 @@ in
                   name = "kube-ops";
                   inherit (cfg) image;
                   args = [
+                    "--redis-url=redis://kube-ops-dragonfly.monitoring.svc.cluster.local:6379"
                     "--port=8080"
                   ];
                   ports = [

@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   services.k3s.manifests."metallb-namespace".content = [
     {

@@ -157,23 +157,9 @@ in
       hash = "sha256-rUZcfcB+O7hrr2swEARXFujN7VvfC0IkaaAeJTi0mN0=";
       targetNamespace = "monitoring";
       values = {
-        kubeControllerManager = {
-          enabled = true;
-          endpoints = [ "127.0.0.1" ];
-          service.enabled = true;
-        };
-
-        kubeScheduler = {
-          enabled = true;
-          endpoints = [ "127.0.0.1" ];
-          service.enabled = true;
-        };
-
-        kubeProxy = {
-          enabled = true;
-          endpoints = [ "127.0.0.1" ];
-          service.enabled = true;
-        };
+        kubeControllerManager.enabled = false;
+        kubeScheduler.enabled = false;
+        kubeProxy.enabled = false;
 
         alertmanager =
           if cfg.alertmanager.enable then
@@ -234,14 +220,13 @@ in
             };
           };
 
-          plugins = (
+          plugins =
             if config.homelab.monitoring.quickwit.enable then
               [
                 "quickwit-quickwit-datasource 0.4.5"
               ]
             else
-              [ ]
-          );
+              [ ];
 
           additionalDataSources = builtins.concatLists [
             (
@@ -364,13 +349,17 @@ in
             serviceMonitorNamespaceSelector.matchLabels = { };
             serviceMonitorSelectorNilUsesHelmValues = false;
 
-            thanos = lib.mkIf cfg.thanos.enable {
-              image = cfg.thanos.image;
-              objectStorageConfig = {
-                name = "thanos-objectstorage";
-                key = "thanos.yaml";
-              };
-            };
+            thanos =
+              if cfg.thanos.enable then
+                {
+                  image = cfg.thanos.image;
+                  objectStorageConfig = {
+                    name = "thanos-objectstorage";
+                    key = "thanos.yaml";
+                  };
+                }
+              else
+                { };
           };
         };
       };
@@ -472,7 +461,7 @@ in
       };
     };
 
-    secrets = (
+    secrets =
       lib.optional (cfg.grafana.enable && cfg.grafana.passwordAuth.enable) {
         metadata = {
           name = "grafana-admin-credentials";
@@ -483,14 +472,14 @@ in
           username = cfg.grafana.passwordAuth.username;
         };
       }
-      ++ lib.optional (cfg.alertmanager.enable) {
+      ++ lib.optional cfg.alertmanager.enable {
         metadata = {
           name = "alertmanager-config-secrets";
           namespace = "monitoring";
         };
         stringData.DISCORD_WEBHOOK_URL = cfg.alertmanager.discordWebhookUrl;
       }
-      ++ lib.optional (cfg.thanos.enable) {
+      ++ lib.optional cfg.thanos.enable {
         metadata = {
           name = "thanos-objectstorage";
           namespace = "monitoring";
@@ -503,7 +492,6 @@ in
             access_key: ${cfg.thanos.access_key}
             secret_key: ${cfg.thanos.secret_key}
         '';
-      }
-    );
+      };
   };
 }

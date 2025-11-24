@@ -188,6 +188,13 @@
 
     nodeType = "primary";
 
+    ingress.resources = {
+      requests = {
+        cpu = "100m";
+        memory = "90Mi";
+      };
+    };
+
     #storageClassName = "openebs-zfs-localpv";
 
     metallb.addresses = [
@@ -298,10 +305,27 @@
       };
       kube-web = {
         enable = true;
+        resources = {
+          limits.memory = "100Mi";
+          requests = {
+            cpu = "5m";
+            memory = "100Mi";
+          };
+        };
         gated = true;
       };
       kube-ops = {
         enable = true;
+        resources = {
+          limits = {
+            cpu = "200m";
+            memory = "100Mi";
+          };
+          requests = {
+            cpu = "50m";
+            memory = "50Mi";
+          };
+        };
         gated = true;
       };
       vector.enable = true;
@@ -316,6 +340,10 @@
           period = "7 days";
           schedule = "daily";
         };
+      };
+      kuvasz = {
+        enable = false;
+        gated = true;
       };
     };
   };

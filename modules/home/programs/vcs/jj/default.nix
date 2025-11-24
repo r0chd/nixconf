@@ -15,31 +15,33 @@ in
     };
   };
 
-  config.programs.jujutsu = lib.mkIf cfg.jj.enable {
-    enable = true;
-    settings = {
-      user = {
-        inherit (cfg) name;
-        inherit (cfg) email;
+  config = {
+    home.shellAliases.jj = "jj --ignore-immutable";
+
+    programs.jujutsu = lib.mkIf cfg.jj.enable {
+      enable = true;
+      settings = {
+        user = {
+          inherit (cfg) name;
+          inherit (cfg) email;
+        };
+
+        signing = lib.mkIf (cfg.signingKeyFile != null) {
+          behavior = "own";
+          backend = "ssh";
+          key = cfg.signingKeyFile;
+          backends.ssh.allow-signers = "${config.home.homeDirectory}/.ssh/allowed_signers";
+        };
+
+        gerrit.default-remote-branch = "main";
+
+        git = {
+          colocate = false;
+          push-new-bookmarks = true;
+        };
+
+        ui.movement.edit = true;
       };
-
-      signing = lib.mkIf (cfg.signingKeyFile != null) {
-        behavior = "own";
-        backend = "ssh";
-        key = cfg.signingKeyFile;
-        backends.ssh.allow-signers = "${config.home.homeDirectory}/.ssh/allowed_signers";
-      };
-
-      gerrit.default-remote-branch = "main";
-
-      git = {
-        colocate = false;
-        push-new-bookmarks = true;
-      };
-
-      home.shellAliases.jj = "jj --ignore-immutable";
-
-      ui.movement.edit = true;
     };
   };
 }

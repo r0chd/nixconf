@@ -60,9 +60,11 @@ in
 
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
-      default = if config.homelab.domain != null then
-        if cfg.gated then "garage.i.${config.homelab.domain}" else "garage.${config.homelab.domain}"
-      else null;
+      default =
+        if config.homelab.domain != null then
+          if cfg.gated then "garage.i.${config.homelab.domain}" else "garage.${config.homelab.domain}"
+        else
+          null;
       description = "Hostname base for garage ingress (defaults to garage.i.<domain> if gated, garage.<domain> otherwise)";
     };
 

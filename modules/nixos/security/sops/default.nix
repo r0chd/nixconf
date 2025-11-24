@@ -22,7 +22,8 @@ in
   ];
 
   sops = {
-    secrets = systemUsers
+    secrets =
+      systemUsers
       |> builtins.attrNames
       |> builtins.concatMap (user: [
         {

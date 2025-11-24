@@ -1,5 +1,4 @@
-_:
-{
+_: {
   services.k3s.manifests."cert-manager-self-signed-issuer".content = [
     {
       apiVersion = "cert-manager.io/v1";

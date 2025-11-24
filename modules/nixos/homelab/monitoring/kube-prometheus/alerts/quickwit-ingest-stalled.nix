@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   services.k3s.manifests.quickwit-ingest-stalled-alert.content = {
     apiVersion = "monitoring.coreos.com/v1";

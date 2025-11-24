@@ -15,7 +15,7 @@ in
 
     image = lib.mkOption {
       type = types.str;
-      default = "hjacobs/kube-ops-view:23.2.0";
+      default = "hjacobs/kube-ops-view:23.5.0";
       description = "Docker image for kube-ops";
     };
 
@@ -33,9 +33,14 @@ in
 
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
-      default = if config.homelab.domain != null then
-        if config.homelab.monitoring.kube-ops.gated then "kube-ops.i.${config.homelab.domain}" else "kube-ops.${config.homelab.domain}"
-      else null;
+      default =
+        if config.homelab.domain != null then
+          if config.homelab.monitoring.kube-ops.gated then
+            "kube-ops.i.${config.homelab.domain}"
+          else
+            "kube-ops.${config.homelab.domain}"
+        else
+          null;
       description = "Hostname for kube-ops ingress (defaults to kube-ops.i.<domain> if gated, kube-ops.<domain> otherwise)";
     };
 

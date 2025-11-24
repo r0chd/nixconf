@@ -830,7 +830,7 @@ in
           };
         };
       in
-      (lib.mapAttrs' (_: v: mkManifestRule v) enabledManifests)
+      (lib.mapAttrs' (_: mkManifestRule) enabledManifests)
       // (lib.mapAttrs' (n: v: mkChartRule n v) helmCharts)
       // (builtins.listToAttrs (map mkImageRule cfg.images))
       // (lib.optionalAttrs (cfg.containerdConfigTemplate != null) {
@@ -842,7 +842,7 @@ in
     systemd.services.k3s =
       let
         kubeletParams =
-          (lib.optionalAttrs (cfg.gracefulNodeShutdown.enable) {
+          (lib.optionalAttrs cfg.gracefulNodeShutdown.enable {
             inherit (cfg.gracefulNodeShutdown) shutdownGracePeriod shutdownGracePeriodCriticalPods;
           })
           // cfg.extraKubeletConfig;

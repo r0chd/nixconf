@@ -22,7 +22,8 @@ in
       };
     };
 
-    users.users = systemUsers
+    users.users =
+      systemUsers
       |> lib.mapAttrs (
         _user: value: {
           extraGroups =

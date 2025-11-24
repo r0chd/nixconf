@@ -123,8 +123,8 @@
       "eDP-1" = {
         primary = true;
         position = {
-          x = 320;
-          y = 1440;
+          x = 2560;
+          y = 0;
         };
         refresh = 60.008;
         dimensions = {

@@ -1,16 +1,16 @@
 { config, lib, ... }:
 let
-  cfg = config.homelab.moxwiki;
+  cfg = config.homelab.monitoring.kuvasz;
 in
 {
-  config = lib.mkIf (config.homelab.enable && cfg.enable && cfg.ingressHost != null) {
-    services.k3s.manifests."moxwiki-ingress".content = [
+  config = lib.mkIf (cfg.enable && cfg.ingressHost != null) {
+    services.k3s.manifests."kuvasz-ingress".content = [
       {
         apiVersion = "networking.k8s.io/v1";
         kind = "Ingress";
         metadata = {
-          name = "moxwiki-ingress";
-          namespace = "moxwiki";
+          name = "kuvasz-ingress";
+          namespace = "monitoring";
           annotations = {
             "cert-manager.io/cluster-issuer" = "letsencrypt";
           }
@@ -25,7 +25,7 @@ in
           tls = [
             {
               hosts = [ cfg.ingressHost ];
-              secretName = "moxwiki-tls";
+              secretName = "kuvasz-tls";
             }
           ];
           ingressClassName = "nginx";
@@ -39,9 +39,9 @@ in
                     pathType = "Prefix";
                     backend = {
                       service = {
-                        name = "moxwiki";
+                        name = "kuvasz";
                         port = {
-                          number = 80;
+                          number = 8080;
                         };
                       };
                     };

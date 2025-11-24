@@ -30,27 +30,27 @@ in
           };
           users = lib.mkOption {
             type = types.attrsOf (
-                types.submodule (
-                  { name, ... }:
-                  {
-                    options = {
-                      root.enable = lib.mkEnableOption "root access";
-                      home = lib.mkOption {
-                        type = types.str;
-                        default = "/home/${name}";
-                      };
-                      shell = lib.mkOption {
-                        type = types.enum [
-                          "bash"
-                          "zsh"
-                          "fish"
-                          "nushell"
-                        ];
-                      };
+              types.submodule (
+                { name, ... }:
+                {
+                  options = {
+                    root.enable = lib.mkEnableOption "root access";
+                    home = lib.mkOption {
+                      type = types.str;
+                      default = "/home/${name}";
                     };
-                  }
-                )
-              );
+                    shell = lib.mkOption {
+                      type = types.enum [
+                        "bash"
+                        "zsh"
+                        "fish"
+                        "nushell"
+                      ];
+                    };
+                  };
+                }
+              )
+            );
             default = { };
           };
 

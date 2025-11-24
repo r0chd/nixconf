@@ -93,23 +93,8 @@ in
     services.gitDaemon = {
       enable = cfg.nodeType == "only" || cfg.nodeType == "primary";
       basePath = "/var/lib";
+      repositories = [ "/var/lib/flux" ];
       exportAll = true;
     };
   };
 }
-
-# TODO:
-# [x] add cloudnative-pg
-# [x] add thanos for longer term metrics storage
-# [x] add quickwit for centralized logging
-# [x] add vector
-# [x] add config reloader
-# [x] add kube web
-# [x] add kube ops
-# [x] add alertmanager
-# [x] add grafana
-# [x] add garage
-# [x] finish cert-manager
-# [x] add flux
-# [x] add hashi vault
-# [ ] configure auth-proxy

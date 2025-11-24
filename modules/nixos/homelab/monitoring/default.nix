@@ -7,5 +7,6 @@
     ./kube-prometheus
     ./vector
     ./quickwit
+    ./kuvasz
   ];
 }

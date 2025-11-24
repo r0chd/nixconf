@@ -1,3 +1,7 @@
+# icon: si:immich - si for Simple icons https://simpleicons.org/
+# icon: sh:immich - sh for selfh.st icons https://selfh.st/icons/
+# icon: di:immich - di for Dashboard icons https://github.com/homarr-labs/dashboard-icons
+# icon: mdi:camera - mdi for Material Design icons https://pictogrammers.com/library/mdi/
 {
   pkgs,
   lib,
@@ -230,6 +234,17 @@ let
                           url = "https://${config.homelab.monitoring.quickwit.ingressHost}";
                           "check-url" = "http://quickwit-control-plane.monitoring.svc.cluster.local:7280";
                           icon = "sh:quickwit";
+                        }
+                      ]
+                    )
+                    (lib.optionals
+                      (config.homelab.monitoring.kuvasz.enable && config.homelab.monitoring.kuvasz.ingressHost != null)
+                      [
+                        {
+                          title = "Kuvasz";
+                          url = "https://${config.homelab.monitoring.kuvasz.ingressHost}";
+                          "check-url" = "http://kuvasz.monitoring.svc.cluster.local:8080";
+                          icon = "sh:kuvasz";
                         }
                       ]
                     )

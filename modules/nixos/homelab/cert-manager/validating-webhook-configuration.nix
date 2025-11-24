@@ -1,5 +1,4 @@
-_:
-{
+_: {
   services.k3s.manifests."cert-manager-validating-webhook-configuration".content = [
     {
       apiVersion = "admissionregistration.k8s.io/v1";

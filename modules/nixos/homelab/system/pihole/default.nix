@@ -158,7 +158,7 @@ in
           namespace = "system";
         };
         stringData = {
-          password = cfg.password;
+          inherit (cfg) password;
         };
       }
     ];

@@ -19,7 +19,8 @@
     nano.enable = lib.mkDefault false;
   };
 
-  users.users = systemUsers
+  users.users =
+    systemUsers
     |> lib.mapAttrs (
       _user: value: {
         extraGroups = lib.mkIf (

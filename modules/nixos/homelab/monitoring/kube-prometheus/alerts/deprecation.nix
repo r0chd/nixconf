@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   services.k3s.manifests.deprecation-alert.content = {
     apiVersion = "monitoring.coreos.com/v1";

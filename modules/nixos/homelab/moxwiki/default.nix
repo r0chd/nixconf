@@ -20,9 +20,14 @@ in
 
     ingressHost = lib.mkOption {
       type = types.nullOr types.str;
-      default = if config.homelab.domain != null then
-        if config.homelab.moxwiki.gated then "moxwiki.i.${config.homelab.domain}" else "moxwiki.${config.homelab.domain}"
-      else null;
+      default =
+        if config.homelab.domain != null then
+          if config.homelab.moxwiki.gated then
+            "moxwiki.i.${config.homelab.domain}"
+          else
+            "moxwiki.${config.homelab.domain}"
+        else
+          null;
       description = "Hostname for moxwiki ingress (defaults to moxwiki.i.<domain> if gated, moxwiki.<domain> otherwise)";
     };
     resources = lib.mkOption {

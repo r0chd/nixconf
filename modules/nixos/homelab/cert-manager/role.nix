@@ -1,5 +1,4 @@
-_:
-{
+_: {
   services.k3s.manifests."cert-manager-service-account".content = [
     {
       apiVersion = "rbac.authorization.k8s.io/v1";
