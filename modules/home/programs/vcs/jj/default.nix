@@ -32,7 +32,10 @@ in
 
       gerrit.default-remote-branch = "main";
 
-      git.push-new-bookmarks = true;
+      git = {
+        colocate = false;
+        push-new-bookmarks = true;
+      };
 
       home.shellAliases.jj = "jj --ignore-immutable";
 

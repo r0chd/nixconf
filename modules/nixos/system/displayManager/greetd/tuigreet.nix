@@ -6,40 +6,41 @@
 }:
 let
   cfg = config.programs.tuigreet;
+  inherit (lib) types;
 in
 {
   options.programs.tuigreet = {
     enable = lib.mkEnableOption "Enable tuigreet";
     package = lib.mkOption {
       description = "Tuigreet package";
-      type = lib.types.package;
+      type = types.package;
       default = pkgs.tuigreet;
     };
     width = lib.mkOption {
       description = "Width of the main prompt";
-      type = lib.types.int;
+      type = types.int;
       default = 80;
     };
     windowPadding = lib.mkOption {
       description = "Padding inside the terminal area";
-      type = lib.types.int;
+      type = types.int;
       default = 0;
     };
     containerPadding = lib.mkOption {
       description = "Padding inside the main prompt container";
-      type = lib.types.int;
+      type = types.int;
       default = 1;
     };
     promptPadding = lib.mkOption {
       description = "Padding between prompt rows";
-      type = lib.types.int;
+      type = types.int;
       default = 1;
     };
     debug = {
       enable = lib.mkEnableOption "Enable debug logging to the provided file";
       file = lib.mkOption {
         description = "Debug logging output file";
-        type = lib.types.path;
+        type = types.path;
         default = /tmp/tuigreet.log;
       };
     };
@@ -47,24 +48,24 @@ in
     session = {
       paths = lib.mkOption {
         description = "List of Wayland session paths";
-        type = lib.types.listOf lib.types.path;
+        type = types.listOf types.path;
         default = [ ];
       };
       wrapper = lib.mkOption {
         description = "Wrapper command for non-X11 sessions";
-        type = lib.types.str;
+        type = types.str;
         default = "";
       };
     };
     xsession = {
       paths = lib.mkOption {
         description = "List of X11 session paths";
-        type = lib.types.listOf lib.types.path;
+        type = types.listOf types.path;
         default = [ ];
       };
       wrapper = lib.mkOption {
         description = "Wrapper command for X11 sessions";
-        type = lib.types.str;
+        type = types.str;
         default = "";
       };
       disable = lib.mkEnableOption "Disable X11 session wrapping";
@@ -73,12 +74,12 @@ in
       cmd = lib.mkOption {
         description = "Command to run";
         default = "";
-        type = lib.types.str;
+        type = types.str;
       };
       key = lib.mkOption {
         description = "F-key to use to open the command menu [1-12]";
         default = 1;
-        type = lib.types.ints.between 1 12;
+        type = types.ints.between 1 12;
       };
     };
     time = {
@@ -86,7 +87,7 @@ in
       format = lib.mkOption {
         description = "Custom strftime format for displaying date and time";
         default = "HH:MM";
-        type = lib.types.str;
+        type = types.str;
       };
     };
     greeting = {
@@ -94,12 +95,12 @@ in
       text = lib.mkOption {
         description = "Text above login prompt";
         default = "Welcome back!";
-        type = lib.types.str;
+        type = types.str;
       };
       align = lib.mkOption {
         description = "Alignment of the greeting text in the main prompt container";
         default = "center";
-        type = lib.types.enum [
+        type = types.enum [
           "left"
           "center"
           "right"
@@ -111,7 +112,7 @@ in
       char = lib.mkOption {
         description = "Characters to be used to redact secrets";
         default = "*";
-        type = lib.types.str;
+        type = types.str;
       };
     };
     session = {
@@ -119,7 +120,7 @@ in
       key = lib.mkOption {
         description = "F-key to use to open the sessions menu [1-12]";
         default = 3;
-        type = lib.types.ints.between 1 12;
+        type = types.ints.between 1 12;
       };
     };
     user = {
@@ -128,12 +129,12 @@ in
         minUid = lib.mkOption {
           description = "Minimum UID to display in the user selection menu";
           default = null;
-          type = lib.types.nullOr lib.types.int;
+          type = types.nullOr types.int;
         };
         maxUid = lib.mkOption {
           description = "Maximum UID to display in the user selection menu";
           default = null;
-          type = lib.types.nullOr lib.types.int;
+          type = types.nullOr types.int;
         };
       };
       rememberSession = lib.mkEnableOption "Remember last selected session for each user";
@@ -143,17 +144,17 @@ in
       key = lib.mkOption {
         description = "F-key to use to open the power menu [1-12]";
         default = 12;
-        type = lib.types.ints.between 1 12;
+        type = types.ints.between 1 12;
       };
       shutdown = lib.mkOption {
         description = "Command to run to shut down the system";
         default = "";
-        type = lib.types.str;
+        type = types.str;
       };
       reboot = lib.mkOption {
         description = "Command to run to reboot the system";
         default = "";
-        type = lib.types.str;
+        type = types.str;
       };
       noSetsid = lib.mkEnableOption "Do not prefix power commands with setsid";
     };
