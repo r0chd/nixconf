@@ -53,6 +53,7 @@ in
       type = lib.types.enum [
         "local-path"
         "openebs-zfs-localpv"
+        "longhorn"
       ];
       default = "local-path";
     };

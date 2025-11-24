@@ -6,6 +6,6 @@
     ./pihole
     ./zfs-localpv
     ./dragonfly
-    #./oauth2-proxy
+    ./longhorn
   ];
 }

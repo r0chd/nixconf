@@ -1,16 +1,16 @@
 { config, lib, ... }:
 let
-  cfg = config.homelab.moxwiki;
+  cfg = config.homelab.system.longhorn;
 in
 {
   config = lib.mkIf (cfg.enable && cfg.ingressHost != null) {
-    services.k3s.manifests."moxwiki-ingress".content = [
+    services.k3s.manifests."longhorn-ingress".content = [
       {
         apiVersion = "networking.k8s.io/v1";
         kind = "Ingress";
         metadata = {
-          name = "moxwiki-ingress";
-          namespace = "moxwiki";
+          name = "longhorn-ingress";
+          namespace = "longhorn";
           annotations = {
             "cert-manager.io/cluster-issuer" = "letsencrypt";
           }
@@ -25,7 +25,7 @@ in
           tls = [
             {
               hosts = [ cfg.ingressHost ];
-              secretName = "moxwiki-tls";
+              secretName = "longhorn-tls";
             }
           ];
           ingressClassName = "nginx";
@@ -39,7 +39,7 @@ in
                     pathType = "Prefix";
                     backend = {
                       service = {
-                        name = "moxwiki";
+                        name = "longhorn";
                         port = {
                           number = 80;
                         };
