@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   lib,
   ...
@@ -19,26 +18,13 @@
       "steam-unwrapped"
     ];
 
-  sops.secrets = {
-    nixos-anywhere = {
-      owner = "nixos-anywhere";
-      group = "nixos-anywhere";
-      mode = "0440";
-    };
-  };
-
-  programs.nixos-anywhere.sshKeyFile = config.sops.secrets.nixos-anywhere.path;
-
   documentation.enable = true;
+
+  homelab.enable = true;
 
   stylix = {
     enable = true;
     theme = "gruvbox";
-  };
-
-  programs = {
-    thunderbird.enable = true;
-    wshowkeys.enable = true;
   };
 
   gaming = {

@@ -839,66 +839,128 @@ in
         };
       });
 
-    systemd.services.k3s =
-      let
-        kubeletParams =
-          (lib.optionalAttrs cfg.gracefulNodeShutdown.enable {
-            inherit (cfg.gracefulNodeShutdown) shutdownGracePeriod shutdownGracePeriodCriticalPods;
-          })
-          // cfg.extraKubeletConfig;
-        kubeletConfig = (pkgs.formats.yaml { }).generate "k3s-kubelet-config" (
-          {
-            apiVersion = "kubelet.config.k8s.io/v1beta1";
-            kind = "KubeletConfiguration";
-          }
-          // kubeletParams
-        );
-
-        kubeProxyConfig = (pkgs.formats.yaml { }).generate "k3s-kubeProxy-config" (
-          {
-            apiVersion = "kubeproxy.config.k8s.io/v1alpha1";
-            kind = "KubeProxyConfiguration";
-          }
-          // cfg.extraKubeProxyConfig
-        );
-      in
-      {
-        description = "k3s service";
-        after = [
-          "firewall.service"
-          "network-online.target"
-        ];
-        wants = [
-          "firewall.service"
-          "network-online.target"
-        ];
-        wantedBy = [ "multi-user.target" ];
-        path = lib.optional config.boot.zfs.enabled config.boot.zfs.package;
-        serviceConfig = {
-          # See: https://github.com/rancher/k3s/blob/dddbd16305284ae4bd14c0aade892412310d7edc/install.sh#L197
-          Type = if cfg.role == "agent" then "exec" else "notify";
-          KillMode = "process";
-          Delegate = "yes";
-          Restart = "always";
-          RestartSec = "5s";
-          LimitNOFILE = 1048576;
-          LimitNPROC = "infinity";
-          LimitCORE = "infinity";
-          TasksMax = "infinity";
-          EnvironmentFile = cfg.environmentFile;
-          ExecStart = lib.concatStringsSep " \\\n " (
-            [ "${cfg.package}/bin/k3s ${cfg.role}" ]
-            ++ (lib.optional cfg.clusterInit "--cluster-init")
-            ++ (lib.optional cfg.disableAgent "--disable-agent")
-            ++ (lib.optional (cfg.serverAddr != "") "--server ${cfg.serverAddr}")
-            ++ (lib.optional (cfg.token != "") "--token ${cfg.token}")
-            ++ (lib.optional (cfg.tokenFile != null) "--token-file ${cfg.tokenFile}")
-            ++ (lib.optional (cfg.configPath != null) "--config ${cfg.configPath}")
-            ++ (lib.optional (kubeletParams != { }) "--kubelet-arg=config=${kubeletConfig}")
-            ++ (lib.optional (cfg.extraKubeProxyConfig != { }) "--kube-proxy-arg=config=${kubeProxyConfig}")
-            ++ (lib.flatten cfg.extraFlags)
+    systemd.services = {
+      k3s =
+        let
+          kubeletParams =
+            (lib.optionalAttrs cfg.gracefulNodeShutdown.enable {
+              inherit (cfg.gracefulNodeShutdown) shutdownGracePeriod shutdownGracePeriodCriticalPods;
+            })
+            // cfg.extraKubeletConfig;
+          kubeletConfig = (pkgs.formats.yaml { }).generate "k3s-kubelet-config" (
+            {
+              apiVersion = "kubelet.config.k8s.io/v1beta1";
+              kind = "KubeletConfiguration";
+            }
+            // kubeletParams
           );
+
+          kubeProxyConfig = (pkgs.formats.yaml { }).generate "k3s-kubeProxy-config" (
+            {
+              apiVersion = "kubeproxy.config.k8s.io/v1alpha1";
+              kind = "KubeProxyConfiguration";
+            }
+            // cfg.extraKubeProxyConfig
+          );
+        in
+        {
+          description = "k3s service";
+          after = [
+            "firewall.service"
+            "network-online.target"
+          ];
+          wants = [
+            "firewall.service"
+            "network-online.target"
+          ];
+          wantedBy = [ "multi-user.target" ];
+          path = lib.optional config.boot.zfs.enabled config.boot.zfs.package;
+          serviceConfig = {
+            # See: https://github.com/rancher/k3s/blob/dddbd16305284ae4bd14c0aade892412310d7edc/install.sh#L197
+            Type = if cfg.role == "agent" then "exec" else "notify";
+            KillMode = "process";
+            Delegate = "yes";
+            Restart = "always";
+            RestartSec = "5s";
+            LimitNOFILE = 1048576;
+            LimitNPROC = "infinity";
+            LimitCORE = "infinity";
+            TasksMax = "infinity";
+            EnvironmentFile = cfg.environmentFile;
+            ExecStart = lib.concatStringsSep " \\\n " (
+              [ "${cfg.package}/bin/k3s ${cfg.role}" ]
+              ++ (lib.optional cfg.clusterInit "--cluster-init")
+              ++ (lib.optional cfg.disableAgent "--disable-agent")
+              ++ (lib.optional (cfg.serverAddr != "") "--server ${cfg.serverAddr}")
+              ++ (lib.optional (cfg.token != "") "--token ${cfg.token}")
+              ++ (lib.optional (cfg.tokenFile != null) "--token-file ${cfg.tokenFile}")
+              ++ (lib.optional (cfg.configPath != null) "--config ${cfg.configPath}")
+              ++ (lib.optional (kubeletParams != { }) "--kubelet-arg=config=${kubeletConfig}")
+              ++ (lib.optional (cfg.extraKubeProxyConfig != { }) "--kube-proxy-arg=config=${kubeProxyConfig}")
+              ++ (lib.flatten cfg.extraFlags)
+            );
+          };
+        };
+
+      k3s-manifest-cleanup = {
+        description = "Clean up stale k3s manifest symlinks";
+        after = [ "systemd-tmpfiles-resetup.service" ];
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = pkgs.writeShellScript "k3s-manifest-cleanup" ''
+            for f in ${manifestDir}/*.yaml; do  
+              if [ -f "$f" ]; then  
+                basename=$(basename "$f")  
+                if ! grep -q "$basename" /etc/tmpfiles.d/10-k3s.conf; then  
+                  echo "Removing stale manifest symlink: $f"  
+                  rm "$f"  
+                fi  
+              fi  
+            done  
+          '';
         };
       };
+
+      k3s-chart-cleanup = {
+        description = "Clean up stale k3s chart symlinks";
+        after = [ "systemd-tmpfiles-resetup.service" ];
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = pkgs.writeShellScript "k3s-chart-cleanup" ''
+            for f in ${chartDir}/*.yaml; do  
+              if [ -f "$f" ]; then  
+                basename=$(basename "$f")  
+                if ! grep -q "$basename" /etc/tmpfiles.d/10-k3s.conf; then  
+                  echo "Removing stale chart symlink: $f"  
+                  rm "$f"  
+                fi  
+              fi  
+            done  
+          '';
+        };
+      };
+
+      k3s-image-cleanup = {
+        description = "Clean up stale k3s image symlinks";
+        after = [ "systemd-tmpfiles-resetup.service" ];
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = pkgs.writeShellScript "k3s-image-cleanup" ''
+            for f in ${imageDir}/*.yaml; do  
+              if [ -f "$f" ]; then  
+                basename=$(basename "$f")  
+                if ! grep -q "$basename" /etc/tmpfiles.d/10-k3s.conf; then  
+                  echo "Removing stale image symlink: $f"  
+                  rm "$f"  
+                fi  
+              fi  
+            done  
+          '';
+        };
+      };
+    };
   };
 }

@@ -17,21 +17,13 @@
   sops.secrets = {
     access-token-github = { };
 
-    "minio-client/moxpaper/access-key" = { };
-    "minio-client/moxpaper/secret-key" = { };
+    "minio/username" = { };
+    "minio/password" = { };
   };
 
   nix.access-token-file = config.sops.secrets.access-token-github.path;
 
   services = {
-    moxpaper.settings.buckets = {
-      moxpaper = {
-        url = "https://s3.garage.r0chd.pl";
-        access_key_file = config.sops.secrets."minio-client/moxpaper/access-key".path;
-        secret_key_file = config.sops.secrets."minio-client/moxpaper/secret-key".path;
-        region = "garage";
-      };
-    };
     impermanence.enable = true;
     yubikey-touch-detector.enable = true;
   };
@@ -42,10 +34,10 @@
       settings = {
         version = "10";
         aliases = {
-          moxpaper = {
-            url = "https://s3.garage.r0chd.pl";
-            accessKey = config.sops.placeholder."minio-client/moxpaper/access-key";
-            secretKey = config.sops.placeholder."minio-client/moxpaper/secret-key";
+          tfstate-root = {
+            url = "https://s3.minio.t.r0chd.pl";
+            accessKey = config.sops.placeholder."minio/username";
+            secretKey = config.sops.placeholder."minio/password";
             api = "s3v4";
             path = "auto";
           };
@@ -55,7 +47,6 @@
 
     atuin = {
       enable = true;
-      distributed.enable = true;
     };
 
     vcs = {
@@ -64,7 +55,7 @@
     };
     vesktop.enable = true;
     editor = "hx";
-    chromium.enable = true;
+    firefox.enable = true;
     nix-index.enable = true;
     fastfetch.enable = true;
     starship.enable = true;

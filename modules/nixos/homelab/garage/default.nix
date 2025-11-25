@@ -89,7 +89,6 @@ in
     storage = {
       dataSize = lib.mkOption {
         type = types.str;
-        default = "100Gi";
       };
 
       metaSize = lib.mkOption {
@@ -100,7 +99,7 @@ in
 
       storageClass = lib.mkOption {
         type = types.str;
-        default = config.homelab.storageClass;
+        default = "local-path";
         description = "Storage class for persistent volumes";
       };
     };

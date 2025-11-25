@@ -71,7 +71,7 @@ in
           service = {
             ssh = {
               type = "NodePort";
-              # nodePort = 30022;
+              nodePort = 30988;
             };
             http = {
               type = "ClusterIP";
@@ -207,6 +207,7 @@ in
               logLevel = "INFO";
             };
             config = {
+              SSH_PORT = 30988;
               APP_NAME = "Forgejo: Beyond coding. We forge.";
               RUN_MODE = "prod";
 

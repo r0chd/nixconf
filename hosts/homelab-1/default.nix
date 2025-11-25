@@ -8,14 +8,14 @@
   sops.secrets = {
     #"pihole/password" = { };
 
-    #"minio/credentials" = { };
+    "minio/credentials" = { };
 
-    #alertmanager_webhook_url = { };
+    alertmanager_webhook_url = { };
 
     #github_api = { };
 
     "garage/rpc-secret" = { };
-    "garage/admin-token".sopsFile = ../../infra/fi-t/secrets/secrets.yaml;
+    "garage/admin-token".sopsFile = ../../infra/garage/secrets/secrets.yaml;
     "garage/metrics-token" = { };
 
     #"vaultwarden_backup/access_key_id" = { };
@@ -48,23 +48,21 @@
     grub.enable = true;
   };
 
+  services.k3s.extraFlags = [
+    "--tls-san 46.62.204.148"
+    "--tls-san 10.0.0.3"
+  ];
+
   homelab = {
     enable = true;
     domain = "t.r0chd.pl";
     nodeType = "primary";
 
-    storageClassName = "longhorn";
-
-    system = {
-      dragonfly.enable = true;
-      longhorn.replicas = 1;
-    };
-
-    glance = {
-      enable = true;
-      ingressHost = "t.r0chd.pl";
-    };
-    moxwiki.enable = true;
+    #storageClassName = "longhorn";
+    metallb.addresses = [
+      "46.62.204.148/32"
+      "172.31.1.100-172.31.1.150"
+    ];
 
     ingress.resources = {
       requests = {
@@ -73,16 +71,240 @@
       };
     };
 
+    system = {
+      dragonfly.enable = true;
+    };
+
+    glance = {
+      enable = true;
+      ingressHost = "t.r0chd.pl";
+    };
+    moxwiki.enable = true;
+
     garage = {
       enable = true;
+      storage.dataSize = "20Gi";
       rpcSecret = config.sops.placeholder."garage/rpc-secret";
       adminToken = config.sops.placeholder."garage/admin-token";
       metricsToken = config.sops.placeholder."garage/metrics-token";
     };
 
-    metallb.addresses = [
-      "46.62.204.148/32"
-      "172.31.1.100-172.31.1.150"
+    #auth = {
+    #  enable = true;
+    #  vault = {
+    #    enable = true;
+    #    clientSecret = config.sops.placeholder."vault_client_secret";
+    #  };
+
+    #  github = {
+    #    enable = true;
+    #    clientId = "Ov23lioBYc4Eh1GmUp6T";
+    #    clientSecret = config.sops.placeholder."github-client/client-secret";
+    #    orgs = [
+    #      {
+    #        name = "r0chd-homelab";
+    #      }
+    #    ];
+    #  };
+    #  clientSecret = config.sops.placeholder."oauth2-proxy/client-secret";
+    #  oauth2ProxyCookie = config.sops.placeholder."oauth2-proxy/cookie-secret";
+    #};
+
+    vaultwarden = {
+      enable = true;
+      #db.backup = {
+      #  enable = true;
+      #  accessKeyId = config.sops.placeholder."vaultwarden_backup/access_key_id";
+      #  secretAccessKey = config.sops.placeholder."vaultwarden_backup/secret_access_key";
+      #};
+    };
+
+    monitoring = {
+      prometheus = {
+        enable = true;
+        gated = true;
+      };
+      alertmanager = {
+        enable = true;
+        gated = true;
+        discordWebhookUrl = config.sops.placeholder.alertmanager_webhook_url;
+      };
+      #thanos = {
+      #  enable = true;
+      #  gated = true;
+      #  bucket = "thanos";
+      #  access_key = config.sops.placeholder."thanos/access_key";
+      #  secret_key = config.sops.placeholder."thanos/secret_key";
+      #};
+      grafana = {
+        enable = true;
+        gated = true;
+        passwordAuth.enable = false;
+      };
+      kube-web = {
+        enable = true;
+        resources = {
+          limits.memory = "100Mi";
+          requests = {
+            cpu = "5m";
+            memory = "100Mi";
+          };
+        };
+        gated = true;
+      };
+      kube-ops = {
+        enable = true;
+        resources = {
+          limits = {
+            cpu = "200m";
+            memory = "100Mi";
+          };
+          requests = {
+            cpu = "50m";
+            memory = "50Mi";
+          };
+        };
+        gated = true;
+      };
+      vector.enable = true;
+      #quickwit = {
+      #  enable = true;
+      #  gated = true;
+      #  s3 = {
+      #    access_key_id = config.sops.placeholder."quickwit/access_key_id";
+      #    secret_access_key = config.sops.placeholder."quickwit/secret_access_key";
+      #  };
+      #  retention = {
+      #    period = "7 days";
+      #    schedule = "daily";
+      #  };
+      #};
+      #kuvasz = {
+      #  enable = false;
+      #  gated = true;
+      #};
+    };
+  };
+
+  services = {
+    minio = {
+      enable = true;
+      region = "eu-central-1";
+      rootCredentialsFile = config.sops.secrets."minio/credentials".path;
+    };
+  };
+
+  services.k3s.manifests = {
+    minio-service.content = [
+      {
+        apiVersion = "v1";
+        kind = "Service";
+        metadata = {
+          name = "minio-external";
+          namespace = "default";
+        };
+        spec = {
+          type = "ClusterIP";
+          ports = [
+            {
+              port = 9000;
+              name = "s3";
+            }
+            {
+              port = 9001;
+              name = "console";
+            }
+          ];
+        };
+      }
+    ];
+    minio-external-endpoints.content = [
+      {
+        apiVersion = "v1";
+        kind = "Endpoints";
+        metadata = {
+          name = "minio-external";
+          namespace = "default";
+        };
+        subsets = [
+          {
+            addresses = [
+              {
+                ip = "46.62.204.148";
+              }
+            ];
+            ports = [
+              {
+                port = 9000;
+                name = "s3";
+              }
+              {
+                port = 9001;
+                name = "console";
+              }
+            ];
+          }
+        ];
+      }
+    ];
+    minio-ingress.content = [
+      {
+        apiVersion = "networking.k8s.io/v1";
+        kind = "Ingress";
+        metadata = {
+          name = "minio-ingress";
+          namespace = "default";
+          annotations."cert-manager.io/cluster-issuer" = "letsencrypt";
+        };
+        spec = {
+          ingressClassName = "nginx";
+          tls = [
+            {
+              hosts = [
+                "s3.minio.t.r0chd.pl"
+                "console.minio.t.r0chd.pl"
+              ];
+              secretName = "minio-tls";
+            }
+          ];
+          rules = [
+            {
+              host = "s3.minio.t.r0chd.pl";
+              http = {
+                paths = [
+                  {
+                    path = "/";
+                    pathType = "Prefix";
+                    backend = {
+                      service = {
+                        name = "minio-external";
+                        port.number = 9000;
+                      };
+                    };
+                  }
+                ];
+              };
+            }
+            {
+              host = "console.minio.t.r0chd.pl";
+              http = {
+                paths = [
+                  {
+                    path = "/";
+                    pathType = "Prefix";
+                    backend = {
+                      service = {
+                        name = "minio-external";
+                        port.number = 9001;
+                      };
+                    };
+                  }
+                ];
+              };
+            }
+          ];
+        };
+      }
     ];
   };
 

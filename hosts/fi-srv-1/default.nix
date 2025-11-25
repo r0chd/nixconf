@@ -19,7 +19,7 @@
     github_api = { };
 
     "garage/rpc-secret" = { };
-    "garage/admin-token".sopsFile = ../../infra/fi/secrets/secrets.yaml;
+    "garage/admin-token".sopsFile = ../../infra/garage/secrets/secrets.yaml;
     "garage/metrics-token" = { };
 
     "grafana/username" = { };
@@ -228,6 +228,7 @@
 
     garage = {
       enable = true;
+      storage.dataSize = "100Gi";
       rpcSecret = config.sops.placeholder."garage/rpc-secret";
       adminToken = config.sops.placeholder."garage/admin-token";
       metricsToken = config.sops.placeholder."garage/metrics-token";
@@ -322,7 +323,7 @@
             memory = "100Mi";
           };
           requests = {
-            cpu = "50m";
+            cpu = "55m";
             memory = "50Mi";
           };
         };

@@ -5,7 +5,8 @@ keys:
   - &agent-0 age1npphzfaarxvv2flkmdkm777gafuhvmsh38020432ju9v0aznh55sd0ce3s
   - &fi-srv-1 age1e0mcqrfny3lkmnv6qgxel3p035frwm0kdf8cexgtktpkzmvaugrqw2u4ug
   - &homelab-1 age17ekkmw57rcx7gta2jutgvpm2kpgd604nv8xpww50pu8h2zwx9vrsla3f4x
-  - &kms age1suyudkl2xlle4uu6e0ld7lughpr5ekg5vxh2ef0kv5wga5j0f3jscpxtz2
+  - &homelab-2 age1zuwqzkf0mlnlws63nr5r0v5v7txt5jfqlq70nk9aaeepfuvrd96q25lekw
+  - &homelab-3 age1xmdepvl32zaml4d23eyrq9mg97h57mx0z567a7exk4ch9e6z5sjq4gnj05
 creation_rules:
   - path_regex: secrets/secrets.yaml$
     key_groups:
@@ -16,4 +17,5 @@ creation_rules:
           - *agent-0
           - *fi-srv-1
           - *homelab-1
-          - *kms
+          - *homelab-2
+          - *homelab-3

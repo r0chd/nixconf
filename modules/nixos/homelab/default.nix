@@ -14,7 +14,6 @@ in
     ./glance
     ./vaultwarden
     ./forgejo
-    ./flux
     ./auth
     ./portfolio
     ./nextcloud

@@ -2,12 +2,6 @@ _: {
   imports = [ ./utils/options.nix ];
 
   hosts = {
-    homelab-1 = {
-      system = "x86_64-linux";
-      profile = "server";
-      platform = "nixos";
-    };
-
     fi-srv-1 = {
       system = "x86_64-linux";
       profile = "server";
