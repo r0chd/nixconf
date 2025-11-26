@@ -7,5 +7,6 @@
     ./zfs-localpv
     ./dragonfly
     ./longhorn
+    ./kube-janitor
   ];
 }
