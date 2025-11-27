@@ -50,8 +50,20 @@ in
                       path = "/health";
                       port = 8080;
                     };
-                    initialDelaySeconds = 5;
+                    initialDelaySeconds = 30;
                     periodSeconds = 30;
+                    timeoutSeconds = 5;
+                    failureThreshold = 3;
+                  };
+                  readinessProbe = {
+                    httpGet = {
+                      path = "/health";
+                      port = 8080;
+                    };
+                    initialDelaySeconds = 10;
+                    periodSeconds = 10;
+                    timeoutSeconds = 5;
+                    failureThreshold = 3;
                   };
                   env = [
                     {
@@ -104,6 +116,21 @@ in
                       value = "false";
                     }
                   ];
+                  volumeMounts = [
+                    {
+                      name = "config";
+                      mountPath = "/app/config";
+                      readOnly = true;
+                    }
+                  ];
+                }
+              ];
+              volumes = [
+                {
+                  name = "config";
+                  configMap = {
+                    name = "kuvasz-config";
+                  };
                 }
               ];
             };

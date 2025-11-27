@@ -1,5 +1,8 @@
-{ lib, ... }:
+{ ... }:
 {
-  # TODO: Convert compact manifests
-  imports = [ ];
+  imports = [
+    ./pvc.nix
+    ./service.nix
+    ./deployment.nix
+  ];
 }

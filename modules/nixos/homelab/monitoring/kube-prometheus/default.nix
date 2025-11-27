@@ -492,6 +492,24 @@ in
             access_key: ${cfg.thanos.access_key}
             secret_key: ${cfg.thanos.secret_key}
         '';
+      }
+      ++ lib.optional cfg.thanos.enable {
+        metadata = {
+          name = "thanos-rule-alertmanager";
+          namespace = "monitoring";
+        };
+        stringData."config.yaml" = ''
+          global:
+            resolve_timeout: 5m
+          route:
+            receiver: 'default'
+            group_by: ['alertname']
+            group_wait: 10s
+            group_interval: 10s
+            repeat_interval: 12h
+          receivers:
+            - name: 'default'
+        '';
       };
   };
 }

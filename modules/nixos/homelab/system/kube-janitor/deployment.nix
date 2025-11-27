@@ -12,13 +12,13 @@
         replicas = 1;
         selector = {
           matchLabels = {
-            app = "kube-janitor";
+            "app.kubernetes.io/name" = "kube-janitor";
           };
         };
         template = {
           metadata = {
             labels = {
-              app = "kube-janitor";
+              "app.kubernetes.io/name" = "kube-janitor";
             };
           };
           spec = {

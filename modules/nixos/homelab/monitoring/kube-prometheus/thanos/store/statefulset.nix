@@ -3,7 +3,7 @@ let
   cfg = config.homelab.monitoring.thanos;
 in
 {
-  config = lib.mkIf (config.homelab.enable && cfg.enable) {
+  config = lib.mkIf cfg.enable {
     services.k3s.manifests."thanos-store-statefulset".content = [
       {
         apiVersion = "apps/v1";

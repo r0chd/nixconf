@@ -343,7 +343,7 @@
         };
       };
       kuvasz = {
-        enable = false;
+        enable = true;
         gated = true;
       };
     };

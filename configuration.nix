@@ -6,6 +6,10 @@ _: {
       system = "x86_64-linux";
       profile = "server";
       platform = "nixos";
+      nixos-anywhere = {
+        enable = true;
+        ip = "157.180.30.62";
+      };
     };
 
     t851 = {

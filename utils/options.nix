@@ -24,7 +24,6 @@ in
               "non-nixos"
               "nixos"
               "rpi-nixos"
-              "mobile"
               #"darwin"
             ];
           };
@@ -54,21 +53,11 @@ in
             default = { };
           };
 
-          # For terraform module
-          needsInstall = lib.mkOption {
-            type = types.nullOr (
-              types.submodule {
-                options = {
-                  ip = lib.mkOption {
-                    type = types.str;
-                  };
-                  sshKeyFile = lib.mkOption {
-                    type = types.path;
-                  };
-                };
-              }
-            );
-            default = null;
+          nixos-anywhere = {
+            enable = lib.mkEnableOption "nixos-anywhere tofu module";
+            ip = lib.mkOption {
+              type = types.str;
+            };
           };
         };
       }

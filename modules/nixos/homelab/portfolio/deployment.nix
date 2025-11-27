@@ -12,20 +12,20 @@ in
           name = "portfolio";
           namespace = "portfolio";
           labels = {
-            app = "portfolio";
+            "app.kubernetes.io/name" = "portfolio";
           };
         };
         spec = {
           replicas = 1;
           selector = {
             matchLabels = {
-              app = "portfolio";
+              "app.kubernetes.io/name" = "portfolio";
             };
           };
           template = {
             metadata = {
               labels = {
-                app = "portfolio";
+                "app.kubernetes.io/name" = "portfolio";
               };
             };
             spec = {
