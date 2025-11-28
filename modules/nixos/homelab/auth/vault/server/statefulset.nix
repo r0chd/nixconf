@@ -28,10 +28,13 @@ in
             component = "server";
           };
           template = {
-            metadata.labels = {
-              "app.kubernetes.io/name" = "vault";
-              "app.kubernetes.io/instance" = "vault";
-              component = "server";
+            metadata = {
+              labels = {
+                "app.kubernetes.io/name" = "vault";
+                "app.kubernetes.io/instance" = "vault";
+                component = "server";
+              };
+              annotations."reloader.stakater.com/auto" = "true";
             };
             spec = {
               affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution = [

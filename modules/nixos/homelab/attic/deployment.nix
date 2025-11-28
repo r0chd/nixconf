@@ -25,6 +25,7 @@ in
               labels = {
                 "app.kubernetes.io/name" = "attic-server";
               };
+              annotations."reloader.stakater.com/auto" = "true";
             };
             spec = {
               volumes = [

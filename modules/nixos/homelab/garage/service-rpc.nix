@@ -8,10 +8,14 @@
         metadata = {
           name = "garage-rpc";
           namespace = "default";
+          labels = {
+            "app.kubernetes.io/name" = "garage";
+            "app.kubernetes.io/component" = "rpc";
+          };
         };
         spec = {
           clusterIP = "None";
-          selector.app = "garage";
+          selector."app.kubernetes.io/name" = "garage";
           ports = [
             {
               name = "rpc";

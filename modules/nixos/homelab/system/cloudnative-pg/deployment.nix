@@ -17,7 +17,10 @@ in
           replicas = 1;
           selector.matchLabels."app.kubernetes.io/name" = "cloudnative-pg";
           template = {
-            metadata.labels."app.kubernetes.io/name" = "cloudnative-pg";
+            metadata = {
+              labels."app.kubernetes.io/name" = "cloudnative-pg";
+              annotations."reloader.stakater.com/auto" = "true";
+            };
             spec = {
               serviceAccountName = "cnpg-manager";
               terminationGracePeriodSeconds = 10;

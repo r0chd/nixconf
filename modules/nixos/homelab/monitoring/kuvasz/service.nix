@@ -6,24 +6,36 @@ in
   config = lib.mkIf cfg.enable {
     services.k3s.manifests."kuvasz-service".content = [
       {
-        apiVersion = "v1";
-        kind = "Service";
+        apiVersion = "networking.k8s.io/v1";
+        kind = "Ingress";
         metadata = {
-          name = "kuvasz";
+          name = "kuvasz-status";
           namespace = "monitoring";
+          annotations = {
+            "nginx.ingress.kubernetes.io/rewrite-target" = "/status";
+          };
         };
         spec = {
-          ports = [
+          rules = [
             {
-              port = 8080;
-              protocol = "TCP";
-              targetPort = 8080;
+              http = {
+                paths = [
+                  {
+                    path = "/status";
+                    pathType = "Prefix";
+                    backend = {
+                      service = {
+                        name = "kuvasz";
+                        port = {
+                          number = 8080;
+                        };
+                      };
+                    };
+                  }
+                ];
+              };
             }
           ];
-          selector = {
-            app = "kuvasz";
-          };
-          type = "ClusterIP";
         };
       }
     ];

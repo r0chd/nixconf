@@ -7,7 +7,9 @@
         kind = "Service";
         metadata = {
           labels = {
-            app = "thanos-compact";
+            "app.kubernetes.io/name" = "thanos-compact";
+            "app.kubernetes.io/component" = "compact";
+            "app.kubernetes.io/part-of" = "thanos";
           };
           name = "thanos-compact";
           namespace = "monitoring";
@@ -27,7 +29,7 @@
             }
           ];
           selector = {
-            app = "thanos-compact";
+            "app.kubernetes.io/name" = "thanos-compact";
           };
           sessionAffinity = "None";
         };

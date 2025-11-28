@@ -8,9 +8,13 @@
         metadata = {
           name = "garage-s3";
           namespace = "default";
+          labels = {
+            "app.kubernetes.io/name" = "garage";
+            "app.kubernetes.io/component" = "s3";
+          };
         };
         spec = {
-          selector.app = "garage";
+          selector."app.kubernetes.io/name" = "garage";
           ports = [
             {
               name = "s3-api";

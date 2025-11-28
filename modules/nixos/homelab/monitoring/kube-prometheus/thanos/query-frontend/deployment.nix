@@ -15,6 +15,7 @@ in
             "app.kubernetes.io/component" = "query-cache";
             "app.kubernetes.io/instance" = "thanos-query-frontend";
             "app.kubernetes.io/name" = "thanos-query-frontend";
+            "app.kubernetes.io/part-of" = "thanos";
             "app.kubernetes.io/version" = "v0.30.2";
           };
         };
@@ -26,11 +27,15 @@ in
             "app.kubernetes.io/name" = "thanos-query-frontend";
           };
           template = {
-            metadata.labels = {
-              "app.kubernetes.io/component" = "query-cache";
-              "app.kubernetes.io/instance" = "thanos-query-frontend";
-              "app.kubernetes.io/name" = "thanos-query-frontend";
-              "app.kubernetes.io/version" = "v0.30.2";
+            metadata = {
+              labels = {
+                "app.kubernetes.io/component" = "query-cache";
+                "app.kubernetes.io/instance" = "thanos-query-frontend";
+                "app.kubernetes.io/name" = "thanos-query-frontend";
+                "app.kubernetes.io/part-of" = "thanos";
+                "app.kubernetes.io/version" = "v0.30.2";
+              };
+              annotations."reloader.stakater.com/auto" = "true";
             };
             spec = {
               affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution = [

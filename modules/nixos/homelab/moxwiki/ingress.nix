@@ -11,6 +11,9 @@ in
         metadata = {
           name = "moxwiki-ingress";
           namespace = "moxwiki";
+          labels = {
+            "app.kubernetes.io/name" = "moxwiki";
+          };
           annotations = {
             "cert-manager.io/cluster-issuer" = "letsencrypt";
           }

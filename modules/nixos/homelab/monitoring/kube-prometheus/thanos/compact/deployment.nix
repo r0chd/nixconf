@@ -19,17 +19,18 @@ in
           replicas = 1;
           selector = {
             matchLabels = {
-              app = "thanos-compact";
               "app.kubernetes.io/name" = "thanos-compact";
             };
           };
           template = {
             metadata = {
               labels = {
-                app = "thanos-compact";
                 "app.kubernetes.io/name" = "thanos-compact";
+                "app.kubernetes.io/component" = "compact";
+                "app.kubernetes.io/part-of" = "thanos";
               };
               name = "thanos-compact";
+              annotations."reloader.stakater.com/auto" = "true";
             };
             spec = {
               terminationGracePeriodSeconds = 1200;

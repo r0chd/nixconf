@@ -5,7 +5,12 @@
       {
         apiVersion = "v1";
         kind = "Namespace";
-        metadata.name = "monitoring";
+        metadata = {
+          name = "monitoring";
+          labels = {
+            "app.kubernetes.io/name" = "monitoring";
+          };
+        };
       }
     ];
   };

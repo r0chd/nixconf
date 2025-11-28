@@ -11,6 +11,10 @@ in
         metadata = {
           name = "thanos-query-frontend-ingress";
           namespace = "monitoring";
+          labels = {
+            "app.kubernetes.io/name" = "thanos-query-frontend";
+            "app.kubernetes.io/part-of" = "thanos";
+          };
           annotations = {
             "cert-manager.io/cluster-issuer" = "letsencrypt";
           }

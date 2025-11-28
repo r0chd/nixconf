@@ -18,15 +18,15 @@ in
         spec = {
           selector = {
             matchLabels = {
-              app = "kuvasz";
+              "app.kubernetes.io/name" = "kuvasz";
             };
           };
           template = {
             metadata = {
               labels = {
                 "app.kubernetes.io/name" = "kuvasz";
-                app = "kuvasz";
               };
+              annotations."reloader.stakater.com/auto" = "true";
             };
             spec = {
               containers = [
@@ -35,35 +35,45 @@ in
                   name = "kuvasz";
                   resources = {
                     requests = {
-                      memory = "154Mi";
+                      memory = "200Mi";
                       cpu = "1024m";
                     };
                     limits = {
-                      memory = "384Mi";
+                      memory = "512Mi";
                       cpu = "1024m";
                     };
                   };
                   tty = true;
                   ports = [ { containerPort = 8080; } ];
-                  livenessProbe = {
-                    httpGet = {
-                      path = "/health";
-                      port = 8080;
-                    };
-                    initialDelaySeconds = 30;
-                    periodSeconds = 30;
-                    timeoutSeconds = 5;
-                    failureThreshold = 3;
-                  };
-                  readinessProbe = {
-                    httpGet = {
-                      path = "/health";
+                  startupProbe = {
+                    tcpSocket = {
                       port = 8080;
                     };
                     initialDelaySeconds = 10;
                     periodSeconds = 10;
                     timeoutSeconds = 5;
+                    failureThreshold = 12;
+                    successThreshold = 1;
+                  };
+                  livenessProbe = {
+                    tcpSocket = {
+                      port = 8080;
+                    };
+                    initialDelaySeconds = 60;
+                    periodSeconds = 30;
+                    timeoutSeconds = 10;
                     failureThreshold = 3;
+                    successThreshold = 1;
+                  };
+                  readinessProbe = {
+                    tcpSocket = {
+                      port = 8080;
+                    };
+                    initialDelaySeconds = 45;
+                    periodSeconds = 10;
+                    timeoutSeconds = 5;
+                    failureThreshold = 3;
+                    successThreshold = 1;
                   };
                   env = [
                     {
@@ -119,7 +129,7 @@ in
                   volumeMounts = [
                     {
                       name = "config";
-                      mountPath = "/app/config";
+                      mountPath = "/config";
                       readOnly = true;
                     }
                   ];

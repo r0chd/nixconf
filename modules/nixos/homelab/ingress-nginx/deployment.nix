@@ -40,6 +40,7 @@ _:
               "app.kubernetes.io/part-of" = "ingress-nginx";
               "app.kubernetes.io/version" = "1.14.0";
             };
+            annotations."reloader.stakater.com/auto" = "true";
           };
           spec = {
             automountServiceAccountToken = true;

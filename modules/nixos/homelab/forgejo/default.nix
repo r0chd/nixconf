@@ -207,7 +207,9 @@ in
               logLevel = "INFO";
             };
             config = {
-              SSH_PORT = 30988;
+              server = {
+                SSH_PORT = 30988;
+              };
               APP_NAME = "Forgejo: Beyond coding. We forge.";
               RUN_MODE = "prod";
 

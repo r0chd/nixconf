@@ -109,7 +109,10 @@ in
 
         nextcloud = {
           host = cfg.ingressHost;
-          trustedDomains = [ cfg.ingressHost ];
+          trustedDomains = [
+            cfg.ingressHost
+            "nextcloud.nextcloud.svc.cluster.local"
+          ];
           existingSecret = {
             enabled = true;
             secretName = "nextcloud-admin-credentials";

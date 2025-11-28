@@ -38,6 +38,7 @@ in
                 name = "openebs-zfs-controller";
                 "openebs.io/logging" = "true";
               };
+              annotations."reloader.stakater.com/auto" = "true";
             };
             spec = {
               priorityClassName = "openebs-zfs-csi-controller-critical";

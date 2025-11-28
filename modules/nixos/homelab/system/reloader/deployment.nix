@@ -7,31 +7,25 @@ in
     {
       apiVersion = "apps/v1";
       kind = "Deployment";
-      metadata = {
-        name = "reloader-reloader";
-        namespace = "default";
-        labels = {
-          app = "reloader-reloader";
-          "app.kubernetes.io/managed-by" = "NixOS";
-          group = "com.stakater.platform";
-          provider = "stakater";
-          version = "v1.0.121";
-        };
-      };
-      spec = {
-        inherit (cfg) replicas;
-        revisionHistoryLimit = 2;
-        selector.matchLabels = {
-          app = "reloader-reloader";
-        };
-        template = {
-          metadata.labels = {
-            app = "reloader-reloader";
-            "app.kubernetes.io/managed-by" = "NixOS";
-            group = "com.stakater.platform";
-            provider = "stakater";
-            version = "v1.0.121";
+        metadata = {
+          name = "reloader-reloader";
+          namespace = "default";
+          labels = {
+            "app.kubernetes.io/name" = "reloader";
+            "app.kubernetes.io/version" = "v1.0.121";
           };
+        };
+        spec = {
+          inherit (cfg) replicas;
+          revisionHistoryLimit = 2;
+          selector.matchLabels = {
+            "app.kubernetes.io/name" = "reloader";
+          };
+          template = {
+            metadata.labels = {
+              "app.kubernetes.io/name" = "reloader";
+              "app.kubernetes.io/version" = "v1.0.121";
+            };
           spec = {
             serviceAccountName = "reloader-reloader";
             securityContext = {

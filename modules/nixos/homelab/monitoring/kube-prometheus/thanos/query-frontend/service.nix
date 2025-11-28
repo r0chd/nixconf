@@ -12,6 +12,7 @@
             "app.kubernetes.io/component" = "query-cache";
             "app.kubernetes.io/instance" = "thanos-query-frontend";
             "app.kubernetes.io/name" = "thanos-query-frontend";
+            "app.kubernetes.io/part-of" = "thanos";
             "app.kubernetes.io/version" = "v0.30.2";
           };
         };

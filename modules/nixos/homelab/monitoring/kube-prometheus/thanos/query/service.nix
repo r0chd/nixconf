@@ -12,6 +12,7 @@
             "app.kubernetes.io/component" = "query-layer";
             "app.kubernetes.io/instance" = "thanos-query";
             "app.kubernetes.io/name" = "thanos-query";
+            "app.kubernetes.io/part-of" = "thanos";
             "app.kubernetes.io/version" = "v0.30.2";
           };
         };

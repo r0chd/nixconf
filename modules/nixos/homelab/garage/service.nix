@@ -8,10 +8,13 @@
         metadata = {
           name = "garage";
           namespace = "default";
+          labels = {
+            "app.kubernetes.io/name" = "garage";
+          };
         };
         spec = {
           clusterIP = "None";
-          selector.app = "garage";
+          selector."app.kubernetes.io/name" = "garage";
           ports = [
             {
               name = "s3-api";

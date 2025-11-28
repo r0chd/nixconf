@@ -11,13 +11,19 @@ in
         metadata = {
           name = "garage";
           namespace = "default";
+          labels = {
+            "app.kubernetes.io/name" = "garage";
+          };
         };
         spec = {
           serviceName = "garage";
           inherit (cfg) replicas;
-          selector.matchLabels.app = "garage";
+          selector.matchLabels."app.kubernetes.io/name" = "garage";
           template = {
-            metadata.labels.app = "garage";
+            metadata = {
+              labels."app.kubernetes.io/name" = "garage";
+              annotations."reloader.stakater.com/auto" = "true";
+            };
             spec = {
               containers = [
                 {

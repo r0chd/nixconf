@@ -10,6 +10,10 @@ in
       metadata = {
         name = "kube-ops-dragonfly";
         namespace = "monitoring";
+        labels = {
+          "app.kubernetes.io/name" = "kube-ops-dragonfly";
+          "app.kubernetes.io/component" = "redis";
+        };
       };
       spec = {
         replicas = 1;

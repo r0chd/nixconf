@@ -7,6 +7,9 @@
       metadata = {
         name = "kube-janitor-config";
         namespace = "system";
+        labels = {
+          "app.kubernetes.io/name" = "kube-janitor";
+        };
       };
       data = {
         "config.yaml" = "directory: /manifests";

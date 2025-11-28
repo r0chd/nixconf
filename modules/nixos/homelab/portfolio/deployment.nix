@@ -27,6 +27,7 @@ in
               labels = {
                 "app.kubernetes.io/name" = "portfolio";
               };
+              annotations."reloader.stakater.com/auto" = "true";
             };
             spec = {
               containers = [

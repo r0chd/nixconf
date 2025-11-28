@@ -10,6 +10,9 @@ in
         kind = "Namespace";
         metadata = {
           name = "moxwiki";
+          labels = {
+            "app.kubernetes.io/name" = "moxwiki";
+          };
         };
       }
     ];

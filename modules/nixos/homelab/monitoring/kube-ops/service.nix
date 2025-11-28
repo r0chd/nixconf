@@ -10,14 +10,14 @@ in
         kind = "Service";
 
         metadata = {
-          labels.application = "kube-ops";
+          labels."app.kubernetes.io/name" = "kube-ops";
           name = "kube-ops";
           namespace = "monitoring";
         };
 
         spec = {
           selector = {
-            application = "kube-ops";
+            "app.kubernetes.io/name" = "kube-ops";
           };
           type = "ClusterIP";
           ports = [

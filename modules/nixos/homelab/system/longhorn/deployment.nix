@@ -30,6 +30,7 @@ in
                 "app.kubernetes.io/instance" = "longhorn";
                 app = "longhorn-driver-deployer";
               };
+              annotations."reloader.stakater.com/auto" = "true";
             };
             spec = {
               initContainers = [
@@ -144,6 +145,7 @@ in
                 "app.kubernetes.io/instance" = "longhorn";
                 app = "longhorn-ui";
               };
+              annotations."reloader.stakater.com/auto" = "true";
             };
             spec = {
               serviceAccountName = "longhorn-ui-service-account";

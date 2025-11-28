@@ -7,14 +7,14 @@
         kind = "Service";
 
         metadata = {
-          labels.application = "kube-web-view";
+          labels."app.kubernetes.io/name" = "kube-web";
           name = "kube-web-view";
           namespace = "monitoring";
         };
 
         spec = {
           selector = {
-            application = "kube-web-view";
+            "app.kubernetes.io/name" = "kube-web";
           };
           type = "ClusterIP";
           ports = [

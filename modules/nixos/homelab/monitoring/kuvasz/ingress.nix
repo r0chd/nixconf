@@ -11,6 +11,9 @@ in
         metadata = {
           name = "kuvasz-ingress";
           namespace = "monitoring";
+          labels = {
+            "app.kubernetes.io/name" = "kuvasz";
+          };
           annotations = {
             "cert-manager.io/cluster-issuer" = "letsencrypt";
           }

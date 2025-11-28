@@ -12,6 +12,7 @@
             "app.kubernetes.io/component" = "object-store-gateway";
             "app.kubernetes.io/instance" = "thanos-store";
             "app.kubernetes.io/name" = "thanos-store";
+            "app.kubernetes.io/part-of" = "thanos";
             "app.kubernetes.io/version" = "v0.30.2";
           };
         };

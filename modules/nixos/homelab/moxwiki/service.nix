@@ -11,6 +11,9 @@ in
         metadata = {
           name = "moxwiki";
           namespace = "moxwiki";
+          labels = {
+            "app.kubernetes.io/name" = "moxwiki";
+          };
         };
         spec = {
           type = "ClusterIP";
@@ -21,7 +24,7 @@ in
             }
           ];
           selector = {
-            app = "moxwiki";
+            "app.kubernetes.io/name" = "moxwiki";
           };
         };
       }

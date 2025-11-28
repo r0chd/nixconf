@@ -8,6 +8,9 @@
         metadata = {
           name = "portfolio";
           namespace = "portfolio";
+          labels = {
+            "app.kubernetes.io/name" = "portfolio";
+          };
         };
         spec = {
           type = "ClusterIP";
@@ -17,7 +20,7 @@
               targetPort = 3000;
             }
           ];
-          selector.app = "portfolio";
+          selector."app.kubernetes.io/name" = "portfolio";
         };
       }
     ];

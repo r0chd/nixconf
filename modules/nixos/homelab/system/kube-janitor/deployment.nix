@@ -20,6 +20,7 @@
             labels = {
               "app.kubernetes.io/name" = "kube-janitor";
             };
+            annotations."reloader.stakater.com/auto" = "true";
           };
           spec = {
             serviceAccountName = "kube-janitor";

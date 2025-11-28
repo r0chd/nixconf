@@ -12,21 +12,22 @@ in
           name = "moxwiki";
           namespace = "moxwiki";
           labels = {
-            app = "moxwiki";
+            "app.kubernetes.io/name" = "moxwiki";
           };
         };
         spec = {
           replicas = 1;
           selector = {
             matchLabels = {
-              app = "moxwiki";
+              "app.kubernetes.io/name" = "moxwiki";
             };
           };
           template = {
             metadata = {
               labels = {
-                app = "moxwiki";
+                "app.kubernetes.io/name" = "moxwiki";
               };
+              annotations."reloader.stakater.com/auto" = "true";
             };
             spec = {
               containers = [

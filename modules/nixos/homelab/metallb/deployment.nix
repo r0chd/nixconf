@@ -32,6 +32,7 @@ _:
               "app.kubernetes.io/instance" = "metallb";
               "app.kubernetes.io/component" = "controller";
             };
+            annotations."reloader.stakater.com/auto" = "true";
           };
           spec = {
             serviceAccountName = "metallb-controller";

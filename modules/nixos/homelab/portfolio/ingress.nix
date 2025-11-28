@@ -11,6 +11,9 @@ in
         metadata = {
           name = "portfolio-ingress";
           namespace = "portfolio";
+          labels = {
+            "app.kubernetes.io/name" = "portfolio";
+          };
           annotations = {
             "cert-manager.io/cluster-issuer" = "letsencrypt";
           }

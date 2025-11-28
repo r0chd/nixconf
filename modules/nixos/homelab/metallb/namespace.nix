@@ -4,7 +4,12 @@ _:
     {
       apiVersion = "v1";
       kind = "Namespace";
-      metadata.name = "metallb-system";
+      metadata = {
+        name = "metallb-system";
+        labels = {
+          "app.kubernetes.io/name" = "metallb";
+        };
+      };
     }
   ];
 }

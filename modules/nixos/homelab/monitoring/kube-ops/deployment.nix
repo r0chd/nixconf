@@ -11,12 +11,18 @@ in
         metadata = {
           name = "kube-ops";
           namespace = "monitoring";
+          labels = {
+            "app.kubernetes.io/name" = "kube-ops";
+          };
         };
         spec = {
           inherit (cfg) replicas;
-          selector.matchLabels.application = "kube-ops";
+          selector.matchLabels."app.kubernetes.io/name" = "kube-ops";
           template = {
-            metadata.labels.application = "kube-ops";
+            metadata = {
+              labels."app.kubernetes.io/name" = "kube-ops";
+              annotations."reloader.stakater.com/auto" = "true";
+            };
             spec = {
               serviceAccountName = "kube-ops";
               containers = [

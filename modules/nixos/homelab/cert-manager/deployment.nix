@@ -36,6 +36,7 @@ in
               "app.kubernetes.io/component" = "cainjector";
               "app.kubernetes.io/version" = "v1.15.3";
             };
+            annotations."reloader.stakater.com/auto" = "true";
           };
           spec = {
             serviceAccountName = "cert-manager-cainjector";
@@ -118,6 +119,7 @@ in
               "prometheus.io/path" = "/metrics";
               "prometheus.io/scrape" = "true";
               "prometheus.io/port" = "9402";
+              "reloader.stakater.com/auto" = "true";
             };
           };
           spec = {
@@ -224,6 +226,7 @@ in
               "app.kubernetes.io/component" = "webhook";
               "app.kubernetes.io/version" = "v1.15.3";
             };
+            annotations."reloader.stakater.com/auto" = "true";
           };
           spec = {
             serviceAccountName = "cert-manager-webhook";

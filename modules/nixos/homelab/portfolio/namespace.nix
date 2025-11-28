@@ -5,7 +5,12 @@
       {
         apiVersion = "v1";
         kind = "Namespace";
-        metadata.name = "portfolio";
+        metadata = {
+          name = "portfolio";
+          labels = {
+            "app.kubernetes.io/name" = "portfolio";
+          };
+        };
       }
     ];
   };

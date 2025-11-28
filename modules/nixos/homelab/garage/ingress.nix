@@ -11,6 +11,9 @@ in
         metadata = {
           name = "garage-ingress";
           namespace = "default";
+          labels = {
+            "app.kubernetes.io/name" = "garage";
+          };
           annotations = {
             "cert-manager.io/cluster-issuer" = "letsencrypt";
             "nginx.ingress.kubernetes.io/proxy-body-size" = "0";

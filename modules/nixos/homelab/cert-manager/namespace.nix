@@ -5,6 +5,9 @@ _: {
       kind = "Namespace";
       metadata = {
         name = "cert-manager";
+        labels = {
+          "app.kubernetes.io/name" = "cert-manager";
+        };
       };
     }
   ];

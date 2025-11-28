@@ -8,7 +8,12 @@ in
       {
         apiVersion = "v1";
         kind = "Namespace";
-        metadata.name = "attic";
+        metadata = {
+        name = "attic";
+        labels = {
+          "app.kubernetes.io/name" = "attic";
+        };
+      };
       }
     ];
   };

@@ -11,6 +11,9 @@ in
         metadata = {
           name = "kube-web-ingress";
           namespace = "monitoring";
+          labels = {
+            "app.kubernetes.io/name" = "kube-web";
+          };
           annotations = {
             "cert-manager.io/cluster-issuer" = "letsencrypt";
           }

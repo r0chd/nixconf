@@ -8,9 +8,13 @@
         metadata = {
           name = "garage-admin";
           namespace = "default";
+          labels = {
+            "app.kubernetes.io/name" = "garage";
+            "app.kubernetes.io/component" = "admin";
+          };
         };
         spec = {
-          selector.app = "garage";
+          selector."app.kubernetes.io/name" = "garage";
           ports = [
             {
               name = "admin";
