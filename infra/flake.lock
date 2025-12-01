@@ -717,8 +717,8 @@
         "whydotool": "whydotool"
       },
       "locked": {
-        "lastModified": 1764320877,
-        "narHash": "sha256-HBEWuu+AfV0ZyE0eNMmD0OhXjqGpLID0k90hMrKC8pI=",
+        "lastModified": 1764577608,
+        "narHash": "sha256-PGRIqPz1XhuIqIcTAXrtCrzO+P0YF7VeQ2FaZVWJqw0=",
         "path": "/var/lib/nixconf",
         "type": "path"
       },

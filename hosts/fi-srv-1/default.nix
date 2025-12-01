@@ -319,7 +319,7 @@
         enable = true;
         resources = {
           limits = {
-            cpu = "200m";
+            #cpu = "200m";
             memory = "100Mi";
           };
           requests = {
