@@ -374,7 +374,7 @@ in
 {
   imports = [ ./secrets.nix ];
 
-  disabledModules = [ "services/cluster/k3s/default.nix" ];
+  disabledModules = [ "services/cluster/rancher/default.nix" ];
 
   # interface
   options.services.k3s = {

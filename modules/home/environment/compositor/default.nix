@@ -2,6 +2,7 @@
   pkgs,
   lib,
   profile,
+  inputs,
   ...
 }:
 {
@@ -14,7 +15,7 @@
 
   config = lib.mkIf (profile == "desktop") {
     home = {
-      packages = builtins.attrValues { inherit (pkgs) wl-clipboard; };
+      packages = [ inputs.wl-clipboard-zig.packages.${pkgs.stdenv.hostPlatform.system}.default ];
       sessionVariables = {
         NIXOS_OZONE_WL = "1";
         WLR_NO_HARDWARE_CURSORS = "1";

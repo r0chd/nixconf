@@ -2,19 +2,20 @@
   config,
   lib,
   pkgs,
+  profile,
   ...
 }:
 let
   cfg = config.programs.hyprland;
 in
 {
-  config = lib.mkIf cfg.enable {
-    # Make plugins available system-wide without loading them
-    environment.systemPackages = [ pkgs.hyprscroller ];
+  programs.hyprland.enable = lib.mkDefault (profile == "desktop");
 
-    # Expose plugin path via environment variable for easy loading
-    environment.sessionVariables = {
-      HYPRLAND_PLUGINS = "${pkgs.hyprscroller}/lib/libhyprscroller.so";
-    };
+  # Make plugins available system-wide without loading them
+  environment.systemPackages = lib.mkIf cfg.enable [ pkgs.hyprscroller ];
+
+  # Expose plugin path via environment variable for easy loading
+  environment.sessionVariables = lib.mkIf cfg.enable {
+    HYPRLAND_PLUGINS = "${pkgs.hyprscroller}/lib/libhyprscroller.so";
   };
 }

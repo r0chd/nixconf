@@ -6,13 +6,18 @@
   lib,
   config,
   pkgs,
+  profile,
   ...
 }:
 let
   cfg = config.programs.gnome;
+  inherit (lib) types;
 in
 {
-  options.programs.gnome.enable = lib.mkEnableOption "gnome";
+  options.programs.gnome.enable = lib.mkOption {
+    default = profile == "desktop";
+    type = types.bool;
+  };
 
   config = lib.mkIf cfg.enable {
     programs.gnome-shell = {

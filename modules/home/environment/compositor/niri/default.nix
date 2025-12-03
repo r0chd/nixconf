@@ -1,6 +1,8 @@
 {
   pkgs,
   inputs,
+  lib,
+  profile,
   ...
 }:
 {
@@ -10,7 +12,7 @@
   ];
 
   programs.niri = {
-    package = pkgs.niri-unstable;
+    enable = lib.mkDefault profile == "desktop";
     settings = {
       input = {
         keyboard = {

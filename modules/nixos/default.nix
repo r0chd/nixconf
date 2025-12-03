@@ -13,7 +13,6 @@
     ./system
     ./hardware
     ./networking
-    ./specialisation.nix
     ./security
     ./environment
     ./services

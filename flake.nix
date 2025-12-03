@@ -163,7 +163,7 @@
 
   inputs = {
     # Necessary
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     stylix = {
       url = "github:danth/stylix";
@@ -194,6 +194,7 @@
 
     mox-flake.url = "git+https://forgejo.r0chd.pl/mox-desktop/mox-flake.git";
     whydotool.url = "git+https://forgejo.r0chd.pl/r0chd/whydotool.git";
+    wl-clipboard-zig.url = "git+https://forgejo.r0chd.pl/r0chd/wl-clipboard-zig.git";
 
     # To be ditched
 

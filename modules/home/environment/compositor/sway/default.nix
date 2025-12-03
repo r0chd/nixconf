@@ -2,13 +2,18 @@
   lib,
   pkgs,
   config,
+  profile,
   ...
 }:
 let
   cfg = config.programs.sway;
+  inherit (lib) types;
 in
 {
-  options.programs.sway.enable = lib.mkEnableOption "sway";
+  options.programs.sway.enable = lib.mkOption {
+    default = profile == "desktop";
+    type = types.bool;
+  };
 
   config.wayland.windowManager.sway = {
     inherit (cfg) enable;

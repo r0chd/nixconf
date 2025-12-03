@@ -15,7 +15,6 @@
     ./security
     ./networking
     ./services
-    ./specialisation.nix
     ../theme
     inputs.mox-flake.homeManagerModules.moxidle
     inputs.mox-flake.homeManagerModules.moxnotify
