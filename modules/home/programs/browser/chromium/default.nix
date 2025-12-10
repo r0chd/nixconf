@@ -16,6 +16,7 @@ in
         { id = "nkbihfbeogaeaoehlefnkodbefgpgknn"; } # Metamask
         { id = "kaibcgikagnkfgjnibflebpldakfhfih"; } # CS2 trader
         { id = "jjicbefpemnphinccgikpdaagjebbnhg"; } # CSFloat Market Checker
+        { id = "nngceckbapebfimnlniiiahkandclblb"; } # Bitwarden
       ];
       commandLineArgs = [
         "--disable-sync"
