@@ -61,7 +61,6 @@
     obsidian = {
       enable = true;
     };
-    waybar.enable = lib.mkForce false;
 
     thunderbird = {
       enable = true;
@@ -86,7 +85,6 @@
     starship.enable = true;
     zoxide.enable = true;
     direnv.enable = true;
-    keepassxc.enable = true;
 
     ssh.matchBlocks = {
       "gerrit.qed.ai" = {

@@ -20,47 +20,21 @@ in
       type = types.package;
       default = if platform == "non-nixos" then (config.lib.nixGL.wrap pkgs.hyprland) else pkgs.hyprland;
     };
+    layout = lib.mkOption {
+      type = types.enum [
+        "scrolling"
+        "tiling"
+      ];
+      default = "scrolling";
+    };
   };
 
   config = lib.mkIf cfg.enable {
-    systemd.user.services.hyprland-plugin-loader = {
-      Unit = {
-        Description = "Load Hyprland plugins";
-        After = [ "graphical-session.target" ];
-        PartOf = [ "graphical-session.target" ];
-        ConditionEnvironment = "HYPRLAND_INSTANCE_SIGNATURE";
-      };
-      Service = {
-        Type = "oneshot";
-        ExecStart =
-          let
-            hyprctl = lib.getExe' pkgs.hyprland "hyprctl";
-            pluginPath = "${pkgs.hyprscroller}/lib/libhyprscroller.so";
-            loader = pkgs.writeShellScript "hyprland-plugin-loader" ''
-              for i in {1..10}; do
-                if ${hyprctl} version &>/dev/null; then
-                  ${hyprctl} plugin load ${pluginPath} && exit 0
-                  exit 1
-                fi
-                sleep 0.5
-              done
-              echo "Hyprland not ready after 5 seconds, giving up"
-              exit 1
-            '';
-          in
-          "${loader}";
-        RemainAfterExit = true;
-        Restart = "on-failure";
-        RestartSec = "2s";
-      };
-      Install = {
-        WantedBy = [ "graphical-session.target" ];
-      };
-    };
-
     wayland.windowManager.hyprland = {
       inherit (cfg) enable;
       inherit (cfg) package;
+
+      plugins = builtins.attrValues { inherit (pkgs.hyprlandPlugins) hyprscrolling; };
 
       settings = {
         layerrule = [ "noanim, moxnotify" ];
@@ -84,14 +58,14 @@ in
 
         general = {
           border_size = 1;
-          layout = "scroller";
+          layout = "scrolling";
         };
 
-        plugin.scroller = {
-          column_default_width = "one";
-          center_row_if_space_available = true;
-          column_widths = "onethird onehalf twothirds one";
-          window_heights = "onethird onehalf twothirds one";
+        plugin = {
+          hyprscrolling = {
+            column_width = 0.7;
+            fullscreen_on_one_column = false;
+          };
         };
 
         decoration = {
@@ -133,25 +107,7 @@ in
           ", XF86MonBrightnessDown, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 5%-"
 
           "$mainMod SHIFT, C, killactive,"
-          "$mainMod, F, togglefloating,"
-
-          "$mainMod, H, scroller:movefocus, l"
-          "$mainMod, L, scroller:movefocus, r"
-          "$mainMod, J, scroller:movefocus, d"
-          "$mainMod, K, scroller:movefocus, u"
-
-          "$mainMod SHIFT, H, scroller:movewindow, l"
-          "$mainMod SHIFT, L, scroller:movewindow, r"
-
-          "$mainMod SHIFT, K, scroller:movewindow, mon:u"
-          "$mainMod SHIFT, J, scroller:movewindow, mon:d"
-          "$mainMod SHIFT, N, scroller:movewindow, mon:l"
-          "$mainMod SHIFT, M, scroller:movewindow, mon:r"
-
-          "$mainMod SHIFT, N, scroller:movefocus, mon:l"
-          "$mainMod SHIFT, M, scroller:movefocus, mon:r"
-
-          "$mainMod, R, scroller:cyclewidth, next"
+          "$mainMod, O, togglefloating,"
 
           "$mainMod, 1, workspace, 1"
           "$mainMod, 2, workspace, 2"
@@ -181,7 +137,29 @@ in
           ", XF86AudioLowerVolume, exec, ${pkgs.pamixer}/bin/pamixer -d 5"
 
           "$mainMod, q, exec, ${pkgs.uwsm}/bin/uwsm stop"
-        ];
+        ]
+        ++ lib.optionals (cfg.layout == "scrolling") [
+          "$mainMod, F, layoutmsg, fit active"
+
+          "$mainMod, H, layoutmsg, focus l"
+          "$mainMod, L, layoutmsg, focus r"
+          "$mainMod, J, layoutmsg, focus d"
+          "$mainMod, K, layoutmsg, focus u"
+
+          "$mainMod SHIFT, H, layoutmsg, focus l"
+          "$mainMod SHIFT, L, layoutmsg, focus r"
+
+          "$mainMod SHIFT, N, movecurrentworkspacetomonitor, u"
+          "$mainMod SHIFT, M, movecurrentworkspacetomonitor, d"
+          "$mainMod SHIFT, N, movecurrentworkspacetomonitor, l"
+          "$mainMod SHIFT, M, movecurrentworkspacetomonitor, r"
+
+          "$mainMod SHIFT, N, layoutmsg, focusmonitor l"
+          "$mainMod SHIFT, M, layoutmsg, focusmonitor r"
+
+          "$mainMod, R, layoutmsg, colresize +conf"
+        ]
+        ++ lib.optionals (cfg.layout == "tiling") [ ];
 
         bindm = [
           # Move/resize windows with mainMod + LMB/RMB and dragging

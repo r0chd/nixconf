@@ -9,8 +9,8 @@ stdenv.mkDerivation (finalAttrs: {
   src = fetchFromGitHub {
     owner = "cpiber";
     repo = "hyprscroller";
-    rev = "d3e447a22cfaae77ab1cf3931d23cfdb7c010a9c";
-    hash = "sha256-XqUm5nnTmZUF17eqEACzQCAWXF7ezLKHqIwJR/td34Y=";
+    rev = "99e0ac50d089f5f26f0b71fc2defb6862e2796be";
+    hash = "sha256-lEUj6BMW3F42FzxymSJKvGqHXlhRRQ6Hqv7iU5c+iZ4=";
   };
 
   inherit (hyprland) buildInputs;

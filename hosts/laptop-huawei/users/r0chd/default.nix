@@ -46,7 +46,6 @@
       };
     };
     gcloud.enable = true;
-    keepassxc.enable = true;
     atuin.enable = true;
     vcs = {
       signingKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";

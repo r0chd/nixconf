@@ -62,10 +62,6 @@
     zoxide.enable = true;
     direnv.enable = true;
     bottom.enable = true;
-    keepassxc = {
-      enable = true;
-      browser-integration.firefox.enable = true;
-    };
     multiplexer = {
       enable = true;
       variant = "tmux";

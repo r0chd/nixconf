@@ -37,8 +37,9 @@ in
 
         git = {
           colocate = false;
-          push-new-bookmarks = true;
         };
+
+        #remotes.origin.auto-track-bookmarks = true;
 
         ui.movement.edit = true;
       };
