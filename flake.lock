@@ -1194,11 +1194,11 @@
         "zls": "zls"
       },
       "locked": {
-        "lastModified": 1765352537,
-        "narHash": "sha256-egWOVwSv7EzxGh6s2puWcqJISXol6DFJXBpLkqvsSNE=",
+        "lastModified": 1765415893,
+        "narHash": "sha256-PePegFpPkMvF3S/+ucERTeWmc7vWyAeaYUKDwKnq8gM=",
         "ref": "refs/heads/master",
-        "rev": "b93635c245019ec561cb0bbeab04b2ddf5abc7a7",
-        "revCount": 31,
+        "rev": "f22bacc4d63df7faed7c5e07042ab666e8e69590",
+        "revCount": 34,
         "type": "git",
         "url": "https://forgejo.r0chd.pl/r0chd/wl-clipboard-zig.git"
       },

@@ -1,0 +1,9 @@
+keys:
+  - &root age1e0mcqrfny3lkmnv6qgxel3p035frwm0kdf8cexgtktpkzmvaugrqw2u4ug
+creation_rules:
+  - path_regex: secrets/secrets.yaml$
+    key_groups:
+      - age:
+        - *root
+        hc_vault:
+          - "https://vault.r0chd.pl/v1/transit/keys/fi-sops"

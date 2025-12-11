@@ -59,6 +59,7 @@
                       hashicorp_aws
                       hashicorp_vault
                       carlpett_sops
+                      cloudflare_cloudflare
                       ;
                   }
                   ++ [ prologin_garage ]

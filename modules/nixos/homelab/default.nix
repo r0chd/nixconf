@@ -17,6 +17,7 @@ in
     ./auth
     ./portfolio
     ./nextcloud
+    ./kyverno
   ];
 
   options.homelab = {

@@ -23,6 +23,9 @@
 
     "minio/fi-test-quickwit-backup/access-key" = { };
     "minio/fi-test-quickwit-backup/secret-key" = { };
+
+    "minio/homelab-fi-root/access-key" = { };
+    "minio/homelab-fi-root/secret-key" = { };
   };
 
   programs = {
@@ -33,6 +36,13 @@
       settings = {
         version = "10";
         aliases = {
+          tfstate-root = {
+            url = "https://s3.minio.r0chd.pl";
+            accessKey = config.sops.placeholder."minio/homelab-fi-root/access-key";
+            secretKey = config.sops.placeholder."minio/homelab-fi-root/secret-key";
+            api = "s3v4";
+            path = "auto";
+          };
           de-test-quickwit = {
             url = "https://storage.test.qed.ai";
             accessKey = config.sops.placeholder."minio/de-test-quickwit/access-key";

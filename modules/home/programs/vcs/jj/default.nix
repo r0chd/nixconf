@@ -39,6 +39,9 @@ in
           colocate = false;
         };
 
+        # yep
+        snapshot.max-new-file-size = "4802660";
+
         #remotes.origin.auto-track-bookmarks = true;
 
         ui.movement.edit = true;
