@@ -46,7 +46,7 @@ in
           kb_options = "";
           kb_rules = "";
 
-          follow_mouse = "1";
+          follow_mouse = 2;
 
           touchpad = {
             disable_while_typing = false;
@@ -71,7 +71,9 @@ in
         decoration = {
           rounding = 16;
 
-          blur.enabled = false;
+          blur = {
+            enabled = true;
+          };
         };
 
         debug.disable_logs = false;
@@ -91,7 +93,7 @@ in
             "windowsMove, 1, 4, default"
             "border, 1, 10, default"
             "fadeDim, 1, 10, smoothIn"
-            "workspaces, 1, 6, default"
+            "workspaces, 1, 6, default, slidevert"
           ];
         };
 
@@ -146,16 +148,16 @@ in
           "$mainMod, J, layoutmsg, focus d"
           "$mainMod, K, layoutmsg, focus u"
 
-          "$mainMod SHIFT, H, layoutmsg, focus l"
-          "$mainMod SHIFT, L, layoutmsg, focus r"
-
-          "$mainMod SHIFT, N, movecurrentworkspacetomonitor, u"
-          "$mainMod SHIFT, M, movecurrentworkspacetomonitor, d"
+          "$mainMod SHIFT, K, movecurrentworkspacetomonitor, u"
+          "$mainMod SHIFT, J, movecurrentworkspacetomonitor, d"
           "$mainMod SHIFT, N, movecurrentworkspacetomonitor, l"
           "$mainMod SHIFT, M, movecurrentworkspacetomonitor, r"
 
           "$mainMod SHIFT, N, layoutmsg, focusmonitor l"
           "$mainMod SHIFT, M, layoutmsg, focusmonitor r"
+
+          "$mainMod SHIFT, L, layoutmsg, movewindowto r"
+          "$mainMod SHIFT, H, layoutmsg, movewindowto l"
 
           "$mainMod, R, layoutmsg, colresize +conf"
         ]

@@ -33,16 +33,7 @@ in
                 {
                   image = "kuvaszmonitoring/kuvasz:latest";
                   name = "kuvasz";
-                  resources = {
-                    requests = {
-                      memory = "200Mi";
-                      cpu = "1024m";
-                    };
-                    limits = {
-                      memory = "512Mi";
-                      cpu = "1024m";
-                    };
-                  };
+                  resources = cfg.resources;
                   tty = true;
                   ports = [ { containerPort = 8080; } ];
                   startupProbe = {

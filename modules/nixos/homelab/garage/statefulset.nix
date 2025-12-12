@@ -67,7 +67,7 @@ in
                       readOnly = true;
                     }
                   ];
-                  inherit (cfg) resources;
+                  resources = cfg.resources;
                 }
               ];
               volumes = [

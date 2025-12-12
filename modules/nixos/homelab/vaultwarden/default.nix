@@ -36,6 +36,11 @@ in
           null;
       description = "Hostname for vaultwarden ingress (defaults to vaultwarden.i.<domain> if gated, vaultwarden.<domain> otherwise)";
     };
+
+    resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      description = "Kubernetes resource requests/limits for vaultwarden container.";
+    };
   };
 
   config.services.k3s = lib.mkIf cfg.enable {
@@ -100,6 +105,8 @@ in
             }
           else
             { };
+
+        resources = cfg.resources;
       };
     };
 

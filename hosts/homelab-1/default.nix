@@ -67,8 +67,9 @@
     ingress.resources = {
       requests = {
         cpu = "100m";
-        memory = "90Mi";
+        memory = "200Mi";
       };
+      limits.memory = "200Mi";
     };
 
     system = {
@@ -156,7 +157,6 @@
         enable = true;
         resources = {
           limits = {
-            cpu = "200m";
             memory = "100Mi";
           };
           requests = {

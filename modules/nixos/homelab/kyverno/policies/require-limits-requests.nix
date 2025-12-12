@@ -37,41 +37,17 @@
                 spec = {
                   containers = [
                     {
-                      resources = {
-                        requests = {
-                          memory = "?*";
-                          cpu = "?*";
-                        };
-                        limits = {
-                          memory = "?*";
-                        };
-                      };
+                      resources.limits.memory = "?*";
                     }
                   ];
                   "=(initContainers)" = [
                     {
-                      resources = {
-                        requests = {
-                          memory = "?*";
-                          cpu = "?*";
-                        };
-                        limits = {
-                          memory = "?*";
-                        };
-                      };
+                      resources.limits.memory = "?*";
                     }
                   ];
                   "=(ephemeralContainers)" = [
                     {
-                      resources = {
-                        requests = {
-                          memory = "?*";
-                          cpu = "?*";
-                        };
-                        limits = {
-                          memory = "?*";
-                        };
-                      };
+                      resources.limits.memory = "?*";
                     }
                   ];
                 };

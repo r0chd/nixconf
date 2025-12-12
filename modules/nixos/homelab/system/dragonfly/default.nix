@@ -6016,7 +6016,6 @@ in
                 ];
                 resources = {
                   limits = {
-                    cpu = "500m";
                     memory = "128Mi";
                   };
                   requests = {
@@ -6058,7 +6057,6 @@ in
                 };
                 resources = {
                   limits = {
-                    cpu = "500m";
                     memory = "128Mi";
                   };
                   requests = {

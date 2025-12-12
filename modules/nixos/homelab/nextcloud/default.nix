@@ -220,19 +220,21 @@ in
         name = "nextcloud-dragonfly";
         namespace = "nextcloud";
       };
-      spec = {
-        replicas = 1;
-        resources = {
-          requests = {
-            cpu = "500m";
-            memory = "500Mi";
-          };
-          limits = {
-            cpu = "600m";
-            memory = "750Mi";
+        spec = {
+          replicas = 1;
+          args = [
+            "--proactor_threads=1"
+          ];
+          resources = {
+            requests = {
+              cpu = "500m";
+              memory = "256Mi";
+            };
+            limits = {
+              memory = "384Mi";
+            };
           };
         };
-      };
     };
 
     secrets = [

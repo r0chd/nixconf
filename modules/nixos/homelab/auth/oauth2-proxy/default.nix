@@ -15,6 +15,11 @@ in
       default = if config.homelab.domain != null then "oauth2-proxy.${config.homelab.domain}" else null;
       description = "Hostname for oauth2-proxy ingress (defaults to oauth2-proxy.<domain> if domain is set)";
     };
+
+    resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      description = "Kubernetes resource requests/limits for the oauth2-proxy container.";
+    };
   };
 
   config.services.k3s = lib.mkIf config.homelab.auth.enable {
@@ -138,7 +143,7 @@ in
             }
           else
             { };
-        resources = { };
+        resources = cfg.resources;
         resizePolicy = [ ];
         extraVolumes = [ ];
         extraVolumeMounts = [ ];
@@ -279,14 +284,16 @@ in
       };
       spec = {
         replicas = 1;
+        args = [
+          "--proactor_threads=1"
+        ];
         resources = {
           requests = {
             cpu = "500m";
-            memory = "500Mi";
+            memory = "256Mi";
           };
           limits = {
-            cpu = "600m";
-            memory = "750Mi";
+            memory = "384Mi";
           };
         };
       };

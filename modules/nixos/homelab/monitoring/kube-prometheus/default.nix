@@ -30,6 +30,10 @@ in
             null;
         description = "Hostname for prometheus ingress (defaults to prometheus.i.<domain> if gated, prometheus.<domain> otherwise)";
       };
+      resources = lib.mkOption {
+        type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+        description = "Kubernetes resource requests/limits for prometheus container.";
+      };
     };
     grafana = {
       enable = lib.mkEnableOption "grafana";
@@ -49,6 +53,10 @@ in
           else
             null;
         description = "Hostname for grafana ingress (defaults to grafana.i.<domain> if gated, grafana.<domain> otherwise)";
+      };
+      resources = lib.mkOption {
+        type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+        description = "Kubernetes resource requests/limits for grafana container.";
       };
       passwordAuth = {
         enable = lib.mkEnableOption "password auth";
@@ -81,6 +89,36 @@ in
           else
             null;
         description = "Hostname for alertmanager ingress (defaults to alertmanager.i.<domain> if gated, alertmanager.<domain> otherwise)";
+      };
+      resources = lib.mkOption {
+        type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+        description = "Kubernetes resource requests/limits for alertmanager container.";
+      };
+    };
+    nodeExporter = {
+      resources = lib.mkOption {
+        type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+        description = "Kubernetes resource requests/limits for prometheus-node-exporter container.";
+      };
+    };
+    kubeStateMetrics = {
+      resources = lib.mkOption {
+        type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+        description = "Kubernetes resource requests/limits for kube-state-metrics container.";
+      };
+    };
+    prometheusOperator = {
+      resources = lib.mkOption {
+        type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+        description = "Kubernetes resource requests/limits for prometheus-operator deployment.";
+      };
+      admissionWebhooks = {
+        patch = {
+          resources = lib.mkOption {
+            type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+            description = "Kubernetes resource requests/limits for prometheus-operator admission webhook jobs (patch and createSecret).";
+          };
+        };
       };
     };
     thanos = {
@@ -124,6 +162,10 @@ in
           default = 1;
           description = "Number of thanos-query replicas";
         };
+        resources = lib.mkOption {
+          type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+          description = "Resource requests/limits for thanos-query container.";
+        };
       };
 
       queryFrontend = {
@@ -131,6 +173,10 @@ in
           type = types.int;
           default = 1;
           description = "Number of thanos-query-frontend replicas";
+        };
+        resources = lib.mkOption {
+          type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+          description = "Resource requests/limits for thanos-query-frontend container.";
         };
       };
 
@@ -144,6 +190,17 @@ in
           type = types.str;
           default = "10Gi";
           description = "Storage size for thanos-store data volume";
+        };
+        resources = lib.mkOption {
+          type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+          description = "Resource requests/limits for thanos-store container.";
+        };
+      };
+
+      compact = {
+        resources = lib.mkOption {
+          type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+          description = "Resource requests/limits for thanos-compact container.";
         };
       };
     };
@@ -168,6 +225,7 @@ in
                 alertmanagerConfiguration = {
                   name = "alertmanager-config";
                 };
+                resources = cfg.alertmanager.resources;
               };
 
               config = {
@@ -277,6 +335,9 @@ in
               { };
           initChownData.enabled = false;
           service.port = 3000;
+          deployment = {
+            resources = cfg.grafana.resources;
+          };
           ingress =
             if cfg.grafana.ingressHost != null then
               {
@@ -305,7 +366,21 @@ in
             else
               { };
         };
-        prometheus-node-exporter.prometheusSpec.scrapeInterval = "10s";
+        prometheus-node-exporter = {
+          prometheusSpec.scrapeInterval = "10s";
+          resources = cfg.nodeExporter.resources;
+        };
+        kube-state-metrics = {
+          resources = cfg.kubeStateMetrics.resources;
+        };
+        prometheusOperator = {
+          resources = cfg.prometheusOperator.resources;
+          admissionWebhooks = {
+            patch = {
+              resources = cfg.prometheusOperator.admissionWebhooks.patch.resources;
+            };
+          };
+        };
         prometheus = {
           thanosService = {
             enabled = cfg.thanos.enable;
@@ -348,6 +423,7 @@ in
             podMonitorSelectorNilUsesHelmValues = false;
             serviceMonitorNamespaceSelector.matchLabels = { };
             serviceMonitorSelectorNilUsesHelmValues = false;
+            resources = cfg.prometheus.resources;
 
             thanos =
               if cfg.thanos.enable then

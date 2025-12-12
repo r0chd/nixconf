@@ -1,6 +1,9 @@
 { lib, config, ... }:
+let
+  cfg = config.homelab.monitoring.vector;
+in
 {
-  config = lib.mkIf (config.homelab.enable && config.homelab.monitoring.vector.enable) {
+  config = lib.mkIf (config.homelab.enable && cfg.enable) {
     services.k3s.manifests."vector-daemonset".content = [
       {
         apiVersion = "apps/v1";
@@ -91,6 +94,7 @@
                       protocol = "TCP";
                     }
                   ];
+                  inherit (cfg) resources;
                   volumeMounts = [
                     {
                       name = "data";

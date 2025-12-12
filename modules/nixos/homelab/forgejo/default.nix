@@ -53,6 +53,16 @@ in
         type = types.str;
       };
     };
+
+    resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      description = "Kubernetes resource requests/limits for the main forgejo container.";
+    };
+
+    initContainerResources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      description = "Resource requests/limits for forgejo init containers.";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -66,6 +76,8 @@ in
         createNamespace = true;
 
         values = {
+          resources = cfg.resources;
+
           replicaCount = 1;
 
           service = {
@@ -132,13 +144,7 @@ in
           };
 
           initContainers = {
-            resources = {
-              limits = { };
-              requests = {
-                cpu = "100m";
-                memory = "128Mi";
-              };
-            };
+            resources = cfg.initContainerResources;
           };
 
           signing = {
@@ -255,14 +261,16 @@ in
         };
         spec = {
           replicas = 1;
+          args = [
+            "--proactor_threads=1"
+          ];
           resources = {
             requests = {
               cpu = "500m";
-              memory = "500Mi";
+              memory = "256Mi";
             };
             limits = {
-              cpu = "600m";
-              memory = "750Mi";
+              memory = "384Mi";
             };
           };
         };

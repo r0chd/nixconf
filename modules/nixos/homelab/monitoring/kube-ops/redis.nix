@@ -17,14 +17,16 @@ in
       };
       spec = {
         replicas = 1;
+        args = [
+          "--proactor_threads=1"
+        ];
         resources = {
           requests = {
             cpu = "500m";
-            memory = "500Mi";
+            memory = "256Mi";
           };
           limits = {
-            cpu = "600m";
-            memory = "750Mi";
+            memory = "384Mi";
           };
         };
       };

@@ -191,8 +191,9 @@
     ingress.resources = {
       requests = {
         cpu = "100m";
-        memory = "90Mi";
+        memory = "200Mi";
       };
+      limits.memory = "400Mi";
     };
 
     #storageClassName = "openebs-zfs-localpv";
@@ -213,7 +214,15 @@
       #};
     };
 
-    portfolio.enable = true;
+    portfolio = {
+      enable = true;
+      resources = {
+        requests = {
+          memory = "2Mi";
+        };
+        limits.memory = "20Mi";
+      };
+    };
     nextcloud = {
       enable = true;
       s3 = {
@@ -232,6 +241,12 @@
       rpcSecret = config.sops.placeholder."garage/rpc-secret";
       adminToken = config.sops.placeholder."garage/admin-token";
       metricsToken = config.sops.placeholder."garage/metrics-token";
+      resources = {
+        #requests = {
+        #  memory = "10Mi";
+        #};
+        limits.memory = "1Gi";
+      };
     };
 
     vaultwarden = {
@@ -240,6 +255,12 @@
         enable = true;
         accessKeyId = config.sops.placeholder."vaultwarden_backup/access_key_id";
         secretAccessKey = config.sops.placeholder."vaultwarden_backup/secret_access_key";
+      };
+      resources = {
+        requests = {
+          memory = "50Mi";
+        };
+        limits.memory = "100Mi";
       };
     };
 
@@ -254,18 +275,66 @@
         access_key_id = config.sops.placeholder."forgejo/access_key_id";
         secret_access_key = config.sops.placeholder."forgejo/secret_access_key";
       };
+      resources = {
+        requests = {
+          memory = "2.5Gi";
+        };
+        limits.memory = "3Gi";
+      };
+      initContainerResources = {
+        requests = {
+          cpu = "100m";
+          memory = "128Mi";
+        };
+        limits = {
+          cpu = "200m";
+          memory = "256Mi";
+        };
+      };
     };
-    moxwiki.enable = true;
+    jellyfin = {
+      enable = true;
+      resources = {
+        requests = {
+          memory = "200Mi";
+          cpu = "10m";
+        };
+        limits = {
+          memory = "1Gi";
+        };
+      };
+    };
+    moxwiki = {
+      enable = true;
+      resources = {
+        requests = {
+          memory = "15Mi";
+        };
+        limits.memory = "30Mi";
+      };
+    };
 
     glance = {
       enable = true;
       ingressHost = "r0chd.pl";
+      resources = {
+        requests = {
+          memory = "15Mi";
+        };
+        limits.memory = "30Mi";
+      };
     };
     auth = {
       enable = true;
       vault = {
         enable = true;
         clientSecret = config.sops.placeholder."vault_client_secret";
+        resources = {
+          requests = {
+            memory = "50Mi";
+          };
+          limits.memory = "100Mi";
+        };
       };
 
       github = {
@@ -280,17 +349,37 @@
       };
       clientSecret = config.sops.placeholder."oauth2-proxy/client-secret";
       oauth2ProxyCookie = config.sops.placeholder."oauth2-proxy/cookie-secret";
+      oauth2-proxy = {
+        resources = {
+          requests = {
+            memory = "12Mi";
+          };
+          limits.memory = "40Mi";
+        };
+      };
     };
 
     monitoring = {
       prometheus = {
         enable = true;
         gated = true;
+        resources = {
+          requests = {
+            memory = "1Gi";
+          };
+          limits.memory = "2Gi";
+        };
       };
       alertmanager = {
         enable = true;
         gated = true;
         discordWebhookUrl = config.sops.placeholder.alertmanager_webhook_url;
+        resources = {
+          requests = {
+            memory = "128Mi";
+          };
+          limits.memory = "256Mi";
+        };
       };
       thanos = {
         enable = true;
@@ -298,11 +387,94 @@
         bucket = "thanos";
         access_key = config.sops.placeholder."thanos/access_key";
         secret_key = config.sops.placeholder."thanos/secret_key";
+        query.resources = {
+          limits = {
+            memory = "420Mi";
+          };
+          requests = {
+            cpu = "0.123";
+            memory = "123Mi";
+          };
+        };
+        queryFrontend.resources = {
+          limits = {
+            memory = "420Mi";
+          };
+          requests = {
+            cpu = "0.123";
+            memory = "123Mi";
+          };
+        };
+        store.resources = {
+          limits = {
+            memory = "420Mi";
+          };
+          requests = {
+            cpu = "0.123";
+            memory = "123Mi";
+          };
+        };
+        compact.resources = {
+          requests = {
+            cpu = "0";
+            memory = "50Mi";
+          };
+          limits = {
+            memory = "2Gi";
+          };
+        };
       };
       grafana = {
         enable = true;
         gated = true;
         passwordAuth.enable = false;
+        resources = {
+          requests = {
+            cpu = "100m";
+            memory = "128Mi";
+          };
+          limits = {
+            memory = "256Mi";
+          };
+        };
+      };
+      nodeExporter = {
+        resources = {
+          requests = {
+            memory = "50Mi";
+          };
+          limits.memory = "100Mi";
+        };
+      };
+      kubeStateMetrics = {
+        resources = {
+          requests = {
+            memory = "64Mi";
+          };
+          limits.memory = "128Mi";
+        };
+      };
+      prometheusOperator = {
+        resources = {
+          requests = {
+            memory = "128Mi";
+          };
+          limits = {
+            memory = "256Mi";
+          };
+        };
+        admissionWebhooks = {
+          patch = {
+            resources = {
+              requests = {
+                memory = "64Mi";
+              };
+              limits = {
+                memory = "128Mi";
+              };
+            };
+          };
+        };
       };
       kube-web = {
         enable = true;
@@ -319,7 +491,6 @@
         enable = true;
         resources = {
           limits = {
-            #cpu = "200m";
             memory = "100Mi";
           };
           requests = {
@@ -329,7 +500,18 @@
         };
         gated = true;
       };
-      vector.enable = true;
+      vector = {
+        enable = true;
+        resources = {
+          requests = {
+            cpu = "100m";
+            memory = "128Mi";
+          };
+          limits = {
+            memory = "512Mi";
+          };
+        };
+      };
       quickwit = {
         enable = true;
         gated = true;
@@ -341,10 +523,61 @@
           period = "7 days";
           schedule = "daily";
         };
+        resources = {
+          searcher = {
+            requests = {
+              memory = "55Mi";
+            };
+            limits.memory = "100Mi";
+          };
+          indexer = {
+            requests = {
+              memory = "200Mi";
+            };
+            limits.memory = "500Mi";
+          };
+          metastore = {
+            requests = {
+              memory = "20Mi";
+            };
+            limits.memory = "50Mi";
+          };
+          controlPlane = {
+            requests = {
+              memory = "30Mi";
+            };
+            limits.memory = "60Mi";
+          };
+          janitor = {
+            requests = {
+              memory = "40Mi";
+            };
+            limits.memory = "100Mi";
+          };
+          bootstrap = {
+            requests = {
+              cpu = "10m";
+              memory = "64Mi";
+            };
+            limits = {
+              cpu = "100m";
+              memory = "128Mi";
+            };
+          };
+        };
       };
       kuvasz = {
         enable = true;
         gated = true;
+        resources = {
+          requests = {
+            memory = "200Mi";
+            cpu = "1024m";
+          };
+          limits = {
+            memory = "512Mi";
+          };
+        };
       };
     };
   };

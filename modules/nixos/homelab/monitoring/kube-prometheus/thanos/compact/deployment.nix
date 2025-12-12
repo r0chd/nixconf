@@ -91,15 +91,7 @@ in
                       mountPath = "/etc/thanos";
                     }
                   ];
-                  resources = {
-                    requests = {
-                      cpu = 0;
-                      memory = "50Mi";
-                    };
-                    limits = {
-                      memory = "2Gi";
-                    };
-                  };
+                  resources = cfg.compact.resources;
                 }
               ];
               securityContext = {

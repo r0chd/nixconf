@@ -67,7 +67,7 @@
   };
 
   environment = {
-    terminal.program = "ghostty";
+    terminal.program = "foot";
     outputs = {
       "eDP-1" = {
         position = {
@@ -126,9 +126,9 @@
 
   stylix = {
     enable = true;
-    theme = "gruvbox";
+    theme = "red";
     cursor.size = 36;
-    opacity.terminal = 0.4;
+    opacity.terminal = 0.8;
     fonts = {
       sizes.terminal = 9;
       monospace = {

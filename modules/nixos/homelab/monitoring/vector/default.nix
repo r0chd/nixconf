@@ -17,5 +17,10 @@ in
       type = types.str;
       default = "http://quickwit-indexer.monitoring.svc.cluster.local:7280/api/v1/logs/ingest";
     };
+
+    resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      description = "Kubernetes resource requests/limits for vector container.";
+    };
   };
 }

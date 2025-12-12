@@ -114,11 +114,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1765339424,
-        "narHash": "sha256-fjUHzg7BC0NJUiGZeypX/GjjX1THbQWTRgqoQ1IbFzk=",
+        "lastModified": 1765489453,
+        "narHash": "sha256-wLSrwiYr7ck5jN56lJp8YzWuLk5dpRd1v+8Ta7ru608=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "c6bc83f25f0ce39daae2d0dc62cf95137df1c02d",
+        "rev": "c3e6306094f23d57c40f7fba007303fba4db0ba9",
         "type": "gitlab"
       },
       "original": {
@@ -299,11 +299,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1765337252,
-        "narHash": "sha256-HuWQp8fM25fyWflbuunQkQI62Hg0ecJxWD52FAgmxqY=",
+        "lastModified": 1765480374,
+        "narHash": "sha256-HlbvQAqLx7WqZFFQZ8nu5UUJAVlXiV/kqKbyueA8srw=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "13cc1efd78b943b98c08d74c9060a5b59bf86921",
+        "rev": "39cb677ed9e908e90478aa9fe5f3383dfc1a63f3",
         "type": "github"
       },
       "original": {
@@ -449,11 +449,11 @@
         "xwayland-satellite-unstable": "xwayland-satellite-unstable"
       },
       "locked": {
-        "lastModified": 1765347521,
-        "narHash": "sha256-tsCSFJFzhqyQ7aDueTEWhVugfq57QJmM4TjjtguXOIY=",
+        "lastModified": 1765386897,
+        "narHash": "sha256-wmHtBM2Iuthw9DsTD9RUkkZqrmsSJYGgflSaskE+Rrc=",
         "owner": "sodiboo",
         "repo": "niri-flake",
-        "rev": "44360fc7d6ead9d47c22484dd300a04fae9a7f59",
+        "rev": "be7806f4fe2ead48eaf22e125f535d70a5ff2e3b",
         "type": "github"
       },
       "original": {
@@ -587,11 +587,11 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1764983851,
-        "narHash": "sha256-y7RPKl/jJ/KAP/VKLMghMgXTlvNIJMHKskl8/Uuar7o=",
+        "lastModified": 1765311797,
+        "narHash": "sha256-mSD5Ob7a+T2RNjvPvOA1dkJHGVrNVl8ZOrAwBjKBDQo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "d9bc5c7dceb30d8d6fafa10aeb6aa8a48c218454",
+        "rev": "09eb77e94fa25202af8f3e81ddc7353d9970ac1b",
         "type": "github"
       },
       "original": {
@@ -603,11 +603,11 @@
     },
     "nixpkgs-stable_2": {
       "locked": {
-        "lastModified": 1764983851,
-        "narHash": "sha256-y7RPKl/jJ/KAP/VKLMghMgXTlvNIJMHKskl8/Uuar7o=",
+        "lastModified": 1765311797,
+        "narHash": "sha256-mSD5Ob7a+T2RNjvPvOA1dkJHGVrNVl8ZOrAwBjKBDQo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "d9bc5c7dceb30d8d6fafa10aeb6aa8a48c218454",
+        "rev": "09eb77e94fa25202af8f3e81ddc7353d9970ac1b",
         "type": "github"
       },
       "original": {
@@ -791,8 +791,8 @@
         "wl-clipboard-zig": "wl-clipboard-zig"
       },
       "locked": {
-        "lastModified": 1765455275,
-        "narHash": "sha256-rFe/RugCnBNDOvYBDBL8JitWWm5zuY8Oy2RbIVXDmtk=",
+        "lastModified": 1765661230,
+        "narHash": "sha256-B3ZHIPUDj4gdayKakAh6DywbsweQW/Ay8akeTCy72EI=",
         "path": "/var/lib/nixconf",
         "type": "path"
       },
@@ -968,11 +968,11 @@
         "tinted-zed": "tinted-zed"
       },
       "locked": {
-        "lastModified": 1765047449,
-        "narHash": "sha256-VQcqjJ2g0kT9TW4ENwA2HBQJzfbCUd5s1Wm3K+R2QZY=",
+        "lastModified": 1765474444,
+        "narHash": "sha256-sDG+c73xEnIw1pFNRWffKDnTWiTuyZiEP+Iub0D3mWA=",
         "owner": "danth",
         "repo": "stylix",
-        "rev": "bd00e01aab676aee88e6cc5c9238b4a5a7d6639a",
+        "rev": "dd14de4432a94e93e10d0159f1d411487e435e1e",
         "type": "github"
       },
       "original": {
@@ -1227,11 +1227,11 @@
         "zls": "zls"
       },
       "locked": {
-        "lastModified": 1765415893,
-        "narHash": "sha256-PePegFpPkMvF3S/+ucERTeWmc7vWyAeaYUKDwKnq8gM=",
+        "lastModified": 1765504439,
+        "narHash": "sha256-kyNtJlKVDSE2fhNvPNtVpu60HDnjM4Sm1iDNzXdcwRc=",
         "ref": "refs/heads/master",
-        "rev": "f22bacc4d63df7faed7c5e07042ab666e8e69590",
-        "revCount": 34,
+        "rev": "3d3d89b945902953a1f4f571169d19d2526cf83c",
+        "revCount": 35,
         "type": "git",
         "url": "https://forgejo.r0chd.pl/r0chd/wl-clipboard-zig.git"
       },

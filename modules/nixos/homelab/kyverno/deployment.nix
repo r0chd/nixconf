@@ -77,7 +77,6 @@
                 ];
                 resources = {
                   limits = {
-                    cpu = "100m";
                     memory = "256Mi";
                   };
                   requests = {

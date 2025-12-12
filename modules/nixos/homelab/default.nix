@@ -18,6 +18,7 @@ in
     ./portfolio
     ./nextcloud
     ./kyverno
+    ./jellyfin
   ];
 
   options.homelab = {

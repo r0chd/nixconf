@@ -53,6 +53,33 @@ in
       };
       default = { };
     };
+
+    resources = {
+      searcher = lib.mkOption {
+        type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+        description = "Kubernetes resource requests/limits for quickwit searcher container.";
+      };
+      indexer = lib.mkOption {
+        type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+        description = "Kubernetes resource requests/limits for quickwit indexer container.";
+      };
+      metastore = lib.mkOption {
+        type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+        description = "Kubernetes resource requests/limits for quickwit metastore container.";
+      };
+      controlPlane = lib.mkOption {
+        type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+        description = "Kubernetes resource requests/limits for quickwit control_plane container.";
+      };
+      janitor = lib.mkOption {
+        type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+        description = "Kubernetes resource requests/limits for quickwit janitor container.";
+      };
+      bootstrap = lib.mkOption {
+        type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+        description = "Kubernetes resource requests/limits for quickwit bootstrap job.";
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -66,6 +93,7 @@ in
         values = {
           searcher = {
             replicaCount = 1;
+            resources = cfg.resources.searcher;
             extraVolumes = [
               {
                 name = "quickwit-config";
@@ -84,6 +112,7 @@ in
 
           indexer = {
             replicaCount = 1;
+            resources = cfg.resources.indexer;
             extraVolumes = [
               {
                 name = "quickwit-config";
@@ -212,10 +241,14 @@ in
             }
           ];
 
-          bootstrap.enabled = true;
+          bootstrap = {
+            enabled = true;
+            resources = cfg.resources.bootstrap;
+          };
 
           metastore = {
             replicaCount = 1;
+            resources = cfg.resources.metastore;
             extraVolumes = [
               {
                 name = "quickwit-config";
@@ -240,8 +273,9 @@ in
             };
           };
 
-          control_plan = {
+          control_plane = {
             enabled = true;
+            resources = cfg.resources.controlPlane;
             extraVolumes = [
               {
                 name = "quickwit-config";
@@ -258,7 +292,10 @@ in
             ];
           };
 
-          janitor.enabled = true;
+          janitor = {
+            enabled = true;
+            resources = cfg.resources.janitor;
+          };
 
           environment.NO_COLOR = 1;
 

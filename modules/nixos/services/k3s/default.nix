@@ -7,7 +7,6 @@
 let
   cfg = config.services.k3s;
 
-  manifestDir = "/var/lib/rancher/k3s/server/manifests";
   chartDir = "/var/lib/rancher/k3s/server/static/charts";
   imageDir = "/var/lib/rancher/k3s/agent/images";
   containerdConfigTemplateFile = "/var/lib/rancher/k3s/agent/etc/containerd/config.toml.tmpl";
@@ -322,7 +321,7 @@ let
           type = lib.types.nonEmptyStr;
           example = "manifest.yaml";
           description = ''
-            Name of the symlink (relative to {file}`${manifestDir}`).
+            Name of the symlink (relative to {file}`${cfg.manifestDir}`).
             Defaults to the attribute name.
           '';
         };
@@ -381,6 +380,11 @@ in
     enable = lib.mkEnableOption "k3s";
 
     package = lib.mkPackageOption pkgs "k3s" { };
+
+    manifestDir = lib.mkOption {
+      type = lib.types.path;
+      default = "/var/lib/rancher/k3s/server/manifests";
+    };
 
     role = lib.mkOption {
       description = ''
@@ -566,7 +570,7 @@ in
         };
       '';
       description = ''
-        Auto-deploying manifests that are linked to {file}`${manifestDir}` before k3s starts.
+        Auto-deploying manifests that are linked to {file}`${cfg.manifestDir}` before k3s starts.
         Note that deleting manifest files will not remove or otherwise modify the resources
         it created. Please use the the `--disable` flag or `.skip` files to delete/disable AddOns,
         as mentioned in the [docs](https://docs.k3s.io/installation/packaged-components#disabling-manifests).
@@ -808,7 +812,7 @@ in
           // cfg.charts;
         # Make a systemd-tmpfiles rule for a manifest
         mkManifestRule = manifest: {
-          name = "${manifestDir}/${manifest.target}";
+          name = "${cfg.manifestDir}/${manifest.target}";
           value = {
             "L+".argument = "${manifest.source}";
           };
@@ -909,7 +913,7 @@ in
         serviceConfig = {
           Type = "oneshot";
           ExecStart = pkgs.writeShellScript "k3s-manifest-cleanup" ''
-            for f in ${manifestDir}/*.yaml; do  
+            for f in ${cfg.manifestDir}/*.yaml; do  
               if [ -f "$f" ]; then  
                 basename=$(basename "$f")  
                 if ! grep -q "$basename" /etc/tmpfiles.d/10-k3s.conf; then  

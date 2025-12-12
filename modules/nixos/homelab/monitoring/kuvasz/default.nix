@@ -37,5 +37,10 @@ in
       type = types.str;
       default = "30";
     };
+
+    resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      description = "Resource requests/limits for kuvasz container.";
+    };
   };
 }

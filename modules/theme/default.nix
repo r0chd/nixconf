@@ -8,6 +8,18 @@ let
   cfg = config.stylix.theme;
 
   themeSettings = {
+    red = {
+      image = pkgs.fetchurl {
+        url = "https://forgejo.r0chd.pl/r0chd/wallpapers/raw/branch/master/berserk/eclipse_horizont.jpg";
+        sha256 = "sha256-sLn6ty4t7Bk1tYvgJdTQ7NjXXGPLLQLV0gLAoRwkWGY=";
+      };
+      cursor = {
+        name = "Capitaine Cursors (Gruvbox)";
+        package = pkgs.capitaine-cursors-themed;
+        size = lib.mkDefault 36;
+      };
+    };
+
     gruvbox = {
       image = pkgs.fetchurl {
         url = "https://gruvbox-wallpapers.pages.dev/wallpapers/minimalistic/finalizer.png";
@@ -55,6 +67,7 @@ in
         "gruvbox"
         "catppuccin-mocha"
         "catppuccin-frappe"
+        "red"
       ]
     );
     default = null;
@@ -67,7 +80,7 @@ in
         theme = themeSettings.${cfg};
       in
       {
-        inherit (theme) image cursor base16Scheme;
+        inherit (theme) image cursor; # base16Scheme;
         polarity = "dark";
       };
   };

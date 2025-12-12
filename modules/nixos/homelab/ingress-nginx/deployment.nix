@@ -1,4 +1,4 @@
-_:
+{ config, ... }:
 {
   services.k3s.manifests.ingress-nginx-deployment.content = [
     {
@@ -130,12 +130,7 @@ _:
                   successThreshold = 1;
                   timeoutSeconds = 1;
                 };
-                resources = {
-                  requests = {
-                    cpu = "100m";
-                    memory = "90Mi";
-                  };
-                };
+                resources = config.homelab.ingress.resources;
                 securityContext = {
                   allowPrivilegeEscalation = false;
                   capabilities = {

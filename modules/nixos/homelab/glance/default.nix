@@ -382,6 +382,11 @@ in
       );
       default = [ ];
     };
+
+    resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      description = "Kubernetes resource requests/limits for glance container.";
+    };
   };
 
   config.services.k3s = lib.mkIf cfg.enable {
@@ -481,6 +486,7 @@ in
             };
           };
         };
+        resources = cfg.resources;
       };
     };
   };

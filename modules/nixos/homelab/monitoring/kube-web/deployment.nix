@@ -42,7 +42,7 @@ in
                     path = "/health";
                     port = 8080;
                   };
-                  inherit (cfg) resources;
+                  resources = cfg.resources;
                   securityContext = {
                     readOnlyRootFilesystem = true;
                     runAsNonRoot = true;

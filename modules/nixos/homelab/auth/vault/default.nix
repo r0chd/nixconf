@@ -48,8 +48,7 @@ in
 
     resources = lib.mkOption {
       type = types.attrsOf (types.attrsOf (types.nullOr types.str));
-      default = { };
-      description = "Optional Kubernetes resource requests/limits.";
+      description = "Kubernetes resource requests/limits for vault server container.";
     };
   };
 }

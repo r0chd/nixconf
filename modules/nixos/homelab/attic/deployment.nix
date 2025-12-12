@@ -81,14 +81,7 @@ in
                       port = "http";
                     };
                   };
-                  resources = {
-                    requests = {
-                      cpu = "10m";
-                    };
-                    limits = {
-                      memory = "1Gi";
-                    };
-                  };
+                  resources = cfg.resources;
                 }
               ];
             };
