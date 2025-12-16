@@ -126,7 +126,7 @@
 
   stylix = {
     enable = true;
-    theme = "red";
+    theme = "black-metal";
     cursor.size = 36;
     opacity.terminal = 0.8;
     fonts = {

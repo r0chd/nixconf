@@ -152,7 +152,7 @@
 
   stylix = {
     enable = true;
-    theme = "catppuccin-mocha";
+    theme = "black-metal";
     cursor.size = 36;
     opacity.terminal = 0.8;
     fonts = {

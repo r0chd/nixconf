@@ -99,7 +99,7 @@
 
   stylix = {
     enable = true;
-    theme = "gruvbox";
+    theme = "black-metal";
   };
 
   networking = {

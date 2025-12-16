@@ -8,19 +8,23 @@ let
   cfg = config.stylix.theme;
 
   themeSettings = {
-    red = {
+    black-metal = {
+      polarity = "dark";
       image = pkgs.fetchurl {
-        url = "https://forgejo.r0chd.pl/r0chd/wallpapers/raw/branch/master/berserk/eclipse_horizont.jpg";
-        sha256 = "sha256-sLn6ty4t7Bk1tYvgJdTQ7NjXXGPLLQLV0gLAoRwkWGY=";
+        url = "https://forgejo.r0chd.pl/r0chd/wallpapers/raw/branch/master/berserk/eclipse_griffith.jpg";
+        #sha256 = "sha256-sLn6ty4t7Bk1tYvgJdTQ7NjXXGPLLQLV0gLAoRwkWGY=";
+        sha256 = "sha256-pSafkA1lAlz8hpMkIRiJL43e6Yx2SsViUdppHOMTCKo=";
       };
       cursor = {
         name = "Capitaine Cursors (Gruvbox)";
         package = pkgs.capitaine-cursors-themed;
         size = lib.mkDefault 36;
       };
+      base16Scheme = "${pkgs.base16-schemes}/share/themes/black-metal-venom.yaml";
     };
 
     gruvbox = {
+      polarity = "dark";
       image = pkgs.fetchurl {
         url = "https://gruvbox-wallpapers.pages.dev/wallpapers/minimalistic/finalizer.png";
         sha256 = "0i8vcjcplacd7lj9fksb8bp1hxkazf3jrfg54hw3lvh8bjqkwn13";
@@ -34,6 +38,7 @@ let
     };
 
     catppuccin-mocha = {
+      polarity = "dark";
       image = pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/master/wallpapers/nix-wallpaper-nineish-catppuccin-mocha.png";
         sha256 = "ce562a4a27794352f9b14ac072f47eeda3768c89a2ba847d832801464f31f56a";
@@ -47,6 +52,7 @@ let
     };
 
     catppuccin-frappe = {
+      polarity = "dark";
       image = pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/zhichaoh/catppuccin-wallpapers/refs/heads/main/landscapes/evening-sky.png";
         sha256 = "0kb87w736abdf794dk9fvqln56axzskxia1g6zdjrqzl7v539035";
@@ -67,7 +73,7 @@ in
         "gruvbox"
         "catppuccin-mocha"
         "catppuccin-frappe"
-        "red"
+        "black-metal"
       ]
     );
     default = null;
@@ -80,8 +86,12 @@ in
         theme = themeSettings.${cfg};
       in
       {
-        inherit (theme) image cursor; # base16Scheme;
-        polarity = "dark";
+        inherit (theme)
+          image
+          cursor
+          base16Scheme
+          polarity
+          ;
       };
   };
 }
