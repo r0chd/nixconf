@@ -1,10 +1,10 @@
 { config, lib, ... }:
 let
-  cfg = config.homelab.quickwit.db;
+  cfg = config.homelab.monitoring.quickwit.db;
   inherit (lib) types;
 in
 {
-  options.homelab.quickwit.db = {
+  options.homelab.monitoring.quickwit.db = {
     instances = lib.mkOption {
       type = types.int;
       default = 1;
@@ -25,8 +25,7 @@ in
 
     resources = lib.mkOption {
       type = types.attrsOf (types.attrsOf (types.nullOr types.str));
-      default = { };
-      description = "Optional Kubernetes resource requests/limits.";
+      description = "Kubernetes resource requests/limits.";
     };
 
     backup = {

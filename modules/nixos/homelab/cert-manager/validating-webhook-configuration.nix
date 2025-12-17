@@ -1,5 +1,10 @@
-_: {
-  services.k3s.manifests."cert-manager-validating-webhook-configuration".content = [
+{ config, lib, ... }:
+let
+  cfg = config.homelab.cert-manager;
+in
+{
+  config = lib.mkIf cfg.enable {
+    services.k3s.manifests."cert-manager-validating-webhook-configuration".content = [
     {
       apiVersion = "admissionregistration.k8s.io/v1";
       kind = "ValidatingWebhookConfiguration";
@@ -58,4 +63,5 @@ _: {
       ];
     }
   ];
+  };
 }

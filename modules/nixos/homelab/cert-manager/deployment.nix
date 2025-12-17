@@ -1,9 +1,10 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
   cfg = config.homelab.cert-manager;
 in
 {
-  services.k3s.manifests."cert-manager-deployment".content = [
+  config = lib.mkIf cfg.enable {
+    services.k3s.manifests."cert-manager-deployment".content = [
     {
       apiVersion = "apps/v1";
       kind = "Deployment";
@@ -315,4 +316,5 @@ in
       };
     }
   ];
+  };
 }

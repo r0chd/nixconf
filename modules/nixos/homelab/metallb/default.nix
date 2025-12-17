@@ -17,8 +17,20 @@ in
     ./namespace.nix
   ];
 
-  options.homelab.metallb.addresses = lib.mkOption {
-    type = types.listOf types.str;
-    default = [ ];
+  options.homelab.metallb = {
+    addresses = lib.mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+    };
+
+    controller.resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      description = "Kubernetes resource requests/limits for the MetalLB controller.";
+    };
+
+    speaker.resources = lib.mkOption {
+      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      description = "Kubernetes resource requests/limits for the MetalLB speaker.";
+    };
   };
 }

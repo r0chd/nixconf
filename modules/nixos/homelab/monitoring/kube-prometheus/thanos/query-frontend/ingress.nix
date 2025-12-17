@@ -15,7 +15,7 @@ in
             "app.kubernetes.io/name" = "thanos-query-frontend";
             "app.kubernetes.io/part-of" = "thanos";
           };
-          annotations = {
+          annotations = lib.optionalAttrs config.homelab.cert-manager.enable {
             "cert-manager.io/cluster-issuer" = "letsencrypt";
           }
           // lib.optionalAttrs cfg.gated {

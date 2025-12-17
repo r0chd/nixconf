@@ -11,7 +11,7 @@ in
         metadata = {
           name = "longhorn-ingress";
           namespace = "longhorn";
-          annotations = {
+          annotations = lib.optionalAttrs config.homelab.cert-manager.enable {
             "cert-manager.io/cluster-issuer" = "letsencrypt";
           }
           // lib.optionalAttrs cfg.gated {

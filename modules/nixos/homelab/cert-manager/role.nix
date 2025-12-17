@@ -1,5 +1,10 @@
-_: {
-  services.k3s.manifests."cert-manager-service-account".content = [
+{ config, lib, ... }:
+let
+  cfg = config.homelab.cert-manager;
+in
+{
+  config = lib.mkIf cfg.enable {
+    services.k3s.manifests."cert-manager-service-account".content = [
     {
       apiVersion = "rbac.authorization.k8s.io/v1";
       kind = "Role";
@@ -101,4 +106,5 @@ _: {
       ];
     }
   ];
+  };
 }

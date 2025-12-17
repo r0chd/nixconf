@@ -34,8 +34,7 @@ in
     };
     resources = lib.mkOption {
       type = types.attrsOf (types.attrsOf (types.nullOr types.str));
-      default = { };
-      description = "Optional Kubernetes resource requests/limits.";
+      description = "Kubernetes resource requests/limits.";
     };
   };
 
@@ -61,6 +60,8 @@ in
             annotations = {
               "nginx.ingress.kubernetes.io/ssl-redirect" = if cfg.ingressHost != null then "true" else "false";
               "nginx.ingress.kubernetes.io/backend-protocol" = "HTTP";
+            }
+            // lib.optionalAttrs config.homelab.cert-manager.enable {
               "cert-manager.io/cluster-issuer" = "letsencrypt";
             };
             hosts = lib.optional (cfg.ingressHost != null) cfg.ingressHost;

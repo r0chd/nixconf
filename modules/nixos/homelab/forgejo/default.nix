@@ -97,6 +97,8 @@ in
                 className = "nginx";
                 annotations = {
                   "nginx.ingress.kubernetes.io/rewrite-target" = "/";
+                }
+                // lib.optionalAttrs config.homelab.cert-manager.enable {
                   "cert-manager.io/cluster-issuer" = "letsencrypt";
                 }
                 // lib.optionalAttrs cfg.gated {

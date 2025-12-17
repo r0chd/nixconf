@@ -1,4 +1,7 @@
-_:
+{ config, ... }:
+let
+  cfg = config.homelab.metallb;
+in
 {
   services.k3s.manifests."metallb-daemonset".content = [
     {
@@ -243,6 +246,7 @@ _:
                     add = [ "NET_RAW" ];
                   };
                 };
+                resources = cfg.speaker.resources;
                 volumeMounts = [
                   {
                     name = "memberlist";

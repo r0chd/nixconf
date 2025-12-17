@@ -129,7 +129,7 @@ in
             {
               enabled = true;
               className = "nginx";
-              annotations = {
+              annotations = lib.optionalAttrs config.homelab.cert-manager.enable {
                 "cert-manager.io/cluster-issuer" = "letsencrypt";
               };
               path = "/";

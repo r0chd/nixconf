@@ -1,8 +1,8 @@
 { ... }:
 {
   imports = [
-    ./deployment.nix
-    ./configmap.nix
-    ./rbac.nix
+    #./deployment.nix
+    #./configmap.nix
+    #./rbac.nix
   ];
 }

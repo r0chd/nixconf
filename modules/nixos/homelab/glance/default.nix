@@ -418,75 +418,77 @@ in
       };
       targetNamespace = "glance";
       createNamespace = true;
-      values.common = {
-        name = "glance";
-        service = {
-          servicePort = 8080;
-          containerPort = 8080;
-        };
-        deployment = {
-          port = 8080;
-          args = [
-            "--config"
-            "/mnt/glance.yml"
-          ];
-        };
-        image = {
-          repository = "glanceapp/glance";
-          tag = "v0.8.3";
-          pullPolicy = "IfNotPresent";
-        };
-        configMap = {
-          enabled = true;
-          data = [
-            {
-              name = "config";
-              mountPath = "/mnt";
-              data = [
-                {
-                  content = {
-                    "glance.yml" = lib.generators.toYAML { } layoutConfig;
-                  };
-                }
-              ];
-            }
-          ];
-        };
-        startupProbeEnabled = true;
-        startupProbe = {
-          httpGet = {
-            path = "/";
-            port = 8080;
+      values = {
+        resources = cfg.resources;
+        common = {
+          name = "glance";
+          service = {
+            servicePort = 8080;
+            containerPort = 8080;
           };
-          initialDelaySeconds = 10;
-          periodSeconds = 10;
-          timeoutSeconds = 5;
-          failureThreshold = 3;
-        };
-        readinessProbeEnabled = false;
-        readinessProbe = { };
-        livenessProbeEnabled = false;
-        livenessProbe = { };
-        persistence = {
-          enabled = true;
-          volumes = [ ];
-        };
-        ingress = {
-          enabled = cfg.ingressHost != null;
-        }
-        // lib.optionalAttrs (cfg.ingressHost != null) {
-          hostName = cfg.ingressHost;
-          ingressClassName = "nginx";
-          extraLabels = { };
-          tls = {
+          deployment = {
+            port = 8080;
+            args = [
+              "--config"
+              "/mnt/glance.yml"
+            ];
+          };
+          image = {
+            repository = "glanceapp/glance";
+            tag = "v0.8.3";
+            pullPolicy = "IfNotPresent";
+          };
+          configMap = {
             enabled = true;
-            secretName = "glance-tls";
-            annotations = {
-              "cert-manager.io/cluster-issuer" = "letsencrypt";
+            data = [
+              {
+                name = "config";
+                mountPath = "/mnt";
+                data = [
+                  {
+                    content = {
+                      "glance.yml" = lib.generators.toYAML { } layoutConfig;
+                    };
+                  }
+                ];
+              }
+            ];
+          };
+          startupProbeEnabled = true;
+          startupProbe = {
+            httpGet = {
+              path = "/";
+              port = 8080;
+            };
+            initialDelaySeconds = 10;
+            periodSeconds = 10;
+            timeoutSeconds = 5;
+            failureThreshold = 3;
+          };
+          readinessProbeEnabled = false;
+          readinessProbe = { };
+          livenessProbeEnabled = false;
+          livenessProbe = { };
+          persistence = {
+            enabled = true;
+            volumes = [ ];
+          };
+          ingress = {
+            enabled = cfg.ingressHost != null;
+          }
+          // lib.optionalAttrs (cfg.ingressHost != null) {
+            hostName = cfg.ingressHost;
+            ingressClassName = "nginx";
+            extraLabels = { };
+            tls = {
+              enabled = true;
+              secretName = "glance-tls";
+              annotations = lib.optionalAttrs config.homelab.cert-manager.enable {
+                "cert-manager.io/cluster-issuer" = "letsencrypt";
+              };
             };
           };
         };
-        resources = cfg.resources;
       };
     };
   };

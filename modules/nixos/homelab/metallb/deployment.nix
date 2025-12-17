@@ -1,4 +1,7 @@
-_:
+{ config, ... }:
+let
+  cfg = config.homelab.metallb;
+in
 {
   services.k3s.manifests."metallb-deployment".content = [
     {
@@ -112,6 +115,7 @@ _:
                     drop = [ "ALL" ];
                   };
                 };
+                resources = cfg.controller.resources;
               }
             ];
             nodeSelector = {

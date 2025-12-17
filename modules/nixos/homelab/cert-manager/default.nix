@@ -20,20 +20,22 @@ in
   ];
 
   options.homelab.cert-manager = {
+    enable = lib.mkEnableOption "cert-manager" // {
+      default = true;
+      description = "Whether to enable cert-manager for automatic TLS certificate management.";
+    };
+
     injector.resources = lib.mkOption {
       type = types.attrsOf (types.attrsOf (types.nullOr types.str));
-      default = { };
-      description = "Optional Kubernetes resource requests/limits.";
+      description = "Kubernetes resource requests/limits.";
     };
     controller.resources = lib.mkOption {
       type = types.attrsOf (types.attrsOf (types.nullOr types.str));
-      default = { };
-      description = "Optional Kubernetes resource requests/limits.";
+      description = "Kubernetes resource requests/limits.";
     };
     webhook.resources = lib.mkOption {
       type = types.attrsOf (types.attrsOf (types.nullOr types.str));
-      default = { };
-      description = "Optional Kubernetes resource requests/limits.";
+      description = "Kubernetes resource requests/limits.";
     };
   };
 }

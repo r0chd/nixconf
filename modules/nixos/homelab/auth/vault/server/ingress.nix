@@ -15,7 +15,7 @@ in
             "app.kubernetes.io/name" = "vault";
             "app.kubernetes.io/instance" = "vault";
           };
-          annotations = {
+          annotations = lib.optionalAttrs config.homelab.cert-manager.enable {
             "cert-manager.io/cluster-issuer" = "letsencrypt";
           }
           // lib.optionalAttrs cfg.gated {

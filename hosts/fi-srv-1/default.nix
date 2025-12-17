@@ -118,7 +118,9 @@
         metadata = {
           name = "minio-ingress";
           namespace = "default";
-          annotations."cert-manager.io/cluster-issuer" = "letsencrypt";
+          annotations = lib.optionalAttrs config.homelab.cert-manager.enable {
+            "cert-manager.io/cluster-issuer" = "letsencrypt";
+          };
         };
         spec = {
           ingressClassName = "nginx";
@@ -196,14 +198,66 @@
       limits.memory = "400Mi";
     };
 
+    cert-manager = {
+      controller.resources = {
+        requests = {
+          memory = "30Mi";
+        };
+        limits.memory = "60Mi";
+      };
+      injector.resources = {
+        requests = {
+          memory = "100Mi";
+        };
+        limits.memory = "150Mi";
+      };
+      webhook.resources = {
+        requests = {
+          memory = "12Mi";
+        };
+        limits.memory = "30Mi";
+      };
+    };
+
     #storageClassName = "openebs-zfs-localpv";
 
-    metallb.addresses = [
-      "157.180.30.62/32"
-      "172.31.1.100-172.31.1.150"
-    ];
+    metallb = {
+      controller.resources = {
+        requests = {
+          memory = "60Mi";
+        };
+        limits.memory = "100Mi";
+      };
+      speaker.resources = {
+        requests = {
+          memory = "30Mi";
+        };
+        limits.memory = "60Mi";
+      };
+
+      addresses = [
+        "157.180.30.62/32"
+        "172.31.1.100-172.31.1.150"
+      ];
+    };
     system = {
       dragonfly.enable = true;
+      cloudnative-pg = {
+        resources = {
+          requests = {
+            memory = "50Mi";
+          };
+          limits.memory = "100Mi";
+        };
+      };
+      reloader = {
+        resources = {
+          requests = {
+            memory = "40Mi";
+          };
+          limits.memory = "80Mi";
+        };
+      };
       zfs-localpv.poolname = "zroot";
       #pihole = {
       #  dns = "172.31.1.1";
@@ -233,6 +287,14 @@
         username = "admin";
         password = config.sops.placeholder."nextcloud/admin_password";
       };
+      db = {
+        resources = {
+          requests = {
+            memory = "40Mi";
+          };
+          limits.memory = "80Mi";
+        };
+      };
     };
 
     garage = {
@@ -242,19 +304,27 @@
       adminToken = config.sops.placeholder."garage/admin-token";
       metricsToken = config.sops.placeholder."garage/metrics-token";
       resources = {
-        #requests = {
-        #  memory = "10Mi";
-        #};
+        requests = {
+          memory = "12Mi";
+        };
         limits.memory = "1Gi";
       };
     };
 
     vaultwarden = {
       enable = true;
-      db.backup = {
-        enable = true;
-        accessKeyId = config.sops.placeholder."vaultwarden_backup/access_key_id";
-        secretAccessKey = config.sops.placeholder."vaultwarden_backup/secret_access_key";
+      db = {
+        resources = {
+          requests = {
+            memory = "130Mi";
+          };
+          limits.memory = "200Mi";
+        };
+        backup = {
+          enable = true;
+          accessKeyId = config.sops.placeholder."vaultwarden_backup/access_key_id";
+          secretAccessKey = config.sops.placeholder."vaultwarden_backup/secret_access_key";
+        };
       };
       resources = {
         requests = {
@@ -289,6 +359,14 @@
         limits = {
           cpu = "200m";
           memory = "256Mi";
+        };
+      };
+      db = {
+        resources = {
+          requests = {
+            memory = "50Mi";
+          };
+          limits.memory = "100Mi";
         };
       };
     };
@@ -331,9 +409,9 @@
         clientSecret = config.sops.placeholder."vault_client_secret";
         resources = {
           requests = {
-            memory = "50Mi";
+            memory = "30Mi";
           };
-          limits.memory = "100Mi";
+          limits.memory = "60Mi";
         };
       };
 
@@ -438,44 +516,6 @@
           };
         };
       };
-      nodeExporter = {
-        resources = {
-          requests = {
-            memory = "50Mi";
-          };
-          limits.memory = "100Mi";
-        };
-      };
-      kubeStateMetrics = {
-        resources = {
-          requests = {
-            memory = "64Mi";
-          };
-          limits.memory = "128Mi";
-        };
-      };
-      prometheusOperator = {
-        resources = {
-          requests = {
-            memory = "128Mi";
-          };
-          limits = {
-            memory = "256Mi";
-          };
-        };
-        admissionWebhooks = {
-          patch = {
-            resources = {
-              requests = {
-                memory = "64Mi";
-              };
-              limits = {
-                memory = "128Mi";
-              };
-            };
-          };
-        };
-      };
       kube-web = {
         enable = true;
         resources = {
@@ -565,6 +605,14 @@
             };
           };
         };
+        db = {
+          resources = {
+            requests = {
+              memory = "40Mi";
+            };
+            limits.memory = "80Mi";
+          };
+        };
       };
       kuvasz = {
         enable = true;
@@ -576,6 +624,14 @@
           };
           limits = {
             memory = "512Mi";
+          };
+        };
+        db = {
+          resources = {
+            requests = {
+              memory = "60Mi";
+            };
+            limits.memory = "100Mi";
           };
         };
       };

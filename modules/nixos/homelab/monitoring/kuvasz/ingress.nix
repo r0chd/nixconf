@@ -14,7 +14,7 @@ in
           labels = {
             "app.kubernetes.io/name" = "kuvasz";
           };
-          annotations = {
+          annotations = lib.optionalAttrs config.homelab.cert-manager.enable {
             "cert-manager.io/cluster-issuer" = "letsencrypt";
           }
           // lib.optionalAttrs cfg.gated {

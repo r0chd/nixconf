@@ -95,32 +95,6 @@ in
         description = "Kubernetes resource requests/limits for alertmanager container.";
       };
     };
-    nodeExporter = {
-      resources = lib.mkOption {
-        type = types.attrsOf (types.attrsOf (types.nullOr types.str));
-        description = "Kubernetes resource requests/limits for prometheus-node-exporter container.";
-      };
-    };
-    kubeStateMetrics = {
-      resources = lib.mkOption {
-        type = types.attrsOf (types.attrsOf (types.nullOr types.str));
-        description = "Kubernetes resource requests/limits for kube-state-metrics container.";
-      };
-    };
-    prometheusOperator = {
-      resources = lib.mkOption {
-        type = types.attrsOf (types.attrsOf (types.nullOr types.str));
-        description = "Kubernetes resource requests/limits for prometheus-operator deployment.";
-      };
-      admissionWebhooks = {
-        patch = {
-          resources = lib.mkOption {
-            type = types.attrsOf (types.attrsOf (types.nullOr types.str));
-            description = "Kubernetes resource requests/limits for prometheus-operator admission webhook jobs (patch and createSecret).";
-          };
-        };
-      };
-    };
     thanos = {
       enable = lib.mkEnableOption "thanos";
       gated = lib.mkOption {
@@ -240,6 +214,8 @@ in
                     ingressClassName = "nginx";
                     annotations = {
                       "nginx.ingress.kubernetes.io/rewrite-target" = "/";
+                    }
+                    // lib.optionalAttrs config.homelab.cert-manager.enable {
                       "cert-manager.io/cluster-issuer" = "letsencrypt";
                     }
                     // lib.optionalAttrs cfg.alertmanager.gated {
@@ -345,6 +321,8 @@ in
                 ingressClassName = "nginx";
                 annotations = {
                   "nginx.ingress.kubernetes.io/rewrite-target" = "/";
+                }
+                // lib.optionalAttrs config.homelab.cert-manager.enable {
                   "cert-manager.io/cluster-issuer" = "letsencrypt";
                 }
                 // lib.optionalAttrs cfg.grafana.gated {
@@ -368,18 +346,6 @@ in
         };
         prometheus-node-exporter = {
           prometheusSpec.scrapeInterval = "10s";
-          resources = cfg.nodeExporter.resources;
-        };
-        kube-state-metrics = {
-          resources = cfg.kubeStateMetrics.resources;
-        };
-        prometheusOperator = {
-          resources = cfg.prometheusOperator.resources;
-          admissionWebhooks = {
-            patch = {
-              resources = cfg.prometheusOperator.admissionWebhooks.patch.resources;
-            };
-          };
         };
         prometheus = {
           thanosService = {
@@ -397,6 +363,8 @@ in
                 ingressClassName = "nginx";
                 annotations = {
                   "nginx.ingress.kubernetes.io/rewrite-target" = "/";
+                }
+                // lib.optionalAttrs config.homelab.cert-manager.enable {
                   "cert-manager.io/cluster-issuer" = "letsencrypt";
                 }
                 // lib.optionalAttrs cfg.prometheus.gated {

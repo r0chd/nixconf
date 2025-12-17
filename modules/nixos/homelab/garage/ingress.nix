@@ -14,8 +14,10 @@ in
           labels = {
             "app.kubernetes.io/name" = "garage";
           };
-          annotations = {
+          annotations = lib.optionalAttrs config.homelab.cert-manager.enable {
             "cert-manager.io/cluster-issuer" = "letsencrypt";
+          }
+          // {
             "nginx.ingress.kubernetes.io/proxy-body-size" = "0";
           }
           // lib.optionalAttrs cfg.gated {

@@ -254,7 +254,9 @@
         metadata = {
           name = "minio-ingress";
           namespace = "default";
-          annotations."cert-manager.io/cluster-issuer" = "letsencrypt";
+          annotations = lib.optionalAttrs config.homelab.cert-manager.enable {
+            "cert-manager.io/cluster-issuer" = "letsencrypt";
+          };
         };
         spec = {
           ingressClassName = "nginx";

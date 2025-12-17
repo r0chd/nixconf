@@ -791,8 +791,8 @@
         "wl-clipboard-zig": "wl-clipboard-zig"
       },
       "locked": {
-        "lastModified": 1765661230,
-        "narHash": "sha256-B3ZHIPUDj4gdayKakAh6DywbsweQW/Ay8akeTCy72EI=",
+        "lastModified": 1765981228,
+        "narHash": "sha256-HRmm9KccLMY72tFE2CXm9hsh5fK3HRMXGSEAMpVGOFQ=",
         "path": "/var/lib/nixconf",
         "type": "path"
       },

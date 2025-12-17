@@ -11,7 +11,8 @@ in
     };
   };
 
-  config.services.k3s.manifests."cert-manager-letsencrypt-issuer".content = [
+  config = lib.mkIf cfg.enable {
+    services.k3s.manifests."cert-manager-letsencrypt-issuer".content = [
     {
       apiVersion = "cert-manager.io/v1";
       kind = "ClusterIssuer";
@@ -38,4 +39,5 @@ in
       };
     }
   ];
+  };
 }
