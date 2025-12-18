@@ -62,7 +62,10 @@ in
       sops-generate-root-key = {
         description = "Generate SOPS age keys from SSH keys";
 
-        after = [ "local-fs.target" ];
+        after = [
+          "local-fs.target"
+          "systemd-remount-fs.service"
+        ];
         before = [
           "sops-install-secrets.service"
           "sops-install-secrets-for-users.service"
@@ -83,8 +86,47 @@ in
         };
 
         script = ''
-          mkdir -p "$(dirname "${root}/.config/sops/age/keys.txt")"
-          ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i "${root}/.ssh/id_ed25519" > "${root}/.config/sops/age/keys.txt"
+          set -euo pipefail
+          
+          KEY_FILE="${root}/.config/sops/age/keys.txt"
+          SSH_KEY="${root}/.ssh/id_ed25519"
+          
+          # Create directory if it doesn't exist
+          mkdir -p "$(dirname "$KEY_FILE")"
+          
+          # Check if key file already exists (e.g., from impermanence)
+          if [ -f "$KEY_FILE" ]; then
+            echo "SOPS age key file already exists, skipping generation"
+            exit 0
+          fi
+          
+          # Wait for SSH key to exist (with timeout)
+          if [ ! -f "$SSH_KEY" ]; then
+            echo "Waiting for SSH key to be available..."
+            for _ in {1..30}; do
+              if [ -f "$SSH_KEY" ]; then
+                break
+              fi
+              sleep 1
+            done
+            
+            if [ ! -f "$SSH_KEY" ]; then
+              echo "ERROR: SSH key not found at $SSH_KEY after 30 seconds"
+              exit 1
+            fi
+          fi
+          
+          # Generate age key from SSH key
+          echo "Generating SOPS age key from SSH key..."
+          ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i "$SSH_KEY" > "$KEY_FILE"
+          
+          # Verify the key file was created successfully
+          if [ ! -f "$KEY_FILE" ] || [ ! -s "$KEY_FILE" ]; then
+            echo "ERROR: Failed to generate SOPS age key file"
+            exit 1
+          fi
+          
+          echo "SOPS age key generated successfully"
         '';
       };
     };
@@ -101,8 +143,47 @@ in
       };
 
       script = ''
-        mkdir -p "$(dirname "$HOME/.config/sops/age/keys.txt")"
-        ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i "$HOME/.ssh/id_ed25519" > "$HOME/.config/sops/age/keys.txt"
+        set -euo pipefail
+        
+        KEY_FILE="$HOME/.config/sops/age/keys.txt"
+        SSH_KEY="$HOME/.ssh/id_ed25519"
+        
+        # Create directory if it doesn't exist
+        mkdir -p "$(dirname "$KEY_FILE")"
+        
+        # Check if key file already exists (e.g., from impermanence)
+        if [ -f "$KEY_FILE" ]; then
+          echo "SOPS age key file already exists, skipping generation"
+          exit 0
+        fi
+        
+        # Wait for SSH key to exist (with timeout)
+        if [ ! -f "$SSH_KEY" ]; then
+          echo "Waiting for SSH key to be available..."
+          for _ in {1..30}; do
+            if [ -f "$SSH_KEY" ]; then
+              break
+            fi
+            sleep 1
+          done
+          
+          if [ ! -f "$SSH_KEY" ]; then
+            echo "ERROR: SSH key not found at $SSH_KEY after 30 seconds"
+            exit 1
+          fi
+        fi
+        
+        # Generate age key from SSH key
+        echo "Generating SOPS age key from SSH key..."
+        ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i "$SSH_KEY" > "$KEY_FILE"
+        
+        # Verify the key file was created successfully
+        if [ ! -f "$KEY_FILE" ] || [ ! -s "$KEY_FILE" ]; then
+          echo "ERROR: Failed to generate SOPS age key file"
+          exit 1
+        fi
+        
+        echo "SOPS age key generated successfully"
       '';
     };
 

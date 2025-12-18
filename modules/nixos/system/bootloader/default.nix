@@ -26,7 +26,7 @@ in
       };
       plymouth.enable = profile == "desktop" && config.stylix.enable;
       loader = {
-        timeout = if profile == "desktop" then null else 0;
+        timeout = 15;
         limine = {
           enable = true;
           enableEditor = true;

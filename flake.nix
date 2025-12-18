@@ -192,7 +192,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    mox-flake.url = "git+https://forgejo.r0chd.pl/mox-desktop/mox-flake.git";
+    mox-flake = {
+      url = "git+https://forgejo.r0chd.pl/mox-desktop/mox-flake.git";
+      inputs.moxnotify.url = "git+https://forgejo.r0chd.pl/mox-desktop/moxnotify.git?ref=cloud-native";
+    };
     whydotool.url = "git+https://forgejo.r0chd.pl/r0chd/whydotool.git";
     wl-clipboard-zig.url = "git+https://forgejo.r0chd.pl/r0chd/wl-clipboard-zig.git";
 

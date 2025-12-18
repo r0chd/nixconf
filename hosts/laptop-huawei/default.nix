@@ -18,15 +18,8 @@
     ];
 
   sops.secrets = {
-    nixos-anywhere = {
-      owner = "nixos-anywhere";
-      group = "nixos-anywhere";
-      mode = "0400";
-    };
     proton = { };
   };
-
-  programs.nixos-anywhere.sshKeyFile = config.sops.secrets.nixos-anywhere.path;
 
   services = {
     protonvpn = {
@@ -39,7 +32,7 @@
         ip = "149.34.244.129";
       };
     };
-    tailscale.enable = true;
+    #tailscale.enable = true;
     sccache.enable = true;
   };
 
@@ -104,7 +97,7 @@
 
   networking = {
     wireless = {
-      iwd.enable = true;
+      networkmanager.enable = true;
     };
     hostId = "6add04c2";
   };

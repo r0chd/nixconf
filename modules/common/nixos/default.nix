@@ -19,11 +19,6 @@
   services.tailscale.authKeyFile = config.sops.secrets.tailscale.path;
 
   networking = {
-    nameservers = [
-      "1.1.1.1"
-      "8.8.8.8"
-    ];
-
     wireless.iwd = {
       networks = {
         Saltora.psk = config.sops.secrets."wireless/Saltora".path;

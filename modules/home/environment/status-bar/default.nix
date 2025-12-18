@@ -12,6 +12,11 @@ let
   inherit (config.stylix) fonts;
 in
 {
+  imports = [
+    ./nm-applet.nix
+    ./blueman-applet.nix
+  ];
+
   options.environment.statusBar.enable = lib.mkOption {
     type = types.bool;
     default = profile == "desktop";
@@ -39,9 +44,6 @@ in
           "pulseaudio"
           "backlight"
           "custom/sep"
-          "custom/moxnotify-inhibit"
-          "custom/moxnotify-history"
-          "custom/moxnotify-muted"
           "custom/sep"
           "custom/idle-inhibit"
           "custom/sep"
@@ -117,43 +119,6 @@ in
 
         "custom/nix".format = "<span size='large'> </span>";
 
-        "custom/moxnotify-inhibit" = {
-          interval = 1;
-          exec = pkgs.writeShellScript "mox notify status" ''
-            COUNT=$(mox notify waiting)
-            INHIBITED="<span size='large' color='${withHashtag.base0F}'>  $( [ $COUNT -gt 0 ] && echo "$COUNT" )</span>"
-            UNINHIBITED="<span size='large' color='${withHashtag.base0F}'>  </span>"
-
-            if ${pkgs.moxnotify}/bin/moxnotifyctl inhibit state | grep -q "uninhibited" ; then echo $UNINHIBITED; else echo $INHIBITED; fi
-          '';
-
-          on-click = "${pkgs.moxnotify}/bin/moxnotifyctl inhibit toggle";
-        };
-
-        "custom/moxnotify-muted" = {
-          interval = 1;
-          exec = pkgs.writeShellScript "mox notify status" ''
-            MUTED="<span size='large' color='${withHashtag.base08}'>  </span>"       
-            UNMUTED="<span size='large' color='${withHashtag.base0B}'>  </span>"     
-
-            if ${pkgs.moxnotify}/bin/moxnotifyctl mute state | grep -q "unmuted" ; then echo $UNMUTED; else echo $MUTED; fi
-          '';
-
-          on-click = "${pkgs.moxnotify}/bin/moxnotifyctl mute toggle";
-        };
-
-        "custom/moxnotify-history" = {
-          interval = 1;
-          exec = pkgs.writeShellScript "mox notify status" ''
-            HISTORY_SHOWN="<span size='large' color='${withHashtag.base0D}'>  </span>"   
-            HISTORY_HIDDEN="<span size='large' color='${withHashtag.base03}'>  </span>"  
-
-            if ${pkgs.moxnotify}/bin/moxnotifyctl history state | grep -q "hidden" ; then echo $HISTORY_HIDDEN; else echo $HISTORY_SHOWN; fi
-          '';
-
-          on-click = "${pkgs.moxnotify}/bin/moxnotifyctl history toggle";
-        };
-
         "custom/idle-inhibit" = {
           interval = 1;
           exec = pkgs.writeShellScript "mox notify status" ''
@@ -222,30 +187,6 @@ in
         padding-right: 8px;
         margin: 7px;
         border-radius: 4px;
-      }
-
-      #custom-moxnotify-inhibit,
-      #custom-moxnotify-history,
-      #custom-moxnotify-muted {
-        min-width: 30px; 
-        background: ${withHashtag.base02};
-        padding: 5px;
-        margin-top: 7px;
-        margin-bottom: 7px;
-      }
-
-      #custom-moxnotify-inhibit {
-        margin-left: 7px;
-        border-radius: 4px 0 0 4px;
-        padding-right: 0;
-        padding-left: 8px;
-      }
-
-      #custom-moxnotify-muted {
-        margin-right: 7px;
-        border-radius: 0 4px 4px 0;
-        padding-left: 0;
-        padding-right: 8px;
       }
 
       #workspaces {

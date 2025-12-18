@@ -15,24 +15,25 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    services.hyprlauncher = {
+      enable = true;
+    };
+
     wayland.windowManager = {
-      hyprland.settings.bind = [ "$mainMod, S, exec, fuzzel" ];
+      hyprland.settings.bind = [
+        "$mainMod, S, exec, ${config.services.hyprlauncher.package}/bin/hyprlauncher"
+      ];
 
       sway.config.keybindings = {
-        "Mod1+S" = "exec ${pkgs.uwsm}/bin/uwsm app fuzzel";
+        "Mod1+S" =
+          "exec ${pkgs.uwsm}/bin/uwsm app ${config.services.hyprlauncher.package}/bin/hyprlauncher";
       };
     };
 
-    programs = {
-      fuzzel = {
-        enable = true;
-        settings.main.launch-prefix = "${pkgs.uwsm}/bin/uwsm app -t service --";
-      };
-      niri.settings.binds."Alt+S".action.spawn = [
-        "${pkgs.uwsm}/bin/uwsm"
-        "app"
-        "fuzzel"
-      ];
-    };
+    programs.niri.settings.binds."Alt+S".action.spawn = [
+      "${pkgs.uwsm}/bin/uwsm"
+      "app"
+      "${config.services.hyprlauncher.package}/bin/hyprlauncher"
+    ];
   };
 }

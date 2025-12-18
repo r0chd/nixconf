@@ -24,10 +24,17 @@ in
   };
 
   config = {
-    home.persist.directories = [ ".local/share/moxnotify" ];
+    home = {
+      persist.directories = [ ".local/share/moxnotify" ];
+      packages = [ pkgs.libnotify ];
+    };
+
     services.moxnotify = {
       inherit (cfg) enable;
       inherit (cfg) package;
+
+      logLevel = "debug";
+
       settings = {
         general = {
           margin.top = 50;

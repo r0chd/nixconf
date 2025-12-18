@@ -370,18 +370,6 @@
         };
       };
     };
-    jellyfin = {
-      enable = true;
-      resources = {
-        requests = {
-          memory = "200Mi";
-          cpu = "10m";
-        };
-        limits = {
-          memory = "1Gi";
-        };
-      };
-    };
     moxwiki = {
       enable = true;
       resources = {
@@ -402,6 +390,9 @@
         limits.memory = "30Mi";
       };
     };
+
+    media.enable = false;
+
     auth = {
       enable = true;
       vault = {

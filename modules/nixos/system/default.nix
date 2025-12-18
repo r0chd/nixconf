@@ -7,13 +7,16 @@
   ];
 
   config.system = {
+    nixos-init.enable = true;
     disableInstallerTools = true;
     etc.overlay = {
-      #enable = true; // TODO: use it when its stabilized
-      mutable = false;
+      enable = true;
+      #mutable = false;
     };
+
     # Unfortunatelly slows down nixos-rebuild A LOT
     #includeBuildDependencies = true;
+
     stateVersion = "25.11";
   };
 }

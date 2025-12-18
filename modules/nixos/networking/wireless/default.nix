@@ -8,9 +8,12 @@ let
   cfg = config.networking.wireless;
 in
 {
-  imports = [ ./iwd ];
+  imports = [
+    ./iwd.nix
+    ./networkmanager.nix
+  ];
 
-  config = lib.mkIf cfg.iwd.enable {
+  config = lib.mkIf (cfg.iwd.enable || cfg.networkmanager.enable) {
     environment.systemPackages = builtins.attrValues {
       inherit (pkgs)
         wirelesstools

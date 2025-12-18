@@ -139,6 +139,7 @@ in
           ", XF86AudioLowerVolume, exec, ${pkgs.pamixer}/bin/pamixer -d 5"
 
           "$mainMod, q, exec, ${pkgs.uwsm}/bin/uwsm stop"
+          ", Print, exec, ${pkgs.grim}/bin/grim -g \"$(${pkgs.slurp}/bin/slurp)\" - | wl-copy"
         ]
         ++ lib.optionals (cfg.layout == "scrolling") [
           "$mainMod, F, layoutmsg, fit active"
