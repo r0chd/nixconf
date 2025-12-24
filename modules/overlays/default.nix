@@ -13,10 +13,9 @@ inputs: config: [
         inherit (final.stdenv.hostPlatform) system;
         inherit (config.nixpkgs) config;
       };
-      hyprscroller = prev.callPackage ./hyprscroller { };
       sysnotifier = inputs.sysnotifier.packages.${system}.default;
-      darkfi = prev.callPackage ./darkfi { };
       pince = prev.callPackage ./pince { };
+      river = prev.callPackage ./river { };
     }
   )
 ]

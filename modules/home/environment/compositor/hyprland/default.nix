@@ -157,8 +157,8 @@ in
           "$mainMod SHIFT, N, layoutmsg, focusmonitor l"
           "$mainMod SHIFT, M, layoutmsg, focusmonitor r"
 
-          "$mainMod SHIFT, L, layoutmsg, movewindowto r"
-          "$mainMod SHIFT, H, layoutmsg, movewindowto l"
+          "$mainMod SHIFT, L, layoutmsg, swapcol r"
+          "$mainMod SHIFT, H, layoutmsg, swapcol l"
 
           "$mainMod, R, layoutmsg, colresize +conf"
         ]

@@ -39,7 +39,7 @@ in
           set-option -g automatic-rename off
           set-window-option -g window-status-format "#I:#W#F"
           set-window-option -g window-status-current-format "#[bold]#I:#W#F"
-          bind-key C-b run-shell "tmux rename-window "$(basename $(pwd))""
+          bind-key C-b run-shell 'tmux rename-window "$(basename "$PWD")"'
 
           set-option -g set-clipboard on
           bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"

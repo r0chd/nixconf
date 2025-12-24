@@ -23,7 +23,7 @@
 
   services = {
     protonvpn = {
-      enable = false;
+      enable = true;
       interface = {
         privateKeyFile = config.sops.secrets.proton.path;
       };
@@ -55,6 +55,7 @@
   gaming = {
     steam.enable = true;
     minecraft.enable = true;
+    heroic.enable = true;
   };
 
   system = {

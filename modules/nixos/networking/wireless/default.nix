@@ -20,6 +20,7 @@ in
         traceroute
         inetutils
         bind
+        wget
         ;
     };
   };

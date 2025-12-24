@@ -33,7 +33,7 @@ in
       inherit (cfg) enable;
       inherit (cfg) package;
 
-      logLevel = "debug";
+      webui.enable = true;
 
       settings = {
         general = {

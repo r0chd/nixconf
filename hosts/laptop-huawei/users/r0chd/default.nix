@@ -23,6 +23,22 @@
   };
 
   programs = {
+    irssi = {
+      enable = true;
+      networks = {
+        liberachat = {
+          nick = "r0chd";
+          server = {
+            address = "irc.libera.chat";
+            port = 6697;
+            autoConnect = true;
+          };
+          channels = {
+            river.autoJoin = true;
+          };
+        };
+      };
+    };
     minio-client = {
       enable = true;
       settings = {
@@ -58,6 +74,7 @@
     };
     vesktop.enable = true;
     firefox.enable = true;
+    chromium.enable = true;
     fastfetch.enable = true;
     starship.enable = true;
     zoxide.enable = true;

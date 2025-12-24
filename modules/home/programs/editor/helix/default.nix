@@ -45,7 +45,7 @@ in
             ];
             config.nixd =
               let
-                flake = "(builtins.getFlake (toString /var/lib/nixconf))";
+                flake = ''(builtins.getFlake (toString "/var/lib/nixconf"))'';
               in
               {
                 nixpkgs.expr = "import ${flake}.inputs.nixpkgs { }";
@@ -61,7 +61,7 @@ in
 
           rust-analyzer.config = {
             checkOnSave = {
-              command = "${pkgs.clippy}/bin/clippy";
+              command = "clippy";
               args = [
                 "--"
                 "-W"
