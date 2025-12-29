@@ -37,6 +37,10 @@ in
       plugins = builtins.attrValues { inherit (pkgs.hyprlandPlugins) hyprscrolling; };
 
       settings = {
+        exec-once = [
+          "systemctl --user start hyprpolkitagent"
+        ];
+
         layerrule = [ "noanim, moxnotify" ];
 
         input = {
@@ -63,8 +67,9 @@ in
 
         plugin = {
           hyprscrolling = {
-            column_width = 0.7;
+            column_width = 1;
             fullscreen_on_one_column = false;
+            focus_fit_method = 1;
           };
         };
 

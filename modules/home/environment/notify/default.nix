@@ -9,6 +9,7 @@
 let
   cfg = config.environment.notify;
   inherit (lib) types;
+  log_level = "debug";
 in
 {
   options.environment.notify = {
@@ -35,43 +36,68 @@ in
 
       webui.enable = true;
 
-      settings = {
-        general = {
-          margin.top = 50;
-          history.size = 10000;
-          default_sound_file = "/run/current-system/sw/share/sounds/freedesktop/stereo/message.oga";
-          theme = "Cosmic";
+      client = {
+        settings = {
+          general = {
+            margin.top = 50;
+            history.size = 10000;
+            default_sound_file = "/run/current-system/sw/share/sounds/freedesktop/stereo/message.oga";
+            theme = "Cosmic";
+          };
+
+          keymaps = [
+            {
+              mode = "n";
+              keys = "d";
+              action = "dismiss_notification";
+            }
+            {
+              mode = "n";
+              keys = "ge";
+              action = "last_notification";
+            }
+            {
+              mode = "n";
+              keys = "<C-g>";
+              action = "last_notification";
+            }
+            {
+              mode = "n";
+              keys = "gw";
+              action = "hint_mode";
+            }
+            {
+              mode = "n";
+              keys = "f";
+              action = "noop";
+            }
+          ];
         };
-
-        styles = [ ];
-
-        keymaps = [
-          {
-            mode = "n";
-            keys = "d";
-            action = "dismiss_notification";
-          }
-          {
-            mode = "n";
-            keys = "ge";
-            action = "last_notification";
-          }
-          {
-            mode = "n";
-            keys = "<C-g>";
-            action = "last_notification";
-          }
-          {
-            mode = "n";
-            keys = "gw";
-            action = "hint_mode";
-          }
-          {
-            mode = "n";
-            keys = "f";
-            action = "noop";
-          }
-        ];
+      };
+      collector = {
+        settings = {
+          inherit log_level;
+        };
+      };
+      controlPlane = {
+        settings = {
+          inherit log_level;
+        };
+      };
+      indexer = {
+        settings = {
+          inherit log_level;
+        };
+      };
+      scheduler = {
+        settings = {
+          inherit log_level;
+        };
+      };
+      searcher = {
+        settings = {
+          inherit log_level;
+        };
       };
     };
 

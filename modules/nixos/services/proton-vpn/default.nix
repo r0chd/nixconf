@@ -98,7 +98,7 @@ in
             "0.0.0.0/0"
             "::/0"
           ];
-          endpoint = "${cfg.endpoint.ip}:${builtins.toString cfg.endpoint.port}";
+          endpoint = "${cfg.endpoint.ip}:${toString cfg.endpoint.port}";
         }
       ];
     };

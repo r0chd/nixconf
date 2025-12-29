@@ -183,12 +183,12 @@ in
               echo "Found $NUM_GEN generations for ${user}"
               
               if [ "$NUM_GEN" -ge 1 ]; then
-                GEN=$(echo "$GENERATIONS" | tail -n 1)
+                GEN=$(echo "$GENERATIONS" | head -n 1)
                 
-                echo "Previous generation: $GEN"
+                echo "Last generation: $GEN"
                 
                 if [ -n "$GEN" ] && [ -x "$GEN/activate" ]; then
-                  echo "Activating previous Home Manager generation for ${user}..."
+                  echo "Activating last Home Manager generation for ${user}..."
                   
                   if sudo -u ${user} "$GEN/activate" 2>&1; then
                     echo "Successfully activated generation for ${user}"
@@ -198,7 +198,7 @@ in
                     echo "This may be normal if there are warnings during activation"
                   fi
                 else
-                  echo "No valid activate script in previous generation for ${user}"
+                  echo "No valid activate script in last generation for ${user}"
                 fi
               else
                 echo "Home Manager generation not found for user ${user}"

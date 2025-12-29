@@ -132,11 +132,11 @@
         config.hosts
         |> lib.filterAttrs (_: attrs: attrs.platform != "mobile" && attrs.users != null)
         |> builtins.attrNames
-        |> builtins.map (
+        |> map (
           host:
           config.hosts.${host}.users
           |> builtins.attrNames
-          |> builtins.map (user: {
+          |> map (user: {
             name = "${user}@${host}";
             value = mkHome host user;
           })
@@ -194,10 +194,8 @@
 
     mox-flake = {
       url = "git+https://forgejo.r0chd.pl/mox-desktop/mox-flake.git";
-      inputs.moxnotify.url = "git+https://forgejo.r0chd.pl/mox-desktop/moxnotify.git?ref=cloud-native";
+      inputs.moxnotify.url = "git+https://forgejo.r0chd.pl/mox-desktop/moxnotify.git?ref=css_nix";
     };
-    whydotool.url = "git+https://forgejo.r0chd.pl/r0chd/whydotool.git";
-    wl-clipboard-zig.url = "git+https://forgejo.r0chd.pl/r0chd/wl-clipboard-zig.git";
 
     # To be ditched
 

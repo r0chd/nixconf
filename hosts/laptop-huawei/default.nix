@@ -15,6 +15,7 @@
     builtins.elem (lib.getName pkgs) [
       "steam"
       "steam-unwrapped"
+      "dragonflydb"
     ];
 
   sops.secrets = {
@@ -22,6 +23,10 @@
   };
 
   services = {
+    dragonflydb = {
+      enable = true;
+      port = 63790;
+    };
     protonvpn = {
       enable = true;
       interface = {

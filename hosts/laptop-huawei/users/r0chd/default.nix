@@ -74,7 +74,6 @@
     };
     vesktop.enable = true;
     firefox.enable = true;
-    chromium.enable = true;
     fastfetch.enable = true;
     starship.enable = true;
     zoxide.enable = true;
@@ -119,11 +118,11 @@
     ];
     packages = builtins.attrValues {
       inherit (pkgs)
-        waypipe
+        wl-clipboard-zig
         slack
-        figma-linux
         obsidian
         devenv
+        whydotool
         ;
     };
   };
@@ -136,6 +135,10 @@
         secret_key_file = config.sops.secrets."garage/moxpaper/secret_access_key".path;
         region = "garage";
       };
+    };
+    moxnotify = {
+      valkey.enable = false;
+      redis.settings.address = "redis://127.0.0.1:63790";
     };
     impermanence.enable = true;
     yubikey-touch-detector.enable = true;

@@ -102,7 +102,10 @@
           isNormalUser = true;
           inherit (value) home;
           hashedPasswordFile = config.sops.secrets."${name}/password".path;
-          extraGroups = lib.mkIf value.root.enable [
+          extraGroups = [
+            "video"
+          ]
+          ++ lib.optionals value.root.enable [
             "wheel"
           ];
           shell = pkgs.${value.shell};

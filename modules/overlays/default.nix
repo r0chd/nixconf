@@ -15,7 +15,9 @@ inputs: config: [
       };
       sysnotifier = inputs.sysnotifier.packages.${system}.default;
       pince = prev.callPackage ./pince { };
-      river = prev.callPackage ./river { };
+      tree_magic_mini = prev.callPackage ./tree_magic_mini { };
+      wl-clipboard-zig = prev.callPackage ./wl-clipboard-zig { };
+      whydotool = prev.callPackage ./whydotool { };
     }
   )
 ]

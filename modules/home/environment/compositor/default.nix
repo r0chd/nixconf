@@ -1,8 +1,6 @@
 {
-  pkgs,
   lib,
   profile,
-  inputs,
   ...
 }:
 {
@@ -15,7 +13,7 @@
 
   config = lib.mkIf (profile == "desktop") {
     home = {
-      packages = [ inputs.wl-clipboard-zig.packages.${pkgs.stdenv.hostPlatform.system}.default ];
+      packages = [ ];
       sessionVariables = {
         NIXOS_OZONE_WL = "1";
         WLR_NO_HARDWARE_CURSORS = "1";
