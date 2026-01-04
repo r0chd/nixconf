@@ -80,6 +80,7 @@
         helix
         kubectl
         cosmic-icons
+        hello
         ;
     };
   };
