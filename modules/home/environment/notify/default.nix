@@ -40,7 +40,7 @@ in
         settings = {
           inherit log_level;
           general = {
-            margin.top = 50;
+            margin.top = 50.0;
             history.size = 10000;
             default_sound_file = "/run/current-system/sw/share/sounds/freedesktop/stereo/message.oga";
             theme = "Cosmic";

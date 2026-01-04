@@ -224,6 +224,5 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     niri.url = "github:sodiboo/niri-flake"; # wait for kdl parser to be implemented in nixpkgs
-    nh.url = "github:r0chd/nh/notifications"; # Wait for the branch to be merged
   };
 }

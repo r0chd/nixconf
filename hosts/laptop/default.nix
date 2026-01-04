@@ -20,8 +20,6 @@
 
   documentation.enable = true;
 
-  homelab.enable = true;
-
   stylix = {
     enable = true;
     theme = "gruvbox";
