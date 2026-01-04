@@ -117,13 +117,6 @@
                 disko.nixosModules.default
                 stylix.nixosModules.stylix
                 { networking = { inherit hostName; }; }
-              ]
-              ++ lib.optionals (attrs.platform == "rpi-nixos") (
-                builtins.attrValues {
-                  inherit (nixpkgs.nixos-raspberrypi.nixosModules.raspberry-pi-5) base display-vc4 bluetooth;
-                }
-              )
-              ++ lib.optionals (attrs.profile == "server") [
                 comin.nixosModules.comin
                 {
                   services.comin = {
@@ -137,7 +130,12 @@
                     ];
                   };
                 }
-              ];
+              ]
+              ++ lib.optionals (attrs.platform == "rpi-nixos") (
+                builtins.attrValues {
+                  inherit (nixpkgs.nixos-raspberrypi.nixosModules.raspberry-pi-5) base display-vc4 bluetooth;
+                }
+              );
             };
         in
         config.hosts
