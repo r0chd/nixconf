@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 {
@@ -49,6 +50,8 @@
 
     "vault_client_secret".sopsFile = ../../infra/kms/secrets/secrets.yaml;
   };
+
+  environment.systemPackages = [ pkgs.whydotool ];
 
   services = {
     minio = {

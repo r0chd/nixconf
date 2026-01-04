@@ -3,6 +3,7 @@
 
   outputs =
     {
+      comin,
       nixpkgs,
       disko,
       home-manager,
@@ -121,7 +122,22 @@
                 builtins.attrValues {
                   inherit (nixpkgs.nixos-raspberrypi.nixosModules.raspberry-pi-5) base display-vc4 bluetooth;
                 }
-              );
+              )
+              ++ lib.optionals (attrs.profile == "server") [
+                comin.nixosModules.comin
+                {
+                  services.comin = {
+                    enable = true;
+                    remotes = [
+                      {
+                        name = "origin";
+                        url = "https://forgejo.r0chd.pl/r0chd/nixconf";
+                        branches.main.name = "main";
+                      }
+                    ];
+                  };
+                }
+              ];
             };
         in
         config.hosts
@@ -182,6 +198,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
+
+    comin = {
+      url = "github:nlewo/comin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nixGL = {
       url = "github:nix-community/nixGL";

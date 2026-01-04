@@ -38,6 +38,7 @@ in
 
       client = {
         settings = {
+          inherit log_level;
           general = {
             margin.top = 50;
             history.size = 10000;
@@ -65,11 +66,6 @@ in
               mode = "n";
               keys = "gw";
               action = "hint_mode";
-            }
-            {
-              mode = "n";
-              keys = "f";
-              action = "noop";
             }
           ];
         };

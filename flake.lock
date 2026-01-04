@@ -84,6 +84,27 @@
         "type": "github"
       }
     },
+    "comin": {
+      "inputs": {
+        "flake-compat": "flake-compat",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1767262663,
+        "narHash": "sha256-4VRCh0dc3uYhJzhGhknI8yNmfibi61FguJyqR55MjDM=",
+        "owner": "nlewo",
+        "repo": "comin",
+        "rev": "0ce1a5e62ecaae2bc422328aba6d6478be286427",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nlewo",
+        "repo": "comin",
+        "type": "github"
+      }
+    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -143,6 +164,22 @@
       }
     },
     "flake-compat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1765121682,
+        "narHash": "sha256-4VBOP18BFeiPkyhy9o4ssBNQEvfvv1kXkasAYd0+rrA=",
+        "owner": "NixOS",
+        "repo": "flake-compat",
+        "rev": "65f23138d8d09a92e30f1e5c87611b23ef451bf3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
+    "flake-compat_2": {
       "locked": {
         "lastModified": 1765121682,
         "narHash": "sha256-4VBOP18BFeiPkyhy9o4ssBNQEvfvv1kXkasAYd0+rrA=",
@@ -328,10 +365,10 @@
         "tooling": "tooling_3"
       },
       "locked": {
-        "lastModified": 1767463896,
-        "narHash": "sha256-6st+kPgZpVbK/WeJchJmzHvxUNgBQ8eMxYOGOkb+6Fw=",
+        "lastModified": 1767541548,
+        "narHash": "sha256-K2qoRBlt/srrODmdfTJ3LDMMTopr+VtLLrAyV7/7yH4=",
         "ref": "css_nix",
-        "rev": "0304b750f98be0442398c5a844f267c90e48f17f",
+        "rev": "38b413fad5d3eb032cec78dc4904a6181b919a98",
         "revCount": 356,
         "type": "git",
         "url": "https://forgejo.r0chd.pl/mox-desktop/moxnotify.git"
@@ -438,7 +475,7 @@
     "nix-raspberrypi": {
       "inputs": {
         "argononed": "argononed",
-        "flake-compat": "flake-compat",
+        "flake-compat": "flake-compat_2",
         "nixos-images": "nixos-images",
         "nixpkgs": [
           "nixpkgs"
@@ -676,6 +713,7 @@
     },
     "root": {
       "inputs": {
+        "comin": "comin",
         "disko": "disko",
         "firefox-addons": "firefox-addons",
         "home-manager": "home-manager",
