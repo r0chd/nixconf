@@ -84,6 +84,7 @@ in
             ];
             inherit (cfg.stages.lock) timeout;
             on_timeout = "${pkgs.systemd}/bin/loginctl lock-session";
+            on_resume = "${pkgs.brightnessctl}/bin/brightnessctl --restore";
           })
           (lib.optional cfg.stages.sleep.enable {
             conditions = [

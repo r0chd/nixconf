@@ -146,7 +146,7 @@
 
   stylix = {
     enable = true;
-    theme = "black-metal";
+    theme = "catppuccin-mocha";
     cursor.size = 36;
     opacity.terminal = 0.8;
     fonts = {

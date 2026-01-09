@@ -183,7 +183,7 @@ in
               echo "Found $NUM_GEN generations for ${user}"
               
               if [ "$NUM_GEN" -ge 1 ]; then
-                GEN=$(echo "$GENERATIONS" | head -n 1)
+                GEN=$(echo "$GENERATIONS" | tail -n 1)
                 
                 echo "Last generation: $GEN"
                 

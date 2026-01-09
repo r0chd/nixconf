@@ -213,7 +213,7 @@
 
     mox-flake = {
       url = "git+https://forgejo.r0chd.pl/mox-desktop/mox-flake.git";
-      inputs.moxnotify.url = "git+https://forgejo.r0chd.pl/mox-desktop/moxnotify.git?ref=css_nix";
+      inputs.moxnotify.url = "git+https://forgejo.r0chd.pl/mox-desktop/moxnotify.git";
     };
 
     # To be ditched
