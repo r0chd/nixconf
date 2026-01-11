@@ -98,7 +98,7 @@
 
   stylix = {
     enable = true;
-    theme = "black-metal";
+    theme = "catppuccin-mocha";
   };
 
   networking = {

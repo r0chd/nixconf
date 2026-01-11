@@ -6,7 +6,6 @@
   imports = [
     ./nh
     ./git
-    ./nixos-anywhere
   ];
 
   programs = {

@@ -59,12 +59,20 @@ in
 
   systemd = {
     services = {
+      # Ensure userborn waits for secrets to be installed
+      userborn = lib.mkIf config.services.userborn.enable {
+        requires = [ "sops-install-secrets-for-users.service" ];
+        after = [ "sops-install-secrets-for-users.service" ];
+      };
+
       sops-generate-root-key = {
         description = "Generate SOPS age keys from SSH keys";
 
         after = [
-          "local-fs.target"
           "systemd-remount-fs.service"
+        ];
+        wants = [
+          "local-fs.target"
         ];
         before = [
           "sops-install-secrets.service"
@@ -76,7 +84,6 @@ in
         ];
         unitConfig = {
           DefaultDependencies = "no";
-          RequiresMountsFor = lib.optional config.services.impermanence.enable "/persist";
         };
 
         serviceConfig = {

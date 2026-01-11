@@ -154,11 +154,21 @@ in
           description = "Activate previous Home Manager generation for ${user}";
           wantedBy = [ "default.target" ];
           requiredBy = [ "systemd-user-sessions.service" ];
-          after = [ "sops-install-secrets.service" ];
-          before = [ "systemd-user-sessions.service" ];
+          after = [
+            "sops-install-secrets.service"
+            "network-online.target"
+            "multi-user.target"
+          ];
+          before = [
+            "systemd-user-sessions.service"
+            "getty@tty1.service"
+          ];
+          wants = [ "network-online.target" ];
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = true;
+            StandardOutput = "journal";
+            StandardError = "journal";
           };
           path = builtins.attrValues {
             inherit (pkgs)
@@ -173,7 +183,11 @@ in
               ;
           };
           script = ''
-            chown -R ${user}:users /home/${user} 2>/dev/null || true
+            chown ${user}:users /home/${user} 2>/dev/null || true
+            chown ${user}:users /home/${user}/.local 2>/dev/null || true
+            chown ${user}:users /home/${user}/.local/share 2>/dev/null || true
+            chown ${user}:users /home/${user}/.config 2>/dev/null || true
+            chown ${user}:users /home/${user}/.ssh 2>/dev/null || true
 
             HM_DIR="/persist/home/${user}/.local/state/nix/profiles"
             if [ -d "$HM_DIR" ]; then
