@@ -118,7 +118,6 @@
     ];
     packages = builtins.attrValues {
       inherit (pkgs)
-        wl-clipboard-zig
         slack
         obsidian
         devenv

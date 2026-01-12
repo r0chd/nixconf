@@ -12,7 +12,7 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "wl-clipboard-zig";
-  version = "0.1.0";
+  version = "0.1.1";
 
   src = fetchFromGitea {
     domain = "forgejo.r0chd.pl";
