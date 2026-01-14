@@ -23,6 +23,10 @@
   };
 
   programs = {
+    zed-editor = {
+      enable = true;
+      extensions = [ "nix" ];
+    };
     irssi = {
       enable = true;
       networks = {
