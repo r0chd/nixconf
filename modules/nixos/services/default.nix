@@ -7,6 +7,7 @@
     ./k3s
     ./gc
     ./sccache
+    ./flatpak
     #./minio
   ];
 

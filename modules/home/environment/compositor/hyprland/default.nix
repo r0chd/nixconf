@@ -17,8 +17,8 @@ in
       type = types.bool;
     };
     package = lib.mkOption {
-      type = types.package;
-      default = if platform == "non-nixos" then (config.lib.nixGL.wrap pkgs.hyprland) else pkgs.hyprland;
+      type = types.nullOr types.package;
+      default = if platform == "non-nixos" then (config.lib.nixGL.wrap pkgs.hyprland) else null;
     };
     layout = lib.mkOption {
       type = types.enum [
@@ -33,6 +33,7 @@ in
     wayland.windowManager.hyprland = {
       inherit (cfg) enable;
       inherit (cfg) package;
+      portalPackage = if platform == "non-nixos" then pkgs.xdg-desktop-portal-hyprland else null;
 
       plugins = builtins.attrValues { inherit (pkgs.hyprlandPlugins) hyprscrolling; };
 

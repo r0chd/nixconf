@@ -12,14 +12,14 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "wl-clipboard-zig";
-  version = "0.1.1";
+  version = "0.1.2";
 
   src = fetchFromGitea {
     domain = "forgejo.r0chd.pl";
     owner = "r0chd";
     repo = "wl-clipboard-zig";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-u6U194vR7VS/f60o9VOZ1d/W8mxEuqujB0IDNd0SVN4=";
+    hash = "sha256-LazFV48AOSDmDzleoDdniz+c4zRSjdAPqmUnxYL4PwQ=";
   };
 
   dontConfigure = true;

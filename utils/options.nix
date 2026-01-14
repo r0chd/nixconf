@@ -52,13 +52,6 @@ in
             );
             default = { };
           };
-
-          nixos-anywhere = {
-            enable = lib.mkEnableOption "nixos-anywhere tofu module";
-            ip = lib.mkOption {
-              type = types.str;
-            };
-          };
         };
       }
     );

@@ -23,6 +23,7 @@
   };
 
   services = {
+    flatpak.enable = true;
     dragonflydb = {
       enable = true;
       port = 63790;

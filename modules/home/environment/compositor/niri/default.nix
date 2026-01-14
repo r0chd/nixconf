@@ -3,6 +3,8 @@
   inputs,
   lib,
   profile,
+  platform,
+  config,
   ...
 }:
 {
@@ -13,6 +15,7 @@
 
   programs.niri = {
     enable = lib.mkDefault profile == "desktop";
+    package = if platform == "non-nixos" then (config.lib.nixGL.wrap pkgs.niri) else pkgs.niri;
     settings = {
       input = {
         keyboard = {

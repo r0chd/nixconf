@@ -3,6 +3,7 @@
   pkgs,
   config,
   profile,
+  platform,
   ...
 }:
 let
@@ -17,6 +18,7 @@ in
 
   config.wayland.windowManager.sway = {
     inherit (cfg) enable;
+    package = if platform == "non-nixos" then (config.lib.nixGL.wrap pkgs.sway) else null;
     extraConfig = ''
       default_border pixel 2
     '';

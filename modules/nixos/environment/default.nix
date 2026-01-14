@@ -35,8 +35,9 @@
       portal = {
         enable = true;
         xdgOpenUsePortal = true;
-        extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-        wlr = { inherit (config.programs.sway) enable; };
+        extraPortals = builtins.attrValues {
+          inherit (pkgs) xdg-desktop-portal-gtk xdg-desktop-portal-luminous xdg-desktop-portal-gnome;
+        };
 
         config = {
           niri = {
@@ -49,10 +50,16 @@
             "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
             "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
           };
+          sway = {
+            default = lib.mkForce [
+              "gtk"
+              "luminous"
+            ];
+          };
           Hyprland = {
             default = [
-              "hyprland"
               "gtk"
+              "luminous"
             ];
           };
         };

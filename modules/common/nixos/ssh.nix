@@ -2,10 +2,6 @@
 
 let
   keys = {
-    "nixos-anywhere" = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ9Ni+XknzGyAHhNxgbZ9TGCCl96PfipvE44PqbS8MqU nixos-anywhere@laptop"
-    ];
-
     "unixpariah@laptop" =
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKC3KCUFx+9Q26DOYrzA/axbc9rSf6m/3DOvE5h/wApI unixpariah@laptop-huawei";
     "r0chd@laptop-huawei" =
@@ -94,7 +90,7 @@ let
     };
   };
 
-  hosts = baseHosts |> lib.mapAttrs (_host: users: users // { inherit (keys) nixos-anywhere; });
+  hosts = baseHosts |> lib.mapAttrs (_host: users: users);
 in
 {
   users.users = lib.genAttrs (hosts.${config.networking.hostName} |> builtins.attrNames) (user: {
