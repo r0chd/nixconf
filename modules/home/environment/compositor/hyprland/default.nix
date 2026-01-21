@@ -42,7 +42,7 @@ in
           "systemctl --user start hyprpolkitagent"
         ];
 
-        layerrule = [ "noanim, moxnotify" ];
+        # layerrule = [ "noanim, moxnotify" ];
 
         input = {
           kb_layout = "us";

@@ -7,7 +7,6 @@
   zig,
   pkg-config,
   callPackage,
-  tree_magic_mini,
   fetchFromGitea,
 }:
 stdenv.mkDerivation (finalAttrs: {
@@ -19,7 +18,7 @@ stdenv.mkDerivation (finalAttrs: {
     owner = "r0chd";
     repo = "wl-clipboard-zig";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-LazFV48AOSDmDzleoDdniz+c4zRSjdAPqmUnxYL4PwQ=";
+    hash = "sha256-30EllGZ2i/ranV0EcAyrKJQuHnhRs4ejB79QMAj9uDo=";
   };
 
   dontConfigure = true;
@@ -34,7 +33,6 @@ stdenv.mkDerivation (finalAttrs: {
 
   buildInputs = [
     wayland
-    tree_magic_mini
   ];
 
   zigBuildFlags = [ "--release=fast" ];

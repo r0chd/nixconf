@@ -1,5 +1,4 @@
 {
-  pkgs,
   lib,
   config,
   ...
@@ -17,6 +16,13 @@ in
     #   '';
     # };
 
-    environment.persist.users.directories = [ ".var/app" ];
+    environment.persist = {
+      directories = [ "/var/lib/flatpak" ];
+      users.directories = [
+        ".var/app"
+        ".cache/flatpak"
+        ".local/share/flatpak"
+      ];
+    };
   };
 }

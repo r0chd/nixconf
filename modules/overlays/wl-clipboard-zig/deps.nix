@@ -22,4 +22,12 @@ linkFarm "zig-packages" [
       hash = "sha256-cBrNb21V9WPxN02tdtjxdwZ3cb77b3tZy2pf9vQh5Qo=";
     };
   }
+  {
+    name = "zmime-0.1.3-Mse7galzAAAXYDAj4HG02Ej2uGpNHt7ZzAu6_7l2iiwB";
+    path = fetchgit {
+      url = "https://github.com/avac74/zmime";
+      rev = "5e00cc9cc01b968b9577df3a1cd7e4af440c0e6c";
+      hash = "sha256-h7HyKrYFspr6aNG4hue8um+eYpdjwr2PC5/xGMSRH5Y=";
+    };
+  }
 ]

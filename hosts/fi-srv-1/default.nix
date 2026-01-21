@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 {
@@ -430,6 +429,16 @@
     };
 
     monitoring = {
+      headlamp = {
+        enable = true;
+        gated = true;
+        resources = {
+          requests = {
+            memory = "200Mi";
+          };
+          limits.memory = "400Mi";
+        };
+      };
       prometheus = {
         enable = true;
         gated = true;

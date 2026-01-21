@@ -125,7 +125,7 @@
                       {
                         name = "origin";
                         url = "https://forgejo.r0chd.pl/r0chd/nixconf";
-                        branches.main.name = "main";
+                        branches.main.name = "master";
                       }
                     ];
                   };
@@ -195,7 +195,8 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    impermanence.url = "github:nix-community/impermanence";
+    # Impermanence deprecated my setup RIP
+    impermanence.url = "github:nix-community/impermanence/69ca099e5318bd9c12bc67211cbb23c4c3643b2b";
 
     comin = {
       url = "github:nlewo/comin";

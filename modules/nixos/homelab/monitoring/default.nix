@@ -8,5 +8,6 @@
     ./vector
     ./quickwit
     ./kuvasz
+    ./headlamp
   ];
 }
