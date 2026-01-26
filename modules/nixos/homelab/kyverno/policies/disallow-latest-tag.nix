@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   services.k3s.manifests."kyverno-policies-disallow-latest-tag".content = [
     {

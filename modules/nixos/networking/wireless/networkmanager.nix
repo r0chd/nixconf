@@ -17,7 +17,7 @@ in
       systemUsers
       |> lib.mapAttrs (
         _user: value: {
-          extraGroups = lib.mkIf (value.root.enable) [ "networkmanager" ];
+          extraGroups = lib.mkIf value.root.enable [ "networkmanager" ];
         }
       );
 

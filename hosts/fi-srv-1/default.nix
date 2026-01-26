@@ -37,6 +37,7 @@
     "forgejo/access_key_id" = { };
     "forgejo/secret_access_key" = { };
     "forgejo/admin_password" = { };
+    "forgejo/runner_token" = { };
 
     "nextcloud/access_key_id" = { };
     "nextcloud/secret_access_key" = { };
@@ -344,6 +345,9 @@
       s3 = {
         access_key_id = config.sops.placeholder."forgejo/access_key_id";
         secret_access_key = config.sops.placeholder."forgejo/secret_access_key";
+      };
+      runner = {
+        token = config.sops.placeholder."forgejo/runner_token";
       };
       resources = {
         requests = {

@@ -81,7 +81,7 @@ in
                       port = "http";
                     };
                   };
-                  resources = cfg.resources;
+                  inherit (cfg) resources;
                 }
               ];
             };

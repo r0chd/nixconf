@@ -2,6 +2,7 @@
 
 (nix-vm-test.lib.${pkgs.system}.${distribution}.${version} {
   sharedDirs = { };
+  diskSize = "+1G";
 
   # Configure VM with 2GB memory
   machineConfigModule = { ... }: {

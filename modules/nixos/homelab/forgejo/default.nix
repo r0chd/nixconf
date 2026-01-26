@@ -4,7 +4,10 @@ let
   inherit (lib) types;
 in
 {
-  imports = [ ./db.nix ];
+  imports = [
+    ./db.nix
+    ./runner.nix
+  ];
 
   options.homelab.forgejo = {
     enable = lib.mkEnableOption "forgejo";
@@ -63,6 +66,27 @@ in
       type = types.attrsOf (types.attrsOf (types.nullOr types.str));
       description = "Resource requests/limits for forgejo init containers.";
     };
+
+    runner = {
+      token = lib.mkOption {
+        type = types.str;
+        description = "Runner registration token";
+      };
+      name = lib.mkOption {
+        type = types.str;
+        default = "forgejo-runner";
+        description = "Runner name";
+      };
+      labels = lib.mkOption {
+        type = types.listOf types.str;
+        default = [
+          "ubuntu-latest"
+          "docker"
+          "nix"
+        ];
+        description = "Runner labels";
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -76,7 +100,7 @@ in
         createNamespace = true;
 
         values = {
-          resources = cfg.resources;
+          inherit (cfg) resources;
 
           replicaCount = 1;
 
@@ -297,6 +321,17 @@ in
           stringData = {
             inherit (cfg.s3) access_key_id;
             inherit (cfg.s3) secret_access_key;
+          };
+        }
+        {
+          metadata = {
+            name = "forgejo-runner-token";
+            namespace = "forgejo";
+          };
+          stringData = {
+            CONFIG_TOKEN = cfg.runner.token;
+            CONFIG_NAME = cfg.runner.name;
+            CONFIG_INSTANCE = "https://${cfg.ingressHost}";
           };
         }
       ];

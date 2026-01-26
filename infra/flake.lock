@@ -704,8 +704,8 @@
         "stylix": "stylix"
       },
       "locked": {
-        "lastModified": 1769032370,
-        "narHash": "sha256-6rEQqW5qklfD5JmS21Nvc9NmgyyhRd+d2a94zrlSfjI=",
+        "lastModified": 1769645255,
+        "narHash": "sha256-LWA6Od7Z/GYISBls3AJoCpDK9rEJB32khKocM7tArss=",
         "path": "/var/lib/nixconf",
         "type": "path"
       },

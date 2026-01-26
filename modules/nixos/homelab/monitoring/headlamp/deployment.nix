@@ -66,7 +66,7 @@ in
                       name = "metrics";
                     }
                   ];
-                  resources = cfg.resources;
+                  inherit (cfg) resources;
                   readinessProbe = {
                     httpGet = {
                       scheme = "HTTP";

@@ -108,7 +108,7 @@ in
           else
             { };
 
-        resources = cfg.resources;
+        inherit (cfg) resources;
       };
     };
 

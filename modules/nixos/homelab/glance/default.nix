@@ -419,7 +419,7 @@ in
       targetNamespace = "glance";
       createNamespace = true;
       values = {
-        resources = cfg.resources;
+        inherit (cfg) resources;
         common = {
           name = "glance";
           service = {

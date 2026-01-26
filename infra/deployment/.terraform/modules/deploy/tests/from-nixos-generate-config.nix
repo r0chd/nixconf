@@ -7,12 +7,7 @@
       ];
       environment.systemPackages = [ pkgs.jq ];
     };
-    installed = {
-      services.openssh.enable = true;
-      virtualisation.memorySize = 1500;
-
-      users.users.root.openssh.authorizedKeys.keyFiles = [ ./modules/ssh-keys/ssh.pub ];
-    };
+    installed = ./modules/target-base.nix;
   };
   testScript = ''
     start_all()

@@ -179,20 +179,15 @@ machine to be saved.
 
 #### 8.1 nixos-facter
 
-As an alternative to `nixos-generate-config`, you can use the experimental
-[nixos-facter](https://github.com/numtide/nixos-facter) command, which offers
-more comprehensive hardware reports and advanced configuration options.
+As an alternative to `nixos-generate-config`, you can use
+[nixos-facter](https://github.com/nix-community/nixos-facter), which offers more
+comprehensive hardware reports and advanced configuration options. The
+nixos-facter module is included in nixpkgs and automatically configures drivers,
+kernel modules, firmware, and various hardware support based on the detected
+hardware.
 
-To use `nixos-facter`, add the following to your flake inputs:
-
-```diff
- {
-+ inputs.nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
- }
-```
-
-Next, import the module into your configuration and specify `facter.json` as the
-path where the hardware report will be saved:
+To use `nixos-facter`, specify `facter.json` as the path where the hardware
+report will be saved:
 
 ```diff
  nixosConfigurations.generic-nixos-facter = nixpkgs.lib.nixosSystem {
@@ -200,17 +195,15 @@ path where the hardware report will be saved:
    modules = [
      disko.nixosModules.disko
      ./configuration.nix
-+    nixos-facter-modules.nixosModules.facter
-+    { config.facter.reportPath = ./facter.json }
++    { hardware.facter.reportPath = ./facter.json; }
    ];
  };
 ```
 
 To generate the configuration for `nixos-facter` with `nixos-anywhere`, use the
 following flags: `--generate-hardware-config nixos-facter ./facter.json`. The
-second flag, `./facter.json`, specifies where `nixos-generate-config` will store
-the hardware report. Adjust this path to suit the location where you want the
-`facter.json` to be saved.
+second argument, `./facter.json`, specifies where `nixos-facter` will store the
+hardware report. Adjust this path to suit your flake layout.
 
 ### 9. Run it
 

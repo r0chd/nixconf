@@ -143,7 +143,7 @@ in
             }
           else
             { };
-        resources = cfg.resources;
+        inherit (cfg) resources;
         resizePolicy = [ ];
         extraVolumes = [ ];
         extraVolumeMounts = [ ];

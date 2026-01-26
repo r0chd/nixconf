@@ -4,12 +4,7 @@
     name = "from-nixos-build-on-remote";
     nodes = {
       installer = ./modules/installer.nix;
-      installed = {
-        services.openssh.enable = true;
-        virtualisation.memorySize = 1500;
-
-        users.users.root.openssh.authorizedKeys.keyFiles = [ ./modules/ssh-keys/ssh.pub ];
-      };
+      installed = ./modules/target-base.nix;
     };
     testScript = ''
       def create_test_machine(

@@ -31,6 +31,5 @@ resource "null_resource" "nixos-remote" {
       ARGUMENTS = local.arguments
     }, var.extra_environment)
     command = "${path.module}/run-nixos-anywhere.sh ${join(" ", local.disk_encryption_key_scripts)}"
-    quiet   = var.debug_logging
   }
 }

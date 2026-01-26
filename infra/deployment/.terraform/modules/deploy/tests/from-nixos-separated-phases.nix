@@ -3,14 +3,14 @@
   nodes = {
     installer = ./modules/installer.nix;
     installed = {
-      services.openssh.enable = true;
-      virtualisation.memorySize = 1500;
+      imports = [ ./modules/target-base.nix ];
 
       users.users.nixos = {
         isNormalUser = true;
         openssh.authorizedKeys.keyFiles = [ ./modules/ssh-keys/ssh.pub ];
         extraGroups = [ "wheel" ];
       };
+
       security.sudo.enable = true;
       security.sudo.wheelNeedsPassword = false;
     };

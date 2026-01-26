@@ -33,7 +33,7 @@ in
                 {
                   image = "kuvaszmonitoring/kuvasz:latest";
                   name = "kuvasz";
-                  resources = cfg.resources;
+                  inherit (cfg) resources;
                   tty = true;
                   ports = [ { containerPort = 8080; } ];
                   startupProbe = {
