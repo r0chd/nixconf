@@ -2,6 +2,12 @@ _: {
   imports = [ ./utils/options.nix ];
 
   hosts = {
+    rpi = {
+      system = "aarch64-linux";
+      profile = "server";
+      platform = "rpi-nixos";
+    };
+
     fi-srv-1 = {
       system = "x86_64-linux";
       profile = "server";
@@ -28,10 +34,6 @@ _: {
           root.enable = true;
           shell = "nushell";
         };
-        #os1 = {
-        #  root.enable = true;
-        #  shell = "nushell";
-        #};
       };
     };
     laptop-huawei = {

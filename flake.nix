@@ -133,7 +133,12 @@
               ]
               ++ lib.optionals (attrs.platform == "rpi-nixos") (
                 builtins.attrValues {
-                  inherit (nixpkgs.nixos-raspberrypi.nixosModules.raspberry-pi-5) base display-vc4 bluetooth;
+                  inherit (nixpkgs.nixos-raspberrypi.nixosModules.raspberry-pi-5)
+                    base
+                    display-vc4
+                    bluetooth
+                    page-size-16k
+                    ;
                 }
               );
             };

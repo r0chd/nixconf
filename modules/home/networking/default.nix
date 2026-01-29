@@ -3,7 +3,10 @@ let
   inherit (lib) types;
 in
 {
-  imports = [ ./ssh ];
+  imports = [
+    ./ssh.nix
+    ./gpg.nix
+  ];
 
   options.networking.hostName = lib.mkOption {
     type = types.str;

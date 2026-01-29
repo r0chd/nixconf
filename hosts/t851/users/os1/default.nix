@@ -107,6 +107,12 @@
       enable = true;
       #authFile = ~/file;
     };
+
+    gpg = {
+      enable = true;
+      mutableKeys = false;
+      mutableTrust = false;
+    };
   };
 
   environment = {
@@ -186,6 +192,7 @@
 
   home.packages = builtins.attrValues {
     inherit (pkgs)
+      awscli2
       slack
       signal-desktop
       google-cloud-sql-proxy

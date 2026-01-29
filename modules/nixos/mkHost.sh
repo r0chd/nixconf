@@ -1,5 +1,5 @@
-#!/bin/sh
-set -euo pipefail
+#!/bin/bash
+set -eu pipefail
 
 echo -n "Enter hostname: "
 read HOST
@@ -16,14 +16,6 @@ echo -n "Enter locale [en_US.UTF-8]: "
 read LOCALE
 LOCALE=${LOCALE:-en_US.UTF-8}
 
-echo -n "Use legacy boot? [y/N]: "
-read LEGACY_BOOT
-if [ "${LEGACY_BOOT:-N}" = "y" ] || [ "${LEGACY_BOOT:-N}" = "Y" ]; then
-  LEGACY_BOOT_VALUE=true
-else
-  LEGACY_BOOT_VALUE=false
-fi
-
 cat <<EOF > "$BASE_CONFIG_PATH/hardware-configuration.nix"
 { ... }: { }
 EOF
@@ -35,10 +27,6 @@ cat <<EOF > "$BASE_CONFIG_PATH/default.nix"
     ./hardware-configuration.nix
     ./disko.nix
   ];
-
-  system = {
-    bootloader.legacy = $LEGACY_BOOT_VALUE;
-  };
 
   time.timeZone = "$TIMEZONE";
   i18n.defaultLocale = "$LOCALE";
@@ -65,7 +53,10 @@ creation_rules:
         - *root
 EOF
 
-touch "$BASE_CONFIG_PATH/secrets/secrets.yaml"
+TEMP_JSON=$(mktemp)
+echo "{}" > "$TEMP_JSON"
+nix shell nixpkgs#sops -c sops --encrypt --age "$AGE_PUBLIC_KEY" --output "$BASE_CONFIG_PATH/secrets/secrets.yaml" "$TEMP_JSON"
+rm "$TEMP_JSON"
 
 echo "Host $HOST initialized successfully!"
 echo "Private SSH key: $TMP_KEY"
