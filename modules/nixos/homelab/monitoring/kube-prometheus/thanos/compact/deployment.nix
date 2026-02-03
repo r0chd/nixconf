@@ -106,8 +106,14 @@ in
                 }
                 {
                   name = "thanos-storage";
-                  configMap = {
-                    name = "thanos-storage";
+                  secret = {
+                    secretName = "thanos-objectstorage";
+                    items = [
+                      {
+                        key = "thanos.yaml";
+                        path = "config.yaml";
+                      }
+                    ];
                   };
                 }
               ];

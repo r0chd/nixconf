@@ -36,6 +36,7 @@ in
         global = { };
         kubeVersion = null;
         config = {
+          existingSecret = "oauth2-proxy-credentials";
           configFile = ''
             provider = "oidc"
             oidc_issuer_url = "https://${config.homelab.auth.dex.ingressHost}"
@@ -51,16 +52,6 @@ in
             set_xauthrequest = true
           '';
         };
-        alphaConfig = {
-          enabled = false;
-          annotations = { };
-          serverConfigData = { };
-          metricsConfigData = { };
-          configData = { };
-          configFile = "";
-          existingConfig = null;
-          existingSecret = null;
-        };
         image = {
           repository = "quay.io/oauth2-proxy/oauth2-proxy";
           tag = "";
@@ -70,31 +61,12 @@ in
         imagePullSecrets = [ ];
         extraArgs = {
           reverse-proxy = true;
+          ssl-insecure-skip-verify = true;
         };
         extraEnv = [ ];
 
-        envFrom = [
-          {
-            secretRef = {
-              name = "oauth2-proxy-cookie";
-            };
-          }
-          {
-            secretRef = {
-              name = "dex-oauth2-client-secret";
-            };
-          }
-        ];
+        envFrom = [ ];
 
-        customLabels = { };
-        authenticatedEmailsFile = {
-          enabled = false;
-          persistence = "configmap";
-          template = "";
-          restrictedUserAccessKey = "";
-          restricted_access = "";
-          annotations = { };
-        };
         service = {
           type = "ClusterIP";
           portNumber = 80;
@@ -144,97 +116,6 @@ in
           else
             { };
         inherit (cfg) resources;
-        resizePolicy = [ ];
-        extraVolumes = [ ];
-        extraVolumeMounts = [ ];
-        extraContainers = [ ];
-        extraInitContainers = [ ];
-        priorityClassName = "";
-        hostAliases = [ ];
-        tolerations = [ ];
-        nodeSelector = { };
-        proxyVarsAsSecrets = false;
-        livenessProbe = {
-          enabled = true;
-          initialDelaySeconds = 0;
-          timeoutSeconds = 1;
-        };
-        readinessProbe = {
-          enabled = true;
-          initialDelaySeconds = 0;
-          timeoutSeconds = 5;
-          periodSeconds = 10;
-          successThreshold = 1;
-        };
-        securityContext = {
-          enabled = true;
-          allowPrivilegeEscalation = false;
-          capabilities = {
-            drop = [ "ALL" ];
-          };
-          readOnlyRootFilesystem = true;
-          runAsNonRoot = true;
-          runAsUser = 2000;
-          runAsGroup = 2000;
-          seccompProfile = {
-            type = "RuntimeDefault";
-          };
-        };
-        deploymentAnnotations = { };
-        podAnnotations = { };
-        podLabels = { };
-        replicaCount = 1;
-        revisionHistoryLimit = 10;
-        strategy = { };
-        enableServiceLinks = true;
-        podDisruptionBudget = {
-          enabled = true;
-          maxUnavailable = null;
-          minAvailable = 1;
-          unhealthyPodEvictionPolicy = "";
-        };
-        autoscaling = {
-          enabled = false;
-          minReplicas = 1;
-          maxReplicas = 10;
-          targetCPUUtilizationPercentage = 80;
-          annotations = { };
-          behavior = { };
-        };
-        podSecurityContext = { };
-        httpScheme = "http";
-        initContainers = {
-          waitForRedis = {
-            enabled = true;
-            image = {
-              repository = "alpine";
-              tag = "latest";
-              pullPolicy = "IfNotPresent";
-            };
-            kubectlVersion = "";
-            securityContext = {
-              enabled = true;
-              allowPrivilegeEscalation = false;
-              capabilities = {
-                drop = [ "ALL" ];
-              };
-              readOnlyRootFilesystem = true;
-              runAsNonRoot = true;
-              runAsUser = 65534;
-              runAsGroup = 65534;
-              seccompProfile = {
-                type = "RuntimeDefault";
-              };
-            };
-            timeout = 180;
-            resources = { };
-          };
-        };
-        htpasswdFile = {
-          enabled = false;
-          existingSecret = "";
-          entries = [ ];
-        };
         sessionStorage = {
           type = "redis";
           redis = {
@@ -250,28 +131,6 @@ in
           enabled = false;
         };
         checkDeprecation = true;
-        metrics = {
-          enabled = true;
-          port = 44180;
-          service = {
-            appProtocol = "http";
-          };
-          serviceMonitor = {
-            enabled = false;
-            namespace = "";
-            prometheusInstance = "default";
-            interval = "60s";
-            scrapeTimeout = "30s";
-            labels = { };
-            scheme = "";
-            tlsConfig = { };
-            bearerTokenFile = "";
-            annotations = { };
-            metricRelabelings = [ ];
-            relabelings = [ ];
-          };
-        };
-        extraObjects = [ ];
       };
     };
 

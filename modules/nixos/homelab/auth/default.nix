@@ -69,6 +69,17 @@ in
       }
       {
         metadata = {
+          name = "oauth2-proxy-credentials";
+          namespace = "auth";
+        };
+        stringData = {
+          "client-id" = "oauth2-proxy";
+          "client-secret" = cfg.clientSecret;
+          "cookie-secret" = cfg.oauth2ProxyCookie;
+        };
+      }
+      {
+        metadata = {
           name = "dex-oauth2-client-secret";
           namespace = "auth";
         };

@@ -68,18 +68,6 @@ in
       description = "Hostname base for garage ingress (defaults to garage.i.<domain> if gated, garage.<domain> otherwise)";
     };
 
-    rpcSecret = lib.mkOption {
-      type = types.str;
-    };
-
-    adminToken = lib.mkOption {
-      type = types.str;
-    };
-
-    metricsToken = lib.mkOption {
-      type = types.str;
-    };
-
     resources = lib.mkOption {
       type = types.attrsOf (types.attrsOf (types.nullOr types.str));
       description = "Kubernetes resource requests/limits.";
@@ -102,21 +90,5 @@ in
         description = "Storage class for persistent volumes";
       };
     };
-  };
-
-  config = lib.mkIf (config.homelab.enable && cfg.enable) {
-    services.k3s.secrets = [
-      {
-        metadata = {
-          name = "garage-secrets";
-          namespace = "default";
-        };
-        stringData = {
-          rpc-secret = cfg.rpcSecret;
-          admin-token = cfg.adminToken;
-          metrics-token = cfg.metricsToken;
-        };
-      }
-    ];
   };
 }

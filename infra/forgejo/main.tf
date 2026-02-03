@@ -54,7 +54,71 @@ resource "forgejo_repository" "freedesktop-sound" {
   default_branch = "master"
 }
 
-# resource "forgejo_organization" "mox-desktop" {
-#   provider = forgejo.apiToken
-#   name     = "mox-desktop"
-# }
+resource "forgejo_organization" "mox-desktop" {
+  provider = forgejo.apiToken
+  name     = "mox-desktop"
+}
+
+resource "forgejo_repository" "mox_flake" {
+  provider       = forgejo.apiToken
+  name           = "mox-flake"
+  owner          = forgejo_organization.mox-desktop.name
+  description    = "Flakes for mox desktop"
+  default_branch = "master"
+}
+
+resource "forgejo_repository" "moxwm" {
+  provider       = forgejo.apiToken
+  name           = "moxwm"
+  owner          = forgejo_organization.mox-desktop.name
+  default_branch = "master"
+}
+
+resource "forgejo_repository" "moxnotify" {
+  provider       = forgejo.apiToken
+  name           = "moxnotify"
+  owner          = forgejo_organization.mox-desktop.name
+  default_branch = "master"
+}
+
+resource "forgejo_repository" "moxui" {
+  provider       = forgejo.apiToken
+  name           = "moxui"
+  owner          = forgejo_organization.mox-desktop.name
+  default_branch = "master"
+}
+
+resource "forgejo_repository" "moxidle" {
+  provider       = forgejo.apiToken
+  name           = "moxidle"
+  owner          = forgejo_organization.mox-desktop.name
+  default_branch = "master"
+}
+
+resource "forgejo_repository" "moxpaper" {
+  provider       = forgejo.apiToken
+  name           = "moxpaper"
+  owner          = forgejo_organization.mox-desktop.name
+  default_branch = "master"
+}
+
+resource "forgejo_repository" "moxctl" {
+  provider       = forgejo.apiToken
+  name           = "moxctl"
+  owner          = forgejo_organization.mox-desktop.name
+  default_branch = "master"
+}
+
+resource "forgejo_repository" "moxwiki" {
+  provider       = forgejo.apiToken
+  name           = "moxwiki"
+  owner          = forgejo_organization.mox-desktop.name
+  default_branch = "master"
+}
+
+resource "forgejo_repository" "tooling" {
+  provider       = forgejo.apiToken
+  name           = "tooling"
+  owner          = forgejo_organization.mox-desktop.name
+  default_branch = "master"
+}

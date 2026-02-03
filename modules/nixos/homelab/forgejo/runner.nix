@@ -13,6 +13,8 @@ in
         targetNamespace = "forgejo";
 
         values = {
+          inherit (cfg.runner) resources;
+
           replicaCount = 1;
           runner = {
             config = {

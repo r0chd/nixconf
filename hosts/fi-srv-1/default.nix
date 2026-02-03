@@ -13,18 +13,18 @@
     #"pihole/password" = { };
 
     alertmanager_webhook_url = { };
+    flux_webhook_url = { };
 
     github_api = { };
-
-    "garage/rpc-secret" = { };
-    "garage/admin-token".sopsFile = ../../infra/garage/secrets/secrets.yaml;
-    "garage/metrics-token" = { };
 
     "grafana/username" = { };
     "grafana/password" = { };
 
     "vaultwarden_backup/access_key_id" = { };
     "vaultwarden_backup/secret_access_key" = { };
+
+    "flux-bucket/access_key" = { };
+    "flux-bucket/secret_key" = { };
 
     "thanos/access_key" = { };
     "thanos/secret_key" = { };
@@ -58,6 +58,13 @@
   homelab = {
     enable = true;
     domain = "r0chd.pl";
+
+    flux = {
+      endpoint = "4cb32bb0f4c65060af66dce1d528a106.r2.cloudflarestorage.com";
+      access_key_id = config.sops.placeholder."flux-bucket/access_key";
+      secret_access_key = config.sops.placeholder."flux-bucket/secret_key";
+      webhook = config.sops.placeholder.flux_webhook_url;
+    };
 
     nodeType = "primary";
 
@@ -113,14 +120,6 @@
     };
     system = {
       dragonfly.enable = true;
-      cloudnative-pg = {
-        resources = {
-          requests = {
-            memory = "50Mi";
-          };
-          limits.memory = "100Mi";
-        };
-      };
       reloader = {
         resources = {
           requests = {
@@ -157,7 +156,7 @@
       db = {
         resources = {
           requests = {
-            memory = "40Mi";
+            memory = "70Mi";
           };
           limits.memory = "80Mi";
         };
@@ -167,9 +166,6 @@
     garage = {
       enable = true;
       storage.dataSize = "100Gi";
-      rpcSecret = config.sops.placeholder."garage/rpc-secret";
-      adminToken = config.sops.placeholder."garage/admin-token";
-      metricsToken = config.sops.placeholder."garage/metrics-token";
       resources = {
         requests = {
           memory = "12Mi";
@@ -210,27 +206,24 @@
       };
       runner = {
         token = config.sops.placeholder."forgejo/runner_token";
+        resources = {
+          requests = {
+            memory = "350Mi";
+            cpu = "1.60m";
+          };
+          limits.memory = "700Mi";
+        };
       };
       resources = {
         requests = {
-          memory = "2.5Gi";
+          memory = "1.6Gi";
         };
-        limits.memory = "3Gi";
-      };
-      initContainerResources = {
-        requests = {
-          cpu = "100m";
-          memory = "128Mi";
-        };
-        limits = {
-          cpu = "200m";
-          memory = "256Mi";
-        };
+        limits.memory = "2.5Gi";
       };
       db = {
         resources = {
           requests = {
-            memory = "50Mi";
+            memory = "70Mi";
           };
           limits.memory = "100Mi";
         };
@@ -475,7 +468,7 @@
         db = {
           resources = {
             requests = {
-              memory = "40Mi";
+              memory = "70Mi";
             };
             limits.memory = "80Mi";
           };
@@ -496,7 +489,7 @@
         db = {
           resources = {
             requests = {
-              memory = "60Mi";
+              memory = "70Mi";
             };
             limits.memory = "100Mi";
           };

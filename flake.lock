@@ -312,10 +312,10 @@
         "moxpaper": "moxpaper"
       },
       "locked": {
-        "lastModified": 1763521223,
-        "narHash": "sha256-EMim5JFaF6I2EYAusgFPgwFQ4oM4IIX+mMAaOV6ObRs=",
+        "lastModified": 1770211950,
+        "narHash": "sha256-AkQzIhlq/KWN5AhaXL73Azkq/lv8qfD8/hxnMkv1N9c=",
         "ref": "refs/heads/master",
-        "rev": "6f3c067eb8c57f2a2d34f21ac17207a7156698b0",
+        "rev": "3835743702ba580950a4efefccbf9481aedf91ae",
         "revCount": 121,
         "type": "git",
         "url": "https://forgejo.r0chd.pl/mox-desktop/mox-flake.git"
@@ -330,10 +330,10 @@
         "tooling": "tooling"
       },
       "locked": {
-        "lastModified": 1763262733,
+        "lastModified": 1770171237,
         "narHash": "sha256-dqU7HQbMBTHggBttq/qcpYrsEfvZUkHxt3JrxS7mKvI=",
         "ref": "refs/heads/master",
-        "rev": "afe61ef5b74bfcc538440c39b74e729e03f4f541",
+        "rev": "dd23766fd364cb2bfb15f934cdf8af6f9b1054ed",
         "revCount": 26,
         "type": "git",
         "url": "https://forgejo.r0chd.pl/mox-desktop/moxctl.git"
@@ -348,10 +348,10 @@
         "tooling": "tooling_2"
       },
       "locked": {
-        "lastModified": 1763263324,
+        "lastModified": 1770171604,
         "narHash": "sha256-+YJbS1CUUOGbc1UQG2Q96OM+dJ8ncOv8SEm1YraUDIE=",
         "ref": "refs/heads/master",
-        "rev": "18863c0943c278c79d0045b905ce0958baea7641",
+        "rev": "d3bfe568c8182418a46020918be763c7968d0266",
         "revCount": 87,
         "type": "git",
         "url": "https://forgejo.r0chd.pl/mox-desktop/moxidle.git"
@@ -366,11 +366,11 @@
         "tooling": "tooling_3"
       },
       "locked": {
-        "lastModified": 1769787744,
-        "narHash": "sha256-F3hmC4d+zME0fG+dwyG9XxRWv7EplsUxmVbLRgPlNuA=",
+        "lastModified": 1770172837,
+        "narHash": "sha256-GPoQuT08LkaiICZNAoyUPkC7FoE0HqmT2DrQTj7TGP4=",
         "ref": "refs/heads/master",
-        "rev": "5a721a57a732471f90404d243b405d75ef17f17b",
-        "revCount": 364,
+        "rev": "c0f94de7b8ae0a39c256364f76275adba50ac6e2",
+        "revCount": 366,
         "type": "git",
         "url": "https://forgejo.r0chd.pl/mox-desktop/moxnotify.git"
       },
@@ -384,10 +384,10 @@
         "tooling": "tooling_4"
       },
       "locked": {
-        "lastModified": 1767918004,
-        "narHash": "sha256-80NRB90mGECDOMQzJ556pJME+F3vl8CRSvUsWL9WV4I=",
+        "lastModified": 1770172766,
+        "narHash": "sha256-iNBz8Tq+/cNWT1IJnr97w9/IAoWWDSMWBqez7AwHKuc=",
         "ref": "refs/heads/master",
-        "rev": "ee1147fab53d77df0c35346cd4675a34a654f59c",
+        "rev": "e3357384f3f41be013cd896f2da5ee6f856d4305",
         "revCount": 135,
         "type": "git",
         "url": "https://forgejo.r0chd.pl/mox-desktop/moxpaper.git"

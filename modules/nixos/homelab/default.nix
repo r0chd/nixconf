@@ -1,9 +1,16 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.homelab;
+  inherit (lib) types;
 in
 {
   imports = [
+    ./flux
     ./ingress-nginx
     ./garage
     ./system
@@ -63,11 +70,21 @@ in
       type = lib.types.str;
       internal = true;
     };
+
+    flux = {
+      access_key_id = lib.mkOption {
+        type = types.str;
+      };
+      secret_access_key = lib.mkOption {
+        type = types.str;
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
     services.k3s = {
       inherit (cfg) enable;
+      manifestDir = "/var/lib/manifests";
       disableAgent = false;
       extraFlags = [
         "--disable traefik"
@@ -80,6 +97,37 @@ in
 
       serverAddr = if cfg.nodeType == "connecting" then cfg.connecting.primaryNodeIp else "";
       tokenFile = if cfg.nodeType == "connecting" then cfg.connecting.tokenFile else null;
+
+      secrets = [
+        {
+          metadata = {
+            name = "flux-s3-credentials";
+            namespace = "flux-system";
+          };
+          stringData = {
+            accesskey = cfg.flux.access_key_id;
+            secretkey = cfg.flux.secret_access_key;
+          };
+        }
+      ];
+    };
+
+    environment = {
+      systemPackages = [ pkgs.fluxcd ];
+      variables.KUBECONFIG = "/etc/rancher/k3s/k3s.yaml";
+    };
+
+    sops.templates.rclone = {
+      content = ''
+        [Garage]
+        type = s3
+        provider = Cloudflare
+        access_key_id = ${cfg.flux.access_key_id}
+        secret_access_key = ${cfg.flux.secret_access_key}
+        region = auto
+        endpoint = https://${cfg.flux.endpoint}
+      '';
+      path = "/etc/rclone.conf";
     };
 
     networking.firewall.allowedTCPPorts = [
@@ -91,5 +139,27 @@ in
     users.groups.homelab = { };
 
     homelab.storageClass = cfg.storageClassName;
+
+    systemd.services.flux-s3-sync = {
+      description = "Sync Nix-generated manifests to S3 for Flux";
+
+      wantedBy = [ "multi-user.target" ];
+
+      wants = [ "network-online.target" ];
+      after = [ "network-online.target" ];
+
+      serviceConfig = {
+        Type = "oneshot";
+        User = "root";
+      };
+
+      script = ''
+        ${pkgs.rclone}/bin/rclone sync ${config.services.k3s.manifestDir} Garage:flux \
+          --config /etc/rclone.conf \
+          --checksum \
+          --verbose \
+          --copy-links
+      '';
+    };
   };
 }

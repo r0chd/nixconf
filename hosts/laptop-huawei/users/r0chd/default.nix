@@ -20,6 +20,9 @@
 
     "garage/moxpaper/access_key_id" = { };
     "garage/moxpaper/secret_access_key" = { };
+
+    "garage/flux/access_key_id" = { };
+    "garage/flux/secret_access_key" = { };
   };
 
   programs = {
@@ -59,6 +62,13 @@
             url = "https://s3.garage.r0chd.pl";
             accessKey = config.sops.placeholder."garage/moxpaper/access_key_id";
             secretKey = config.sops.placeholder."garage/moxpaper/secret_access_key";
+            api = "s3v4";
+            path = "auto";
+          };
+          flux = {
+            url = "https://s3.garage.r0chd.pl";
+            accessKey = config.sops.placeholder."garage/flux/access_key_id";
+            secretKey = config.sops.placeholder."garage/flux/secret_access_key";
             api = "s3v4";
             path = "auto";
           };

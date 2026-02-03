@@ -536,6 +536,14 @@ in
             access_key: ${cfg.thanos.access_key}
             secret_key: ${cfg.thanos.secret_key}
         '';
+        stringData."config.yaml" = ''
+          type: s3
+          config:
+            bucket: ${cfg.thanos.bucket}
+            endpoint: "s3.${config.homelab.garage.ingressHost}"
+            access_key: ${cfg.thanos.access_key}
+            secret_key: ${cfg.thanos.secret_key}
+        '';
       }
       ++ lib.optional cfg.thanos.enable {
         metadata = {

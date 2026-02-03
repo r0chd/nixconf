@@ -16,6 +16,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 let
@@ -54,25 +55,38 @@ in
             inherit (secret) metadata;
             inherit (secret) stringData;
           };
-          path = "/var/lib/rancher/k3s/server/manifests/${secret.metadata.name}.json";
+          path = "${cfg.manifestDir}/${secret.metadata.name}.json";
         };
       }) cfg.secrets
     );
 
-    #system.postDeploy =
-    #  let
-    #    declaredSecrets = map (s: s.metadata.name) cfg.secrets;
-    #  in
-    #  lib.optionalString (cfg.secrets != [ ])
-    #    # bash
-    #    ''
-    #      for f in /var/lib/rancher/k3s/server/manifests/*.json; do
-    #        name=$(basename "$f" .json)
-    #        if ! [[ " ${declaredSecrets}[*] " =~ " $name " ]]; then
-    #          echo "Removing stale secret: $f"
-    #          rm -f "$f"
-    #        fi
-    #      done
-    #    '';
+    systemd.services.k3s-secret-symlink-cleanup = {
+      description = "Remove broken symlink k3s secret manifests";
+      after = [ "systemd-tmpfiles-resetup.service" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = pkgs.writeShellScript "k3s-secret-symlink-cleanup" ''
+          set -euo pipefail
+          dir=${lib.escapeShellArg cfg.manifestDir}
+
+          if [ ! -d "$dir" ]; then
+            exit 0
+          fi
+
+          ${pkgs.findutils}/bin/find "$dir" -maxdepth 1 -type l -name '*.json' -xtype l -print0 | \
+            ${pkgs.findutils}/bin/xargs -0r ${pkgs.coreutils}/bin/rm -f
+        '';
+      };
+    };
+
+    systemd.timers.k3s-secret-symlink-cleanup = {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnCalendar = "daily";
+        RandomizedDelaySec = "10m";
+        Persistent = true;
+      };
+    };
   };
 }

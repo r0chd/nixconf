@@ -56,11 +56,6 @@ in
       description = "Kubernetes resource requests/limits for the main forgejo container.";
     };
 
-    initContainerResources = lib.mkOption {
-      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
-      description = "Resource requests/limits for forgejo init containers.";
-    };
-
     runner = {
       token = lib.mkOption {
         type = types.str;
@@ -79,6 +74,10 @@ in
           "nix"
         ];
         description = "Runner labels";
+      };
+      resources = lib.mkOption {
+        type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+        description = "Kubernetes resource requests/limits for the main forgejo container.";
       };
     };
   };
@@ -161,10 +160,6 @@ in
             annotations = {
               "helm.sh/resource-policy" = "keep";
             };
-          };
-
-          initContainers = {
-            resources = cfg.initContainerResources;
           };
 
           signing = {
