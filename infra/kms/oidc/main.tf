@@ -1,3 +1,14 @@
+resource "kubernetes_secret" "vault-client-credentials" {
+  metadata {
+    name      = "vault-client-credentials"
+    namespace = "auth"
+  }
+
+  data = {
+    GITHUB_CLIENT_SECRET = var.secrets["vault_client_secret"]
+  }
+}
+
 resource "vault_jwt_auth_backend" "oidc" {
   path               = "oidc"
   oidc_discovery_url = "https://dex.r0chd.pl"

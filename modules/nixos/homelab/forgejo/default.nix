@@ -49,12 +49,6 @@ in
         type = types.str;
         default = "forgejo";
       };
-      access_key_id = lib.mkOption {
-        type = types.str;
-      };
-      secret_access_key = lib.mkOption {
-        type = types.str;
-      };
     };
 
     resources = lib.mkOption {
@@ -311,16 +305,6 @@ in
           stringData = {
             inherit (cfg.admin) username;
             inherit (cfg.admin) password;
-          };
-        }
-        {
-          metadata = {
-            name = "forgejo-s3-credentials";
-            namespace = "forgejo";
-          };
-          stringData = {
-            inherit (cfg.s3) access_key_id;
-            inherit (cfg.s3) secret_access_key;
           };
         }
         {

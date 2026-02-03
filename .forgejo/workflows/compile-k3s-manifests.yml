@@ -1,4 +1,4 @@
-name: Flake check
+name: Compile k3s manifests
 
 on:
   pull_request:
@@ -29,4 +29,3 @@ jobs:
       - name: Run tests and linting in Nix shell
         run: |
           nix flake check
-

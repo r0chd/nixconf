@@ -49,12 +49,6 @@ in
         type = types.str;
         default = "nextcloud";
       };
-      access_key_id = lib.mkOption {
-        type = types.str;
-      };
-      secret_access_key = lib.mkOption {
-        type = types.str;
-      };
     };
   };
 
@@ -222,34 +216,24 @@ in
         name = "nextcloud-dragonfly";
         namespace = "nextcloud";
       };
-        spec = {
-          replicas = 1;
-          args = [
-            "--proactor_threads=1"
-          ];
-          resources = {
-            requests = {
-              cpu = "500m";
-              memory = "256Mi";
-            };
-            limits = {
-              memory = "384Mi";
-            };
+      spec = {
+        replicas = 1;
+        args = [
+          "--proactor_threads=1"
+        ];
+        resources = {
+          requests = {
+            cpu = "500m";
+            memory = "256Mi";
+          };
+          limits = {
+            memory = "384Mi";
           };
         };
+      };
     };
 
     secrets = [
-      {
-        metadata = {
-          name = "nextcloud-s3-credentials";
-          namespace = "nextcloud";
-        };
-        stringData = {
-          inherit (cfg.s3) access_key_id;
-          inherit (cfg.s3) secret_access_key;
-        };
-      }
       {
         metadata = {
           name = "nextcloud-admin-credentials";

@@ -16,13 +16,13 @@ in
     #   '';
     # };
 
-    environment.persist = {
-      directories = [ "/var/lib/flatpak" ];
-      users.directories = [
-        ".var/app"
-        ".cache/flatpak"
-        ".local/share/flatpak"
-      ];
-    };
+    # environment.persist = {
+    #   directories = [ "/var/lib/flatpak" ];
+    #   users.directories = [
+    #     ".var/app"
+    #     ".cache/flatpak"
+    #     ".local/share/flatpak"
+    #   ];
+    # };
   };
 }

@@ -117,6 +117,8 @@
                 disko.nixosModules.default
                 stylix.nixosModules.stylix
                 { networking = { inherit hostName; }; }
+              ]
+              ++ lib.optionals (attrs.profile == "server") [
                 comin.nixosModules.comin
                 {
                   services.comin = {

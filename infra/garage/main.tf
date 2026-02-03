@@ -8,6 +8,10 @@ provider "garage" {
   token  = data.sops_file.secrets.data["garage.admin-token"]
 }
 
+provider "kubernetes" {
+  config_path = "~/.kube/config"
+}
+
 output "garage_token" {
   value     = data.sops_file.secrets.data["garage.admin-token"]
   sensitive = true

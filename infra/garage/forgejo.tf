@@ -38,3 +38,15 @@ output "forgejo-secret-access-key" {
   value     = garage_key.forgejo.secret_access_key
   sensitive = true
 }
+
+resource "kubernetes_secret" "forgejo" {
+  metadata {
+    name      = "forgejo-s3-credentials"
+    namespace = "forgejo"
+  }
+
+  data = {
+    access_key_id     = garage_key.forgejo.access_key_id
+    secret_access_key = garage_key.forgejo.secret_access_key
+  }
+}

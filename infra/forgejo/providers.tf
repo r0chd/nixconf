@@ -1,7 +1,7 @@
 terraform {
   required_providers {
-    cloudflare = {
-      source  = "cloudflare/cloudflare"
+    forgejo = {
+      source  = "svalabs/forgejo"
     }
 
     sops = {

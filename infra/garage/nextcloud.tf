@@ -34,3 +34,15 @@ output "nextcloud-secret-access-key" {
   value     = garage_key.nextcloud.secret_access_key
   sensitive = true
 }
+
+resource "kubernetes_secret" "nextcloud" {
+  metadata {
+    name      = "nextcloud-s3-credentials"
+    namespace = "nextcloud"
+  }
+
+  data = {
+    access_key_id     = garage_key.nextcloud.access_key_id
+    secret_access_key = garage_key.nextcloud.secret_access_key
+  }
+}

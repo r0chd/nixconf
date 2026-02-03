@@ -4,7 +4,7 @@ terraform {
     organization = "r0chd"
 
     workspaces {
-      name = "garage"
+      name = "forgejo"
     }
   }
 }

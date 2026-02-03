@@ -12,8 +12,6 @@
   sops.secrets = {
     #"pihole/password" = { };
 
-    "minio/credentials" = { };
-
     alertmanager_webhook_url = { };
 
     github_api = { };
@@ -34,13 +32,9 @@
     "quickwit/access_key_id" = { };
     "quickwit/secret_access_key" = { };
 
-    "forgejo/access_key_id" = { };
-    "forgejo/secret_access_key" = { };
     "forgejo/admin_password" = { };
     "forgejo/runner_token" = { };
 
-    "nextcloud/access_key_id" = { };
-    "nextcloud/secret_access_key" = { };
     "nextcloud/admin_password" = { };
 
     "github-client/client-secret" = { };
@@ -49,130 +43,6 @@
     "oauth2-proxy/client-secret" = { };
 
     "vault_client_secret".sopsFile = ../../infra/kms/secrets/secrets.yaml;
-  };
-
-  services = {
-    minio = {
-      enable = true;
-      region = "eu-central-1";
-      rootCredentialsFile = config.sops.secrets."minio/credentials".path;
-    };
-  };
-
-  services.k3s.manifests = {
-    minio-service.content = [
-      {
-        apiVersion = "v1";
-        kind = "Service";
-        metadata = {
-          name = "minio-external";
-          namespace = "default";
-        };
-        spec = {
-          type = "ClusterIP";
-          ports = [
-            {
-              port = 9000;
-              name = "s3";
-            }
-            {
-              port = 9001;
-              name = "console";
-            }
-          ];
-        };
-      }
-    ];
-    minio-external-endpoints.content = [
-      {
-        apiVersion = "v1";
-        kind = "Endpoints";
-        metadata = {
-          name = "minio-external";
-          namespace = "default";
-        };
-        subsets = [
-          {
-            addresses = [
-              {
-                ip = "157.180.30.62";
-              }
-            ];
-            ports = [
-              {
-                port = 9000;
-                name = "s3";
-              }
-              {
-                port = 9001;
-                name = "console";
-              }
-            ];
-          }
-        ];
-      }
-    ];
-    minio-ingress.content = [
-      {
-        apiVersion = "networking.k8s.io/v1";
-        kind = "Ingress";
-        metadata = {
-          name = "minio-ingress";
-          namespace = "default";
-          annotations = lib.optionalAttrs config.homelab.cert-manager.enable {
-            "cert-manager.io/cluster-issuer" = "letsencrypt";
-          };
-        };
-        spec = {
-          ingressClassName = "nginx";
-          tls = [
-            {
-              hosts = [
-                "s3.minio.r0chd.pl"
-                "console.minio.r0chd.pl"
-              ];
-              secretName = "minio-tls";
-            }
-          ];
-          rules = [
-            {
-              host = "s3.minio.r0chd.pl";
-              http = {
-                paths = [
-                  {
-                    path = "/";
-                    pathType = "Prefix";
-                    backend = {
-                      service = {
-                        name = "minio-external";
-                        port.number = 9000;
-                      };
-                    };
-                  }
-                ];
-              };
-            }
-            {
-              host = "console.minio.r0chd.pl";
-              http = {
-                paths = [
-                  {
-                    path = "/";
-                    pathType = "Prefix";
-                    backend = {
-                      service = {
-                        name = "minio-external";
-                        port.number = 9001;
-                      };
-                    };
-                  }
-                ];
-              };
-            }
-          ];
-        };
-      }
-    ];
   };
 
   boot.loader = {
@@ -280,10 +150,6 @@
     };
     nextcloud = {
       enable = true;
-      s3 = {
-        access_key_id = config.sops.placeholder."nextcloud/access_key_id";
-        secret_access_key = config.sops.placeholder."nextcloud/secret_access_key";
-      };
       admin = {
         username = "admin";
         password = config.sops.placeholder."nextcloud/admin_password";
@@ -341,10 +207,6 @@
         username = "r0chd";
         email = "oskarrochowiak@gmail.com";
         password = config.sops.placeholder."forgejo/admin_password";
-      };
-      s3 = {
-        access_key_id = config.sops.placeholder."forgejo/access_key_id";
-        secret_access_key = config.sops.placeholder."forgejo/secret_access_key";
       };
       runner = {
         token = config.sops.placeholder."forgejo/runner_token";

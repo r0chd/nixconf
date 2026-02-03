@@ -32,6 +32,15 @@
           default = pkgs.mkShell {
             buildInputs =
               let
+                svalabs_forgejo = pkgs.terraform-providers.mkProvider {
+                  owner = "svalabs";
+                  repo = "terraform-provider-forgejo";
+                  rev = "v1.1.0";
+                  version = "1.1.0";
+                  hash = "sha256-kT19Vwcv6TplWdqmj44WMfzqm4AzKiMGoogxcxx8d+Q=";
+                  vendorHash = "sha256-nszKWUQ0zTksErD+4z1es1K30fcDS0nTjHV5ktdwsUg=";
+                  homepage = "https://registry.terraform.io/providers/svalabs/forgejo";
+                };
                 prologin_garage = pkgs.terraform-providers.mkProvider {
                   owner = "prologin";
                   repo = "terraform-provider-garage";
@@ -58,17 +67,19 @@
                       hashicorp_external
                       hashicorp_aws
                       hashicorp_vault
+                      hashicorp_kubernetes
                       carlpett_sops
                       cloudflare_cloudflare
                       ;
                   }
-                  ++ [ prologin_garage ]
+                  ++ [
+                    prologin_garage
+                    svalabs_forgejo
+                  ]
                 ))
               ];
 
             shellHook = ''
-              export AWS_ACCESS_KEY_ID="$(sops -d --extract '["minio"]["access_key_id"]' ./secrets/secrets.yaml)"
-              export AWS_SECRET_ACCESS_KEY="$(sops -d --extract '["minio"]["secret_access_key"]' ./secrets/secrets.yaml)"
               export VAULT_ADDR="https://vault.r0chd.pl"
             '';
           };
