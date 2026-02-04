@@ -34,8 +34,6 @@ in
       inherit (cfg) enable;
       inherit (cfg) package;
 
-      webui.enable = true;
-
       client = {
         settings = {
           inherit log_level;

@@ -26,6 +26,8 @@
     "flux-bucket/access_key" = { };
     "flux-bucket/secret_key" = { };
 
+    "hytale-rcon" = { };
+
     "thanos/access_key" = { };
     "thanos/secret_key" = { };
 
@@ -43,6 +45,8 @@
     "oauth2-proxy/client-secret" = { };
 
     "vault_client_secret".sopsFile = ../../infra/kms/secrets/secrets.yaml;
+
+    "attic/token_secret" = { };
   };
 
   boot.loader = {
@@ -118,6 +122,34 @@
         "172.31.1.100-172.31.1.150"
       ];
     };
+
+    attic = {
+      enable = true;
+      tokenSecret = config.sops.placeholder."attic/token_secret";
+      resources = {
+        requests = {
+          cpu = "10m";
+          memory = "500Mi";
+        };
+        limits.memory = "1Gi";
+      };
+    };
+
+    hytale = {
+      enable = true;
+      rconPassword = config.sops.placeholder.hytale-rcon;
+      resources = {
+        requests = {
+          cpu = "2";
+          memory = "4Gi";
+        };
+        limits = {
+          memory = "8Gi";
+        };
+      };
+      storageSize = "10Gi";
+    };
+
     system = {
       dragonfly.enable = true;
       reloader = {

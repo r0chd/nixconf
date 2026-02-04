@@ -26,6 +26,8 @@ in
     ./nextcloud
     ./kyverno
     ./media
+    ./attic
+    ./hytale
   ];
 
   options.homelab = {
@@ -136,6 +138,11 @@ in
       6443
     ];
 
+    networking.firewall.allowedUDPPorts = [
+      5520
+      30698
+    ];
+
     users.groups.homelab = { };
 
     homelab.storageClass = cfg.storageClassName;
@@ -158,7 +165,8 @@ in
           --config /etc/rclone.conf \
           --checksum \
           --verbose \
-          --copy-links
+          --copy-links \
+          --s3-no-check-bucket
       '';
     };
   };

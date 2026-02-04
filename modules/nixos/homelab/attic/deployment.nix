@@ -10,6 +10,7 @@ in
         kind = "Deployment";
         metadata = {
           name = "attic-server";
+          namespace = "attic";
           labels = {
             "app.kubernetes.io/name" = "attic-server";
           };
