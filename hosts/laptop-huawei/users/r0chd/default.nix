@@ -21,11 +21,22 @@
     "garage/moxpaper/access_key_id" = { };
     "garage/moxpaper/secret_access_key" = { };
 
-    "garage/flux/access_key_id" = { };
-    "garage/flux/secret_access_key" = { };
+    "garage/hytale-backups/access_key_id" = { };
+    "garage/hytale-backups/secret_access_key" = { };
+
+    tofu = { };
   };
 
   programs = {
+    opentofu = {
+      enable = true;
+      settings.credentials = {
+        "app.terraform.io" = {
+          token = config.sops.placeholder.tofu;
+        };
+      };
+    };
+
     zed-editor = {
       enable = true;
       extensions = [ "nix" ];
@@ -65,10 +76,10 @@
             api = "s3v4";
             path = "auto";
           };
-          flux = {
+          hytale-backups = {
             url = "https://s3.garage.r0chd.pl";
-            accessKey = config.sops.placeholder."garage/flux/access_key_id";
-            secretKey = config.sops.placeholder."garage/flux/secret_access_key";
+            accessKey = config.sops.placeholder."garage/hytale-backups/access_key_id";
+            secretKey = config.sops.placeholder."garage/hytale-backups/secret_access_key";
             api = "s3v4";
             path = "auto";
           };
@@ -148,10 +159,6 @@
         secret_key_file = config.sops.secrets."garage/moxpaper/secret_access_key".path;
         region = "garage";
       };
-    };
-    moxnotify = {
-      valkey.enable = false;
-      redis.settings.address = "redis://127.0.0.1:63790";
     };
     impermanence.enable = true;
     yubikey-touch-detector.enable = true;

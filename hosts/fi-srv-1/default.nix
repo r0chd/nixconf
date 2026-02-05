@@ -148,10 +148,10 @@
         };
       };
       storageSize = "10Gi";
+      backup.enable = true;
     };
 
     system = {
-      dragonfly.enable = true;
       reloader = {
         resources = {
           requests = {
@@ -185,12 +185,36 @@
         username = "admin";
         password = config.sops.placeholder."nextcloud/admin_password";
       };
-      db = {
-        resources = {
+      resources = {
+        db = {
           requests = {
             memory = "70Mi";
           };
           limits.memory = "80Mi";
+        };
+        nextcloud = {
+          requests = {
+            memory = "25Mi";
+          };
+          limits.memory = "100Mi";
+        };
+        cron = {
+          requests = {
+            memory = "10Mi";
+          };
+          limits.memory = "20Mi";
+        };
+        metrics = {
+          requests = {
+            memory = "11Mi";
+          };
+          limits.memory = "20Mi";
+        };
+        imaginary = {
+          requests = {
+            memory = "10Mi";
+          };
+          limits.memory = "20Mi";
         };
       };
     };

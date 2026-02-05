@@ -20,6 +20,7 @@
     ./vcs
     ./minio-client
     ./re-toolkit
+    ./opentofu
   ];
 
   programs = {

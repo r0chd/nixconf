@@ -7,6 +7,7 @@
 let
   cfg = config.homelab.nextcloud;
   inherit (lib) types;
+  resourceType = types.attrsOf (types.attrsOf (types.nullOr types.str));
 in
 {
   imports = [ ./db.nix ];
@@ -48,6 +49,34 @@ in
       bucket = lib.mkOption {
         type = types.str;
         default = "nextcloud";
+      };
+    };
+
+    resources = {
+      nextcloud = lib.mkOption {
+        type = resourceType;
+        default = { };
+        description = "Kubernetes resource requests/limits for the Nextcloud app pods.";
+      };
+      db = lib.mkOption {
+        type = resourceType;
+        default = { };
+        description = "Kubernetes resource requests/limits for the Nextcloud database pods.";
+      };
+      cron = lib.mkOption {
+        type = resourceType;
+        default = { };
+        description = "Kubernetes resource requests/limits for the Nextcloud cron sidecar.";
+      };
+      metrics = lib.mkOption {
+        type = resourceType;
+        default = { };
+        description = "Kubernetes resource requests/limits for the Nextcloud metrics exporter.";
+      };
+      imaginary = lib.mkOption {
+        type = resourceType;
+        default = { };
+        description = "Kubernetes resource requests/limits for the Nextcloud imaginary service.";
       };
     };
   };
@@ -147,6 +176,7 @@ in
               secretKey = "secret_access_key";
             };
           };
+          resources = cfg.resources.nextcloud;
         };
 
         internalDatabase.enabled = false;
@@ -174,11 +204,13 @@ in
           enabled = true;
           type = "sidecar";
           cronjob.schedule = "*/5 * * * *";
+          resources = cfg.resources.cron;
         };
 
         imaginary = {
           enabled = true;
           replicaCount = 1;
+          resources = cfg.resources.imaginary;
         };
 
         metrics = {
@@ -200,6 +232,7 @@ in
             enabled = true;
             defaults.enabled = true;
           };
+          resources = cfg.resources.metrics;
         };
 
         persistence = {

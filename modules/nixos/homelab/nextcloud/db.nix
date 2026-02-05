@@ -24,7 +24,8 @@ in
     };
 
     resources = lib.mkOption {
-      type = types.attrsOf (types.attrsOf (types.nullOr types.str));
+      type = types.nullOr (types.attrsOf (types.attrsOf (types.nullOr types.str)));
+      default = null;
       description = "Kubernetes resource requests/limits.";
     };
 
@@ -213,7 +214,8 @@ in
               size = cfg.walStorageSize;
             };
 
-            inherit (cfg) resources;
+            resources = config.homelab.nextcloud.resources.db;
+
           }
           // lib.optionalAttrs cfg.backup.enable {
             backup = {

@@ -144,7 +144,7 @@ in
           ", XF86AudioRaiseVolume, exec, ${pkgs.pamixer}/bin/pamixer -i 5"
           ", XF86AudioLowerVolume, exec, ${pkgs.pamixer}/bin/pamixer -d 5"
 
-          "$mainMod, q, exec, ${pkgs.uwsm}/bin/uwsm stop"
+          "$mainMod, q, exec, ${pkgs.hyprshutdown}/bin/hyprshutdown"
           ", Print, exec, ${pkgs.grim}/bin/grim -g \"$(${pkgs.slurp}/bin/slurp)\" - | wl-copy"
         ]
         ++ lib.optionals (cfg.layout == "scrolling") [

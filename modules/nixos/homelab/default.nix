@@ -93,6 +93,7 @@ in
         "--disable servicelb"
         "--write-kubeconfig-group ${config.users.groups.homelab.name}"
         "--write-kubeconfig-mode 0660"
+        "--cluster-cidr 10.42.0.0/16"
       ];
 
       clusterInit = cfg.nodeType == "primary";

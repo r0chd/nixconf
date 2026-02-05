@@ -71,6 +71,7 @@ in
           ];
         };
       };
+
       collector = {
         settings = {
           inherit log_level;
