@@ -42,7 +42,7 @@ resource "kubernetes_secret" "forgejo-db-backup" {
   }
 
   data = {
-    access_key_id     = garage_key.forgejo-db-backup.access_key_id
-    secret_access_key = garage_key.forgejo-db-backup.secret_access_key
+    access-key-id     = garage_key.forgejo-db-backup.access_key_id
+    secret-access-key = garage_key.forgejo-db-backup.secret_access_key
   }
 }

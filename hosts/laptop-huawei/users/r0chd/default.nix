@@ -12,6 +12,7 @@
       "obsidian"
       "steam"
       "steam-unwrapped"
+      "claude-code"
     ];
 
   sops.secrets = {
@@ -23,6 +24,9 @@
 
     "garage/hytale-backups/access_key_id" = { };
     "garage/hytale-backups/secret_access_key" = { };
+
+    "garage/forgejo-db-backup/access_key_id" = { };
+    "garage/forgejo-db-backup/secret_access_key" = { };
 
     tofu = { };
   };
@@ -83,6 +87,13 @@
             api = "s3v4";
             path = "auto";
           };
+          forgejo-backups = {
+            url = "https://s3.garage.r0chd.pl";
+            accessKey = config.sops.placeholder."garage/forgejo-db-backup/access_key_id";
+            secretKey = config.sops.placeholder."garage/forgejo-db-backup/secret_access_key";
+            api = "s3v4";
+            path = "auto";
+          };
         };
       };
     };
@@ -134,15 +145,19 @@
         scale = 1.25;
       };
     };
+    notify.enable = true;
   };
 
   home = {
     persist.directories = [
       "workspace"
       ".yubico"
+      ".kube"
+      ".claude"
     ];
     packages = builtins.attrValues {
       inherit (pkgs)
+        claude-code
         slack
         obsidian
         devenv

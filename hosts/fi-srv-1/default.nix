@@ -152,6 +152,7 @@
     };
 
     system = {
+      dragonfly.enable = true;
       reloader = {
         resources = {
           requests = {
@@ -283,6 +284,7 @@
           };
           limits.memory = "100Mi";
         };
+        backup.enable = true;
       };
     };
     moxwiki = {

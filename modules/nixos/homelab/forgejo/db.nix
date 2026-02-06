@@ -28,20 +28,10 @@ in
       description = "Kubernetes resource requests/limits.";
     };
 
-    backup = {
-      enable = lib.mkOption {
-        type = types.bool;
-        default = false;
-        description = "Enable database backups";
-      };
-
-      accessKeyId = lib.mkOption {
-        type = types.str;
-      };
-
-      secretAccessKey = lib.mkOption {
-        type = types.str;
-      };
+    backup.enable = lib.mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable database backups";
     };
   };
 
@@ -222,11 +212,11 @@ in
                 endpointURL = "https://s3.${config.homelab.garage.ingressHost}";
                 s3Credentials = {
                   accessKeyId = {
-                    name = "forgejo-backup-credentials";
+                    name = "forgejo-db-backup-s3-credentials";
                     key = "access-key-id";
                   };
                   secretAccessKey = {
-                    name = "forgejo-backup-credentials";
+                    name = "forgejo-db-backup-s3-credentials";
                     key = "secret-access-key";
                   };
                 };
@@ -241,6 +231,54 @@ in
       ]
       ++ lib.optionals cfg.backup.enable [
         {
+          apiVersion = "rbac.authorization.k8s.io/v1";
+          kind = "Role";
+          metadata = {
+            name = "forgejo-db";
+            namespace = "forgejo";
+          };
+          rules = [
+            {
+              apiGroups = [ "" ];
+              resources = [ "secrets" ];
+              resourceNames = [ "forgejo-db-backup-s3-credentials" ];
+              verbs = [ "get" ];
+            }
+            {
+              apiGroups = [ "postgresql.cnpg.io" ];
+              resources = [ "backups" ];
+              verbs = [ "get" "list" "watch" "patch" "update" ];
+            }
+            {
+              apiGroups = [ "postgresql.cnpg.io" ];
+              resources = [ "backups/status" ];
+              verbs = [ "get" "patch" "update" ];
+            }
+          ];
+        }
+
+        {
+          apiVersion = "rbac.authorization.k8s.io/v1";
+          kind = "RoleBinding";
+          metadata = {
+            name = "forgejo-db";
+            namespace = "forgejo";
+          };
+          roleRef = {
+            apiGroup = "rbac.authorization.k8s.io";
+            kind = "Role";
+            name = "forgejo-db";
+          };
+          subjects = [
+            {
+              kind = "ServiceAccount";
+              name = "forgejo-db";
+              namespace = "forgejo";
+            }
+          ];
+        }
+
+        {
           apiVersion = "postgresql.cnpg.io/v1";
           kind = "ScheduledBackup";
           metadata = {
@@ -252,19 +290,6 @@ in
             immediate = true;
             backupOwnerReference = "self";
             cluster.name = "forgejo-db";
-          };
-        }
-      ];
-
-      secrets = lib.mkIf cfg.backup.enable [
-        {
-          metadata = {
-            name = "forgejo-backup-credentials";
-            namespace = "forgejo";
-          };
-          stringData = {
-            "access-key-id" = cfg.backup.accessKeyId;
-            "secret-access-key" = cfg.backup.secretAccessKey;
           };
         }
       ];
